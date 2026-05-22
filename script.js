@@ -114,4 +114,9 @@ setInterval(() => changeQuote(1), 5000);
 
 // Auto-rotate every 5 seconds
 setInterval(() => changeQuote(1), 5000);
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const navMenu = document.getElementById('nav-menu');
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', () => navMenu.classList.toggle('open'));
+    }
     </script>
