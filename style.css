@@ -809,4 +809,11 @@ footer {
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
+       .page-section-stack > .card {
+    margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+.page-section-stack > .card:first-child {
+    margin-top: 0;
+}
     </style>
