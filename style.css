@@ -1,4 +1,3 @@
-<style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
@@ -1234,4 +1233,301 @@ footer {
 .page-section-stack > .card:first-child {
     margin-top: 0;
 }
-    </style>
+}
+
+/* Editorial page overrides
+   Keep the newer editorial design from being overridden by older shared styles above. */
+.editorial-page {
+    font-family: var(--serif);
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+}
+
+.editorial-page header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--navy);
+    padding: 0 2rem;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: none;
+}
+
+.editorial-page .logo {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    text-decoration: none;
+    display: block;
+    padding-right: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.editorial-page .logo span {
+    color: var(--gold);
+}
+
+.editorial-page nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 1 auto;
+    gap: 0.25rem;
+}
+
+.editorial-page nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+    text-align: center;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border: 0;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.editorial-page nav a:hover {
+    color: var(--white);
+    background: rgba(255,255,255,0.1);
+}
+
+.editorial-page nav a.active {
+    color: var(--gold);
+}
+
+.editorial-page nav .nav-cta {
+    background: var(--gold);
+    color: var(--navy-dark);
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+
+.editorial-page nav .nav-cta:hover {
+    background: var(--gold-light);
+    color: var(--navy-dark);
+}
+
+.editorial-page nav .nav-enroll {
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+}
+
+.editorial-page nav .nav-enroll:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.editorial-page .page-hero {
+    margin-top: 68px;
+    min-height: 58vh;
+    background:
+        linear-gradient(to bottom, rgba(14,30,52,0.72) 0%, rgba(14,30,52,0.55) 60%, rgba(14,30,52,0.85) 100%),
+        url('https://pub-ff92dd81bac74421977526b3aaf1374a.r2.dev/assets/images/background-hero.jpeg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 5rem 2rem 4rem;
+    position: relative;
+}
+
+.editorial-page .page-hero .container {
+    max-width: 860px;
+}
+
+.editorial-page .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.editorial-page .container-narrow {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.editorial-page section {
+    padding: 5rem 0;
+}
+
+.editorial-page .section-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.editorial-page .beliefs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid #e8e4dc;
+}
+
+.editorial-page .belief-item {
+    display: block;
+    padding: 2.5rem 2.8rem;
+    border-right: 1px solid #e8e4dc;
+    border-bottom: 1px solid #e8e4dc;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 0;
+    position: relative;
+    transition: background 0.25s;
+}
+
+.editorial-page .belief-item:nth-child(even) {
+    border-right: none;
+}
+
+.editorial-page .belief-item:nth-child(n+3):nth-child(-n+4) {
+    border-bottom: none;
+}
+
+.editorial-page .belief-item:hover {
+    background: var(--cream);
+    transform: none;
+    box-shadow: none;
+}
+
+.editorial-page .belief-item h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.editorial-page .belief-item p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+}
+
+.editorial-page footer {
+    background: var(--navy-dark);
+    color: var(--white);
+    text-align: left;
+    padding: 3rem 2rem;
+    margin-top: 0;
+}
+
+.editorial-page .footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: none;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.editorial-page .footer-brand h3 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    margin-bottom: 0;
+}
+
+.editorial-page .footer-brand p {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    font-style: normal;
+    letter-spacing: 0.08em;
+    margin-top: 0.2rem;
+}
+
+.editorial-page .footer-links {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.editorial-page .footer-links a {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+}
+
+.editorial-page .footer-btn {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--navy-dark);
+    background: var(--gold);
+    padding: 0.6rem 1.4rem;
+}
+
+@media (max-width: 768px) {
+    .editorial-page header {
+        height: 68px !important;
+        top: 0 !important;
+    }
+
+    .editorial-page .mobile-menu {
+        display: block;
+    }
+
+    .editorial-page nav a:not(.nav-cta):not(.nav-enroll) {
+        display: none;
+    }
+
+    .editorial-page .page-hero {
+        margin-top: 68px;
+    }
+
+    .editorial-page .beliefs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editorial-page .belief-item {
+        border-right: none;
+    }
+
+    .editorial-page .belief-item:nth-child(n+3):nth-child(-n+4) {
+        border-bottom: 1px solid #e8e4dc;
+    }
+
+    .editorial-page .belief-item:last-child {
+        border-bottom: none;
+    }
+
+    .editorial-page .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .editorial-page .footer-links {
+        justify-content: center;
+    }
+}
