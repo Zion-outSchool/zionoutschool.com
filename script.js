@@ -1,14 +1,14 @@
-    <script>
         // Mobile menu toggle
         function toggleMenu() {
             const menu = document.getElementById('nav-menu');
             menu.classList.toggle('show');
+            menu.classList.toggle('open');
         }
 
         // Close mobile menu when clicking on a link
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
-                document.getElementById('nav-menu').classList.remove('show');
+                document.getElementById('nav-menu').classList.remove('show', 'open');
             });
         });
 
@@ -66,10 +66,14 @@ function toggleCard(el) {
     const card = el.closest('.expandable-card');
     const preview = card.querySelector('.card-preview');
     const full = card.querySelector('.card-full');
-    const isExpanded = full.style.display === 'block';
-    full.style.display = isExpanded ? 'none' : 'block';
-    preview.style.display = isExpanded ? 'block' : 'none';
+    const isExpanded = card.classList.toggle('is-expanded');
+    full.style.display = isExpanded ? 'block' : 'none';
+    preview.style.display = isExpanded ? 'none' : 'block';
 }
+
+document.querySelectorAll('.expandable-card .card-preview:not([onclick]), .expandable-card .expand-btn--close:not([onclick])').forEach(trigger => {
+    trigger.addEventListener('click', () => toggleCard(trigger));
+});
         function toggleCluster(header) {
     const body = header.nextElementSibling;
     const chevron = header.querySelector('.cluster-chevron');
@@ -109,14 +113,12 @@ function goToQuote(index) {
     showQuote(index);
 }
 
-// Auto-rotate every 5 seconds
-setInterval(() => changeQuote(1), 5000);
-
-// Auto-rotate every 5 seconds
-setInterval(() => changeQuote(1), 5000);
+if (quotes.length && dots.length) {
+    showQuote(0);
+    setInterval(() => changeQuote(1), 5000);
+}
     const mobileMenu = document.querySelector('.mobile-menu');
     const navMenu = document.getElementById('nav-menu');
     if (mobileMenu) {
         mobileMenu.addEventListener('click', () => navMenu.classList.toggle('open'));
     }
-    </script>
