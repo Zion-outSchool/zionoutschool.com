@@ -2063,3 +2063,119 @@ footer {
         justify-content: center;
     }
 }
+
+/* Tuition Page — Required Tools + Mission Partner Benefit */
+
+.required-tools-card {
+    border-left: 5px solid #2E5984;
+}
+
+.required-tools-card > p {
+    margin-top: 0.75rem;
+    max-width: 780px;
+}
+
+.required-tools-grid {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 1.75rem;
+}
+
+.required-tool {
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-top: 4px solid #2E5984;
+    padding: 1.5rem;
+}
+
+.required-tool h4 {
+    color: #2E5984;
+    margin-bottom: 0.75rem;
+}
+
+.required-tool p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 0.75rem;
+}
+
+.required-tool ul {
+    margin-top: 0.75rem;
+    margin-left: 1.25rem;
+    line-height: 2;
+}
+
+.required-tool a {
+    color: #2E5984;
+    font-weight: 700;
+}
+
+.small-note {
+    font-size: 0.85rem !important;
+    color: #666;
+    font-style: italic;
+}
+
+.scrub-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.scrub-image-wrap {
+    width: 100%;
+}
+
+.scrub-image {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.mission-partner-benefit {
+    margin-top: 2rem;
+    border-left: 5px solid #D4A22A;
+    background: #fffdf8;
+}
+
+.mission-partner-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.55fr);
+    gap: 2rem;
+    align-items: center;
+}
+
+.mission-partner-text p {
+    margin-top: 1rem;
+}
+
+.quad-image {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    background: #ffffff;
+    padding: 0.75rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 768px) {
+    .scrub-feature,
+    .mission-partner-content {
+        grid-template-columns: 1fr;
+    }
+
+    .scrub-image {
+        max-height: 260px;
+    }
+
+    .quad-image {
+        max-height: 220px;
+    }
+}
