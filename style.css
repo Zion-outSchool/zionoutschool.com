@@ -1476,8 +1476,7 @@ footer {
 }
 
 .editorial-page .method-card--accent {
-    grid-column: 1 / -1;
-    background: #f0ede6;
+    background: var(--white);
 }
 
 .editorial-page .method-card h3 {
@@ -1652,10 +1651,6 @@ footer {
 
     .editorial-page .methods-grid {
         grid-template-columns: 1fr;
-    }
-
-    .editorial-page .method-card--accent {
-        grid-column: auto;
     }
 
     .editorial-page .footer-content {
