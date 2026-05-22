@@ -7,9 +7,12 @@
             --gold:       #C9A84C;
             --gold-light: #e8d5a3;
             --cream:      #F9F6F0;
+            --cream-dark: #f0ede6;
             --text:       #2C2C2A;
             --text-mid:   #5F5E5A;
+            --border:     #e8e4dc;
             --white:      #ffffff;
+            --header-h:   68px;
             --serif:      'Cormorant Garamond', Georgia, serif;
             --sans:       'Inter', system-ui, sans-serif;
         }
@@ -1413,6 +1416,13 @@ footer {
     background: var(--cream);
     transform: none;
     box-shadow: none;
+}
+
+.editorial-page .belief-item--full {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: none;
+    background: var(--cream-dark);
 }
 
 .editorial-page .belief-item h3 {
