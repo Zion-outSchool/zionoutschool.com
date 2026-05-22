@@ -1249,80 +1249,6 @@ footer {
     margin-bottom: 1rem;
 }
 
-.student-items-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin-top: 1.5rem;
-}
-
-.student-item-card {
-    background: #f8f9fa;
-    border: 1px solid rgba(46, 89, 132, 0.12);
-    border-top: 4px solid #2E5984;
-    border-radius: 8px;
-    padding: 1.25rem;
-}
-
-.student-item-card--gold {
-    border-top-color: #D4A22A;
-}
-
-.student-item-card h4 {
-    color: #2E5984;
-    font-size: 1.05rem;
-    line-height: 1.35;
-    margin-bottom: 0.65rem;
-}
-
-.student-item-card p,
-.student-item-card li {
-    font-size: 0.95rem;
-    line-height: 1.65;
-}
-
-.student-item-card p + p {
-    margin-top: 0.75rem;
-}
-
-.student-item-card ul {
-    margin: 0.85rem 0 0 1.1rem;
-}
-
-.student-item-card a {
-    color: #2E5984;
-    font-weight: 700;
-}
-
-.student-item-card a:hover {
-    color: #D4A22A;
-}
-
-.student-item-kicker {
-    display: inline-block;
-    margin-bottom: 0.85rem;
-    padding: 0.3rem 0.7rem;
-    background: #EEE6D7;
-    color: #123A63;
-    border-left: 3px solid #D4A22A;
-    font-family: var(--sans);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.student-item-note {
-    color: #666;
-    font-size: 0.85rem;
-}
-
-@media (max-width: 900px) {
-    .student-items-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Editorial page overrides
    Keep the newer editorial design from being overridden by older shared styles above. */
 .editorial-page {
@@ -2094,4 +2020,33 @@ footer {
     .editorial-page .footer-links {
         justify-content: center;
     }
+    .home-forming {
+    margin-top: 3.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+}
+
+.home-forming h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+}
+
+.home-forming p {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 540px;
+    margin: 0 auto 1.75rem;
+}
+
+.home-forming strong {
+    color: var(--gold-light);
+    font-weight: 600;
+}
 }
