@@ -1691,23 +1691,25 @@ footer {
 
 .editorial-page .home-cta-primary,
 .editorial-page .home-cta-secondary {
+    display: inline-block;
     font-family: var(--sans);
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.04em;
-    padding: 0.85rem 2rem;
+    padding: 0.85rem 1.4rem;
     border-radius: 4px;
     text-decoration: none;
     transition: background 0.2s, color 0.2s;
 }
 
 .editorial-page .home-cta-primary {
-    color: var(--navy-dark);
-    background: var(--gold);
+    color: #06111C;
+    background: #D4A22A;
+    padding: 0.95rem 1.6rem;
 }
 
 .editorial-page .home-cta-primary:hover {
-    background: var(--gold-light);
+    background: #E0B23C;
 }
 
 .editorial-page .home-cta-secondary {
@@ -1842,67 +1844,75 @@ footer {
 }
 
 .editorial-page .home-close {
-    background: var(--navy-dark);
-    padding: 6rem 0;
+    background: #06111C;
+    color: #F7F3EA;
+    padding: clamp(4rem, 8vw, 6rem) 0;
     text-align: center;
 }
 
 .editorial-page .home-close h2 {
-    color: var(--white);
-    font-size: clamp(2rem, 4vw, 3rem);
+    color: #F7F3EA;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
     font-weight: 300;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .editorial-page .home-close p {
-    color: rgba(255,255,255,0.65);
+    color: rgba(247, 243, 234, 0.9);
     font-family: var(--sans);
     font-size: 1.15rem;
-    line-height: 1.8;
-    max-width: 580px;
-    margin: 0 auto 2.5rem;
+    line-height: 1.75;
+    max-width: 760px;
+    margin: 0 auto 2rem;
+}
+
+.editorial-page .home-close .home-cta-primary {
+    margin-bottom: 3rem;
 }
 
 .editorial-page .home-forming {
-    margin-top: 3.5rem;
-    padding-top: 3rem;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(247, 243, 234, 0.08);
+    border: 1px solid rgba(224, 178, 60, 0.45);
+    border-left: 5px solid #D4A22A;
+    border-radius: 10px;
     text-align: center;
 }
 
 .editorial-page .home-forming h3 {
-    color: var(--gold-light);
+    color: #F0D57A;
     font-family: var(--serif);
-    font-size: 1.4rem;
-    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 400;
     margin-bottom: 1rem;
 }
 
 .editorial-page .home-forming p {
-    color: rgba(255,255,255,0.72);
+    color: rgba(247, 243, 234, 0.92);
     font-family: var(--sans);
-    font-size: 1rem;
-    line-height: 1.8;
-    max-width: 620px;
-    margin: 0 auto 1.75rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
 }
 
 .editorial-page .home-forming strong {
-    color: var(--gold-light);
+    color: #F0D57A;
     font-weight: 600;
 }
 
 .editorial-page .home-forming .home-cta-secondary {
-    color: var(--gold-light);
-    border-color: var(--gold);
-    background: rgba(255,255,255,0.06);
+    color: #F0D57A;
+    border-color: #D4A22A;
+    background: transparent;
+    padding: 0.85rem 1.4rem;
 }
 
 .editorial-page .home-forming .home-cta-secondary:hover {
-    color: var(--navy-dark);
-    background: var(--gold-light);
-    border-color: var(--gold-light);
+    color: #06111C;
+    background: #D4A22A;
+    border-color: #D4A22A;
 }
 
 .editorial-page footer {
@@ -2051,7 +2061,12 @@ footer {
     .editorial-page .home-cta-primary,
     .editorial-page .home-cta-secondary {
         width: 100%;
+        max-width: 340px;
         text-align: center;
+    }
+
+    .editorial-page .home-forming {
+        padding: 1.5rem;
     }
 
     .editorial-page .footer-content {
