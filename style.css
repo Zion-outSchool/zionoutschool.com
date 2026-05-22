@@ -188,7 +188,13 @@ nav a:hover {
 .hero p {
     display: none;
 }
-
+.page-divider-image {
+    display: block;
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    margin: 0 auto;
+}
         /* Section Styles */
         section {
             padding: 80px 0;
