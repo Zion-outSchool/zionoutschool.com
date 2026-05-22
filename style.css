@@ -797,4 +797,16 @@ footer {
     .footer-links {
         align-items: center;
     }
+       .funding-badge {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    background: #EEE6D7;
+    color: #123A63;
+    border-left: 3px solid #D4A22A;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
     </style>
