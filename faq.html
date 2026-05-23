@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs | Zion outSchool</title>
 
-<title>FAQs | Zion outSchool</title>
-  
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
@@ -16,501 +15,490 @@
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-    <body>
-        <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-            <a href="index.html" class="logo">ZION outSchool</a>               
-                <nav>
-                    <button class="mobile-menu" onclick="toggleMenu()">☰</button>
-                   <ul id="nav-menu">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="foundation.html">Foundation</a></li>
-    <li><a href="how-we-learn.html">How We Learn</a></li>
-    <li><a href="tuition.html">Tuition & Funding</a></li>
-    <li><a href="teachers.html">Who Teaches Here</a></li>
-    <li><a href="faq.html">FAQs</a></li>
-    <li><a href="partners.html">Mission Partners</a></li>
-    <li><a href="calendar.html">Calendar</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" class="nav-cta-btn">Start Here →</a></li>
-    <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeviVCmVYD0FvvYNntVqOKddt00nJvYO9gYNlMXW_e94Dr2IQ/viewform" target="_blank" class="nav-cta-btn" style="background: #1E3F66 !important; border-bottom-color: #0d1f33 !important; color: white !important;">Enroll Now! →</a></li>         
+<body>
 
-                   </ul>
-                </nav>
-        </div>
-        </div>
-    </header>
-        <section class="page-hero">
+<!-- ── HEADER ── -->
+<header>
+    <a href="index.html" class="logo">ZION <span>out</span>School</a>
+    <button class="mobile-menu" aria-label="Open navigation">☰</button>
+    <nav id="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="foundation.html">Foundation</a>
+        <a href="how-we-learn.html">How We Learn</a>
+        <a href="tuition.html">Tuition & Funding</a>
+        <a href="teachers.html">Who Teaches Here</a>
+        <a href="faq.html" class="active">FAQs</a>
+        <a href="partners.html">Mission Partners</a>
+        <a href="calendar.html">Calendar</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" class="nav-cta">Start Here →</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeviVCmVYD0FvvYNntVqOKddt00nJvYO9gYNlMXW_e94Dr2IQ/viewform" target="_blank" class="nav-enroll">Enroll Now →</a>
+    </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
     <div class="container">
-        <p class="eyebrow">OUR FOUNDATION</p>
-
-        <h1>
-            Education rooted in revealed truth.
-        </h1>
-
+        <span class="eyebrow">FAQs</span>
+        <h1>Important information<br><em>for your family.</em></h1>
         <p class="hero-subtext">
-            We believe faith and learning are not separate pursuits. Every subject becomes part of the search for truth, wisdom, and discipleship.
+            Answers to the questions families ask most — about how we work, what we believe, how funding works, and what enrollment actually requires of you.
         </p>
     </div>
 </section>
-        <img 
+
+<!-- ── BANNER DIVIDER ── -->
+<img
     src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
     alt=""
-    class="page-divider-image"
+    class="banner-divider"
+    aria-hidden="true"
 >
-<section id="faq" class="faq">
-  <div class="container">
-    <h2 class="section-title">Important Information & FAQs</h2>
 
-    <!-- SCHOOL LOGISTICS -->
-    <div class="faq-cluster">
-      <div class="cluster-header" onclick="toggleCluster(this)">
-        <p class="cluster-label">School Logistics</p>
-        <span class="cluster-chevron">▼</span>
-      </div>
+<!-- ── FAQ SECTION ── -->
+<section class="faq-section">
+    <div class="container">
 
-      <div class="cluster-body" style="display:none;">
+        <!-- ── SCHOOL LOGISTICS ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">School Logistics</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
 
-        <div class="faq-item">
-          <div class="faq-question">Schedule</div>
-          <div class="faq-answer" style="display:none;">
-            <p><strong>In-Person Classes:</strong> Monday through Thursday</p>
-            <p><strong>Time:</strong> 8:45 AM – 3:00 PM</p>
-            <p><strong>Friday:</strong> Reserved for at-home assignments and reading</p>
-            <br>
-            <p><strong>A typical day includes:</strong></p>
-            <p>Morning prayer and goal-setting · Mathematics · Language Arts · Integrated sessions across all disciplines · Lunch · U.S. History</p>
-            <br>
-            <p><em>Every subject incorporates reading and writing. Student presentations and project-based learning are woven throughout the week.</em></p>
-          </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Schedule</button>
+                    <div class="faq-answer">
+                        <p><strong>In-Person Classes:</strong> Monday through Thursday</p>
+                        <p><strong>Time:</strong> 8:45 AM – 3:00 PM</p>
+                        <p><strong>Friday:</strong> Reserved for at-home assignments and reading</p>
+                        <p><strong>A typical day includes:</strong></p>
+                        <p>Morning prayer and goal-setting · Mathematics · Language Arts · Integrated sessions across all disciplines · Lunch · U.S. History</p>
+                        <p><em>Every subject incorporates reading and writing. Student presentations and project-based learning are woven throughout the week.</em></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is an outSchool?</button>
+                    <div class="faq-answer">
+                        <p>An outSchool is not a traditional private school. It is not a homeschool co-op in the conventional sense either. It is something more intentional than both.</p>
+                        <p>The "out" is deliberate. We are outside the standardized system — outside the pacing guides, the standardized tests, the grade-level boxes, the subject silos that keep math from talking to history and scripture from talking to science. We operate outside those constraints because we believe they limit what children are capable of becoming.</p>
+                        <p>Legally, ZION outSchool is an EFA-participating private learning institution operating under Arkansas law. We are currently working toward formal private school registration and accreditation — not a hobby, not an informal arrangement, not a co-op that dissolves when the founding families move on. We are a school with a designed curriculum, trained teachers, a defined methodology, and full accountability to the families we serve.</p>
+                        <p><strong>An outSchool is what happens when you take education seriously enough to build something new.</strong></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Who We Serve</button>
+                    <div class="faq-answer">
+                        <p>ZION outSchool currently serves students in <strong>grades 2 through 8</strong> as our core program. Students are placed and progress based on readiness and demonstrated understanding — not strictly by grade level. Learning is guided by curiosity and capability, not age.</p>
+                        <p>Capacity is intentionally limited. We are a small learning community by design — not by circumstance. Small means every student is known, every question is heard, and no child disappears into the middle of a room.</p>
+                        <p><strong>Kindergarten, 1st grade, and high school programs are forming.</strong> If your student falls outside the 2–8 range, we want to hear from you. These programs will open when sufficient enrollment demand exists — and families who register their interest will be first to know and first to enroll.</p>
+                        <p><a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" class="faq-link">Register your interest for K–1 or high school →</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Do you offer Kindergarten, 1st grade, or high school?</button>
+                    <div class="faq-answer">
+                        <p>Not yet — but we are actively building toward it.</p>
+                        <p>Kindergarten and 1st grade instruction will open when we have sufficient enrollment at those levels to form a cohort. High school will open under the same condition. We will not open a program that cannot be done well. On July 18th we will make our decision about whether these programs will open this school year — based on the number of families who have registered interest by that date.</p>
+                        <p>If your student is in Kindergarten, 1st grade, or high school age and you are interested in ZION outSchool, register your interest now. Your information will be kept on file and you will be contacted directly when these programs open — before any public announcement.</p>
+                        <p><a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" class="faq-link">Register your interest →</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Mixed-Age Learning</button>
+                    <div class="faq-answer">
+                        <p>Our classroom spans grades 2–8 by design. Older students deepen their understanding by teaching younger ones. Younger students are pulled forward by the intellectual ceiling of the room. Every student operates at their own level inside a shared community — and every student benefits from that range.</p>
+                        <p>This is not a limitation of our size. It is one of our greatest strengths. A second grader who watches an eighth grader defend a position under questioning understands, without being told, what serious thinking looks like. An eighth grader who has to explain a concept to a second grader discovers quickly whether they actually understand it.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is actually required of parents?</button>
+                    <div class="faq-answer">
+                        <p>The Methods section above describes the philosophy. Here are the specific commitments:</p>
+                        <ul class="faq-list">
+                            <li><strong>Daily reading at home</strong> — every school day, without exception. This is not optional and it is not negotiable.</li>
+                            <li><strong>Friday at-home work</strong> — students do not come to the classroom on Fridays, but Friday is a full school day. Assignments are real and they count.</li>
+                            <li><strong>Active engagement with your child's learning</strong> — ask what they studied. Push back on their ideas. Look things up together. The learning is designed to continue past 3:00 PM and it will only do that if you let it into your home.</li>
+                            <li><strong>Responsive communication</strong> — we will reach out when something needs your attention. We expect a response.</li>
+                        </ul>
+                        <p>If your family is in a season where consistent follow-through at home is genuinely not possible, this is not the right time to enroll. We would rather have that conversation before the school year starts than struggle through it together afterward.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is the student-to-teacher ratio?</button>
+                    <div class="faq-answer">
+                        <p>We are intentionally small. Our enrollment is limited to ensure every student receives direct, individualized attention from their teacher every day. We do not scale enrollment at the expense of that standard.</p>
+                        <p>Contact us directly for current enrollment numbers and available seats for the coming school year.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">What is an outSchool?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>An outSchool is not a traditional private school. It is not a homeschool co-op in the conventional sense either. It is something more intentional than both.</p>
-            <br>
-            <p>The "out" is deliberate. We are outside the standardized system — outside the pacing guides, the standardized tests, the grade-level boxes, the subject silos that keep math from talking to history and scripture from talking to science. We operate outside those constraints because we believe they limit what children are capable of becoming.</p>
-            <br>
-            <p>Legally, ZION outSchool is an EFA-participating private learning institution operating under Arkansas law. We are currently working toward formal private school registration and accreditation — not a hobby, not an informal arrangement, not a co-op that dissolves when the founding families move on. We are a school with a designed curriculum, trained teachers, a defined methodology, and full accountability to the families we serve.</p>
-            <p><strong>An outSchool is what happens when you take education seriously enough to build something new.</strong></p>
-          </div>
+        <!-- ── FAITH & CURRICULUM ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">Faith & Curriculum</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Faith & Membership</button>
+                    <div class="faq-answer">
+                        <p>Our curriculum is rooted in the LDS standard works, including the Book of Mormon and the Come Follow Me program. Membership in the LDS church is not required for enrollment. Families of any faith background are welcome — you do need to be comfortable with — and ideally excited by — a learning environment where scriptural truth is taken seriously as an academic and moral foundation.</p>
+                        <p>Every session opens and closes with prayer. Spiritual formation is not separated from academic work here. It is woven through it.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What scriptures do you teach from?</button>
+                    <div class="faq-answer">
+                        <p>We teach from the LDS standard works — the four volumes of scripture recognized by The Church of Jesus Christ of Latter-day Saints:</p>
+                        <ul class="faq-list">
+                            <li><strong>The Bible</strong> (King James Version)</li>
+                            <li><strong>The Book of Mormon</strong></li>
+                            <li><strong>The Doctrine and Covenants</strong></li>
+                            <li><strong>The Pearl of Great Price</strong></li>
+                            <li>The words of modern day Prophets and Apostles.</li>
+                        </ul>
+                        <p>Scripture serves as the organizing spine of each unit of study — not as a devotional addition, but as the primary academic text from which science, history, literature, and language arts all radiate outward.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is Come Follow Me?</button>
+                    <div class="faq-answer">
+                        <p>Come Follow Me is a scripture study curriculum developed by The Church of Jesus Christ of Latter-day Saints. It moves through the standard works on a rotating annual cycle, providing structured study questions, context, and commentary designed for both individual and family use.</p>
+                        <p>At ZION outSchool, Come Follow Me provides the scriptural sequence that anchors each unit of study. Rather than using it as a devotional program, we build our entire academic curriculum around it — treating each scripture block as the lens through which science, history, literature, and language arts are studied that unit.</p>
+                        <p>You do not need to be familiar with Come Follow Me before enrolling. Students encounter it as part of their academic work here.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">How is the LDS faith different from other Christian denominations?</button>
+                    <div class="faq-answer">
+                        <p>This is a question worth answering honestly, because families of other Christian backgrounds deserve to know what they are enrolling their child into.</p>
+                        <p>The Church of Jesus Christ of Latter-day Saints holds Jesus Christ as its center and Savior — that is the shared foundation with other Christian traditions. Several doctrinal distinctives set it apart:</p>
+                        <ul class="faq-list">
+                            <li>LDS theology holds that God the Father, Jesus Christ, and the Holy Ghost are three distinct beings — not one unified Trinity as defined by the Nicene Creed.</li>
+                            <li>The Church believes in continuing revelation — that God speaks through living prophets today, as He did in ancient scripture.</li>
+                            <li>The Book of Mormon is accepted as a second witness of Jesus Christ alongside the Bible, not a replacement of it.</li>
+                            <li>LDS doctrine teaches that humans are literal spirit children of God with divine potential — a view of human nature that shapes how we think about children and learning.</li>
+                        </ul>
+                        <p>These beliefs are not hidden or softened here. They are woven into the curriculum because they are the foundation of how we understand truth, knowledge, and the purpose of education. Families who enroll their children here should understand and be at peace with that foundation — even if they do not share every point of doctrine.</p>
+                        <p>If you have questions about LDS beliefs before enrolling, we are happy to talk through them directly. <a href="mailto:hello@zionoutschool.com" class="faq-link">Reach out here.</a></p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">Who We Serve</div>
-          <div class="faq-answer" style="display:none;">
-            <p>ZION outSchool currently serves students in <strong>grades 2 through 8</strong> as our core program. Students are placed and progress based on readiness and demonstrated understanding — not strictly by grade level. Learning is guided by curiosity and capability, not age.</p>
-            <p style="margin-top: 0.75rem;">Capacity is intentionally limited. We are a small learning community by design — not by circumstance. Small means every student is known, every question is heard, and no child disappears into the middle of a room.</p>
-            <p style="margin-top: 0.75rem;"><strong>Kindergarten, 1st grade, and high school programs are forming.</strong> If your student falls outside the 2–8 range, we want to hear from you. These programs will open when sufficient enrollment demand exists — and families who register their interest will be first to know and first to enroll.</p>
-            <p style="margin-top: 0.75rem;"><a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" style="color: #e74c3c; font-weight: bold;">Register your interest for K–2 or high school →</a></p>
-          </div>
+        <!-- ── ACCREDITATION & RECORDS ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">Accreditation & Records</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Are you accredited?</button>
+                    <div class="faq-answer">
+                        <p>Not at this time. We are working toward accreditation through the Arkansas Nonpublic School Accrediting Association (ANSAA) and are currently engaged with legal advisors toward formal private school registration. We are transparent about where we are in that process because it matters for some families — particularly those considering high school or potential transfer.</p>
+                        <p>Accreditation is a process we take seriously and are working toward. In the meantime, here is what that means practically for families at the grades 2–8 level we currently serve:</p>
+                        <ul class="faq-list">
+                            <li>Students transferring to another private school are typically evaluated by that school directly — accreditation rarely factors in at the elementary and middle school level.</li>
+                            <li>Students transferring to public school are generally placed by age and an assessment of their demonstrated skills — not by transcripts from a private school, accredited or otherwise.</li>
+                            <li>The academic depth students build here consistently positions them ahead of grade-level peers on standardized assessments.</li>
+                        </ul>
+                        <p>If accreditation is a deciding factor for your family, we want to have that conversation honestly before you enroll. <a href="mailto:hello@zionoutschool.com" class="faq-link">Contact us.</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is your school's legal status?</button>
+                    <div class="faq-answer">
+                        <p>ZION outSchool is an EFA-participating private learning institution operating under Arkansas law. We are currently working with legal advisors toward formal private school registration and accreditation through the Arkansas Nonpublic School Accrediting Association (ANSAA). We are transparent about where we are in that process because families deserve to make informed decisions.</p>
+                        <p>What this means practically for your family right now:</p>
+                        <ul class="faq-list">
+                            <li>Your child is enrolled in a recognized EFA-approved private learning institution.</li>
+                            <li>We maintain thorough records of every student's coursework and progress and provide complete documentation upon request.</li>
+                            <li>For grades 2–8, our current status creates no meaningful barrier to future transfer, college preparation, or educational continuity.</li>
+                        </ul>
+                        <p>If the specifics of our legal status matter for your family's situation — for college planning, transfer considerations, or other reasons — bring those questions to your enrollment conversation. We will answer them honestly and completely.</p>
+                        <p><a href="mailto:hello@zionoutschool.com" class="faq-link">Reach out directly with questions →</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Do you issue transcripts?</button>
+                    <div class="faq-answer">
+                        <p>Yes. ZION outSchool maintains detailed records of each student's coursework, reading, writing, and demonstrated progress across every unit of study. We provide families with comprehensive documentation of their student's academic work upon request.</p>
+                        <p>We are an EFA-participating private learning institution working toward formal registration and accreditation. Our transcripts carry the weight of a serious private academic record — and the depth of work documented in them is substantial. Admissions officers at colleges and universities are well equipped to evaluate rigorous non-traditional academic records, and students who have done the work we ask of them are not at a disadvantage.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What happens if we return to public school?</button>
+                    <div class="faq-answer">
+                        <p>For students in grades 2–8, the transition to public school is typically straightforward. Arkansas public schools place transfer students by age and conduct their own assessment of academic readiness. We provide full documentation of all coursework completed upon request.</p>
+                        <p>We provide families with thorough documentation of all coursework completed, which can accompany a student to any new school and give receiving teachers a clear picture of what the student knows and can do.</p>
+                        <p>If this is a concern for your family, bring it to the conversation when you reach out. We would rather address it honestly than have it be a surprise later.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">Do you offer Kindergarten, 1st grade, or high school?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>Not yet — but we are actively building toward it.</p>
-            <p style="margin-top: 0.75rem;">Kindergarten and 1st grade instruction will open when we have sufficient enrollment at those levels to form a cohort. High school will open under the same condition. We will not open a program that cannot be done well. On July 18th we will make our decision about whether these programs will open this school year — based on the number of families who have registered interest by that date.</p>
-            <p style="margin-top: 0.75rem;">If your student is in Kindergarten, 1st grade, or high school age and you are interested in ZION outSchool, register your interest now. Your information will be kept on file and you will be contacted directly when these programs open — before any public announcement.</p>
-            <p style="margin-top: 0.75rem;"><a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" style="color: #e74c3c; font-weight: bold;">Register your interest →</a></p>
-          </div>
+        <!-- ── TESTING & PERFORMANCE ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">Testing & Performance</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Testing — what is required and what is our approach?</button>
+                    <div class="faq-answer">
+                        <p>We do not teach to standardized tests. We do not design curriculum around them. But we do administer them — and we do it well.</p>
+                        <p>Beginning this school year, ZION outSchool will offer standardized testing for all enrolled students. This serves two purposes: it fulfills the EFA testing requirement for families receiving Education Freedom Account funds, and it gives every family a clear, documented picture of where their student stands academically relative to national norms.</p>
+                        <p>We are not anxious about these results. Students who have spent a year reading deeply, writing analytically, reasoning from evidence, and defending positions under questioning are not disadvantaged by a standardized test. They tend to exceed it — not because we prepared them for the test, but because we prepared them to think.</p>
+                        <p><strong>EFA testing requirement:</strong> Students receiving EFA funds are required to take a nationally norm-referenced standardized test each year. ZION outSchool will facilitate this testing for all enrolled students. No separate scheduling or coordination is required from families.</p>
+                        <p><a href="https://app.schoolchoicear.org/testing-requirements" target="_blank" class="faq-link">View EFA testing requirements and approved assessments →</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Why do students perform well on standardized tests if you don't teach to them?</button>
+                    <div class="faq-answer">
+                        <p>Because standardized tests measure reading comprehension, analytical reasoning, mathematical thinking, and vocabulary — and those are exactly what we build, every day, through every subject.</p>
+                        <p>A student who has spent a unit tracing a word from a novel back through Latin to its Hebrew root in Leviticus has a vocabulary that no test prep program produces. A student who has defended a researched position in front of peers and been questioned until they either held or revised their claim understands comprehension at a level that fills in bubbles easily.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">Mixed-Age Learning</div>
-          <div class="faq-answer" style="display:none;">
-            <p>Our classroom spans grades 2–8 by design. Older students deepen their understanding by teaching younger ones. Younger students are pulled forward by the intellectual ceiling of the room. Every student operates at their own level inside a shared community — and every student benefits from that range.</p>
-            <p style="margin-top: 0.75rem;">This is not a limitation of our size. It is one of our greatest strengths. A second grader who watches an eighth grader defend a position under questioning understands, without being told, what serious thinking looks like. An eighth grader who has to explain a concept to a second grader discovers quickly whether they actually understand it.</p>
-          </div>
+        <!-- ── LEGAL & PRACTICAL ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">Legal & Practical</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Sports Eligibility</button>
+                    <div class="faq-answer">
+                        <p>In Arkansas, private school students generally cannot participate in public school sports. The Arkansas Activities Association (AAA) governs interscholastic sports and requires athletes to be full-time students at the member school they represent. Exceptions are mostly limited to homeschooled students rather than traditional private schoolers.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">College Preparation</button>
+                    <div class="faq-answer">
+                        <p>Graduates from rigorous private learning environments are actively recruited by colleges and universities across the country. The analytical writing, sustained research, and public presentation skills students build here are exactly what selective institutions look for — and rarely find in traditionally schooled applicants.</p>
+                        <p>A student who has defended original research in front of a live audience, written sustained analytical essays across multiple disciplines, and read twenty or more serious works of literature per year is not at a disadvantage in college admissions. They are unusual in the best way.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Our Focus</button>
+                    <div class="faq-answer">
+                        <p>Individual growth — not comparison. We are not preparing students to outperform a standard. We are preparing them to become the fullest version of who they were created to be.</p>
+                        <p><em>"Don't compare yourself to public schools — you may realize just how incredible you are."</em></p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">What is actually required of parents?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>The Methods section above describes the philosophy. Here are the specific commitments:</p>
-            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-              <li><strong>Daily reading at home</strong> — every school day, without exception. This is not optional and it is not negotiable.</li>
-              <li><strong>Friday at-home work</strong> — students do not come to the classroom on Fridays, but Friday is a full school day. Assignments are real and they count.</li>
-              <li><strong>Active engagement with your child's learning</strong> — ask what they studied. Push back on their ideas. Look things up together. The learning is designed to continue past 3:00 PM and it will only do that if you let it into your home.</li>
-              <li><strong>Responsive communication</strong> — we will reach out when something needs your attention. We expect a response.</li>
-            </ul>
-            <p style="margin-top: 0.75rem;">If your family is in a season where consistent follow-through at home is genuinely not possible, this is not the right time to enroll. We would rather have that conversation before the school year starts than struggle through it together afterward.</p>
-          </div>
+        <!-- ── SCHOLARSHIPS ── -->
+        <div class="faq-cluster">
+            <button class="cluster-header" aria-expanded="false">
+                <span class="cluster-label">Scholarships</span>
+                <span class="cluster-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="cluster-body">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What is the Arkansas Education Freedom Account (EFA)?</button>
+                    <div class="faq-answer">
+                        <p>The Arkansas Education Freedom Account (EFA) is a state-funded program that gives every eligible K–12 student in Arkansas up to <strong>$7,208 per year</strong> for approved educational expenses — including private school tuition, unit fees, the annual curriculum fee, uniforms, supplies, tutoring, and technology.</p>
+                        <p>Funds are deposited quarterly into a <strong>ClassWallet</strong> account that you manage directly — typically in August, October, February, and April. You direct those funds to approved schools and vendors through the platform.</p>
+                        <p>As of the 2025–2026 school year, the EFA is universal. <strong>Every Arkansas K–12 student is eligible</strong> regardless of income, zip code, or prior school enrollment.</p>
+                        <p class="faq-fine-print">$7,208 reflects the expected 2026–2027 amount, subject to final confirmation by the Arkansas Department of Education.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Is this an EFA-participating school?</button>
+                    <div class="faq-answer">
+                        <p>Yes. We are a confirmed EFA-participating private learning institution. Once your application is approved, you link your student to us inside ClassWallet and we invoice you directly through the platform each quarter.</p>
+                        <p>Our total annual enrollment cost is <strong>$6,740</strong> — tuition, all unit fees, and the annual curriculum fee included. For most families, this leaves <strong>$468 in remaining EFA funds</strong> for your student's required uniform and other approved expenses.</p>
+                        <p>For qualifying families, <strong>your out-of-pocket cost is zero.</strong></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">How do I apply for the EFA?</button>
+                    <div class="faq-answer">
+                        <p>New families apply through the FACTS portal at <a href="https://dese.link/efa" target="_blank" class="faq-link">dese.link/efa</a>. The application takes approximately 15–20 minutes per child. Have these ready:</p>
+                        <ul class="faq-list">
+                            <li>Student's birth certificate</li>
+                            <li>Proof of Arkansas residency: driver's license, utility bill, lease agreement, or similar</li>
+                        </ul>
+                        <p>Applications are reviewed on a rolling basis and typically take up to 10 days. <strong>The application and renewal window for the 2026–2027 school year is March 9 – June 1.</strong></p>
+                        <p><a href="https://dese.ade.arkansas.gov/Offices/office-of-school-choice-and-parent-empowerment/education-freedom-accounts" target="_blank" class="faq-link">Visit the Arkansas Department of Education for full program details →</a></p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Already have an EFA? You must renew every year.</button>
+                    <div class="faq-answer">
+                        <div class="faq-callout faq-callout--warning">
+                            <p><strong>EFA funding is not automatically continued from one year to the next.</strong> If you do not renew, your funding lapses for the entire school year — with no exceptions.</p>
+                        </div>
+                        <p>Returning families complete a renewal survey inside ClassWallet — faster than the original application, no documents to re-upload. <strong>Renewal window: March 9 – June 1.</strong></p>
+                        <p>Log in at <a href="https://dese.link/efa" target="_blank" class="faq-link">dese.link/efa</a> and complete your renewal before June 1.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">What can I use remaining EFA funds for?</button>
+                    <div class="faq-answer">
+                        <p>After tuition, unit fees, and the annual curriculum fee, most families have approximately <strong>$468 in remaining EFA funds</strong>. Those funds can be used for:</p>
+                        <ul class="faq-list">
+                            <li><strong>Required uniform</strong> — Scrubs, any color. We recommend RMF Scrubs — see the Tuition section for direct links. EFA-eligible. Submit for reimbursement.</li>
+                            <li><strong>Supplemental supplies</strong></li>
+                            <li><strong>Testing fees</strong> — Including standardized testing required for EFA renewal</li>
+                            <li><strong>Technology</strong> — Devices and educational subscriptions. Excludes TVs, video games, and cell phones.</li>
+                            <li><strong>Tutoring</strong> — From an approved EFA service provider</li>
+                        </ul>
+                        <p><strong>Do not leave funds unspent at year end.</strong> Unused funds may roll over up to a state-set limit — beyond that they return to the state.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">Is there additional scholarship funding available beyond the EFA?</button>
+                    <div class="faq-answer">
+                        <p>Yes. The <strong>Philanthropic Investment in Arkansas Kids (PIAK)</strong> scholarship is a separate, privately-funded program for <strong>income-qualifying Arkansas families</strong>. It is administered through The Reform Alliance and can be used to pay tuition at participating private schools.</p>
+                        <p>Here is how PIAK relates to the EFA — and why it matters for your family:</p>
+
+                        <div class="faq-callout faq-callout--navy">
+                            <p><strong>Most families: choose one or the other.</strong></p>
+                            <p>The EFA is available to every Arkansas student regardless of income. PIAK is available only to families whose household income is at or below 200% of the federal poverty line — approximately <strong>$63,400 for a family of four</strong>. If your family qualifies for both, you generally must choose one. Most income-qualifying families will find the EFA sufficient to cover tuition at ZION outSchool.</p>
+                        </div>
+
+                        <div class="faq-callout faq-callout--blue">
+                            <p><strong>Families with a documented disability: can stack both.</strong></p>
+                            <p>If your child has a qualifying disability <em>and</em> your household income qualifies, you may receive <strong>both</strong> the EFA and the PIAK scholarship simultaneously. That is potentially <strong>$7,208 in EFA funds</strong> plus up to <strong>$6,500 in PIAK funds</strong> — combined funding that can cover tuition and significant additional educational expenses. This is one of the most underused opportunities available to Arkansas families.</p>
+                        </div>
+
+                        <div class="faq-callout faq-callout--warning">
+                            <p><strong>PIAK as a backup if EFA funding runs out.</strong></p>
+                            <p>The EFA is funded by the state legislature and is not guaranteed for every applicant — if the allocation runs out, some families may be waitlisted. If your family is income-qualified and you are waiting on EFA approval or have missed the EFA window, PIAK may be able to cover your tuition in the meantime. There is no fixed PIAK deadline, but funding is capped annually and awards stop when the cap is reached. Apply early.</p>
+                        </div>
+
+                        <p><strong>To qualify for PIAK:</strong></p>
+                        <ul class="faq-list">
+                            <li>Household income at or below 200% of the federal poverty line — approximately <strong>$63,400 for a family of four</strong></li>
+                            <li>Student must have attended an Arkansas public school at some point during the previous semester.</li>
+                            <li>Exceptions apply for students with qualifying disabilities, students enrolling in kindergarten for the first time, and families relocating to Arkansas from out of state</li>
+                        </ul>
+
+                        <p><strong>PIAK award amounts:</strong></p>
+                        <ul class="faq-list">
+                            <li>Grades K–8: up to <strong>$6,500</strong></li>
+                            <li>Grades 9–12: up to <strong>$7,300</strong></li>
+                            <li>Award will not exceed the actual cost of tuition and fees</li>
+                        </ul>
+
+                        <p><strong>What counts as a qualifying disability?</strong></p>
+                        <p>Qualifying disabilities are defined by the Individuals with Disabilities Education Act (IDEA). The 13 recognized categories are:</p>
+                        <ul class="faq-list">
+                            <li><strong>Autism Spectrum Disorder</strong></li>
+                            <li><strong>Specific Learning Disability</strong> — includes dyslexia, dysgraphia, dyscalculia, auditory processing disorder, and nonverbal learning disability</li>
+                            <li><strong>Speech or Language Impairment</strong> — includes stuttering, impaired articulation, and language disorders</li>
+                            <li><strong>Other Health Impairment</strong> — includes ADHD and conditions that limit a child's strength, energy, or alertness</li>
+                            <li><strong>Emotional Disturbance</strong></li>
+                            <li><strong>Intellectual Disability</strong></li>
+                            <li><strong>Hearing Impairment</strong> including Deafness</li>
+                            <li><strong>Visual Impairment</strong> including Blindness</li>
+                            <li><strong>Orthopedic Impairment</strong></li>
+                            <li><strong>Traumatic Brain Injury</strong></li>
+                            <li><strong>Deaf-Blindness</strong></li>
+                            <li><strong>Multiple Disabilities</strong></li>
+                            <li><strong>Developmental Delay</strong></li>
+                        </ul>
+
+                        <p class="faq-fine-print">Having a diagnosis alone is not sufficient. The disability must be formally documented through one of the following: district testing within the last three years identifying an IDEA disability, a current Individualized Education Program (IEP), or a signed medical diagnosis form from a licensed professional.</p>
+
+                        <div class="faq-callout faq-callout--warning">
+                            <p><strong>No fixed deadline — but apply early.</strong> PIAK scholarships are funded through private donations with a state-set annual cap. Funding runs out when the cap is reached. Applications for the 2026–2027 school year are currently open. Families with qualifying disabilities especially should not wait — stacking EFA and PIAK requires both applications to be approved before the school year begins.</p>
+                        </div>
+
+                        <div class="faq-callout faq-callout--navy">
+                            <p><strong>A note about ZION outSchool and PIAK:</strong> We are actively working toward becoming an approved PIAK-participating school. If your family qualifies, begin your application now — so that when our approval is confirmed, your funding is already in place and enrollment can proceed without delay. <a href="mailto:hello@zionoutschool.com" class="faq-link">Reach out to us directly</a> and we will walk alongside you through the process.</p>
+                        </div>
+
+                        <p>
+                            <a href="https://thereformalliance.org/scholarships/" target="_blank" class="faq-link">Learn more about PIAK through The Reform Alliance →</a>
+                        </p>
+                        <p>
+                            <a href="https://online.factsmgt.com/grant-aid/inst/4R5RP/landing-page" target="_blank" class="faq-link">Begin your PIAK application →</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="faq-item">
-          <div class="faq-question">What is the student-to-teacher ratio?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>We are intentionally small. Our enrollment is limited to ensure every student receives direct, individualized attention from their teacher every day. We do not scale enrollment at the expense of that standard.</p>
-            <p style="margin-top: 0.75rem;">Contact us directly for current enrollment numbers and available seats for the coming school year.</p>
-          </div>
-        </div>
-
-      </div>
     </div>
-
-    <!-- FAITH & CURRICULUM -->
-    <div class="faq-cluster">
-      <div class="cluster-header" onclick="toggleCluster(this)">
-        <p class="cluster-label">Faith & Curriculum</p>
-        <span class="cluster-chevron">▼</span>
-      </div>
-
-      <div class="cluster-body" style="display:none;">
-
-        <div class="faq-item">
-          <div class="faq-question">Faith & Membership</div>
-          <div class="faq-answer" style="display:none;">
-            <p>Our curriculum is rooted in the LDS standard works, including the Book of Mormon and the Come Follow Me program. Membership in the LDS church is not required for enrollment. Families of any faith background are welcome — you do need to be comfortable with — and ideally excited by — a learning environment where scriptural truth is taken seriously as an academic and moral foundation.</p>
-            <p style="margin-top: 0.75rem;">Every session opens and closes with prayer. Spiritual formation is not separated from academic work here. It is woven through it.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">What scriptures do you teach from?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>We teach from the LDS standard works — the four volumes of scripture recognized by The Church of Jesus Christ of Latter-day Saints:</p>
-            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-              <li><strong>The Bible</strong> (King James Version)</li>
-              <li><strong>The Book of Mormon</strong></li>
-              <li><strong>The Doctrine and Covenants</strong></li>
-              <li><strong>The Pearl of Great Price</strong></li>
-              <li>The words of modern day Prophets and Apostles.</li>
-            </ul>
-            <p style="margin-top: 0.75rem;">Scripture serves as the organizing spine of each unit of study — not as a devotional addition, but as the primary academic text from which science, history, literature, and language arts all radiate outward.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">What is Come Follow Me?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>Come Follow Me is a scripture study curriculum developed by The Church of Jesus Christ of Latter-day Saints. It moves through the standard works on a rotating annual cycle, providing structured study questions, context, and commentary designed for both individual and family use.</p>
-            <p style="margin-top: 0.75rem;">At ZION outSchool, Come Follow Me provides the scriptural sequence that anchors each unit of study. Rather than using it as a devotional program, we build our entire academic curriculum around it — treating each scripture block as the lens through which science, history, literature, and language arts are studied that unit.</p>
-            <p style="margin-top: 0.75rem;">You do not need to be familiar with Come Follow Me before enrolling. Students encounter it as part of their academic work here.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">How is the LDS faith different from other Christian denominations?</div>
-          <div class="faq-answer" style="display:none;">
-            <p>This is a question worth answering honestly, because families of other Christian backgrounds deserve to know what they are enrolling their child into.</p>
-            <p style="margin-top: 0.75rem;">The Church of Jesus Christ of Latter-day Saints holds Jesus Christ as its center and Savior — that is the shared foundation with other Christian traditions. Several doctrinal distinctives set it apart:</p>
-            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-              <li>LDS theology holds that God the Father, Jesus Christ, and the Holy Ghost are three distinct beings — not one unified Trinity as defined by the Nicene Creed.</li>
-              <li>The Church believes in continuing revelation — that God speaks through living prophets today, as He did in ancient scripture.</li>
-              <li>The Book of Mormon is accepted as a second witness of Jesus Christ alongside the Bible, not a replacement of it.</li>
-              <li>LDS doctrine teaches that humans are literal spirit children of God with divine potential — a view of human nature that shapes how we think about children and learning.</li>
-            </ul>
-            <p style="margin-top: 0.75rem;">These beliefs are not hidden or softened here. They are woven into the curriculum because they are the foundation of how we understand truth, knowledge, and the purpose of education. Families who enroll their children here should understand and be at peace with that foundation — even if they do not share every point of doctrine.</p>
-            <p style="margin-top: 0.75rem;">If you have questions about LDS beliefs before enrolling, we are happy to talk through them directly. <a href="mailto:hello@zionoutschool.com">Reach out here.</a></p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ACCREDITATION & RECORDS -->
-<div class="faq-cluster">
-  <div class="cluster-header" onclick="toggleCluster(this)">
-    <p class="cluster-label">Accreditation & Records</p>
-    <span class="cluster-chevron">▼</span>
-  </div>
-
-  <div class="cluster-body" style="display:none;">
-
-    <div class="faq-item">
-      <div class="faq-question">Are you accredited?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Not at this time. We are working toward accreditation through the Arkansas Nonpublic School Accrediting Association (ANSAA) and are currently engaged with legal advisors toward formal private school registration. We are transparent about where we are in that process because it matters for some families — particularly those considering high school or potential transfer.</p>
-        <p style="margin-top: 0.75rem;">Accreditation is a process we take seriously and are working toward. In the meantime, here is what that means practically for families at the grades 2–8 level we currently serve:</p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li>Students transferring to another private school are typically evaluated by that school directly — accreditation rarely factors in at the elementary and middle school level.</li>
-          <li>Students transferring to public school are generally placed by age and an assessment of their demonstrated skills — not by transcripts from a private school, accredited or otherwise.</li>
-          <li>The academic depth students build here consistently positions them ahead of grade-level peers on standardized assessments.</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">If accreditation is a deciding factor for your family, we want to have that conversation honestly before you enroll. <a href="mailto:hello@zionoutschool.com">Contact us.</a></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">What is your school's legal status?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>ZION outSchool is an EFA-participating private learning institution operating under Arkansas law. We are currently working with legal advisors toward formal private school registration and accreditation through the Arkansas Nonpublic School Accrediting Association (ANSAA). We are transparent about where we are in that process because families deserve to make informed decisions.</p>
-        <p style="margin-top: 0.75rem;">What this means practically for your family right now:</p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li>Your child is enrolled in a recognized EFA-approved private learning institution.</li>
-          <li>We maintain thorough records of every student's coursework and progress and provide complete documentation upon request.</li>
-          <li>For grades 2–8, our current status creates no meaningful barrier to future transfer, college preparation, or educational continuity.</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">If the specifics of our legal status matter for your family's situation — for college planning, transfer considerations, or other reasons — bring those questions to your enrollment conversation. We will answer them honestly and completely.</p>
-        <p style="margin-top: 0.75rem;"><a href="mailto:hello@zionoutschool.com">Reach out directly with questions →</a></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Do you issue transcripts?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Yes. ZION outSchool maintains detailed records of each student's coursework, reading, writing, and demonstrated progress across every unit of study. We provide families with comprehensive documentation of their student's academic work upon request.</p>
-        <p style="margin-top: 0.75rem;">We are an EFA-participating private learning institution working toward formal registration and accreditation. Our transcripts carry the weight of a serious private academic record — and the depth of work documented in them is substantial. Admissions officers at colleges and universities are well equipped to evaluate rigorous non-traditional academic records, and students who have done the work we ask of them are not at a disadvantage.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">What happens if we return to public school?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>For students in grades 2–8, the transition to public school is typically straightforward. Arkansas public schools place transfer students by age and conduct their own assessment of academic readiness. We provide full documentation of all coursework completed upon request.</p>
-        <p style="margin-top: 0.75rem;">We provide families with thorough documentation of all coursework completed, which can accompany a student to any new school and give receiving teachers a clear picture of what the student knows and can do.</p>
-        <p style="margin-top: 0.75rem;">If this is a concern for your family, bring it to the conversation when you reach out. We would rather address it honestly than have it be a surprise later.</p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- TESTING & PERFORMANCE -->
-<div class="faq-cluster">
-  <div class="cluster-header" onclick="toggleCluster(this)">
-    <p class="cluster-label">Testing & Performance</p>
-    <span class="cluster-chevron">▼</span>
-  </div>
-
-  <div class="cluster-body" style="display:none;">
-
-    <div class="faq-item">
-      <div class="faq-question">Testing — what is required and what is our approach?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>We do not teach to standardized tests. We do not design curriculum around them. But we do administer them — and we do it well.</p>
-        <p style="margin-top: 0.75rem;">Beginning this school year, ZION outSchool will offer standardized testing for all enrolled students. This serves two purposes: it fulfills the EFA testing requirement for families receiving Education Freedom Account funds, and it gives every family a clear, documented picture of where their student stands academically relative to national norms.</p>
-        <p style="margin-top: 0.75rem;">We are not anxious about these results. Students who have spent a year reading deeply, writing analytically, reasoning from evidence, and defending positions under questioning are not disadvantaged by a standardized test. They tend to exceed it — not because we prepared them for the test, but because we prepared them to think.</p>
-        <p style="margin-top: 0.75rem;"><strong>EFA testing requirement:</strong> Students receiving EFA funds are required to take a nationally norm-referenced standardized test each year. ZION outSchool will facilitate this testing for all enrolled students. No separate scheduling or coordination is required from families.</p>
-        <p style="margin-top: 0.75rem;"><a href="https://app.schoolchoicear.org/testing-requirements" target="_blank">View EFA testing requirements and approved assessments →</a></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Why do students perform well on standardized tests if you don't teach to them?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Because standardized tests measure reading comprehension, analytical reasoning, mathematical thinking, and vocabulary — and those are exactly what we build, every day, through every subject.</p>
-        <p style="margin-top: 0.75rem;">A student who has spent a unit tracing a word from a novel back through Latin to its Hebrew root in Leviticus has a vocabulary that no test prep program produces. A student who has defended a researched position in front of peers and been questioned until they either held or revised their claim understands comprehension at a level that fills in bubbles easily.</p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- LEGAL & PRACTICAL -->
-<div class="faq-cluster">
-  <div class="cluster-header" onclick="toggleCluster(this)">
-    <p class="cluster-label">Legal & Practical</p>
-    <span class="cluster-chevron">▼</span>
-  </div>
-
-  <div class="cluster-body" style="display:none;">
-
-    <div class="faq-item">
-      <div class="faq-question">Sports Eligibility</div>
-      <div class="faq-answer" style="display:none;">
-        <p>In Arkansas, private school students generally cannot participate in public school sports. The Arkansas Activities Association (AAA) governs interscholastic sports and requires athletes to be full-time students at the member school they represent. Exceptions are mostly limited to homeschooled students rather than traditional private schoolers.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">College Preparation</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Graduates from rigorous private learning environments are actively recruited by colleges and universities across the country. The analytical writing, sustained research, and public presentation skills students build here are exactly what selective institutions look for — and rarely find in traditionally schooled applicants.</p>
-        <p style="margin-top: 0.75rem;">A student who has defended original research in front of a live audience, written sustained analytical essays across multiple disciplines, and read twenty or more serious works of literature per year is not at a disadvantage in college admissions. They are unusual in the best way.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Our Focus</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Individual growth — not comparison. We are not preparing students to outperform a standard. We are preparing them to become the fullest version of who they were created to be.</p>
-        <br>
-        <p><em>"Don't compare yourself to public schools — you may realize just how incredible you are."</em></p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- SCHOLARSHIPS -->
-<div class="faq-cluster">
-  <div class="cluster-header" onclick="toggleCluster(this)">
-    <p class="cluster-label">Scholarships</p>
-    <span class="cluster-chevron">▼</span>
-  </div>
-
-  <div class="cluster-body" style="display:none;">
-
-    <div class="faq-item">
-      <div class="faq-question">What is the Arkansas Education Freedom Account (EFA)?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>The Arkansas Education Freedom Account (EFA) is a state-funded program that gives every eligible K–12 student in Arkansas up to <strong>$7,208 per year</strong> for approved educational expenses — including private school tuition, unit fees, the annual curriculum fee, uniforms, supplies, tutoring, and technology.</p>
-        <p style="margin-top: 0.75rem;">Funds are deposited quarterly into a <strong>ClassWallet</strong> account that you manage directly — typically in August, October, February, and April. You direct those funds to approved schools and vendors through the platform.</p>
-        <p style="margin-top: 0.75rem;">As of the 2025–2026 school year, the EFA is universal. <strong>Every Arkansas K–12 student is eligible</strong> regardless of income, zip code, or prior school enrollment.</p>
-        <p style="margin-top: 0.75rem; font-size: 0.9rem; color: #666;"><em>$7,208 reflects the expected 2026–2027 amount, subject to final confirmation by the Arkansas Department of Education.</em></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Is this an EFA-participating school?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Yes. We are a confirmed EFA-participating private learning institution. Once your application is approved, you link your student to us inside ClassWallet and we invoice you directly through the platform each quarter.</p>
-        <p style="margin-top: 0.75rem;">Our total annual enrollment cost is <strong>$6,710</strong> — tuition, all unit fees, and the annual curriculum fee included. For most families, this leaves <strong>$498 in remaining EFA funds</strong> for your student's required uniform and other approved expenses.</p>
-        <p style="margin-top: 0.75rem;">For qualifying families, <strong>your out-of-pocket cost is zero.</strong></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">How do I apply for the EFA?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>New families apply through the FACTS portal at <a href="https://dese.link/efa" target="_blank">dese.link/efa</a>. The application takes approximately 15–20 minutes per child. Have these ready:</p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li>Student's birth certificate</li>
-          <li>Proof of Arkansas residency: driver's license, utility bill, lease agreement, or similar</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">Applications are reviewed on a rolling basis and typically take up to 10 days. <strong>The application and renewal window for the 2026–2027 school year is March 9 – June 1.</strong></p>
-        <p style="margin-top: 0.75rem;"><a href="https://dese.ade.arkansas.gov/Offices/office-of-school-choice-and-parent-empowerment/education-freedom-accounts" target="_blank">Visit the Arkansas Department of Education for full program details →</a></p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Already have an EFA? You must renew every year.</div>
-      <div class="faq-answer" style="display:none;">
-        <div style="padding: 1rem; background: #fff8e8; border-left: 4px solid #c8972a; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>⚠️ EFA funding is not automatically continued from one year to the next.</strong> If you do not renew, your funding lapses for the entire school year — with no exceptions.</p>
-        </div>
-        <p>Returning families complete a renewal survey inside ClassWallet — faster than the original application, no documents to re-upload. <strong>Renewal window: March 9 – June 1.</strong></p>
-        <p style="margin-top: 0.75rem;">Log in at <a href="https://dese.link/efa" target="_blank">dese.link/efa</a> and complete your renewal before June 1.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">What can I use remaining EFA funds for?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>After tuition, unit fees, and the annual curriculum fee, most families have approximately <strong>$498 in remaining EFA funds</strong>. Those funds can be used for:</p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li><strong>Required uniform</strong> — Scrubs, any color. We recommend RMF Scrubs — see the Tuition section for direct links. EFA-eligible. Submit for reimbursement.</li>
-          <li><strong>Supplemental supplies</strong></li>
-          <li><strong>Testing fees</strong> — Including standardized testing required for EFA renewal</li>
-          <li><strong>Technology</strong> — Devices and educational subscriptions. Excludes TVs, video games, and cell phones.</li>
-          <li><strong>Tutoring</strong> — From an approved EFA service provider</li>
-        </ul>
-        <p style="margin-top: 0.75rem;"><strong>Do not leave funds unspent at year end.</strong> Unused funds may roll over up to a state-set limit — beyond that they return to the state.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Is there additional scholarship funding available beyond the EFA?</div>
-      <div class="faq-answer" style="display:none;">
-        <p>Yes. The <strong>Philanthropic Investment in Arkansas Kids (PIAK)</strong> scholarship is a separate, privately-funded program for <strong>income-qualifying Arkansas families</strong>. It is administered through The Reform Alliance and can be used to pay tuition at participating private schools.</p>
-
-        <p style="margin-top: 0.75rem;">Here is how PIAK relates to the EFA — and why it matters for your family:</p>
-
-        <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-left: 4px solid #2E5984; border-radius: 4px;">
-          <p><strong>Most families: choose one or the other.</strong></p>
-          <p style="margin-top: 0.5rem;">The EFA is available to every Arkansas student regardless of income. PIAK is available only to families whose household income is at or below 200% of the federal poverty line — approximately <strong>$63,400 for a family of four</strong>. If your family qualifies for both, you generally must choose one. Most income-qualifying families will find the EFA sufficient to cover tuition at ZION outSchool.</p>
-        </div>
-
-        <div style="margin-top: 1rem; padding: 1rem; background: #eef4fb; border-left: 4px solid #2E5984; border-radius: 4px;">
-          <p><strong>Families with a documented disability: can stack both.</strong></p>
-          <p style="margin-top: 0.5rem;">If your child has a qualifying disability <em>and</em> your household income qualifies, you may receive <strong>both</strong> the EFA and the PIAK scholarship simultaneously. That is potentially <strong>$7,208 in EFA funds</strong> plus up to <strong>$6,500 in PIAK funds</strong> — combined funding that can cover tuition and significant additional educational expenses. This is one of the most underused opportunities available to Arkansas families.</p>
-        </div>
-
-        <div style="margin-top: 1rem; padding: 1rem; background: #fff8e8; border-left: 4px solid #c8972a; border-radius: 4px;">
-          <p><strong>PIAK as a backup if EFA funding runs out.</strong></p>
-          <p style="margin-top: 0.5rem;">The EFA is funded by the state legislature and is not guaranteed for every applicant — if the allocation runs out, some families may be waitlisted. If your family is income-qualified and you are waiting on EFA approval or have missed the EFA window, PIAK may be able to cover your tuition in the meantime. There is no fixed PIAK deadline, but funding is capped annually and awards stop when the cap is reached. Apply early.</p>
-        </div>
-
-        <p style="margin-top: 1.25rem;"><strong>To qualify for PIAK:</strong></p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li>Household income at or below 200% of the federal poverty line — approximately <strong>$63,400 for a family of four</strong></li>
-          <li>Student must have attended an Arkansas public school at some point during the previous semester.</li>
-          <li>Exceptions apply for students with qualifying disabilities, students enrolling in kindergarten for the first time, and families relocating to Arkansas from out of state</li>
-        </ul>
-
-        <p style="margin-top: 0.75rem;"><strong>PIAK award amounts:</strong></p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
-          <li>Grades K–8: up to <strong>$6,500</strong></li>
-          <li>Grades 9–12: up to <strong>$7,300</strong></li>
-          <li>Award will not exceed the actual cost of tuition and fees</li>
-        </ul>
-
-        <p style="margin-top: 1.25rem;"><strong>What counts as a qualifying disability?</strong></p>
-        <p style="margin-top: 0.5rem;">Qualifying disabilities are defined by the Individuals with Disabilities Education Act (IDEA). The 13 recognized categories are:</p>
-        <ul style="margin-top: 0.75rem; margin-left: 1.5rem; line-height: 1.9;">
-          <li><strong>Autism Spectrum Disorder</strong></li>
-          <li><strong>Specific Learning Disability</strong> — includes dyslexia, dysgraphia, dyscalculia, auditory processing disorder, and nonverbal learning disability</li>
-          <li><strong>Speech or Language Impairment</strong> — includes stuttering, impaired articulation, and language disorders</li>
-          <li><strong>Other Health Impairment</strong> — includes ADHD and conditions that limit a child's strength, energy, or alertness</li>
-          <li><strong>Emotional Disturbance</strong></li>
-          <li><strong>Intellectual Disability</strong></li>
-          <li><strong>Hearing Impairment</strong> including Deafness</li>
-          <li><strong>Visual Impairment</strong> including Blindness</li>
-          <li><strong>Orthopedic Impairment</strong></li>
-          <li><strong>Traumatic Brain Injury</strong></li>
-          <li><strong>Deaf-Blindness</strong></li>
-          <li><strong>Multiple Disabilities</strong></li>
-          <li><strong>Developmental Delay</strong></li>
-        </ul>
-
-        <p style="margin-top: 0.75rem; font-size: 0.9rem; color: #555;"><em>Having a diagnosis alone is not sufficient. The disability must be formally documented through one of the following: district testing within the last three years identifying an IDEA disability, a current Individualized Education Program (IEP), or a signed medical diagnosis form from a licensed professional.</em></p>
-
-        <div style="margin-top: 1.25rem; padding: 1rem; background: #fff8e8; border-left: 4px solid #c8972a; border-radius: 4px;">
-          <p><strong>⚠️ No fixed deadline — but apply early.</strong> PIAK scholarships are funded through private donations with a state-set annual cap. Funding runs out when the cap is reached. Applications for the 2026–2027 school year are currently open. Families with qualifying disabilities especially should not wait — stacking EFA and PIAK requires both applications to be approved before the school year begins.</p>
-        </div>
-
-        <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-left: 4px solid #2E5984; border-radius: 4px;">
-          <p><strong>A note about ZION outSchool and PIAK:</strong> We are actively working toward becoming an approved PIAK-participating school. If your family qualifies, begin your application now — so that when our approval is confirmed, your funding is already in place and enrollment can proceed without delay. <a href="mailto:hello@zionoutschool.com">Reach out to us directly</a> and we will walk alongside you through the process.</p>
-        </div>
-
-        <p style="margin-top: 1rem;">
-          <a href="https://thereformalliance.org/scholarships/" target="_blank">Learn more about PIAK through The Reform Alliance →</a><br>
-          <a href="https://online.factsmgt.com/grant-aid/inst/4R5RP/landing-page" target="_blank" style="margin-top: 0.4rem; display: inline-block;">Begin your PIAK application →</a>
-        </p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</div>
 </section>
-<!-- Footer -->
-<footer>
-    <div class="container footer-content">
 
+<!-- ── HANDOFF ── -->
+<section class="handoff">
+    <div class="container-narrow">
+        <p>Still have questions? We'd rather answer them before you enroll.</p>
+        <a href="contact.html" class="handoff-link">
+            Begin the conversation
+            <span class="handoff-arrow">→</span>
+        </a>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-content">
         <div class="footer-brand">
             <h3>ZION outSchool</h3>
             <p>Truth. Discovered. Lived. Shared.</p>
         </div>
-
         <div class="footer-links">
             <a href="foundation.html">Foundation</a>
             <a href="how-we-learn.html">How We Learn</a>
             <a href="teachers.html">Teachers</a>
             <a href="tuition.html">Tuition & Funding</a>
             <a href="faq.html">FAQs</a>
-        <a href="calendar.html">Calendar</a>
+            <a href="calendar.html">Calendar</a>
             <a href="contact.html">Contact</a>
         </div>
-
-        <div class="footer-cta">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform"
-               target="_blank"
-               class="footer-btn">
-               Schedule a Conversation →
-            </a>
-        </div>
-
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScgr4AzNs0ZSJ3Wcl1BI7TDhshXNGPf-ojDsHcJR0gd-uiL4g/viewform" target="_blank" class="footer-btn">
+            Schedule a Conversation →
+        </a>
     </div>
 </footer>
 
 <script src="script.js"></script>
-
 </body>
 </html>
