@@ -2079,6 +2079,171 @@ footer {
     }
 }
 
+/* Contact Page */
+.editorial-page.contact-page .contact-intro {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.contact-page .contact-lead {
+    color: var(--navy);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+}
+
+.editorial-page.contact-page .contact-intro p {
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+}
+
+.editorial-page.contact-page .contact-steps {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.editorial-page.contact-page .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-top: 2.5rem;
+}
+
+.editorial-page.contact-page .step-item {
+    border-right: 1px solid var(--border);
+    padding: 2.5rem;
+}
+
+.editorial-page.contact-page .step-item:last-child {
+    border-right: none;
+}
+
+.editorial-page.contact-page .step-number {
+    color: var(--gold);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+}
+
+.editorial-page.contact-page .step-item h3 {
+    color: var(--navy);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+}
+
+.editorial-page.contact-page .step-item p {
+    color: var(--text-mid);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.editorial-page.contact-page .contact-cta {
+    background: var(--navy);
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.editorial-page.contact-page .contact-cta .section-label {
+    color: var(--gold);
+}
+
+.editorial-page.contact-page .contact-cta h2 {
+    color: var(--white);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin: 0.75rem 0 1.25rem;
+}
+
+.editorial-page.contact-page .contact-cta p {
+    color: rgba(255,255,255,0.65);
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.editorial-page.contact-page .contact-email {
+    color: rgba(255,255,255,0.5);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+}
+
+.editorial-page.contact-page .contact-email a {
+    color: var(--gold-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+
+.editorial-page.contact-page .contact-email a:hover {
+    color: var(--white);
+}
+
+.editorial-page.contact-page .contact-docs {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.contact-page .contact-docs p {
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    margin-bottom: 1.5rem;
+}
+
+.editorial-page.contact-page .docs-list {
+    list-style: disc;
+    margin-left: 1.25rem;
+}
+
+.editorial-page.contact-page .docs-list li {
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    line-height: 1.85;
+    margin-bottom: 0.5rem;
+}
+
+.editorial-page.contact-page .contact-location {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+}
+
+.editorial-page.contact-page .location-note {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    line-height: 1.8;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .editorial-page.contact-page .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editorial-page.contact-page .step-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .editorial-page.contact-page .step-item:last-child {
+        border-bottom: none;
+    }
+}
+
 /* Tuition Page — Required Tools + Mission Partner Benefit */
 
 .required-tools-card {
