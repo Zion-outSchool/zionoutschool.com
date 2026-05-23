@@ -1729,34 +1729,32 @@ footer {
 }
 
 .editorial-page .home-proof-heading {
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: 300;
     color: var(--white);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
     margin-bottom: 2.5rem;
 }
 
 .editorial-page .proof-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border: 1px solid rgba(255,255,255,0.12);
+    gap: 1.5rem;
     margin-bottom: 2.5rem;
 }
 
 .editorial-page .proof-item {
-    padding: 2rem 2.2rem;
-    border-right: 1px solid rgba(255,255,255,0.12);
-}
-
-.editorial-page .proof-item:last-child {
-    border-right: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--gold);
+    padding: 2rem 2rem 2rem 1.75rem;
 }
 
 .editorial-page .proof-item p {
-    color: rgba(255,255,255,0.85);
-    font-size: 1.1rem;
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 1.2rem;
     font-style: italic;
-    line-height: 1.8;
+    line-height: 1.75;
 }
 
 .editorial-page .proof-closer {
@@ -2054,17 +2052,11 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .editorial-page .proof-item,
     .editorial-page .different-item {
         border-right: none;
         border-bottom: 1px solid var(--border);
     }
 
-    .editorial-page .proof-item {
-        border-bottom-color: rgba(255,255,255,0.12);
-    }
-
-    .editorial-page .proof-item:last-child,
     .editorial-page .different-item:last-child {
         border-bottom: none;
     }
