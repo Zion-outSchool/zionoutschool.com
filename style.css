@@ -1758,9 +1758,9 @@ footer {
 }
 
 .editorial-page .proof-closer {
-    color: rgba(255,255,255,0.65);
-    font-family: var(--sans);
-    font-size: 1.1rem;
+    color: rgba(255,255,255,0.72);
+    font-family: var(--serif);
+    font-size: 1.2rem;
     line-height: 1.8;
     text-align: center;
 }
