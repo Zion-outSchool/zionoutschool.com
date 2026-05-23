@@ -415,13 +415,13 @@
         </div>
 
         <!-- Success -->
-        <div id="modal-success-view" style="display:none;" class="modal-success">
-            <span class="form-success-mark">✦</span>
-            <h3>Thank you for reaching out.</h3>
-            <p>We have received your message and are genuinely grateful you are considering building with us. Someone will follow up with you personally within a few days.</p>
-            <p class="form-success-close"><em>"Everything your child learns here is intended to leave this room."</em></p>
-            <button class="form-submit" id="modal-done-btn" style="margin-top:1.5rem;">Close</button>
-        </div>
+<div id="modal-success-view" style="display:none;" class="modal-success">
+    <span class="form-success-mark">✦</span>
+    <h3>Thank you for reaching out.</h3>
+    <p>We have received your message and are genuinely grateful you are considering building with us. Someone will follow up with you personally within a few days.</p>
+    <p class="form-success-close"><em id="modal-closing-line"></em></p>
+    <button class="form-submit" id="modal-done-btn" style="margin-top:1.5rem;">Close</button>
+</div>
 
         <!-- Error -->
         <div id="modal-error-view" style="display:none;" class="form-error-msg">
@@ -435,6 +435,33 @@
 <script>
 // ── PARTNER MODAL SYSTEM ────────────────────────────────────
 const PARTNER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2qozk-XOkJZCsnBpDOfJwGqQfinVNfdBanDNhA48noZS5itSpGFSzM0gFIF4_gyg-/exec';
+
+// Unique closing lines by partner type
+const PARTNER_CLOSINGS = {
+    'Mentor a Student':
+        'You will give this student something they could not have found alone. They will give you something you did not know you still needed. That is what real mentorship is — and it is exactly what we are building here.',
+
+    'Apprenticeships or Internships':
+        'The student who works beside you will understand something about vocation, craft, and calling that no classroom could have taught them. That understanding will go with them everywhere.',
+
+    'Share Your Expertise':
+        'One conversation with someone doing real work in the real world changes what a student believes is possible for them. You just made that conversation possible.',
+
+    'College or Institutional Partnership':
+        'The students who arrive from this school will already be in motion — pursuing real questions, defending real positions, carrying real conviction. They will not need to be ignited. They will invite you to keep up.',
+
+    'Sponsor a Unit or Project':
+        'Every unit ends with something real that leaves the classroom. You just helped make sure it has somewhere to go — and someone standing behind it.',
+
+    'Support Scholarships':
+        'Somewhere there is a child whose family could not have said yes without what you just offered. They do not know your name yet. But the trajectory of their life just changed.',
+
+    'Give Financially':
+        'This school exists because people have chosen to fund something they believe in. You are now one of those people. What happens here because of you is real — and it will leave this room.',
+
+    'Donate Goods or Services':
+        'The tools, books, and resources that fill a classroom are not overhead. They are the conditions in which a child encounters something true. You just helped create those conditions.'
+};
 
 const modal        = document.getElementById('partner-modal');
 const modalForm    = document.getElementById('modal-form-view');
@@ -459,13 +486,8 @@ document.querySelectorAll('.build-way-card').forEach(card => {
         document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.form-input').forEach(el => el.classList.remove('form-input--error'));
 
-        const submitBtn = document.getElementById('partner-submit-btn');
-        submitBtn.disabled = false;
-        submitBtn.querySelector('.form-submit-text').style.display = 'inline';
-        submitBtn.querySelector('.form-submit-loading').style.display = 'none';
-
         // Set type
-        document.getElementById('partnerType').value           = type;
+        document.getElementById('partnerType').value            = type;
         document.getElementById('modal-type-label').textContent = type;
 
         // Set questions
@@ -473,11 +495,11 @@ document.querySelectorAll('.build-way-card').forEach(card => {
         document.getElementById('q2-label').textContent = q2;
 
         if (q3) {
-            document.getElementById('q3-label').textContent    = q3;
-            document.getElementById('q3-group').style.display  = 'block';
+            document.getElementById('q3-label').textContent   = q3;
+            document.getElementById('q3-group').style.display = 'block';
         } else {
-            document.getElementById('q3-group').style.display  = 'none';
-            document.getElementById('p-q3').value              = '';
+            document.getElementById('q3-group').style.display = 'none';
+            document.getElementById('p-q3').value             = '';
         }
 
         // Show modal
@@ -531,8 +553,10 @@ document.getElementById('partner-form').addEventListener('submit', async functio
     btnText.style.display    = 'none';
     btnLoading.style.display = 'inline';
 
+    const partnerType = document.getElementById('partnerType').value;
+
     const data = {
-        partnerType:  document.getElementById('partnerType').value,
+        partnerType:  partnerType,
         name:         document.getElementById('p-name').value.trim(),
         organization: document.getElementById('p-org').value.trim(),
         email:        document.getElementById('p-email').value.trim(),
@@ -554,6 +578,10 @@ document.getElementById('partner-form').addEventListener('submit', async functio
         const result = await response.json();
 
         if (result.result === 'success') {
+            // Swap in the unique closing line for this partner type
+            const closing = PARTNER_CLOSINGS[partnerType] || 'Thank you for choosing to build with us.';
+            document.getElementById('modal-closing-line').textContent = closing;
+
             modalForm.style.display    = 'none';
             modalSuccess.style.display = 'block';
         } else {
