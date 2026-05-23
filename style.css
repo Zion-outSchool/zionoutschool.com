@@ -3430,7 +3430,11 @@ footer {
     z-index: 50;
 }
 
-.editorial-page.curriculum-page .curr-question-nav::after {
+.editorial-page.curriculum-page .curr-question-nav .container {
+    position: relative;
+}
+
+.editorial-page.curriculum-page .curr-question-nav .container::after {
     align-items: center;
     background: linear-gradient(to right, rgba(30, 63, 102, 0), var(--navy) 42%);
     color: var(--gold-light);
