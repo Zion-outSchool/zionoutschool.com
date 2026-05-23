@@ -2995,7 +2995,9 @@ footer {
     .calendar-print-card {
         padding: 1.5rem;
     }
-    /* ── 16. MISSION PARTNERS PAGE ────────────────────────────── */
+}
+
+/* ── 16. MISSION PARTNERS PAGE ────────────────────────────── */
 
 .partners-intro {
     background: var(--cream);
@@ -3034,7 +3036,8 @@ footer {
 }
 
 .partner-logo {
-    height: 72px;
+    height: 60px;
+    max-width: 180px;
     width: auto;
     object-fit: contain;
     flex-shrink: 0;
