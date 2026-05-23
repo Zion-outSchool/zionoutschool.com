@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tell Us About Your Student | Zion outSchool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
+</head>
+<body>
+
+<section class="inquiry-form-section">
+    <div class="inquiry-form-wrap">
+
+        <!-- Intro -->
+        <div class="inquiry-intro">
+            <span class="section-label">Tell Us About Your Student</span>
+            <p class="inquiry-intro-body">
+                The path you are choosing for your child — to pursue something more intentional, more rigorous, more alive than what the standard system offers — takes courage. We don't take it lightly that you are exploring this with us.
+            </p>
+            <p class="inquiry-intro-note">Every inquiry is answered by a real person within 48 hours.</p>
+        </div>
+
+        <form id="inquiry-form" class="zos-form" novalidate>
+
+            <!-- ── SECTION 1: ABOUT YOUR FAMILY ── -->
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">About Your Family</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parentName" class="form-label">Parent / Guardian Name <span class="form-required">*</span></label>
+                        <input type="text" id="parentName" name="parentName" class="form-input" placeholder="First and last name" required>
+                        <span class="form-error" id="parentName-error">Please enter your name.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="parentEmail" class="form-label">Email Address <span class="form-required">*</span></label>
+                        <input type="email" id="parentEmail" name="parentEmail" class="form-input" placeholder="you@example.com" required>
+                        <span class="form-error" id="parentEmail-error">Please enter a valid email address.</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parentPhone" class="form-label">Phone Number <span class="form-optional">(optional)</span></label>
+                        <input type="tel" id="parentPhone" name="parentPhone" class="form-input" placeholder="(555) 000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="heardAbout" class="form-label">How did you hear about ZION outSchool?</label>
+                        <select id="heardAbout" name="heardAbout" class="form-input form-select">
+                            <option value="" disabled selected>Select one</option>
+                            <option value="A friend or family member">A friend or family member</option>
+                            <option value="Facebook or social media">Facebook or social media</option>
+                            <option value="Google search">Google search</option>
+                            <option value="The EFA / Arkansas school choice resources">The EFA / Arkansas school choice resources</option>
+                            <option value="A community event">A community event</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SECTION 2: STUDENTS ── -->
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">About Your Student<span id="student-section-plural"></span></h3>
+
+                <div id="students-container">
+                    <!-- Student 1 — always visible -->
+                    <div class="student-block" id="student-block-1">
+                        <div class="student-block-header">
+                            <span class="student-block-label">Student 1</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="s1-name" class="form-label">Student's Name <span class="form-required">*</span></label>
+                                <input type="text" id="s1-name" class="form-input student-name" placeholder="First and last name" required>
+                                <span class="form-error" id="s1-name-error">Please enter your student's name.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="s1-age" class="form-label">Age & Current Grade <span class="form-required">*</span></label>
+                                <input type="text" id="s1-age" class="form-input student-age" placeholder="e.g. 9 years old, 4th grade" required>
+                                <span class="form-error" id="s1-age-error">Please enter your student's age and grade.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="s1-describe" class="form-label">Tell us about your student. <span class="form-required">*</span></label>
+                            <p class="form-hint">Who are they? What do they love? What lights them up? What has been hard or frustrating about their current educational experience?</p>
+                            <textarea id="s1-describe" class="form-input form-textarea student-describe" rows="5" placeholder="Tell us about them — anything that helps us understand who your child is." required></textarea>
+                            <span class="form-error" id="s1-describe-error">Please tell us a little about your student.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="s1-subjects" class="form-label">What subjects or topics does your student gravitate toward naturally? <span class="form-optional">(optional)</span></label>
+                            <textarea id="s1-subjects" class="form-input form-textarea student-subjects" rows="3" placeholder="Science, history, building things, stories, animals, math — anything."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="s1-learning" class="form-label">Any learning considerations we should know about? <span class="form-optional">(optional)</span></label>
+                            <p class="form-hint">Learning differences, areas of challenge, anything that helps us understand your student better. Does your student have a current IEP? <strong>This is confidential and will not affect your inquiry.</strong></p>
+                            <textarea id="s1-learning" class="form-input form-textarea student-learning" rows="3" placeholder="Share whatever feels relevant — or leave this blank."></textarea>
+                        </div>
+                    </div>
+                    <!-- End Student 1 -->
+                </div>
+
+                <!-- Add student button -->
+                <div class="add-student-wrap" id="add-student-wrap">
+                    <button type="button" class="add-student-btn" id="add-student-btn">
+                        <span class="add-student-icon">+</span>
+                        Add another student
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── SECTION 3: WHAT YOU ARE LOOKING FOR ── -->
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">What You Are Looking For</h3>
+
+                <div class="form-group">
+                    <label for="lookingFor" class="form-label">What are you looking for that you haven't found? <span class="form-required">*</span></label>
+                    <p class="form-hint">There's no right answer. Tell us honestly what's missing and what brought you here.</p>
+                    <textarea id="lookingFor" name="lookingFor" class="form-input form-textarea" rows="5" placeholder="We read every word of this." required></textarea>
+                    <span class="form-error" id="lookingFor-error">Please tell us what brought you here.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="readHowWeLearn" class="form-label">Have you read through the How We Learn section of our website? <span class="form-required">*</span></label>
+                    <select id="readHowWeLearn" name="readHowWeLearn" class="form-input form-select" required>
+                        <option value="" disabled selected>Select one</option>
+                        <option value="Yes — I have read it">Yes — I have read it</option>
+                        <option value="I've looked at it but not read it fully">I've looked at it but not read it fully</option>
+                        <option value="Not yet">Not yet</option>
+                    </select>
+                    <span class="form-error" id="readHowWeLearn-error">Please select an answer.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="faithQuestions" class="form-label">Is there anything about our school's faith foundation or approach you'd like to understand better? <span class="form-optional">(optional)</span></label>
+                    <textarea id="faithQuestions" name="faithQuestions" class="form-input form-textarea" rows="4" placeholder="Any questions are welcome — honest answers are what we offer."></textarea>
+                </div>
+            </div>
+
+            <!-- ── SECTION 4: LOGISTICS ── -->
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">A Few Logistics</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="schoolYear" class="form-label">What school year are you inquiring for? <span class="form-required">*</span></label>
+                        <select id="schoolYear" name="schoolYear" class="form-input form-select" required>
+                            <option value="" disabled selected>Select one</option>
+                            <option value="2026–2027">2026–2027</option>
+                            <option value="2027–2028">2027–2028</option>
+                            <option value="Just exploring for now">Just exploring for now</option>
+                        </select>
+                        <span class="form-error" id="schoolYear-error">Please select a school year.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="efaPlanning" class="form-label">Are you an Arkansas resident planning to apply for the EFA? <span class="form-required">*</span></label>
+                        <select id="efaPlanning" name="efaPlanning" class="form-input form-select" required>
+                            <option value="" disabled selected>Select one</option>
+                            <option value="Yes — already approved">Yes — already approved</option>
+                            <option value="Yes — planning to apply">Yes — planning to apply</option>
+                            <option value="Not sure yet">Not sure yet</option>
+                            <option value="No">No</option>
+                        </select>
+                        <span class="form-error" id="efaPlanning-error">Please select an answer.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="anythingElse" class="form-label">Anything else you'd like us to know? <span class="form-optional">(optional)</span></label>
+                    <textarea id="anythingElse" name="anythingElse" class="form-input form-textarea" rows="4" placeholder="Questions, context, concerns — anything at all."></textarea>
+                </div>
+            </div>
+
+            <!-- ── SUBMIT ── -->
+            <div class="inquiry-submit-wrap">
+                <button type="submit" class="form-submit inquiry-submit" id="inquiry-submit-btn">
+                    <span class="form-submit-text">Send My Inquiry →</span>
+                    <span class="form-submit-loading" style="display:none;">Sending…</span>
+                </button>
+                <p class="inquiry-submit-note">We will respond within 48 hours — by a real person, not an autoresponder.</p>
+            </div>
+
+        </form>
+
+        <!-- ── SUCCESS ── -->
+        <div id="inquiry-success" class="inquiry-success" style="display:none;">
+            <span class="form-success-mark">✦</span>
+            <h3>We have received your inquiry.</h3>
+            <p>
+                Thank you for trusting us with this. We have read what you shared and someone will reach out personally within 48 hours — to listen, to answer your questions honestly, and to help you understand whether this is the right fit for your family.
+            </p>
+            <p>
+                In the meantime, if something comes to mind, reach us at <a href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a>.
+            </p>
+            <p class="form-success-close">
+                <em>Your child was born to seek truth. We exist to make sure they get a chance.</em>
+            </p>
+        </div>
+
+        <!-- ── ERROR ── -->
+        <div id="inquiry-error" class="form-error-msg" style="display:none;">
+            <p>Something went wrong sending your form. Please email us directly at <a href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a> and we will get back to you within 48 hours.</p>
+        </div>
+
+    </div>
+</section>
+
+<script>
+// ── INQUIRY FORM ────────────────────────────────────────────
+const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4UgELLE6qIz3ggT14LKnHjxrgb-PCdqvV5U2Sjgl2nZLkiE18Bl4QAJ9ClG2uNQii/exec';
+
+let studentCount = 1;
+const MAX_STUDENTS = 3;
+
+// ── ADD STUDENT ─────────────────────────────────────────────
+document.getElementById('add-student-btn').addEventListener('click', function() {
+    if (studentCount >= MAX_STUDENTS) return;
+    studentCount++;
+
+    const container = document.getElementById('students-container');
+    const n = studentCount;
+
+    const block = document.createElement('div');
+    block.className = 'student-block student-block--added';
+    block.id = 'student-block-' + n;
+    block.innerHTML = `
+        <div class="student-block-header">
+            <span class="student-block-label">Student ${n}</span>
+            <button type="button" class="student-remove-btn" onclick="removeStudent(${n})" aria-label="Remove student ${n}">✕ Remove</button>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="s${n}-name" class="form-label">Student's Name <span class="form-required">*</span></label>
+                <input type="text" id="s${n}-name" class="form-input student-name" placeholder="First and last name" required>
+                <span class="form-error" id="s${n}-name-error">Please enter your student's name.</span>
+            </div>
+            <div class="form-group">
+                <label for="s${n}-age" class="form-label">Age & Current Grade <span class="form-required">*</span></label>
+                <input type="text" id="s${n}-age" class="form-input student-age" placeholder="e.g. 9 years old, 4th grade" required>
+                <span class="form-error" id="s${n}-age-error">Please enter your student's age and grade.</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="s${n}-describe" class="form-label">Tell us about this student. <span class="form-required">*</span></label>
+            <p class="form-hint">Who are they? What do they love? What lights them up? What has been hard or frustrating about their current educational experience?</p>
+            <textarea id="s${n}-describe" class="form-input form-textarea student-describe" rows="5" placeholder="Tell us about them — anything that helps us understand who your child is." required></textarea>
+            <span class="form-error" id="s${n}-describe-error">Please tell us a little about this student.</span>
+        </div>
+
+        <div class="form-group">
+            <label for="s${n}-subjects" class="form-label">What subjects or topics does this student gravitate toward naturally? <span class="form-optional">(optional)</span></label>
+            <textarea id="s${n}-subjects" class="form-input form-textarea student-subjects" rows="3" placeholder="Science, history, building things, stories, animals, math — anything."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="s${n}-learning" class="form-label">Any learning considerations we should know about? <span class="form-optional">(optional)</span></label>
+            <p class="form-hint">Learning differences, areas of challenge, anything that helps us understand this student better. Does your student have a current IEP? <strong>This is confidential and will not affect your inquiry.</strong></p>
+            <textarea id="s${n}-learning" class="form-input form-textarea student-learning" rows="3" placeholder="Share whatever feels relevant — or leave this blank."></textarea>
+        </div>
+    `;
+
+    container.appendChild(block);
+
+    // Animate in
+    requestAnimationFrame(() => block.classList.add('student-block--visible'));
+
+    // Update plural heading and hide button if at max
+    updateStudentUI();
+
+    // Scroll to new block
+    setTimeout(() => block.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+});
+
+function removeStudent(n) {
+    const block = document.getElementById('student-block-' + n);
+    if (!block) return;
+    block.classList.remove('student-block--visible');
+    setTimeout(() => {
+        block.remove();
+        studentCount--;
+        updateStudentUI();
+        renumberStudents();
+    }, 250);
+}
+
+function renumberStudents() {
+    document.querySelectorAll('.student-block').forEach((block, i) => {
+        const label = block.querySelector('.student-block-label');
+        if (label) label.textContent = 'Student ' + (i + 1);
+    });
+}
+
+function updateStudentUI() {
+    const plural = document.getElementById('student-section-plural');
+    if (plural) plural.textContent = studentCount > 1 ? 's' : '';
+    const btn = document.getElementById('add-student-btn');
+    const wrap = document.getElementById('add-student-wrap');
+    if (studentCount >= MAX_STUDENTS) {
+        wrap.style.display = 'none';
+    } else {
+        wrap.style.display = 'block';
+    }
+}
+
+// ── COLLECT STUDENTS ────────────────────────────────────────
+function collectStudents() {
+    const blocks = document.querySelectorAll('.student-block');
+    const students = [];
+    blocks.forEach((block, i) => {
+        const n = i + 1;
+        students.push({
+            studentName:     block.querySelector('.student-name')?.value.trim()    || '',
+            studentAge:      block.querySelector('.student-age')?.value.trim()     || '',
+            studentDescribe: block.querySelector('.student-describe')?.value.trim() || '',
+            studentSubjects: block.querySelector('.student-subjects')?.value.trim() || '',
+            studentLearning: block.querySelector('.student-learning')?.value.trim() || ''
+        });
+    });
+    return students;
+}
+
+// ── VALIDATE ────────────────────────────────────────────────
+function validate() {
+    let valid = true;
+
+    // Clear all errors
+    document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.form-input').forEach(el => el.classList.remove('form-input--error'));
+
+    // Required named fields
+    ['parentName', 'parentEmail', 'readHowWeLearn', 'schoolYear', 'efaPlanning', 'lookingFor'].forEach(id => {
+        const field = document.getElementById(id);
+        if (!field || !field.value.trim()) {
+            valid = false;
+            if (field) field.classList.add('form-input--error');
+            const err = document.getElementById(id + '-error');
+            if (err) err.style.display = 'block';
+        }
+    });
+
+    // Email format
+    const email = document.getElementById('parentEmail');
+    if (email && email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        valid = false;
+        email.classList.add('form-input--error');
+        document.getElementById('parentEmail-error').style.display = 'block';
+    }
+
+    // Student required fields
+    document.querySelectorAll('.student-block').forEach((block, i) => {
+        const n = i + 1;
+        ['name', 'age', 'describe'].forEach(field => {
+            const el = block.querySelector('.student-' + field);
+            if (el && !el.value.trim()) {
+                valid = false;
+                el.classList.add('form-input--error');
+                const err = document.getElementById('s' + n + '-' + field + '-error');
+                if (err) err.style.display = 'block';
+            }
+        });
+    });
+
+    return valid;
+}
+
+// ── SUBMIT ──────────────────────────────────────────────────
+document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (!validate()) {
+        // Scroll to first error
+        const firstError = document.querySelector('.form-input--error');
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+
+    const btn     = document.getElementById('inquiry-submit-btn');
+    const btnText = btn.querySelector('.form-submit-text');
+    const btnLoad = btn.querySelector('.form-submit-loading');
+    btn.disabled      = true;
+    btnText.style.display = 'none';
+    btnLoad.style.display = 'inline';
+
+    const data = {
+        parentName:     document.getElementById('parentName').value.trim(),
+        parentEmail:    document.getElementById('parentEmail').value.trim(),
+        parentPhone:    document.getElementById('parentPhone').value.trim(),
+        heardAbout:     document.getElementById('heardAbout').value,
+        students:       collectStudents(),
+        lookingFor:     document.getElementById('lookingFor').value.trim(),
+        readHowWeLearn: document.getElementById('readHowWeLearn').value,
+        faithQuestions: document.getElementById('faithQuestions').value.trim(),
+        schoolYear:     document.getElementById('schoolYear').value,
+        efaPlanning:    document.getElementById('efaPlanning').value,
+        anythingElse:   document.getElementById('anythingElse').value.trim()
+    };
+
+    try {
+        const response = await fetch(INQUIRY_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.result === 'success') {
+            document.getElementById('inquiry-form').style.display    = 'none';
+            document.querySelector('.inquiry-intro').style.display    = 'none';
+            document.getElementById('inquiry-success').style.display = 'block';
+            document.getElementById('inquiry-success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            throw new Error(result.message);
+        }
+    } catch(err) {
+        btn.disabled          = false;
+        btnText.style.display = 'inline';
+        btnLoad.style.display = 'none';
+        document.getElementById('inquiry-error').style.display = 'block';
+        document.getElementById('inquiry-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+
+</body>
+</html>
