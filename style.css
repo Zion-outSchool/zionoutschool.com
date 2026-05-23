@@ -4695,6 +4695,238 @@ footer {
     }
 }
 
+/* ── 21. INTEREST REGISTRY PAGE ──────────────────────────── */
+.editorial-page.registry-page .registry-context {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.registry-page .registry-context-lead {
+    color: var(--navy);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+}
+
+.editorial-page.registry-page .registry-context p {
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+}
+
+.editorial-page.registry-page .registry-context strong {
+    color: var(--navy);
+}
+
+.editorial-page.registry-page .registry-form-section {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.editorial-page.registry-page .zos-form {
+    margin-top: 2rem;
+}
+
+.editorial-page.registry-page .form-row {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.editorial-page.registry-page .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.75rem;
+    position: relative;
+}
+
+.editorial-page.registry-page .form-label {
+    color: var(--navy);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.registry-page .form-required {
+    color: var(--gold);
+    margin-left: 0.1rem;
+}
+
+.editorial-page.registry-page .form-input {
+    appearance: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    border-radius: 0;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    outline: none;
+    padding: 0.85rem 1rem;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+}
+
+.editorial-page.registry-page .form-input:focus {
+    background: var(--cream);
+    border-color: var(--navy);
+    border-bottom-color: var(--navy);
+}
+
+.editorial-page.registry-page .form-input--error {
+    background: #fff8f8;
+    border-color: #c0392b;
+    border-bottom-color: #c0392b;
+}
+
+.editorial-page.registry-page .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231E3F66' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    padding-right: 2.5rem;
+}
+
+.editorial-page.registry-page .form-textarea {
+    line-height: 1.7;
+    min-height: 120px;
+    resize: vertical;
+}
+
+.editorial-page.registry-page .form-error {
+    color: #c0392b;
+    display: none;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    margin-top: 0.4rem;
+}
+
+.editorial-page.registry-page .form-divider {
+    background: var(--border);
+    height: 1px;
+    margin: 0.5rem 0 2rem;
+}
+
+.editorial-page.registry-page .form-submit {
+    background: var(--gold);
+    border: none;
+    border-radius: 4px;
+    color: var(--navy-dark);
+    cursor: pointer;
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-top: 0.5rem;
+    padding: 1rem 2.5rem;
+    transition: background 0.2s;
+}
+
+.editorial-page.registry-page .form-submit:hover:not(:disabled) {
+    background: var(--gold-light);
+}
+
+.editorial-page.registry-page .form-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.editorial-page.registry-page .form-success {
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 3rem;
+    text-align: center;
+}
+
+.editorial-page.registry-page .form-success-inner {
+    margin: 0 auto;
+    max-width: 560px;
+}
+
+.editorial-page.registry-page .form-success-mark {
+    color: var(--gold);
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.editorial-page.registry-page .form-success h3 {
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: 1.25rem;
+}
+
+.editorial-page.registry-page .form-success p {
+    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 1rem;
+}
+
+.editorial-page.registry-page .form-success a {
+    color: var(--gold-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.editorial-page.registry-page .form-success-close {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--gold-light) !important;
+    font-style: italic;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.editorial-page.registry-page .form-error-msg {
+    background: #fff8f8;
+    border-left: 4px solid #c0392b;
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.editorial-page.registry-page .form-error-msg p {
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.editorial-page.registry-page .form-error-msg a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .editorial-page.registry-page .form-row {
+        gap: 0;
+        grid-template-columns: 1fr;
+    }
+
+    .editorial-page.registry-page .form-submit {
+        text-align: center;
+        width: 100%;
+    }
+
+    .editorial-page.registry-page .form-success {
+        padding: 2rem 1.5rem;
+    }
+}
+
 /* Announcement bar layout guard */
 header {
     top: var(--announcement-h) !important;
