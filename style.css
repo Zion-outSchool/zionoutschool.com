@@ -4342,6 +4342,122 @@ footer {
     margin-top: 2.5rem;
 }
 
+.editorial-page.build-page .build-credibility {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.editorial-page.build-page .build-credibility h2,
+.editorial-page.build-page .build-founder h2 {
+    color: var(--navy);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0.75rem 0 1.5rem;
+}
+
+.editorial-page.build-page .build-credibility h2 em {
+    color: var(--gold);
+    font-style: italic;
+}
+
+.editorial-page.build-page .build-credibility-lead {
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1.85;
+    margin-bottom: 2.5rem;
+}
+
+.editorial-page.build-page .build-proof-stack {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 2.75rem 0;
+}
+
+.editorial-page.build-page .build-proof-item {
+    border-left: 4px solid var(--gold);
+    border-bottom: 1px solid var(--border);
+    padding: 1.75rem 2rem;
+}
+
+.editorial-page.build-page .build-proof-item:last-child {
+    border-bottom: none;
+}
+
+.editorial-page.build-page .build-proof-item p {
+    color: var(--text);
+    font-size: 1.08rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.85;
+    margin: 0;
+}
+
+.editorial-page.build-page .build-credibility-close {
+    color: var(--navy);
+    font-size: 1.18rem;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.75;
+    margin-bottom: 0;
+}
+
+.editorial-page.build-page .build-founder {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.build-page .build-founder-inner {
+    align-items: start;
+    display: grid;
+    gap: 4rem;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+}
+
+.editorial-page.build-page .build-founder-text p {
+    color: var(--text);
+    font-size: 1.12rem;
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+}
+
+.editorial-page.build-page .build-founder-credential {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 4px 4px 0;
+    position: sticky;
+    top: calc(var(--header-h) + var(--announcement-h) + 2rem);
+}
+
+.editorial-page.build-page .build-credential-item {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem;
+}
+
+.editorial-page.build-page .build-credential-item:last-child {
+    border-bottom: none;
+}
+
+.editorial-page.build-page .build-credential-num {
+    color: var(--gold);
+    display: block;
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.editorial-page.build-page .build-credential-label {
+    color: var(--text-mid);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    line-height: 1.7;
+}
+
 .editorial-page.build-page .build-vision {
     background: var(--white);
     padding: 5rem 0;
@@ -4664,6 +4780,15 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .editorial-page.build-page .build-founder-inner {
+        gap: 2.5rem;
+        grid-template-columns: 1fr;
+    }
+
+    .editorial-page.build-page .build-founder-credential {
+        position: static;
+    }
+
     .editorial-page.build-page .build-examples,
     .editorial-page.build-page .build-goal-grid,
     .editorial-page.build-page .build-ways-grid {
