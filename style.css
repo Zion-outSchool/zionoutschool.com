@@ -1844,7 +1844,7 @@ footer {
 }
 
 .editorial-page .home-close {
-    background: #06111C;
+    background: var(--navy);
     color: #F7F3EA;
     padding: clamp(4rem, 8vw, 6rem) 0;
     text-align: center;
@@ -1872,12 +1872,9 @@ footer {
 
 .editorial-page .home-forming {
     max-width: 760px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: rgba(247, 243, 234, 0.08);
-    border: 1px solid rgba(224, 178, 60, 0.45);
-    border-left: 5px solid #D4A22A;
-    border-radius: 10px;
+    margin: 3.5rem auto 0;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(201, 168, 76, 0.3);
     text-align: center;
 }
 
@@ -2997,5 +2994,171 @@ footer {
     .calendar-note-card,
     .calendar-print-card {
         padding: 1.5rem;
+    }
+    /* ── 16. MISSION PARTNERS PAGE ────────────────────────────── */
+
+.partners-intro {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.partners-lead {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+}
+
+/* Partner Cards */
+.partners-list {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.partner-card {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+}
+
+.partner-card-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.5rem 2.8rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+    flex-wrap: wrap;
+}
+
+.partner-logo {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.partner-card-meta {
+    flex: 1;
+}
+
+.partner-badge {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.partner-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+}
+
+.partner-card-body {
+    padding: 2.5rem 2.8rem;
+}
+
+.partner-card-body p {
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+}
+
+.partner-card-body strong {
+    color: var(--navy);
+}
+
+.partner-link {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--navy);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+
+.partner-link:hover {
+    color: var(--gold);
+}
+
+/* Mentors & Makers */
+.partners-mentors {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.partners-mentors h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--navy);
+    margin: 0.75rem 0 1.5rem;
+    letter-spacing: -0.01em;
+}
+
+.partners-mentors p {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+}
+
+/* Become a Partner */
+.partners-join {
+    background: var(--navy);
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.partners-join .section-label {
+    color: var(--gold);
+}
+
+.partners-join h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--white);
+    margin: 0.75rem 0 1.5rem;
+    letter-spacing: -0.01em;
+}
+
+.partners-join p {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 1.2rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.partners-recognition {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .partner-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+
+    .partner-card-header,
+    .partner-card-body {
+        padding: 2rem 1.5rem;
     }
 }
