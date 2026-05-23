@@ -2737,4 +2737,263 @@ footer {
     .tuition-page .quad-image {
         max-height: 220px;
     }
+    /* ── 15. CALENDAR PAGE ────────────────────────────────────── */
+
+.calendar-intro {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.calendar-lead {
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+}
+
+.calendar-intro p {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+}
+
+.calendar-section-heading {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--navy);
+    margin: 0.75rem 0 2rem;
+    letter-spacing: -0.01em;
+}
+
+/* Action Cards */
+.calendar-actions-section {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.calendar-action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-top: 2.5rem;
+}
+
+.calendar-action-card {
+    padding: 2.5rem 2.5rem;
+    border-right: 1px solid var(--border);
+    transition: background 0.25s;
+}
+
+.calendar-action-card:last-child {
+    border-right: none;
+}
+
+.calendar-action-card:hover {
+    background: var(--cream);
+}
+
+.calendar-action-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.calendar-action-card p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-badge {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    margin-bottom: 1rem;
+    border-radius: 2px;
+}
+
+.calendar-badge--master {
+    background: #e9eef5;
+    color: var(--navy);
+    border-left: 3px solid var(--navy);
+}
+
+.calendar-badge--cfm {
+    background: #f2ecf7;
+    color: #5a3d7a;
+    border-left: 3px solid #8b6fa8;
+}
+
+.calendar-badge--academic {
+    background: #eef5ec;
+    color: #3a6132;
+    border-left: 3px solid #6c9a63;
+}
+
+/* Live Calendar */
+.calendar-live-section {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.calendar-note-card {
+    max-width: 820px;
+    margin: 0 auto 2rem;
+    background: var(--white);
+    border-left: 4px solid var(--gold);
+    padding: 1.75rem 2rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.calendar-note-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.65rem;
+}
+
+.calendar-note-card p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+}
+
+.google-calendar-frame {
+    background: var(--white);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.google-calendar-frame iframe {
+    display: block;
+    width: 100%;
+    min-height: 700px;
+}
+
+.google-calendar-frame--small iframe {
+    min-height: 520px;
+}
+
+/* Layer Calendars */
+.calendar-layers-section {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.calendar-layer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+}
+
+.calendar-layer-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+}
+
+.calendar-layer-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.calendar-layer-card p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+/* Printable Overview */
+.calendar-overview-section {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.calendar-overview-section p {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+}
+
+.calendar-print-card {
+    margin-top: 2rem;
+    padding: 2.5rem 2.8rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+}
+
+.calendar-print-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+}
+
+.calendar-print-card p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-btn-disabled {
+    opacity: 0.55;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Responsive — Calendar */
+@media (max-width: 900px) {
+    .calendar-action-grid,
+    .calendar-layer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-action-card {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .calendar-action-card:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .google-calendar-frame {
+        padding: 0.35rem;
+    }
+
+    .google-calendar-frame iframe {
+        min-height: 560px;
+    }
+
+    .google-calendar-frame--small iframe {
+        min-height: 460px;
+    }
+
+    .calendar-layer-card,
+    .calendar-note-card,
+    .calendar-print-card {
+        padding: 1.5rem;
+    }
 }
