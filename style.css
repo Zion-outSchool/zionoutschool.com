@@ -2737,7 +2737,9 @@ footer {
     .tuition-page .quad-image {
         max-height: 220px;
     }
-    /* ── 15. CALENDAR PAGE ────────────────────────────────────── */
+}
+
+/* ── 15. CALENDAR PAGE ────────────────────────────────────── */
 
 .calendar-intro {
     background: var(--cream);
