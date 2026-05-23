@@ -13,6 +13,7 @@
             --border:     #e8e4dc;
             --white:      #ffffff;
             --header-h:   68px;
+            --announcement-h: 37px;
             --serif:      'Cormorant Garamond', Georgia, serif;
             --sans:       'Inter', system-ui, sans-serif;
         }
@@ -26,10 +27,46 @@
             line-height: 1.7;
         }
 
+        .announcement-bar {
+            background: var(--navy-dark);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.4);
+            padding: 0.6rem 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 101;
+        }
+
+        .announcement-bar p {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.75);
+            margin: 0;
+        }
+
+        .announcement-bar strong {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .announcement-bar a {
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            margin-left: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .announcement-bar a:hover {
+            color: var(--white);
+        }
+
         /* ── HEADER ── */
         header {
             position: fixed;
-            top: 0; left: 0; right: 0;
+            top: var(--announcement-h); left: 0; right: 0;
             z-index: 100;
             background: var(--navy);
             padding: 0 2rem;
@@ -85,7 +122,7 @@
 
         /* ── HERO ── */
         .page-hero {
-            margin-top: 68px;
+            margin-top: calc(var(--header-h) + var(--announcement-h));
             min-height: 58vh;
             background:
                 linear-gradient(to bottom, rgba(14,30,52,0.72) 0%, rgba(14,30,52,0.55) 60%, rgba(14,30,52,0.85) 100%),
@@ -1268,7 +1305,7 @@ footer {
 
 .editorial-page header {
     position: fixed;
-    top: 0;
+    top: var(--announcement-h);
     left: 0;
     right: 0;
     z-index: 1000;
@@ -1362,7 +1399,7 @@ footer {
 }
 
 .editorial-page .page-hero {
-    margin-top: 68px;
+    margin-top: calc(var(--header-h) + var(--announcement-h));
     min-height: 58vh;
     background:
         linear-gradient(to bottom, rgba(14,30,52,0.72) 0%, rgba(14,30,52,0.55) 60%, rgba(14,30,52,0.85) 100%),
@@ -1649,7 +1686,7 @@ footer {
 }
 
 .editorial-page .home-hero {
-    margin-top: var(--header-h);
+    margin-top: calc(var(--header-h) + var(--announcement-h));
     padding: 0;
     width: 100%;
     line-height: 0;
@@ -2021,7 +2058,7 @@ footer {
 @media (max-width: 768px) {
     .editorial-page header {
         height: 68px !important;
-        top: 0 !important;
+        top: var(--announcement-h) !important;
     }
 
     .editorial-page .mobile-menu {
@@ -2039,7 +2076,7 @@ footer {
         display: flex;
         flex-direction: column;
         left: 0;
-        max-height: calc(100vh - 68px);
+        max-height: calc(100vh - var(--announcement-h) - 68px);
         overflow-y: auto;
         padding: 0.75rem 1rem 1rem;
         position: absolute;
@@ -2055,7 +2092,7 @@ footer {
     }
 
     .editorial-page .page-hero {
-        margin-top: 68px;
+        margin-top: calc(68px + var(--announcement-h));
     }
 
     .editorial-page .beliefs-grid {
@@ -4655,5 +4692,25 @@ footer {
     .editorial-page.build-page .build-close-actions {
         align-items: center;
         flex-direction: column;
+    }
+}
+
+/* Announcement bar layout guard */
+header {
+    top: var(--announcement-h) !important;
+}
+
+.page-hero {
+    margin-top: calc(var(--header-h) + var(--announcement-h)) !important;
+}
+
+.editorial-page .home-hero {
+    margin-top: calc(var(--header-h) + var(--announcement-h));
+}
+
+@media (max-width: 768px) {
+    .page-hero,
+    .editorial-page .page-hero {
+        margin-top: calc(68px + var(--announcement-h)) !important;
     }
 }
