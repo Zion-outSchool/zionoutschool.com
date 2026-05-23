@@ -1650,6 +1650,7 @@ footer {
 
 .editorial-page .home-hero {
     margin-top: var(--header-h);
+    padding: 0;
     width: 100%;
     line-height: 0;
 }
