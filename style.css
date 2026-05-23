@@ -3600,6 +3600,34 @@ footer {
     margin-bottom: 1rem;
 }
 
+.editorial-page.curriculum-page .curr-subject-quote {
+    background: rgba(201, 168, 76, 0.06);
+    border-left: 3px solid var(--gold);
+    margin-top: 2rem;
+    padding: 1.5rem 1.75rem;
+}
+
+.editorial-page.curriculum-page .curr-subject-quote blockquote {
+    color: var(--navy);
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+}
+
+.editorial-page.curriculum-page .curr-subject-quote cite {
+    color: var(--gold);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
 .editorial-page.curriculum-page .curr-vignette {
     align-self: start;
     background: var(--navy);
