@@ -5953,6 +5953,31 @@ header {
     width: 1rem;
     height: 1rem;
 }
+
+.registration-page .faq-callout {
+    border-radius: 0 4px 4px 0;
+    margin: 1rem 0;
+    padding: 1.25rem 1.5rem;
+}
+
+.registration-page .faq-callout p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.registration-page .faq-callout p:last-child {
+    margin-bottom: 0;
+}
+
+.registration-page .faq-callout--warning {
+    background: #fff8e6;
+    border-left: 4px solid var(--gold);
+}
+
+.registration-page .faq-callout--navy {
+    background: #f0f3f8;
+    border-left: 4px solid var(--navy);
+}
  
 /* Responsive */
 @media (max-width: 768px) {
