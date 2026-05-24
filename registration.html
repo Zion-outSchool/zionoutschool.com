@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration 2026–27 | Zion outSchool</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=registration-20260524">
+    <link rel="stylesheet" href="style.css?v=form-intro-20260524">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
 <body class="editorial-page inquiry-page registration-page">
@@ -54,11 +54,10 @@
             <span class="form-error" id="studentLastName-error">Required.</span>
         </div>
     </div>
-<div class="form-group">
-            <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
-            <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
-            <span class="form-error" id="studentPreferred-error">Required.</span>
-        </div>
+    <div class="form-group">
+        <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
+        <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
+        <span class="form-error" id="studentPreferred-error">Required.</span>
     </div>
 
     <div class="form-row">
@@ -993,7 +992,7 @@ function nextStep(currentStep, nextStepId, requiredIds) {
 async function submitStep1() {
     const required = [
         'studentFirstName','studentLastName','studentDOB',
-        'studentGrade','studentIEP',
+        'studentPreferred','studentGrade','studentIEP',
         'parent1Name','parent1Phone','parent1Email','parent1Address'
     ];
     if (!validateFields(required)) return;
@@ -1009,6 +1008,7 @@ async function submitStep1() {
         step:              '1',
         studentFirstName:  v('studentFirstName'),
         studentLastName:   v('studentLastName'),
+        studentPreferred:  v('studentPreferred'),
         parentName:        v('parent1Name'),
         parentEmail:       v('parent1Email')
     };
@@ -1087,6 +1087,7 @@ async function submitFinal() {
 
         studentFirstName:    v('studentFirstName'),
         studentLastName:     v('studentLastName'),
+        studentPreferred:    v('studentPreferred'),
         studentDOB:          v('studentDOB'),
         studentGrade:        v('studentGrade'),
         previousSchool:      v('previousSchool'),
