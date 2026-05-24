@@ -5997,3 +5997,108 @@ header {
     }
 }
  
+/* ── FORM INTRO HEADER ────────────────────────────────────── */
+
+.form-intro-header {
+    background: var(--navy);
+    margin: -4rem -2rem 3rem;
+    padding: 3.5rem 2rem 0;
+}
+
+.form-intro-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.form-intro-wordmark {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.form-intro-wordmark em {
+    font-style: normal;
+    font-weight: 300;
+    text-transform: lowercase;
+    letter-spacing: 0;
+}
+
+.form-intro-heading {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-intro-year {
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+}
+
+.form-intro-body {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.85;
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: 1.25rem;
+}
+
+.form-intro-note {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+/* Progress sits in the navy band */
+.form-intro-progress {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 0 2rem;
+}
+
+.form-intro-progress .reg-progress {
+    background: rgba(255, 255, 255, 0.12);
+    margin-bottom: 0.6rem;
+}
+
+.form-intro-progress .reg-progress-bar {
+    background: var(--gold);
+}
+
+.form-intro-progress .reg-progress-label {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .form-intro-header {
+        margin: -4rem -1.25rem 2.5rem;
+        padding: 2.5rem 1.25rem 0;
+    }
+
+    .form-intro-heading {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
