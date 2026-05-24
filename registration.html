@@ -994,7 +994,7 @@ function nextStep(currentStep, nextStepId, requiredIds) {
 async function submitStep1() {
     const required = [
         'studentFirstName','studentLastName','studentDOB',
-        'studentGrade','studentIEP',
+        'studentPreferred','studentGrade','studentIEP',
         'parent1Name','parent1Phone','parent1Email','parent1Address'
     ];
     if (!validateFields(required)) return;
@@ -1010,6 +1010,7 @@ async function submitStep1() {
         step:              '1',
         studentFirstName:  v('studentFirstName'),
         studentLastName:   v('studentLastName'),
+        studentPreferred:  v('studentPreferred'),
         parentName:        v('parent1Name'),
         parentEmail:       v('parent1Email')
     };
@@ -1088,6 +1089,7 @@ async function submitFinal() {
 
         studentFirstName:    v('studentFirstName'),
         studentLastName:     v('studentLastName'),
+        studentPreferred:    v('studentPreferred'),
         studentDOB:          v('studentDOB'),
         studentGrade:        v('studentGrade'),
         previousSchool:      v('previousSchool'),
