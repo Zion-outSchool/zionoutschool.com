@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration 2026–27 | Zion outSchool</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=registration-20260524">
+    <link rel="stylesheet" href="style.css?v=registration-intro-20260524">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
 <body class="editorial-page inquiry-page registration-page">
@@ -54,11 +54,10 @@
             <span class="form-error" id="studentLastName-error">Required.</span>
         </div>
     </div>
-<div class="form-group">
-            <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
-            <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
-            <span class="form-error" id="studentPreferred-error">Required.</span>
-        </div>
+    <div class="form-group">
+        <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
+        <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
+        <span class="form-error" id="studentPreferred-error">Required.</span>
     </div>
 
     <div class="form-row">
@@ -889,7 +888,7 @@ const STEP_LABELS = {
     'step-10': 'Step 10 of 10 — Final Review & Submit'
 };
 
-function showStep(stepId) {
+function showStep(stepId, shouldScroll = true) {
     STEPS.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
@@ -897,7 +896,9 @@ function showStep(stepId) {
     const target = document.getElementById(stepId);
     if (target) {
         target.style.display = 'block';
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (shouldScroll) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
     updateProgress(stepId);
 }
@@ -1202,7 +1203,8 @@ function v(id) {
 }
 
 // Init
-showStep('step-1');
+showStep('step-1', false);
+window.scrollTo(0, 0);
 </script>
 
 </body>
