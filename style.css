@@ -5769,3 +5769,206 @@ header {
         width: 100%;
     }
 }
+/* ── 25. REGISTRATION FORM ────────────────────────────────── */
+ 
+/* Progress bar */
+.reg-progress {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 1.5rem 0 0.5rem;
+    overflow: hidden;
+}
+ 
+.reg-progress-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 10%;
+}
+ 
+.reg-progress-label {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    margin: 0 0 2rem;
+}
+ 
+/* Steps */
+.reg-step {
+    animation: stepIn 0.2s ease;
+}
+ 
+@keyframes stepIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* Policy blocks */
+.reg-policy-block {
+    background: var(--cream);
+    border-left: 4px solid var(--navy);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 4px 4px 0;
+}
+ 
+.reg-policy-block h4 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+}
+ 
+.reg-policy-block p,
+.reg-policy-block li {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+}
+ 
+.reg-policy-block ol,
+.reg-policy-block ul {
+    margin-left: 1.5rem;
+}
+ 
+/* Signature prompt */
+.reg-sig-prompt {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--navy);
+    background: var(--cream);
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+}
+ 
+/* Navigation buttons */
+.reg-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+ 
+.reg-back-btn {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text-mid);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.65rem 1.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: color 0.2s, border-color 0.2s;
+}
+ 
+.reg-back-btn:hover {
+    color: var(--navy);
+    border-color: var(--navy);
+}
+ 
+/* Folder created confirmation */
+.reg-folder-created {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 2rem;
+}
+ 
+.reg-folder-created h3 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    margin: 1rem 0 1rem;
+}
+ 
+.reg-folder-created p {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+    max-width: 560px;
+    margin: 0 auto 0.75rem;
+}
+ 
+.reg-folder-note {
+    font-family: var(--sans) !important;
+    font-size: 0.8rem !important;
+    color: var(--gold-light) !important;
+    font-style: normal !important;
+    letter-spacing: 0.04em;
+}
+ 
+/* Final checklist */
+.reg-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+}
+ 
+.reg-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+ 
+.reg-check-item:last-child {
+    border-bottom: none;
+}
+ 
+.reg-check-item:hover {
+    background: var(--cream);
+}
+ 
+.reg-check-item input[type="checkbox"] {
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+    accent-color: var(--navy);
+    width: 1rem;
+    height: 1rem;
+}
+ 
+/* Responsive */
+@media (max-width: 768px) {
+    .reg-nav {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+ 
+    .reg-back-btn,
+    .reg-nav .form-submit {
+        width: 100%;
+        text-align: center;
+    }
+ 
+    .reg-policy-block {
+        padding: 1.25rem 1rem;
+    }
+}
+ 
