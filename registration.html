@@ -47,6 +47,12 @@
             <span class="form-error" id="studentLastName-error">Required.</span>
         </div>
     </div>
+<div class="form-group">
+            <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
+            <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
+            <span class="form-error" id="studentPreferred-error">Required.</span>
+        </div>
+    </div>
 
     <div class="form-row">
         <div class="form-group">
@@ -739,6 +745,10 @@
             <option value="No, I do not consent — see explanation below.">No — I do not consent</option>
         </select>
         <span class="form-error" id="medicalConsent-error">Required.</span>
+    </div>
+    <div class="form-group" id="siblingNames-group" style="display:none;">
+        <label class="form-label">If no, please explain how you would like us to proceed in the event of an emergency.</label>
+        <textarea id="Noemergency" class="form-input form-textarea" rows="6"></textarea>
     </div>
 
     <div class="form-group">
