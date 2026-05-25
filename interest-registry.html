@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Registry | Zion outSchool</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css?v=interest-registry-page-20260523">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
+</head>
+<body class="editorial-page registry-page">
+
+<!-- ── ANNOUNCEMENT BAR ── -->
+<div class="announcement-bar">
+    <div class="container">
+        <p>
+            <strong>EFA applications close June 1.</strong>
+            Seats for 2026–2027 are limited — families who inquire now have priority.
+            <a href="contact.html">Begin your inquiry →</a>
+        </p>
+    </div>
+</div>
+
+<!-- ── HEADER ── -->
+<header>
+    <a href="index.html" class="logo">ZION <span>out</span>School</a>
+    <button class="mobile-menu" aria-label="Open navigation">☰</button>
+    <nav id="nav-menu">
+        <a href="foundation.html">Foundation</a>
+        <a href="how-we-learn.html">How We Learn</a>
+        <a href="curriculum.html">Curriculum</a>
+        <a href="tuition.html">Tuition & Funding</a>
+        <a href="teachers.html">Who Teaches Here</a>
+        <a href="faq.html">FAQs</a>
+        <a href="partners.html">Mission Partners</a>
+        <a href="build-with-us.html">Build With Us</a>
+        <a href="calendar.html">Calendar</a>
+        <a href="contact.html">Contact</a>
+        <a href="inquiry-form.html" class="nav-cta">Start Here →</a>
+        <a href="registration.html" class="nav-enroll">Enroll Now →</a>
+    </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Interest Registry</span>
+        <h1>Let us know your child<br><em>is on the way.</em></h1>
+        <p class="hero-subtext">
+            Kindergarten and 1st Grade programs are forming now. We open each program when at least 8 families have expressed genuine interest. Your registration is how that happens.
+        </p>
+    </div>
+</section>
+
+<!-- ── BANNER DIVIDER ── -->
+<img
+    src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
+    alt=""
+    class="banner-divider"
+    aria-hidden="true"
+>
+
+<!-- ── CONTEXT ── -->
+<section class="registry-context">
+    <div class="container-narrow">
+        <span class="section-label">Why This Matters</span>
+        <p class="registry-context-lead">
+            We will not open a program that cannot be done well. That means we need to know who is coming before we can commit to opening.
+        </p>
+        <p>
+            Enrollment decisions for Kindergarten and 1st Grade will be made on <strong>July 18</strong>. Families who have registered their interest by that date will be contacted directly — before any public announcement — and given priority in enrollment.
+        </p>
+        <p>
+            This is not a waitlist. It is not a commitment. It is simply your way of telling us: <em>my child belongs here, and I want to be part of what you build.</em>
+        </p>
+    </div>
+</section>
+
+<!-- ── FORM ── -->
+<section class="registry-form-section">
+    <div class="container-narrow">
+        <span class="section-label">Register Your Interest</span>
+
+        <div id="interest-form-wrapper">
+            <form id="interest-form" class="zos-form" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentName" class="form-label">Student Name <span class="form-required">*</span></label>
+                        <input
+                            type="text"
+                            id="studentName"
+                            name="studentName"
+                            class="form-input"
+                            placeholder="First and last name"
+                            required
+                        >
+                        <span class="form-error" id="studentName-error">Please enter your student's name.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentGrade" class="form-label">Grade for 2026–2027 <span class="form-required">*</span></label>
+                        <select id="studentGrade" name="studentGrade" class="form-input form-select" required>
+                            <option value="" disabled selected>Select a grade</option>
+                            <option value="Kindergarten">Kindergarten</option>
+                            <option value="1st Grade">1st Grade</option>
+                        </select>
+                        <span class="form-error" id="studentGrade-error">Please select a grade.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalInfo" class="form-label">Anything you'd like us to know about your student?</label>
+                    <textarea
+                        id="additionalInfo"
+                        name="additionalInfo"
+                        class="form-input form-textarea"
+                        placeholder="Learning style, interests, questions, anything at all — we read every word."
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parentName" class="form-label">Parent Name <span class="form-required">*</span></label>
+                        <input
+                            type="text"
+                            id="parentName"
+                            name="parentName"
+                            class="form-input"
+                            placeholder="First and last name"
+                            required
+                        >
+                        <span class="form-error" id="parentName-error">Please enter your name.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parentPhone" class="form-label">Phone Number <span class="form-required">*</span></label>
+                        <input
+                            type="tel"
+                            id="parentPhone"
+                            name="parentPhone"
+                            class="form-input"
+                            placeholder="(555) 000-0000"
+                            required
+                        >
+                        <span class="form-error" id="parentPhone-error">Please enter a phone number.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="parentEmail" class="form-label">Email Address <span class="form-required">*</span></label>
+                    <input
+                        type="email"
+                        id="parentEmail"
+                        name="parentEmail"
+                        class="form-input"
+                        placeholder="you@example.com"
+                        required
+                    >
+                    <span class="form-error" id="parentEmail-error">Please enter a valid email address.</span>
+                </div>
+
+                <button type="submit" class="form-submit" id="form-submit-btn">
+                    <span class="form-submit-text">Register My Interest →</span>
+                    <span class="form-submit-loading" style="display:none;">Sending…</span>
+                </button>
+
+            </form>
+
+            <!-- Success state -->
+            <div id="form-success" class="form-success" style="display:none;">
+                <div class="form-success-inner">
+                    <span class="form-success-mark">✦</span>
+                    <h3>Your child has a place in this story.</h3>
+                    <p>
+                        We have received your information and we are grateful you reached out. We will be in touch personally before July 18 — well before any public announcement — to let you know whether your child's program will open and what the next step looks like.
+                    </p>
+                    <p>
+                        In the meantime, if you have questions about the school, the curriculum, or anything else, reach us at <a href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a>.
+                    </p>
+                    <p class="form-success-close">
+                        <em>Your child was born to seek truth. We exist to make sure they get a chance.</em>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Error state -->
+            <div id="form-error-msg" class="form-error-msg" style="display:none;">
+                <p>Something went wrong sending your form. Please email us directly at <a href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a> and we will get you registered right away.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── QUOTE BREAK ── -->
+<div class="quote-break">
+    <img
+        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
+        alt=""
+        aria-hidden="true"
+    >
+    <div class="quote-break-text">
+        <blockquote>
+            "Your child was born to seek truth. We exist to make sure they get a chance."
+        </blockquote>
+        <cite>— Sandra J. Isenberger, Founder</cite>
+    </div>
+</div>
+
+<!-- ── HANDOFF ── -->
+<section class="handoff">
+    <div class="container-narrow">
+        <p>Want to understand the school before registering?</p>
+        <a href="foundation.html" class="handoff-link">
+            Read our foundation
+            <span class="handoff-arrow">→</span>
+        </a>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h3>ZION outSchool</h3>
+            <p>Truth. Discovered. Lived. Shared.</p>
+        </div>
+        <div class="footer-links">
+            <a href="foundation.html">Foundation</a>
+            <a href="how-we-learn.html">How We Learn</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="teachers.html">Teachers</a>
+            <a href="tuition.html">Tuition & Funding</a>
+            <a href="faq.html">FAQs</a>
+            <a href="partners.html">Mission Partners</a>
+            <a href="build-with-us.html">Build With Us</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="contact.html" class="footer-btn">
+            Begin the Conversation →
+        </a>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+// ── INTEREST REGISTRY FORM ──────────────────────────────────
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiqX062Wbxv1JPvxmdKJYdLjA0_vipMQRrxhw0Q0JXk3gU3mryzSbmd4CZ1vAzEUS8/exec';
+
+function initInterestForm(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Clear previous errors
+        document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.form-input').forEach(el => el.classList.remove('form-input--error'));
+
+        // Validate
+        let valid = true;
+        const required = form.querySelectorAll('[required]');
+        required.forEach(field => {
+            if (!field.value.trim()) {
+                valid = false;
+                field.classList.add('form-input--error');
+                const err = document.getElementById(field.id + '-error');
+                if (err) err.style.display = 'block';
+            }
+        });
+
+        // Email validation
+        const emailField = form.querySelector('[type="email"]');
+        if (emailField && emailField.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
+            valid = false;
+            emailField.classList.add('form-input--error');
+            const err = document.getElementById(emailField.id + '-error');
+            if (err) err.style.display = 'block';
+        }
+
+        if (!valid) return;
+
+        // Show loading state
+        const btn = form.querySelector('#form-submit-btn');
+        const btnText = form.querySelector('.form-submit-text');
+        const btnLoading = form.querySelector('.form-submit-loading');
+        btn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+
+        // Collect data
+        const data = {
+            studentName:    form.querySelector('#studentName').value.trim(),
+            studentGrade:   form.querySelector('#studentGrade').value,
+            additionalInfo: form.querySelector('#additionalInfo').value.trim(),
+            parentName:     form.querySelector('#parentName').value.trim(),
+            parentPhone:    form.querySelector('#parentPhone').value.trim(),
+            parentEmail:    form.querySelector('#parentEmail').value.trim()
+        };
+
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.result === 'success') {
+                form.style.display = 'none';
+                document.getElementById('form-success').style.display = 'block';
+                document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                throw new Error(result.message);
+            }
+        } catch(err) {
+            btn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            document.getElementById('form-error-msg').style.display = 'block';
+        }
+    });
+}
+
+// Initialize
+initInterestForm('interest-form');
+</script>
+
+</body>
+</html>

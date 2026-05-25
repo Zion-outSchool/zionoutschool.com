@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration 2026–27 | Zion outSchool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=registration-handoff-20260525">
+    <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
+</head>
+<body class="editorial-page inquiry-page registration-page">
+
+<section class="inquiry-form-section">
+<div class="inquiry-form-wrap">
+
+<!-- ── INTRO ── -->
+<div class="form-intro-header" id="form-intro">
+    <div class="form-intro-inner">
+        <span class="form-intro-wordmark">ZION <em>out</em>School</span>
+        <h1 class="form-intro-heading">Student Registration<span class="form-intro-year">2026–27</span></h1>
+        <p class="form-intro-body">
+            You have made the decision. Now let's make it official. Complete all sections below to secure your student's place.
+        </p>
+        <p class="form-intro-note">
+            ✦ Every submission is received by a real person &nbsp;·&nbsp; Registration is not complete until tuition payment or arrangement is confirmed
+        </p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="form-intro-progress">
+        <div class="reg-progress" id="reg-progress">
+            <div class="reg-progress-bar" id="reg-progress-bar"></div>
+        </div>
+        <p class="reg-progress-label" id="reg-progress-label">Step 1 of 10 — Student & Parent Information</p>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 1 — STUDENT & PARENT BASICS
+     Triggers folder creation on Next
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-1">
+    <h3 class="inquiry-section-title">Section 1 — Student Information</h3>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label class="form-label">Student's First Name <span class="form-required">*</span></label>
+            <input type="text" id="studentFirstName" class="form-input" placeholder="First name" required>
+            <span class="form-error" id="studentFirstName-error">Required.</span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Student's Last Name <span class="form-required">*</span></label>
+            <input type="text" id="studentLastName" class="form-input" placeholder="Last name" required>
+            <span class="form-error" id="studentLastName-error">Required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
+        <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
+        <span class="form-error" id="studentPreferred-error">Required.</span>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label class="form-label">Date of Birth <span class="form-required">*</span></label>
+            <input type="date" id="studentDOB" class="form-input" required>
+            <span class="form-error" id="studentDOB-error">Required.</span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Current Grade Level <span class="form-required">*</span></label>
+            <select id="studentGrade" class="form-input form-select" required>
+                <option value="" disabled selected>Select grade</option>
+                <option>2nd</option><option>3rd</option><option>4th</option>
+                <option>5th</option><option>6th</option><option>7th</option>
+                <option>8th</option><option>9th</option><option>10th</option>
+                <option>11th</option><option>12th</option>
+            </select>
+            <span class="form-error" id="studentGrade-error">Required.</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">What school is your child transferring from?</label>
+        <p class="form-hint">Please include their phone number if possible.</p>
+        <input type="text" id="previousSchool" class="form-input" placeholder="School name and phone number">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Does your child have an IEP? <span class="form-required">*</span></label>
+        <select id="studentIEP" class="form-input form-select" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <span class="form-error" id="studentIEP-error">Required.</span>
+    </div>
+
+    <div class="inquiry-section" style="margin-top:2rem;">
+        <h3 class="inquiry-section-title">Parent / Guardian Information</h3>
+        <p class="form-hint" style="margin-bottom:1.5rem;">Please provide information for all parents or guardians. Parent 1 will be contacted first in an emergency.</p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Parent / Guardian 1 — Full Name <span class="form-required">*</span></label>
+                <input type="text" id="parent1Name" class="form-input" placeholder="First and last name" required>
+                <span class="form-error" id="parent1Name-error">Required.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parent 1 — Phone <span class="form-required">*</span></label>
+                <input type="tel" id="parent1Phone" class="form-input" placeholder="(555) 000-0000" required>
+                <span class="form-error" id="parent1Phone-error">Required.</span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Parent 1 — Email <span class="form-required">*</span></label>
+                <input type="email" id="parent1Email" class="form-input" placeholder="you@example.com" required>
+                <span class="form-error" id="parent1Email-error">Required — please enter a valid email.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parent 1 — Address <span class="form-required">*</span></label>
+                <input type="text" id="parent1Address" class="form-input" placeholder="Street, City, State, ZIP" required>
+                <span class="form-error" id="parent1Address-error">Required.</span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Parent / Guardian 2 — Full Name <span class="form-optional">(optional)</span></label>
+                <input type="text" id="parent2Name" class="form-input" placeholder="First and last name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parent 2 — Phone <span class="form-optional">(optional)</span></label>
+                <input type="tel" id="parent2Phone" class="form-input" placeholder="(555) 000-0000">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Parent 2 — Email <span class="form-optional">(optional)</span></label>
+                <input type="email" id="parent2Email" class="form-input" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parent 2 — Address <span class="form-optional">(optional)</span></label>
+                <input type="text" id="parent2Address" class="form-input" placeholder="Or type SAME if same as Parent 1">
+            </div>
+        </div>
+    </div>
+
+    <div class="reg-nav">
+        <div></div>
+        <button type="button" class="form-submit" id="step1-next-btn" onclick="submitStep1()">
+            <span id="step1-next-text">Next — Create Student File →</span>
+            <span id="step1-next-loading" style="display:none;">Creating file…</span>
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 1B — FOLDER CREATED CONFIRMATION
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-1b" style="display:none;">
+    <div class="reg-folder-created">
+        <span class="form-success-mark">✦</span>
+        <h3 id="folder-created-heading">Student file created.</h3>
+        <p id="folder-created-body">
+            We have created a secure folder for your student. An email has been sent to you with upload links for any required documents — immunization records, IEP, or custody documentation. You can upload those now or return to them later.
+        </p>
+        <p class="reg-folder-note">Continue below to complete registration. Your progress is saved as you go.</p>
+    </div>
+    <div class="reg-nav">
+        <div></div>
+        <button type="button" class="form-submit" onclick="showStep('step-2')">Continue →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 2 — EMERGENCY CONTACTS
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-2" style="display:none;">
+    <h3 class="inquiry-section-title">Section 3A — Emergency Contacts</h3>
+    <p class="form-hint" style="margin-bottom:1.5rem;">Please list at least two emergency contacts. These are the people we call when something happens and we cannot reach a parent or guardian. Being listed here does not automatically authorize someone to pick up your student — pickup authorization is handled in the next section.</p>
+
+    <div class="student-block">
+        <div class="student-block-header"><span class="student-block-label">Emergency Contact 1</span></div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Full Name <span class="form-required">*</span></label>
+                <input type="text" id="ec1Name" class="form-input" required>
+                <span class="form-error" id="ec1Name-error">Required.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Relationship to Student <span class="form-required">*</span></label>
+                <input type="text" id="ec1Relationship" class="form-input" placeholder="Grandmother, uncle, etc." required>
+                <span class="form-error" id="ec1Relationship-error">Required.</span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Phone Number <span class="form-required">*</span></label>
+                <input type="tel" id="ec1Phone" class="form-input" placeholder="Reliably reachable during school hours" required>
+                <span class="form-error" id="ec1Phone-error">Required.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">May this person make routine medical decisions if you cannot be reached? <span class="form-required">*</span></label>
+                <select id="ec1Medical" class="form-input form-select" required>
+                    <option value="" disabled selected>Select one</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <span class="form-error" id="ec1Medical-error">Required.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="student-block" style="margin-top:1.5rem;">
+        <div class="student-block-header"><span class="student-block-label">Emergency Contact 2</span></div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Full Name <span class="form-required">*</span></label>
+                <input type="text" id="ec2Name" class="form-input" required>
+                <span class="form-error" id="ec2Name-error">Required.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Relationship to Student <span class="form-required">*</span></label>
+                <input type="text" id="ec2Relationship" class="form-input" required>
+                <span class="form-error" id="ec2Relationship-error">Required.</span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Phone Number <span class="form-required">*</span></label>
+                <input type="tel" id="ec2Phone" class="form-input" required>
+                <span class="form-error" id="ec2Phone-error">Required.</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">May this person make routine medical decisions? <span class="form-required">*</span></label>
+                <select id="ec2Medical" class="form-input form-select" required>
+                    <option value="" disabled selected>Select one</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <span class="form-error" id="ec2Medical-error">Required.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="student-block" style="margin-top:1.5rem;">
+        <div class="student-block-header"><span class="student-block-label">Emergency Contact 3 <span class="form-optional">(optional)</span></span></div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="ec3Name" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Relationship to Student</label>
+                <input type="text" id="ec3Relationship" class="form-input">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="ec3Phone" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">May this person make routine medical decisions?</label>
+                <select id="ec3Medical" class="form-input form-select">
+                    <option value="">N/A</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-1b')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-2','step-3',['ec1Name','ec1Relationship','ec1Phone','ec1Medical','ec2Name','ec2Relationship','ec2Phone','ec2Medical'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 3 — PICKUP AUTHORIZATION
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-3" style="display:none;">
+    <h3 class="inquiry-section-title">Section 3B — Pick-Up Authorization</h3>
+    <p class="form-hint" style="margin-bottom:1.5rem;">List every individual authorized to pick up your student. Your student will only be released to individuals on this list — or to you directly — unless you provide written or verbal permission on the day of pickup. Photo ID will be required for anyone staff does not recognize. Being listed as an emergency contact does not automatically authorize pickup.</p>
+
+    <div class="student-block">
+        <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 1</span></div>
+        <div class="form-row">
+            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup1Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup1Phone" class="form-input"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup1Rel" class="form-input"></div>
+    </div>
+
+    <div class="student-block" style="margin-top:1rem;">
+        <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 2</span></div>
+        <div class="form-row">
+            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup2Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup2Phone" class="form-input"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup2Rel" class="form-input"></div>
+    </div>
+
+    <div class="student-block" style="margin-top:1rem;">
+        <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 3 <span class="form-optional">(optional)</span></span></div>
+        <div class="form-row">
+            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup3Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup3Phone" class="form-input"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup3Rel" class="form-input"></div>
+    </div>
+
+    <div class="reg-policy-block" style="margin-top:2rem;">
+        <h4>Section 3C — Custody & Legal Restrictions</h4>
+        <p>Both legal parents or guardians are assumed to have pickup rights unless a court order states otherwise. If a custody agreement restricts a legal parent or guardian from picking up your student, we need documentation on file.</p>
+        <div class="form-group" style="margin-top:1.25rem;">
+            <label class="form-label">Is there a court order or custody agreement that restricts a legal parent or guardian from picking up your student? <span class="form-required">*</span></label>
+            <select id="custodyOrder" class="form-input form-select" required>
+                <option value="" disabled selected>Select one</option>
+                <option value="No">No</option>
+                <option value="Yes - I will provide documentation">Yes — I will provide documentation</option>
+            </select>
+            <span class="form-error" id="custodyOrder-error">Required.</span>
+        </div>
+        <div class="form-group" id="custody-upload-note" style="display:none;">
+            <div class="faq-callout faq-callout--warning">
+                <p><strong>Please upload the relevant pages of your court order using the link sent to your email</strong> — only the pages specifying pickup restrictions are needed. PDF or image accepted. If you cannot upload now, you must provide a physical copy before your student's first day.</p>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:1.25rem;">
+            <label class="form-label">Type your full name to acknowledge that without court documentation on file, ZION outSchool will release your student to either legal parent or guardian. <span class="form-required">*</span></label>
+            <input type="text" id="custodyAck" class="form-input" placeholder="Your full legal name" required>
+            <span class="form-error" id="custodyAck-error">Required.</span>
+        </div>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-2')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-3','step-4',['custodyOrder','custodyAck'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 4 — HEALTH INFORMATION
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-4" style="display:none;">
+    <h3 class="inquiry-section-title">Section 4 — Immunization Records</h3>
+    <p class="form-hint" style="margin-bottom:1rem;">Arkansas law requires schools to maintain immunization records for all enrolled students (Ark. Code Ann. § 6-18-702).</p>
+
+    <div class="form-group">
+        <label class="form-label">Immunization status <span class="form-required">*</span></label>
+        <select id="immunizationStatus" class="form-input form-select" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="No — student is fully immunized">No exemption — student is fully immunized</option>
+            <option value="Yes — religious exemption">Yes — religious exemption</option>
+            <option value="Yes — medical exemption">Yes — medical exemption</option>
+            <option value="In progress — records being obtained">In progress — records being obtained</option>
+        </select>
+        <span class="form-error" id="immunizationStatus-error">Required.</span>
+    </div>
+
+    <div class="faq-callout faq-callout--navy" style="margin-top:1.25rem;">
+        <p><strong>Please upload your student's immunization records</strong> using the secure link sent to your email when your student's file was created. If you cannot upload now, bring a physical copy on your student's first day.</p>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 5 — Health Information</h3>
+
+    <div class="form-group">
+        <label class="form-label">Does your child have any life-threatening allergies or medical conditions? <span class="form-required">*</span></label>
+        <select id="lifeThreateningAllergy" class="form-input form-select" required onchange="toggleField('allergyDetails-group', this.value === 'Yes')">
+            <option value="" disabled selected>Select one</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <span class="form-error" id="lifeThreateningAllergy-error">Required.</span>
+    </div>
+
+    <div class="form-group" id="allergyDetails-group" style="display:none;">
+        <label class="form-label">Please describe — include EpiPen requirements or other emergency protocols.</label>
+        <textarea id="allergyDetails" class="form-input form-textarea" rows="4"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Does your student take any regularly prescribed medication? <span class="form-required">*</span></label>
+        <select id="prescribedMedication" class="form-input form-select" required onchange="toggleField('medication-section', this.value === 'Yes')">
+            <option value="" disabled selected>Select one</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <span class="form-error" id="prescribedMedication-error">Required.</span>
+    </div>
+
+    <div id="medication-section" style="display:none;">
+        <div class="student-block">
+            <div class="student-block-header"><span class="student-block-label">Medication Details</span></div>
+
+            <div class="form-group">
+                <label class="form-label">Does your student require medication during school hours?</label>
+                <select id="medicationDuringSchool" class="form-input form-select">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Medication name, dosage, and time to be administered</label>
+                <p class="form-hint">Example: Metformin 500mg — with lunch, approximately 12:00 PM</p>
+                <textarea id="medicationDetails" class="form-input form-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Who administers this medication?</label>
+                <select id="medicationAdmin" class="form-input form-select">
+                    <option value="">Select one</option>
+                    <option value="My student self-administers">My student self-administers</option>
+                    <option value="A staff member must administer it">A staff member must administer it</option>
+                    <option value="Parent will come to school to administer">Parent will come to administer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Storage requirements</label>
+                <input type="text" id="medicationStorage" class="form-input" placeholder="e.g. refrigeration required, original packaging">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Does your student take any medication that affects attention, focus, mood, or behavior?</label>
+                <select id="medicationBehavior" class="form-input form-select" onchange="toggleField('medicationBehaviorInfo-group', this.value === 'Yes')">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="medicationBehaviorInfo-group" style="display:none;">
+                <label class="form-label">What should staff know?</label>
+                <p class="form-hint">You do not need to disclose the medication name. We are asking what staff need to observe — for example: "If my student seems unusually distracted, a missed dose may be a factor."</p>
+                <textarea id="medicationBehaviorInfo" class="form-input form-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Is there anything about your student's medication routine that could affect their school day if disrupted?</label>
+                <textarea id="medicationDisruption" class="form-input form-textarea" rows="3" placeholder="Missed doses, side effects, end-of-day fatigue, etc."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">Does your student carry or require access to emergency medication? <span class="form-required">*</span></label>
+        <select id="emergencyMedication" class="form-input form-select" required onchange="toggleField('emergencyMedDetails-group', this.value !== 'No')">
+            <option value="" disabled selected>Select one</option>
+            <option value="No">No</option>
+            <option value="Yes — EpiPen">Yes — EpiPen</option>
+            <option value="Yes — Inhaler">Yes — Inhaler</option>
+            <option value="Yes — other emergency medication">Yes — other emergency medication</option>
+        </select>
+        <span class="form-error" id="emergencyMedication-error">Required.</span>
+    </div>
+
+    <div class="form-group" id="emergencyMedDetails-group" style="display:none;">
+        <label class="form-label">Please describe and specify storage location during the school day.</label>
+        <p class="form-hint">Example: "EpiPen kept in student's backpack at all times. Student knows how to self-administer. Staff should call 911 immediately if used."</p>
+        <textarea id="emergencyMedDetails" class="form-input form-textarea" rows="3"></textarea>
+        <label class="form-label" style="margin-top:1rem;">Staff training needed?</label>
+        <select id="staffTraining" class="form-input form-select">
+            <option value="Student self-administers — no staff training needed">Student self-administers — no training needed</option>
+            <option value="Staff training would be helpful — please contact me">Staff training would be helpful — contact me</option>
+            <option value="Staff training is required — please contact me before the first day">Staff training required — contact me before first day</option>
+        </select>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-3')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-4','step-5',['immunizationStatus','lifeThreateningAllergy','prescribedMedication','emergencyMedication'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 5 — SIBLINGS & EFA
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-5" style="display:none;">
+    <h3 class="inquiry-section-title">Section 6 — Siblings</h3>
+
+    <div class="form-group">
+        <label class="form-label">Does your student have siblings also enrolled at ZION outSchool? <span class="form-required">*</span></label>
+        <select id="siblings" class="form-input form-select" required onchange="toggleField('siblingNames-group', this.value === 'Yes')">
+            <option value="" disabled selected>Select one</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <span class="form-error" id="siblings-error">Required.</span>
+    </div>
+
+    <div class="form-group" id="siblingNames-group" style="display:none;">
+        <label class="form-label">Please list their names and ages.</label>
+        <textarea id="siblingNames" class="form-input form-textarea" rows="3"></textarea>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 7 — EFA Information</h3>
+
+    <div class="form-group">
+        <label class="form-label">Are you using Arkansas EFA funds to pay tuition?</label>
+        <select id="efaStatus" class="form-input form-select" onchange="toggleField('classwallet-group', this.value.startsWith('Yes'))">
+            <option value="">Select one</option>
+            <option value="Yes — I have an active EFA account">Yes — I have an active EFA account</option>
+            <option value="Yes — I am in the process of applying">Yes — I am in the process of applying</option>
+            <option value="No — I will pay tuition directly">No — I will pay tuition directly</option>
+            <option value="Not sure yet — I need more information">Not sure yet — I need more information</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="classwallet-group" style="display:none;">
+        <label class="form-label">Please confirm your ClassWallet account is active and linked to ZION outSchool.</label>
+        <select id="classWallet" class="form-input form-select">
+            <option value="">Select one</option>
+            <option value="Yes, my ClassWallet account is active and linked">Yes — active and linked</option>
+            <option value="Not yet — still setting up">Not yet — still setting up</option>
+        </select>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-4')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-5','step-6',['siblings'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 6 — FERPA & RECORDS
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-6" style="display:none;">
+    <h3 class="inquiry-section-title">Section 8 — FERPA Notice & Records</h3>
+
+    <div class="reg-policy-block">
+        <h4>Your Rights Under FERPA</h4>
+        <p>The Family Educational Rights and Privacy Act (FERPA) affords parents and students over 18 certain rights with respect to the student's education records. These rights include:</p>
+        <ol style="margin:1rem 0 0 1.5rem; line-height:2;">
+            <li>The right to inspect and review education records within 45 days of a request.</li>
+            <li>The right to request amendment of records believed to be inaccurate or misleading.</li>
+            <li>The right to provide written consent before records are disclosed to third parties, except as authorized by law.</li>
+            <li>The right to file a complaint with the U.S. Department of Education.</li>
+        </ol>
+        <p style="margin-top:1rem;">Under Arkansas ADE Rules (351), student permanent records will be maintained until your student receives a high school diploma or is beyond compulsory attendance age. Upon transfer to another school, ZION outSchool will provide a copy of the student's permanent record to the receiving school within 10 school days of request.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.75rem;">
+        <label class="form-label">Authorization for Records Request <span class="form-required">*</span></label>
+        <p class="form-hint">Type the following exactly, filling in the blanks with your name and your student's name:</p>
+        <p class="reg-sig-prompt">I ____________, the parent/guardian of ____________ authorize ZION outSchool to request my student's education records from their previous school(s).</p>
+        <textarea id="ferpaAck" class="form-input form-textarea" rows="3" placeholder="Type the full statement above with your names filled in." required></textarea>
+        <span class="form-error" id="ferpaAck-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
+        <input type="text" id="ferpaSignature" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="ferpaSignature-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Today's Date <span class="form-required">*</span></label>
+        <input type="date" id="ferpaDate" class="form-input" required>
+        <span class="form-error" id="ferpaDate-error">Required.</span>
+    </div>
+
+    <div class="form-group" style="margin-top:2rem;">
+        <label class="form-label">Authorization to Maintain Records <span class="form-required">*</span></label>
+        <p class="reg-sig-prompt">I ____________, the parent/guardian of ____________ authorize ZION outSchool to maintain my student's education records as required by FERPA and ADE 351.</p>
+        <textarea id="recordsAck" class="form-input form-textarea" rows="3" placeholder="Type the full statement above with your names filled in." required></textarea>
+        <span class="form-error" id="recordsAck-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
+        <input type="text" id="recordsSignature" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="recordsSignature-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Today's Date <span class="form-required">*</span></label>
+        <input type="date" id="recordsDate" class="form-input" required>
+        <span class="form-error" id="recordsDate-error">Required.</span>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-5')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-6','step-7',['ferpaAck','ferpaSignature','ferpaDate','recordsAck','recordsSignature','recordsDate'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 7 — PARENT AGREEMENT & CODE OF CONDUCT
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-7" style="display:none;">
+    <h3 class="inquiry-section-title">Section 9 — Parent Agreement</h3>
+
+    <div class="reg-policy-block">
+        <h4>Our Commitment to You</h4>
+        <p>ZION outSchool will provide a Christ-centered, literature-driven, inquiry-based learning environment. We will maintain high moral and academic standards in all instruction and materials, support each child's unique learning path, communicate regularly with parents about student progress, and ensure a safe, respectful, and welcoming environment for all students.</p>
+
+        <h4 style="margin-top:1.5rem;">Parent / Guardian Commitment</h4>
+        <p>I agree to support the ZION outSchool mission and values; oversee at-home reading and assignments; ensure consistent attendance and communicate promptly about absences; encourage respectful behavior toward staff and other students; honor financial commitments by paying tuition and fees on time; and partner in accountability for my child's learning.</p>
+
+        <h4 style="margin-top:1.5rem;">Student Commitment</h4>
+        <p>I agree to arrive on time and prepared; set a daily learning goal; treat fellow students, facilitators, and materials with respect; take ownership of my learning including reading OWLs and completing assigned projects; and engage with curiosity.</p>
+
+        <h4 style="margin-top:1.5rem;">Tuition & Fees</h4>
+        <ul style="margin:0.75rem 0 0 1.5rem; line-height:2;">
+            <li>Annual Curriculum Fee: $200 — charged once per year, all students</li>
+            <li>Tuition: $600/month — paid in advance; absences do not reduce tuition</li>
+            <li>Unit Fee: $135/unit × 4 units per year</li>
+            <li>Late Payment: 10% late fee after a 5-day grace period</li>
+            <li>Withdrawal: 30-day written notice required; tuition is non-refundable for the current month</li>
+        </ul>
+    </div>
+
+    <div class="form-group" style="margin-top:1.75rem;">
+        <label class="form-label">I have read and understand the Parent Agreement. Type your full name to signify agreement. <span class="form-required">*</span></label>
+        <input type="text" id="parentAgreementSig" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="parentAgreementSig-error">Required.</span>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 10 — Student Code of Conduct</h3>
+
+    <div class="reg-policy-block">
+        <p><strong>1. Show Respect</strong> — Speak kindly to everyone. Listen when someone else is talking. Take care of other people's feelings, space, and belongings.</p>
+        <p style="margin-top:0.75rem;"><strong>2. Be Ready to Learn</strong> — Arrive on time and with everything you need. Set your daily learning goal and work toward it. Try your best, even when something feels hard.</p>
+        <p style="margin-top:0.75rem;"><strong>3. Take Ownership</strong> — Be responsible for your own work and behavior. Read your OWLs and complete assignments on time. Ask questions and look for answers.</p>
+        <p style="margin-top:0.75rem;"><strong>4. Work Together</strong> — Help others when you can. Be a good teammate. Celebrate other people's ideas and successes.</p>
+        <p style="margin-top:0.75rem;"><strong>5. Live Our Values</strong> — Show faith in God by using your talents to do good. Protect the spirit of our classroom.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.75rem;">
+        <label class="form-label">Parent — type your full name to acknowledge you have read this Code of Conduct with your student. <span class="form-required">*</span></label>
+        <input type="text" id="codeOfConductParent" class="form-input" placeholder="Parent's full legal name" required>
+        <span class="form-error" id="codeOfConductParent-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="codeOfConductStudent" class="form-input" placeholder="Student's full name" required>
+        <span class="form-error" id="codeOfConductStudent-error">Required.</span>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-6')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-7','step-8',['parentAgreementSig','codeOfConductParent','codeOfConductStudent'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 8 — TUITION, PHOTO & TECHNOLOGY
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-8" style="display:none;">
+    <h3 class="inquiry-section-title">Section 11 — Tuition & Attendance Policy</h3>
+
+    <div class="reg-policy-block">
+        <p>ZION outSchool operates like a reserved space in a program, not a pay-per-day service. When your child enrolls, their spot is held for them all month. Tuition is $600/month paid in advance. Absences are not deducted from tuition. A 10% late fee applies after a 5-day grace period. Withdrawal requires 30-day written notice. Tuition is non-refundable for the current month.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">Type your full name to acknowledge the Attendance & Tuition Policy. <span class="form-required">*</span></label>
+        <input type="text" id="tuitionSig" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="tuitionSig-error">Required.</span>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 12 — Photo & Media Release</h3>
+
+    <div class="reg-policy-block">
+        <p>I give permission for photographs and/or video recordings of my child to be taken during ZION outSchool activities for educational, promotional, and community purposes. These may appear in class newsletters, printed materials, the ZION outSchool website or social media, and curriculum materials. My child's name will not be published publicly without my explicit written consent. I may revoke this consent at any time by providing written notice.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">Photo / Media Release <span class="form-required">*</span></label>
+        <select id="photoConsent" class="form-input form-select" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="Yes, I give permission">Yes — I give permission</option>
+            <option value="No, I do not give permission">No — I do not give permission</option>
+        </select>
+        <span class="form-error" id="photoConsent-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="photoSig" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="photoSig-error">Required.</span>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 13 — Technology & Internet Use</h3>
+
+    <div class="reg-policy-block">
+        <p>Technology at ZION outSchool is a tool in service of inquiry — not a destination. Students use digital tools to support learning, organize research, and document discoveries.</p>
+        <p style="margin-top:0.75rem;"><strong>Students agree to:</strong> use technology for school-related learning only; treat all devices with care; never share passwords except with a parent or guardian; communicate respectfully online; report any unsafe online content immediately; use search tools as one part of inquiry, not a substitute for thinking.</p>
+        <p style="margin-top:0.75rem;"><strong>Parents agree to:</strong> support responsible technology use at home; monitor their child's online activity as appropriate; ensure their child brings a charged device on school days.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">Parent — type your full name to acknowledge the Technology Agreement. <span class="form-required">*</span></label>
+        <input type="text" id="techAgreementParent" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="techAgreementParent-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="techAgreementStudent" class="form-input" placeholder="Student's full name" required>
+        <span class="form-error" id="techAgreementStudent-error">Required.</span>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Cell Phone Policy</h3>
+
+    <div class="reg-policy-block">
+        <p>Cell phones are not permitted during school hours. This is not a negotiable guideline — it is a condition of enrollment. A phone in a room changes the room. Students who arrive with a phone will be asked to leave it in their bag, powered off, for the duration of the school day. We ask that parents support this policy by not texting or calling students during school hours except in genuine emergencies. Direct contact information will be provided the first week of school.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">Parent — type your full name to acknowledge the Cell Phone Policy. <span class="form-required">*</span></label>
+        <input type="text" id="cellPhoneParent" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="cellPhoneParent-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="cellPhoneStudent" class="form-input" placeholder="Student's full name" required>
+        <span class="form-error" id="cellPhoneStudent-error">Required.</span>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-7')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-8','step-9',['tuitionSig','photoConsent','photoSig','techAgreementParent','techAgreementStudent','cellPhoneParent','cellPhoneStudent'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 9 — MEDICAL CONSENT & LIABILITY
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-9" style="display:none;">
+    <h3 class="inquiry-section-title">Section 14 — Emergency Medical Treatment Consent</h3>
+
+    <div class="reg-policy-block">
+        <p>In the event of a medical emergency involving my child, I authorize ZION outSchool staff to seek and obtain emergency medical treatment as deemed necessary by medical professionals. Every effort will be made to contact me and my emergency contacts before treatment, but if I cannot be reached, this consent authorizes staff to act in my child's best interest.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">I consent to Emergency Medical Treatment as described above. <span class="form-required">*</span></label>
+        <select id="medicalConsent" class="form-input form-select" required onchange="toggleField('medicalConsentNo-group', this.value.startsWith('No'))">
+            <option value="" disabled selected>Select one</option>
+            <option value="Yes, I consent to Emergency Medical Treatment as described above.">Yes — I consent</option>
+            <option value="No, I do not consent — see explanation below.">No — I do not consent</option>
+        </select>
+        <span class="form-error" id="medicalConsent-error">Required.</span>
+    </div>
+    <div class="form-group" id="medicalConsentNo-group" style="display:none;">
+        <label class="form-label">If no, please explain how you would like us to proceed in the event of an emergency.</label>
+        <textarea id="noEmergencyExplanation" class="form-input form-textarea" rows="6"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="medicalConsentSig" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="medicalConsentSig-error">Required.</span>
+    </div>
+
+    <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 15 — Liability Waiver</h3>
+
+    <div class="reg-policy-block">
+        <p>I understand that participation in ZION outSchool involves academic, creative, and physical activities including classroom learning, literature-based projects, science experiments, outdoor activities, and group work. I acknowledge these activities involve inherent risks including the possibility of minor injuries. I voluntarily assume all such risks associated with my child's participation. I agree not to hold ZION outSchool, its staff, volunteers, or representatives responsible for any injury, illness, or loss except in cases of gross negligence or willful misconduct.</p>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+        <label class="form-label">I have read and agree to the Liability Waiver. <span class="form-required">*</span></label>
+        <select id="liabilityAck" class="form-input form-select" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="Yes, I have read and agree to the Liability Waiver.">Yes — I have read and agree</option>
+        </select>
+        <span class="form-error" id="liabilityAck-error">Required.</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <input type="text" id="liabilitySig" class="form-input" placeholder="Your full legal name" required>
+        <span class="form-error" id="liabilitySig-error">Required.</span>
+    </div>
+
+    <div class="reg-nav">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-8')">← Back</button>
+        <button type="button" class="form-submit" onclick="nextStep('step-9','step-10',['medicalConsent','medicalConsentSig','liabilityAck','liabilitySig'])">Next →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     STEP 10 — FINAL CHECKLIST & SUBMIT
+══════════════════════════════════════════════════ -->
+<div class="reg-step" id="step-10" style="display:none;">
+    <h3 class="inquiry-section-title">Section 16 — Final Confirmation</h3>
+
+    <p style="margin-bottom:1.5rem; font-family:var(--serif); font-size:1.1rem; color:var(--text);">Please confirm all of the following before submitting. This is your final review before your registration is complete.</p>
+
+    <div class="reg-checklist">
+        <label class="reg-check-item"><input type="checkbox" id="check1"> Student information is complete and accurate</label>
+        <label class="reg-check-item"><input type="checkbox" id="check2"> Parent / Guardian information is complete</label>
+        <label class="reg-check-item"><input type="checkbox" id="check3"> Emergency contacts are complete and accurate</label>
+        <label class="reg-check-item"><input type="checkbox" id="check4"> Pick-Up Authorization is complete</label>
+        <label class="reg-check-item"><input type="checkbox" id="check5"> I have read and acknowledged the Parent Agreement</label>
+        <label class="reg-check-item"><input type="checkbox" id="check6"> I have read and acknowledged the Student Code of Conduct</label>
+        <label class="reg-check-item"><input type="checkbox" id="check7"> I have read and acknowledged the Attendance & Tuition Policy</label>
+        <label class="reg-check-item"><input type="checkbox" id="check8"> I have completed the Photo / Media Release</label>
+        <label class="reg-check-item"><input type="checkbox" id="check9"> I have read and acknowledged the Technology & Internet Use Agreement</label>
+        <label class="reg-check-item"><input type="checkbox" id="check10"> I have provided Emergency Medical Treatment consent</label>
+        <label class="reg-check-item"><input type="checkbox" id="check11"> I have read and acknowledged the Liability Waiver</label>
+        <label class="reg-check-item"><input type="checkbox" id="check12"> I understand tuition payment or payment arrangement is required to confirm enrollment</label>
+    </div>
+    <span class="form-error" id="checklist-error" style="display:none;">Please confirm all items before submitting.</span>
+
+    <div class="inquiry-submit-wrap" style="margin-top:2rem;">
+        <button type="button" class="form-submit inquiry-submit" id="final-submit-btn" onclick="submitFinal()">
+            <span id="final-submit-text">Complete Registration →</span>
+            <span id="final-submit-loading" style="display:none;">Submitting…</span>
+        </button>
+        <p class="inquiry-submit-note">After submission you will receive a confirmation email with all completed documents attached.</p>
+    </div>
+
+    <div class="reg-nav" style="margin-top:1rem;">
+        <button type="button" class="reg-back-btn" onclick="showStep('step-9')">← Back</button>
+        <div></div>
+    </div>
+</div>
+
+<!-- ── SUCCESS ── -->
+<div id="reg-success" class="inquiry-success" style="display:none;">
+    <span class="form-success-mark">✦</span>
+    <h3>Registration complete.</h3>
+    <p>We have received everything you submitted. Copies of all completed registration documents have been sent to your email for your records.</p>
+    <p>Someone from ZION outSchool will reach out within 48 hours to confirm your student's place and discuss tuition payment or arrangement to secure enrollment.</p>
+    <p>If you have not yet uploaded immunization records, IEP documents, or custody documentation, please do so using the links sent to your email when your student's file was created.</p>
+    <p class="form-success-close"><em>Your child was born to seek truth. We exist to make sure they get a chance.</em></p>
+ 
+</div><!-- /reg-success -->
+
+<!-- ── ERROR ── -->
+<div id="reg-error" class="form-error-msg" style="display:none;">
+    <p>Something went wrong with your submission. Please email us directly at <a href="mailto:admissions@zionoutschool.com">admissions@zionoutschool.com</a> and we will complete your registration manually within 24 hours.</p>
+    <p id="reg-error-detail" style="display:none;"></p>
+</div>
+
+</div>
+</section>
+ 
+ 
+<!-- ── FOOTER — paste immediately before </body> ── -->
+<footer class="reg-footer">
+    <div class="reg-footer-inner">
+ 
+        
+ 
+        <div class="reg-footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="/index.html#vision">Vision</a></li>
+                <li><a href="/index.html#mission">Mission</a></li>
+                <li><a href="/index.html#methods">Methods</a></li>
+                <li><a href="/index.html#curriculum">Curriculum</a></li>
+                <li><a href="/index.html#schedule">Schedule</a></li>
+                <li><a href="/index.html#tuition">Tuition &amp; Fees</a></li>
+                <li><a href="/index.html#teacher">Our Teacher</a></li>
+                <li><a href="/index.html#faq">FAQ</a></li>
+                <li><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+ 
+        <div class="reg-footer-col">
+            <h4>Contact</h4>
+            <address>
+                Zion outSchool<br>
+                Huntsville, Arkansas<br><br>
+                <a href="tel:509-380-6364">509-380-6364</a><br>
+                Text or call<br><br>
+                <a href="mailto:admissions@zionoutschool.com">admissions@zionoutschool.com</a>
+            </address>
+        </div>
+ 
+    </div>
+    <div class="reg-footer-bottom">
+        <p>&copy; 2026 Zion outSchool. Faith &middot; Family &middot; Freedom.</p>
+        <p>Founded upon the doctrines of The Church of Jesus Christ of Latter-day Saints.</p>
+    </div>
+</footer>
+ 
+<script>
+// ── REGISTRATION FORM CONTROLLER ────────────────────────────
+const REG_URL = 'https://script.google.com/macros/s/AKfycbyVPXcL9HaN1Th1nG_Z7eurXd6KbM67uSIsX6qLZ5RXWCh6gfsYXjRkwYMRxdNUYMkqHg/exec';
+
+// State — persists across steps
+const reg = {
+    studentFolderId: '',
+    regDocsFolderId: '',
+    immunFolderId:   '',
+    iepFolderId:     '',
+    custodyFolderId: ''
+};
+
+const savedReg = sessionStorage.getItem('zosRegistrationState');
+if (savedReg) {
+    try {
+        Object.assign(reg, JSON.parse(savedReg));
+    } catch(err) {
+        sessionStorage.removeItem('zosRegistrationState');
+    }
+}
+
+const STEPS = [
+    'step-1','step-1b','step-2','step-3','step-4',
+    'step-5','step-6','step-7','step-8','step-9','step-10'
+];
+
+const STEP_LABELS = {
+    'step-1':  'Step 1 of 10 — Student & Parent Information',
+    'step-1b': 'Step 1 of 10 — File Created',
+    'step-2':  'Step 2 of 10 — Emergency Contacts',
+    'step-3':  'Step 3 of 10 — Pick-Up Authorization',
+    'step-4':  'Step 4 of 10 — Health Information',
+    'step-5':  'Step 5 of 10 — Siblings & EFA',
+    'step-6':  'Step 6 of 10 — FERPA & Records',
+    'step-7':  'Step 7 of 10 — Parent Agreement & Code of Conduct',
+    'step-8':  'Step 8 of 10 — Tuition, Photo & Technology',
+    'step-9':  'Step 9 of 10 — Medical Consent & Liability',
+    'step-10': 'Step 10 of 10 — Final Review & Submit'
+};
+
+function showStep(stepId, shouldScroll = true) {
+    STEPS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById(stepId);
+    if (target) {
+        target.style.display = 'block';
+        if (shouldScroll) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+    updateProgress(stepId);
+}
+
+function updateProgress(stepId) {
+    const idx   = STEPS.indexOf(stepId);
+    const total = 10;
+    const step  = Math.min(idx + 1, total);
+    const pct   = Math.round((step / total) * 100);
+    const bar   = document.getElementById('reg-progress-bar');
+    const label = document.getElementById('reg-progress-label');
+    if (bar)   bar.style.width = pct + '%';
+    if (label) label.textContent = STEP_LABELS[stepId] || '';
+}
+
+function toggleField(groupId, show) {
+    const el = document.getElementById(groupId);
+    if (el) el.style.display = show ? 'block' : 'none';
+}
+
+function saveRegState() {
+    sessionStorage.setItem('zosRegistrationState', JSON.stringify(reg));
+}
+
+async function parseRegistrationResponse(res) {
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch(err) {
+        throw new Error('Registration server returned a non-JSON response. This usually means the Apps Script hit an internal error before it could finish.');
+    }
+}
+
+function showRegistrationError(message) {
+    const error = document.getElementById('reg-error');
+    const detail = document.getElementById('reg-error-detail');
+    if (detail && message) {
+        detail.textContent = message;
+        detail.style.display = 'block';
+    }
+    if (error) {
+        error.style.display = 'block';
+        error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+// Custody toggle
+document.addEventListener('change', function(e) {
+    if (e.target.id === 'custodyOrder') {
+        toggleField('custody-upload-note', e.target.value.startsWith('Yes'));
+    }
+});
+
+// ── VALIDATION ──────────────────────────────────────────────
+function validateFields(ids) {
+    let valid = true;
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const errEl = document.getElementById(id + '-error');
+        if (!el.value.trim()) {
+            valid = false;
+            el.classList.add('form-input--error');
+            if (errEl) errEl.style.display = 'block';
+        } else {
+            el.classList.remove('form-input--error');
+            if (errEl) errEl.style.display = 'none';
+        }
+    });
+    // Email check
+    if (ids.includes('parent1Email')) {
+        const email = document.getElementById('parent1Email');
+        if (email && email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+            valid = false;
+            email.classList.add('form-input--error');
+            const errEl = document.getElementById('parent1Email-error');
+            if (errEl) errEl.style.display = 'block';
+        }
+    }
+    if (!valid) {
+        const first = document.querySelector('.form-input--error');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return valid;
+}
+
+function nextStep(currentStep, nextStepId, requiredIds) {
+    if (!validateFields(requiredIds)) return;
+    showStep(nextStepId);
+}
+
+// ── STEP 1 — FOLDER CREATION ────────────────────────────────
+async function submitStep1() {
+    const required = [
+        'studentFirstName','studentLastName','studentDOB',
+        'studentPreferred','studentGrade','studentIEP',
+        'parent1Name','parent1Phone','parent1Email','parent1Address'
+    ];
+    if (!validateFields(required)) return;
+
+    const btn     = document.getElementById('step1-next-btn');
+    const txt     = document.getElementById('step1-next-text');
+    const loading = document.getElementById('step1-next-loading');
+    btn.disabled      = true;
+    txt.style.display     = 'none';
+    loading.style.display = 'inline';
+
+    const data = {
+        step:              '1',
+        studentFirstName:  v('studentFirstName'),
+        studentLastName:   v('studentLastName'),
+        studentPreferred:  v('studentPreferred'),
+        parentName:        v('parent1Name'),
+        parentEmail:       v('parent1Email')
+    };
+
+    try {
+        const res    = await fetch(REG_URL, { method:'POST', body: JSON.stringify(data) });
+        const result = await parseRegistrationResponse(res);
+
+        if (result.result === 'success') {
+            reg.studentFolderId = result.studentFolderId || '';
+            reg.regDocsFolderId = result.regDocsFolderId || '';
+            reg.immunFolderId   = result.immunFolderId   || '';
+            reg.iepFolderId     = result.iepFolderId     || '';
+            reg.custodyFolderId = result.custodyFolderId || '';
+            saveRegState();
+
+            if (!reg.studentFolderId || !reg.regDocsFolderId) {
+                throw new Error('The student file was created, but the registration folder IDs were not returned by the Apps Script.');
+            }
+
+            const heading = document.getElementById('folder-created-heading');
+            const body    = document.getElementById('folder-created-body');
+            if (heading) heading.textContent =
+                v('studentFirstName') + "'s file has been created.";
+            if (body) body.textContent =
+                'We have created a secure folder for ' + v('studentFirstName') +
+                '. An email has been sent to ' + v('parent1Email') +
+                ' with upload links for immunization records, IEP documents, and custody documentation if applicable. You can upload those now or return to them later — continue below to complete registration.';
+
+            showStep('step-1b');
+        } else {
+            throw new Error(result.message || 'Unknown error');
+        }
+    } catch(err) {
+        btn.disabled          = false;
+        txt.style.display     = 'inline';
+        loading.style.display = 'none';
+        alert('Something went wrong creating your student file. Please try again or email admissions@zionoutschool.com\n\n' + err.message);
+    }
+}
+
+// ── FINAL SUBMISSION ────────────────────────────────────────
+async function submitFinal() {
+    if (!reg.studentFolderId || !reg.regDocsFolderId) {
+        showRegistrationError('Your student folder was created, but this page no longer has the folder reference needed to save the final registration. Please do not resubmit from this screen; email admissions@zionoutschool.com so we can connect the existing folder to your registration.');
+        return;
+    }
+
+    // Check all checkboxes
+    const checks = ['check1','check2','check3','check4','check5','check6',
+                    'check7','check8','check9','check10','check11','check12'];
+    const allChecked = checks.every(id => {
+        const el = document.getElementById(id);
+        return el && el.checked;
+    });
+    if (!allChecked) {
+        document.getElementById('checklist-error').style.display = 'block';
+        return;
+    }
+    document.getElementById('checklist-error').style.display = 'none';
+
+    const btn     = document.getElementById('final-submit-btn');
+    const txt     = document.getElementById('final-submit-text');
+    const loading = document.getElementById('final-submit-loading');
+    btn.disabled      = true;
+    txt.style.display     = 'none';
+    loading.style.display = 'inline';
+
+    const data = {
+        step: '2',
+        studentFolderId:     reg.studentFolderId,
+        regDocsFolderId:     reg.regDocsFolderId,
+        immunFolderId:       reg.immunFolderId,
+        iepFolderId:         reg.iepFolderId,
+        custodyFolderId:     reg.custodyFolderId,
+
+        studentFirstName:    v('studentFirstName'),
+        studentLastName:     v('studentLastName'),
+        studentPreferred:    v('studentPreferred'),
+        studentDOB:          v('studentDOB'),
+        studentGrade:        v('studentGrade'),
+        previousSchool:      v('previousSchool'),
+        studentIEP:          v('studentIEP'),
+
+        parent1Name:         v('parent1Name'),
+        parent1Phone:        v('parent1Phone'),
+        parent1Email:        v('parent1Email'),
+        parent1Address:      v('parent1Address'),
+        parent2Name:         v('parent2Name'),
+        parent2Phone:        v('parent2Phone'),
+        parent2Email:        v('parent2Email'),
+        parent2Address:      v('parent2Address'),
+
+        ec1Name:             v('ec1Name'),
+        ec1Relationship:     v('ec1Relationship'),
+        ec1Phone:            v('ec1Phone'),
+        ec1Medical:          v('ec1Medical'),
+        ec2Name:             v('ec2Name'),
+        ec2Relationship:     v('ec2Relationship'),
+        ec2Phone:            v('ec2Phone'),
+        ec2Medical:          v('ec2Medical'),
+        ec3Name:             v('ec3Name'),
+        ec3Relationship:     v('ec3Relationship'),
+        ec3Phone:            v('ec3Phone'),
+        ec3Medical:          v('ec3Medical'),
+
+        pickup1Name:         v('pickup1Name'),
+        pickup1Phone:        v('pickup1Phone'),
+        pickup1Relationship: v('pickup1Rel'),
+        pickup2Name:         v('pickup2Name'),
+        pickup2Phone:        v('pickup2Phone'),
+        pickup2Relationship: v('pickup2Rel'),
+        pickup3Name:         v('pickup3Name'),
+        pickup3Phone:        v('pickup3Phone'),
+        pickup3Relationship: v('pickup3Rel'),
+
+        custodyOrder:        v('custodyOrder'),
+        custodyAck:          v('custodyAck'),
+        immunizationStatus:  v('immunizationStatus'),
+
+        lifeThreateningAllergy: v('lifeThreateningAllergy'),
+        allergyDetails:         v('allergyDetails'),
+        prescribedMedication:   v('prescribedMedication'),
+        medicationDuringSchool: v('medicationDuringSchool'),
+        medicationDetails:      v('medicationDetails'),
+        medicationAdmin:        v('medicationAdmin'),
+        medicationStorage:      v('medicationStorage'),
+        medicationBehavior:     v('medicationBehavior'),
+        medicationBehaviorInfo: v('medicationBehaviorInfo'),
+        medicationDisruption:   v('medicationDisruption'),
+        emergencyMedication:    v('emergencyMedication'),
+        emergencyMedDetails:    v('emergencyMedDetails'),
+        staffTraining:          v('staffTraining'),
+
+        siblings:            v('siblings'),
+        siblingNames:        v('siblingNames'),
+        efaStatus:           v('efaStatus'),
+        classWallet:         v('classWallet'),
+
+        ferpaAck:            v('ferpaAck'),
+        ferpaSignature:      v('ferpaSignature'),
+        ferpaDate:           v('ferpaDate'),
+        recordsAck:          v('recordsAck'),
+        recordsSignature:    v('recordsSignature'),
+        recordsDate:         v('recordsDate'),
+
+        parentAgreementSig:   v('parentAgreementSig'),
+        codeOfConductParent:  v('codeOfConductParent'),
+        codeOfConductStudent: v('codeOfConductStudent'),
+        tuitionSig:           v('tuitionSig'),
+        photoConsent:         v('photoConsent'),
+        photoSig:             v('photoSig'),
+        techAgreementParent:  v('techAgreementParent'),
+        techAgreementStudent: v('techAgreementStudent'),
+        cellPhoneParent:      v('cellPhoneParent'),
+        cellPhoneStudent:     v('cellPhoneStudent'),
+        medicalConsent:       v('medicalConsent'),
+        noEmergencyExplanation: v('noEmergencyExplanation'),
+        medicalConsentSig:    v('medicalConsentSig'),
+        liabilityAck:         v('liabilityAck'),
+        liabilitySig:         v('liabilitySig')
+    };
+
+    try {
+        const res    = await fetch(REG_URL, { method:'POST', body: JSON.stringify(data) });
+        const result = await parseRegistrationResponse(res);
+
+        if (result.result === 'success') {
+            sessionStorage.removeItem('zosRegistrationState');
+            document.getElementById('form-intro').style.display = 'none';
+            STEPS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.getElementById('reg-success').style.display = 'block';
+            document.getElementById('reg-success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            throw new Error(result.message || 'Unknown error');
+        }
+    } catch(err) {
+        btn.disabled          = false;
+        txt.style.display     = 'inline';
+        loading.style.display = 'none';
+        showRegistrationError(err.message);
+    }
+}
+
+// Helper — get field value safely
+function v(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+
+// Init
+showStep('step-1', false);
+window.scrollTo(0, 0);
+</script>
+
+</body>
+</html>
