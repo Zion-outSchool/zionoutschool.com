@@ -11,6 +11,78 @@
     <!-- Styles -->
     <link rel="stylesheet" href="style.css?v=build-inquiry-20260523">
 
+    <!-- ── PAGE ADDITIONS (open-ender pill + sticky jump button) ── -->
+    <style>
+        html { scroll-behavior: smooth; }
+
+        #ways { scroll-margin-top: 90px; }
+
+        .build-who-item--you {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: var(--gold, #b08d57);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-weight: 600;
+            font-size: 1.25rem;
+            letter-spacing: 0.01em;
+            padding-left: 0.35rem;
+            align-self: center;
+        }
+
+        .sticky-jump {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            z-index: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.85rem 1.4rem;
+            background: var(--navy, #1f2a44);
+            color: var(--gold-light, #e8d3a8);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.01em;
+            text-decoration: none;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.10);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(14px);
+            transition: opacity .3s ease, transform .3s ease, visibility .3s;
+        }
+
+        .sticky-jump.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .sticky-jump:hover {
+            background: var(--gold, #b08d57);
+            color: var(--navy, #1f2a44);
+            transform: translateY(-2px);
+        }
+
+        .sticky-jump-arrow {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 600px) {
+            .sticky-jump {
+                right: 1rem;
+                bottom: 1rem;
+                padding: 0.7rem 1.1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
@@ -62,6 +134,12 @@
         </div>
     </div>
 </section>
+
+<!-- ── STICKY JUMP TO WAYS ── -->
+<a href="#ways" class="sticky-jump" id="sticky-jump" aria-label="Jump to ways to get involved">
+    <span class="sticky-jump-text">Ways to Get Involved</span>
+    <span class="sticky-jump-arrow" aria-hidden="true">↓</span>
+</a>
 
 <!-- ── BANNER DIVIDER ── -->
 <img
@@ -220,39 +298,17 @@
     </div>
     <div class="container">
         <div class="build-who-grid">
-            <span class="build-who-item">Scholars</span>
-<span class="build-who-item">Engineers</span>
-<span class="build-who-item">Scientists</span>
-<span class="build-who-item">Researchers</span>
-<span class="build-who-item">Physicians</span>
-<span class="build-who-item">Healers</span>
-<span class="build-who-item">Architects</span>
-<span class="build-who-item">Designers</span>
-<span class="build-who-item">Programmers</span>
-<span class="build-who-item">Entrepreneurs</span>
-<span class="build-who-item">Builders</span>
-<span class="build-who-item">Tradespeople</span>
-<span class="build-who-item">Craftsmen</span>
-<span class="build-who-item">Farmers</span>
-<span class="build-who-item">Educators</span>
-<span class="build-who-item">Writers</span>
-<span class="build-who-item">Artists</span>
-<span class="build-who-item">Musicians</span>
-<span class="build-who-item">Historians</span>
-<span class="build-who-item">Storytellers</span>
-<span class="build-who-item">Faith Leaders</span>
-<span class="build-who-item">Community Builders</span>
-<span class="build-who-item">Mentors</span>
-<span class="build-who-item">Stewards</span>
-<span class="build-who-item">Leaders</span>
-<span class="build-who-item">Servants</span>
-<span class="build-who-item">Thinkers</span>
-<span class="build-who-item">Makers</span>
-<span class="build-who-item">Explorers</span>
-<span class="build-who-item">Mothers</span>
-<span class="build-who-item">Fathers</span>
-<span class="build-who-item">Visionaries</span>
-<span class="build-who-item">Philanthropists</span>
+            <span class="build-who-item">Builders</span>
+            <span class="build-who-item">Visionaries</span>
+            <span class="build-who-item">Stewards</span>
+            <span class="build-who-item">Servants</span>
+            <span class="build-who-item">Mentors</span>
+            <span class="build-who-item">Makers</span>
+            <span class="build-who-item">Healers</span>
+            <span class="build-who-item">Storytellers</span>
+            <span class="build-who-item">Explorers</span>
+            <span class="build-who-item">Leaders</span>
+            <span class="build-who-item build-who-item--you">…and you</span>
         </div>
     </div>
 </section>
@@ -676,6 +732,44 @@ document.getElementById('partner-form').addEventListener('submit', async functio
         modalError.style.display = 'block';
     }
 });
+</script>
+
+<!-- ── STICKY JUMP BUTTON LOGIC ────────────────────────────── -->
+<script>
+(function () {
+    var btn  = document.getElementById('sticky-jump');
+    if (!btn) return;
+
+    var hero = document.querySelector('.build-hero');
+    var ways = document.getElementById('ways');
+    var pastHero = false;
+    var inWays = false;
+
+    function update() {
+        if (pastHero && !inWays) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    }
+
+    if ('IntersectionObserver' in window) {
+        if (hero) {
+            new IntersectionObserver(function (entries) {
+                pastHero = !entries[0].isIntersecting;
+                update();
+            }, { threshold: 0 }).observe(hero);
+        }
+
+        if (ways) {
+            new IntersectionObserver(function (entries) {
+                inWays = entries[0].isIntersecting;
+                update();
+            }, { threshold: 0.15 }).observe(ways);
+        }
+    } else {
+        window.addEventListener('scroll', function () {
+            btn.classList.toggle('visible', window.scrollY > 500);
+        });
+    }
+})();
 </script>
 
 </body>
