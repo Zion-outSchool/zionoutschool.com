@@ -165,7 +165,7 @@
         <span class="form-success-mark">✦</span>
         <h3 id="folder-created-heading">Student file created.</h3>
         <p id="folder-created-body">
-            We have created a secure folder for your student. An email has been sent to you with upload links for any required documents — immunization records, IEP, or custody documentation. You can upload those now or return to them later.
+            We have created a secure folder for your student. Someone from ZION outSchool will reach out within 48 hours with directions for uploading immunization records, IEP documents, and custody documentation if applicable.
         </p>
         <p class="reg-folder-note">Continue below to complete registration. Your progress is saved as you go.</p>
     </div>
@@ -1097,8 +1097,7 @@ async function submitStep1() {
                 v('studentFirstName') + "'s file has been created.";
             if (body) body.textContent =
                 'We have created a secure folder for ' + v('studentFirstName') +
-                '. An email has been sent to ' + v('parent1Email') +
-                ' with upload links for immunization records, IEP documents, and custody documentation if applicable. You can upload those now or return to them later — continue below to complete registration.';
+                '. Someone from ZION outSchool will reach out within 48 hours with directions for uploading immunization records, IEP documents, and custody documentation if applicable.';
 
             showStep('step-1b');
         } else {
