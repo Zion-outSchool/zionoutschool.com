@@ -2904,6 +2904,27 @@ footer {
     margin-bottom: 1.5rem;
 }
 
+.calendar-link-row,
+.calendar-layer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 1rem;
+}
+
+.calendar-subscribe-link {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration-color: rgba(6, 17, 28, 0.28);
+    text-underline-offset: 0.22rem;
+}
+
+.calendar-subscribe-link:hover {
+    color: var(--gold-dark);
+}
+
 .calendar-badge {
     display: inline-block;
     font-family: var(--sans);
@@ -3013,6 +3034,10 @@ footer {
     margin-bottom: 1.5rem;
 }
 
+.calendar-layer-actions {
+    margin-top: 1.25rem;
+}
+
 /* Printable Overview */
 .calendar-overview-section {
     background: var(--cream);
@@ -3089,6 +3114,12 @@ footer {
     .calendar-note-card,
     .calendar-print-card {
         padding: 1.5rem;
+    }
+
+    .calendar-link-row,
+    .calendar-layer-actions {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }
 
@@ -5420,6 +5451,26 @@ header {
     letter-spacing: 0.06em;
     color: var(--gold);
     text-transform: uppercase;
+}
+
+.inquiry-status-note {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-top: 1.5rem;
+    padding: 1rem 1.15rem;
+    text-align: left;
+}
+
+.inquiry-status-note strong {
+    color: var(--navy);
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
 }
  
 /* Form sections */

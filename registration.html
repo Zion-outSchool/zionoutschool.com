@@ -167,6 +167,9 @@
         <p id="folder-created-body">
             We have created a secure folder for your student. Someone from ZION outSchool will reach out within 48 hours with directions for uploading immunization records, IEP documents, and custody documentation if applicable.
         </p>
+        <p id="folder-created-link-wrap" class="reg-folder-note" style="display:none;">
+            <a id="folder-created-link" href="#" target="_blank" rel="noopener">Open your student's shared folder</a>
+        </p>
         <p class="reg-folder-note">Continue below to complete registration. Your progress is saved as you go.</p>
     </div>
     <div class="reg-nav">
@@ -915,7 +918,10 @@ const reg = {
     regDocsFolderId: '',
     immunFolderId:   '',
     iepFolderId:     '',
-    custodyFolderId: ''
+    custodyFolderId: '',
+    studentFolderUrl: '',
+    lastStep: 'step-1',
+    formValues: {}
 };
 
 const savedReg = sessionStorage.getItem('zosRegistrationState');
@@ -959,6 +965,8 @@ function showStep(stepId, shouldScroll = true) {
         }
     }
     updateProgress(stepId);
+    reg.lastStep = stepId;
+    saveRegState();
 }
 
 function updateProgress(stepId) {
@@ -978,7 +986,55 @@ function toggleField(groupId, show) {
 }
 
 function saveRegState() {
+    reg.formValues = getRegistrationFormValues();
     sessionStorage.setItem('zosRegistrationState', JSON.stringify(reg));
+}
+
+function getRegistrationFormValues() {
+    const values = {};
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.id) return;
+        values[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    return values;
+}
+
+function restoreRegistrationFormValues() {
+    if (!reg.formValues) return;
+    Object.keys(reg.formValues).forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') {
+            el.checked = Boolean(reg.formValues[id]);
+        } else {
+            el.value = reg.formValues[id];
+        }
+    });
+    toggleField('custody-upload-note', v('custodyOrder').startsWith('Yes'));
+}
+
+function hasCreatedStudentFile() {
+    return Boolean(reg.studentFolderId && reg.regDocsFolderId);
+}
+
+function updateFolderCreatedMessage() {
+    const studentFirstName = v('studentFirstName') || 'your student';
+    const parentEmails = [v('parent1Email'), v('parent2Email')].filter(Boolean).join(' and ');
+    const heading = document.getElementById('folder-created-heading');
+    const body = document.getElementById('folder-created-body');
+    const linkWrap = document.getElementById('folder-created-link-wrap');
+    const link = document.getElementById('folder-created-link');
+
+    if (heading) heading.textContent = studentFirstName + "'s file has been created.";
+    if (body) {
+        body.textContent = 'We have created a secure folder for ' + studentFirstName +
+            (parentEmails ? ' and shared it with ' + parentEmails : '') +
+            '. Please use that folder to add immunization records, IEP documents, and custody documentation if applicable.';
+    }
+    if (linkWrap && link && reg.studentFolderUrl) {
+        link.href = reg.studentFolderUrl;
+        linkWrap.style.display = 'block';
+    }
 }
 
 async function parseRegistrationResponse(res) {
@@ -1048,6 +1104,9 @@ function nextStep(currentStep, nextStepId, requiredIds) {
     showStep(nextStepId);
 }
 
+document.addEventListener('input', saveRegState);
+document.addEventListener('change', saveRegState);
+
 // ── STEP 1 — FOLDER CREATION ────────────────────────────────
 async function submitStep1() {
     const required = [
@@ -1071,6 +1130,8 @@ async function submitStep1() {
         studentPreferred:  v('studentPreferred'),
         parent1Name:       v('parent1Name'),
         parent1Email:      v('parent1Email'),
+        parent2Name:       v('parent2Name'),
+        parent2Email:      v('parent2Email'),
         parentName:        v('parent1Name'),
         parentEmail:       v('parent1Email')
     };
@@ -1085,19 +1146,14 @@ async function submitStep1() {
             reg.immunFolderId   = result.immunFolderId   || '';
             reg.iepFolderId     = result.iepFolderId     || '';
             reg.custodyFolderId = result.custodyFolderId || '';
+            reg.studentFolderUrl = result.studentFolderUrl || result.studentFolderLink || '';
             saveRegState();
 
             if (!reg.studentFolderId || !reg.regDocsFolderId) {
                 throw new Error('The student file was created, but the registration folder IDs were not returned by the Apps Script.');
             }
 
-            const heading = document.getElementById('folder-created-heading');
-            const body    = document.getElementById('folder-created-body');
-            if (heading) heading.textContent =
-                v('studentFirstName') + "'s file has been created.";
-            if (body) body.textContent =
-                'We have created a secure folder for ' + v('studentFirstName') +
-                '. Someone from ZION outSchool will reach out within 48 hours with directions for uploading immunization records, IEP documents, and custody documentation if applicable.';
+            updateFolderCreatedMessage();
 
             showStep('step-1b');
         } else {
@@ -1264,7 +1320,15 @@ function v(id) {
 }
 
 // Init
-showStep('step-1', false);
+restoreRegistrationFormValues();
+updateFolderCreatedMessage();
+if (hasCreatedStudentFile() && STEPS.includes(reg.lastStep) && reg.lastStep !== 'step-1') {
+    showStep(reg.lastStep, false);
+} else if (hasCreatedStudentFile()) {
+    showStep('step-1b', false);
+} else {
+    showStep('step-1', false);
+}
 window.scrollTo(0, 0);
 </script>
 
