@@ -2686,6 +2686,19 @@ footer {
     color: var(--gold);
 }
 
+.editorial-page.tuition-page .scrubs-guide-link {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration-color: rgba(6, 17, 28, 0.28);
+    text-underline-offset: 0.22rem;
+}
+
+.editorial-page.tuition-page .scrubs-guide-link:hover {
+    color: var(--gold);
+}
+
 @media (max-width: 768px) {
     .editorial-page.tuition-page .fees-grid {
         grid-template-columns: 1fr;
@@ -2831,7 +2844,157 @@ footer {
     }
 }
 
+/* Scrub Ordering Guide */
+.editorial-page.scrub-ordering-page .scrub-ordering-hero {
+    min-height: 54vh;
+}
+
+.editorial-page.scrub-ordering-page .scrub-guide-intro {
+    background: var(--cream);
+    padding: 4.5rem 0;
+}
+
+.editorial-page.scrub-ordering-page .scrub-guide-lead {
+    color: var(--navy);
+    font-family: var(--serif);
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.55;
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-section {
+    background: var(--white);
+    padding: 5rem 0;
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 2rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-panel {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 4px 4px 0;
+    padding: 2rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-panel--gold {
+    border-left-color: var(--gold);
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-panel h2,
+.editorial-page.scrub-ordering-page .scrub-notes-section h2 {
+    color: var(--navy);
+    font-size: clamp(1.45rem, 2.2vw, 2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0.65rem 0 1rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-order-panel p,
+.editorial-page.scrub-ordering-page .scrub-notes-section p {
+    color: var(--text);
+    font-size: 1.08rem;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-action-list {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-btn-secondary {
+    background: var(--navy);
+    color: var(--white);
+}
+
+.editorial-page.scrub-ordering-page .scrub-btn-secondary:hover {
+    background: var(--navy-mid);
+}
+
+.editorial-page.scrub-ordering-page .scrub-selection-figure {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 1rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-selection-figure img {
+    display: block;
+    width: 100%;
+}
+
+.editorial-page.scrub-ordering-page .scrub-selection-figure figcaption {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 0.8rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-notes-section {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.scrub-ordering-page .scrub-note-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    margin: 2rem 0 1.4rem;
+    padding: 1.75rem 2rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-note-card h3 {
+    color: var(--navy);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.editorial-page.scrub-ordering-page .scrub-note-card p {
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.editorial-page.scrub-ordering-page .scrub-final-note {
+    color: var(--navy);
+    font-weight: 700;
+}
+
+@media (max-width: 800px) {
+    .editorial-page.scrub-ordering-page .scrub-order-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .editorial-page.scrub-ordering-page .scrub-guide-intro,
+    .editorial-page.scrub-ordering-page .scrub-order-section,
+    .editorial-page.scrub-ordering-page .scrub-notes-section {
+        padding: 3.5rem 0;
+    }
+
+    .editorial-page.scrub-ordering-page .scrub-order-panel,
+    .editorial-page.scrub-ordering-page .scrub-note-card {
+        padding: 1.5rem;
+    }
+
+    .editorial-page.scrub-ordering-page .scrub-action-list {
+        flex-direction: column;
+    }
+}
+
 /* ── 15. CALENDAR PAGE ────────────────────────────────────── */
+
 
 .calendar-intro {
     background: var(--cream);
