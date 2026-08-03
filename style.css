@@ -1222,6 +1222,15 @@ footer {
     font-style: italic;
 }
 
+.footer-brand .footer-location {
+    color: rgba(255,255,255,0.62);
+    font-family: var(--sans, Arial, sans-serif);
+    font-size: 0.82rem;
+    font-style: normal;
+    letter-spacing: 0.06em;
+    margin-top: 0.15rem;
+}
+
 .footer-links {
     display: flex;
     flex-direction: column;
@@ -1902,7 +1911,17 @@ footer {
     line-height: 1.75;
     color: var(--text-mid);
     max-width: 680px;
+    margin: 0 auto 1rem;
+}
+
+.editorial-page .home-location-note {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     margin: 0 auto 2.5rem;
+    text-transform: uppercase;
 }
 
 .editorial-page .home-ctas {
@@ -2209,6 +2228,11 @@ footer {
     font-style: normal;
     letter-spacing: 0.08em;
     margin-top: 0.2rem;
+}
+
+.editorial-page .footer-brand .footer-location {
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
 }
 
 .editorial-page .footer-links {
