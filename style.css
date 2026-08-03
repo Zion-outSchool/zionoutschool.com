@@ -1688,6 +1688,7 @@ footer {
 .editorial-page .home-hero {
     margin-top: calc(var(--header-h) + var(--announcement-h));
     padding: 0;
+    position: relative;
     width: 100%;
     line-height: 0;
 }
@@ -1696,6 +1697,21 @@ footer {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.editorial-page .home-hero-rsvp-link {
+    position: absolute;
+    right: 10.3%;
+    bottom: 3.5%;
+    width: 31%;
+    height: 9.5%;
+    display: block;
+    border-radius: 12px;
+}
+
+.editorial-page .home-hero-rsvp-link:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 4px;
 }
 
 .editorial-page .home-claim {
