@@ -102,21 +102,21 @@
         nav a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
         nav a.active { color: var(--gold); }
         nav .nav-cta {
-            background: var(--gold);
-            color: var(--navy-dark);
-            padding: 0.45rem 1rem;
-            border-radius: 4px;
-            margin-left: 0.5rem;
-        }
-        nav .nav-cta:hover { background: var(--gold-light); color: var(--navy-dark); }
-        nav .nav-enroll {
             background: var(--navy-mid);
             color: var(--white);
             border: 1px solid rgba(255,255,255,0.25);
             padding: 0.45rem 1rem;
             border-radius: 4px;
+            margin-left: 0.5rem;
         }
-        nav .nav-enroll:hover { background: rgba(255,255,255,0.15); }
+        nav .nav-cta:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+        nav .nav-enroll {
+            background: var(--gold);
+            color: var(--navy-dark);
+            padding: 0.45rem 1rem;
+            border-radius: 4px;
+        }
+        nav .nav-enroll:hover { background: var(--gold-light); color: var(--navy-dark); }
 
         .mobile-menu { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
@@ -1374,28 +1374,29 @@ footer {
 }
 
 .editorial-page nav .nav-cta {
-    background: var(--gold);
-    color: var(--navy-dark);
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
     padding: 0.45rem 1rem;
     border-radius: 4px;
     margin-left: 0.5rem;
 }
 
 .editorial-page nav .nav-cta:hover {
-    background: var(--gold-light);
-    color: var(--navy-dark);
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
 }
 
 .editorial-page nav .nav-enroll {
-    background: var(--navy-mid);
-    color: var(--white);
-    border: 1px solid rgba(255,255,255,0.25);
+    background: var(--gold);
+    color: var(--navy-dark);
     padding: 0.45rem 1rem;
     border-radius: 4px;
 }
 
 .editorial-page nav .nav-enroll:hover {
-    background: rgba(255,255,255,0.15);
+    background: var(--gold-light);
+    color: var(--navy-dark);
 }
 
 .editorial-page .page-hero {
