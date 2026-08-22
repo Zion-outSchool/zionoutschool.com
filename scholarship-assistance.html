@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Assistance Application | Zion outSchool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=scholarship-form-20260822">
+    <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
+    <script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=ieuTpSPa5cgvjXtJ&p=other"></script>
+</head>
+<body class="editorial-page inquiry-page scholarship-page">
+
+<section class="inquiry-form-section scholarship-form-section">
+    <div class="inquiry-form-wrap scholarship-form-wrap">
+
+        <div class="form-intro-header">
+            <div class="form-intro-inner">
+                <span class="form-intro-wordmark">ZION <em>out</em>School</span>
+                <h1 class="form-intro-heading">Scholarship Assistance Application</h1>
+                <p class="form-intro-body">
+                    This application helps ZION outSchool understand a family's actual tuition gap with care, consistency, and respect.
+                </p>
+                <div class="inquiry-status-note scholarship-status-note">
+                    <strong>Before you begin</strong>
+                    This form is for accepted or actively enrolling students. Please prepare the first two pages of last year's tax return for upload. You may blank out Social Security numbers before submitting.
+                </div>
+            </div>
+        </div>
+
+        <form id="scholarship-form" class="zos-form scholarship-form" enctype="multipart/form-data" novalidate>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Student</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentName" class="form-label">Student Name <span class="form-required">*</span></label>
+                        <input type="text" id="studentName" name="studentName" class="form-input" required>
+                        <span class="form-error" id="studentName-error">Please enter the student's name.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentAgeGrade" class="form-label">Age / Grade <span class="form-required">*</span></label>
+                        <input type="text" id="studentAgeGrade" name="studentAgeGrade" class="form-input" placeholder="e.g. 10 years old, 5th grade" required>
+                        <span class="form-error" id="studentAgeGrade-error">Please enter age and grade.</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="enrollmentStatus" class="form-label">Enrollment / Acceptance Status <span class="form-required">*</span></label>
+                        <select id="enrollmentStatus" name="enrollmentStatus" class="form-input form-select" required>
+                            <option value="" disabled selected>Select one</option>
+                            <option>Accepted for enrollment</option>
+                            <option>Enrollment application submitted</option>
+                            <option>In conversation with admissions</option>
+                            <option>Other / unsure</option>
+                        </select>
+                        <span class="form-error" id="enrollmentStatus-error">Please select a status.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="anticipatedStart" class="form-label">Anticipated Start Date <span class="form-required">*</span></label>
+                        <input type="text" id="anticipatedStart" name="anticipatedStart" class="form-input" placeholder="e.g. August 2026" required>
+                        <span class="form-error" id="anticipatedStart-error">Please enter the anticipated start date.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Parent / Guardian</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianNames" class="form-label">Parent / Guardian 1 <span class="form-required">*</span></label>
+                        <input type="text" id="guardianNames" name="guardianNames" class="form-input" required>
+                        <span class="form-error" id="guardianNames-error">Please enter parent or guardian name(s).</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianTwo" class="form-label">Parent / Guardian 2 <span class="form-optional">(optional)</span></label>
+                        <input type="text" id="guardianTwo" name="guardianTwo" class="form-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianEmail" class="form-label">Email <span class="form-required">*</span></label>
+                        <input type="email" id="guardianEmail" name="guardianEmail" class="form-input" required>
+                        <span class="form-error" id="guardianEmail-error">Please enter a valid email.</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianPhone" class="form-label">Phone <span class="form-required">*</span></label>
+                        <input type="tel" id="guardianPhone" name="guardianPhone" class="form-input" required>
+                        <span class="form-error" id="guardianPhone-error">Please enter a phone number.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianAddress" class="form-label">Mailing Address <span class="form-required">*</span></label>
+                        <input type="text" id="guardianAddress" name="guardianAddress" class="form-input" required>
+                        <span class="form-error" id="guardianAddress-error">Please enter an address.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Household</h3>
+                <div class="form-row form-row--thirds">
+                    <div class="form-group">
+                        <label for="householdAdults" class="form-label">Adults in Household <span class="form-required">*</span></label>
+                        <input type="number" id="householdAdults" name="householdAdults" class="form-input" min="0" required>
+                        <span class="form-error" id="householdAdults-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="householdChildren" class="form-label">Children in Household <span class="form-required">*</span></label>
+                        <input type="number" id="householdChildren" name="householdChildren" class="form-input" min="0" required>
+                        <span class="form-error" id="householdChildren-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="childrenWithTuition" class="form-label">Children With Education Expenses <span class="form-required">*</span></label>
+                        <input type="number" id="childrenWithTuition" name="childrenWithTuition" class="form-input" min="0" required>
+                        <span class="form-error" id="childrenWithTuition-error">Required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Education Funding</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="efaStatus" class="form-label">Arkansas EFA Status <span class="form-required">*</span></label>
+                        <select id="efaStatus" name="efaStatus" class="form-input form-select" required>
+                            <option value="" disabled selected>Select one</option>
+                            <option>Approved</option>
+                            <option>Applied and waiting</option>
+                            <option>Planning to apply</option>
+                            <option>Not eligible / not available</option>
+                            <option>Unsure</option>
+                        </select>
+                        <span class="form-error" id="efaStatus-error">Please select an EFA status.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="efaAmount" class="form-label">EFA Amount Available <span class="form-required">*</span></label>
+                        <input type="text" id="efaAmount" name="efaAmount" class="form-input" placeholder="e.g. $7,208, $0, pending" required>
+                        <span class="form-error" id="efaAmount-error">Please enter an amount or status.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="otherFunding" class="form-label">Other Scholarships or Tuition Assistance <span class="form-optional">(optional)</span></label>
+                    <textarea id="otherFunding" name="otherFunding" class="form-input form-textarea" rows="3" placeholder="PIAK, family assistance, church assistance, employer benefits, or other sources."></textarea>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Tuition Need</h3>
+                <div class="form-row form-row--thirds">
+                    <div class="form-group">
+                        <label for="tuitionObligation" class="form-label">Full Tuition Obligation <span class="form-required">*</span></label>
+                        <input type="text" id="tuitionObligation" name="tuitionObligation" class="form-input" required>
+                        <span class="form-error" id="tuitionObligation-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="assistanceRequested" class="form-label">Assistance Requested <span class="form-required">*</span></label>
+                        <input type="text" id="assistanceRequested" name="assistanceRequested" class="form-input" required>
+                        <span class="form-error" id="assistanceRequested-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="monthlyContribution" class="form-label">Monthly Family Contribution <span class="form-required">*</span></label>
+                        <input type="text" id="monthlyContribution" name="monthlyContribution" class="form-input" required>
+                        <span class="form-error" id="monthlyContribution-error">Required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Income</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="incomeRange" class="form-label">Approximate Annual Gross Household Income <span class="form-required">*</span></label>
+                        <select id="incomeRange" name="incomeRange" class="form-input form-select" required>
+                            <option value="" disabled selected>Select range</option>
+                            <option>Under $35,000</option>
+                            <option>$35,000 - $49,999</option>
+                            <option>$50,000 - $74,999</option>
+                            <option>$75,000 - $99,999</option>
+                            <option>$100,000 - $124,999</option>
+                            <option>$125,000 - $149,999</option>
+                            <option>$150,000 or more</option>
+                        </select>
+                        <span class="form-error" id="incomeRange-error">Please select an income range.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeSources" class="form-label">Primary Income Sources <span class="form-required">*</span></label>
+                        <input type="text" id="incomeSources" name="incomeSources" class="form-input" placeholder="Employment, self-employment, benefits, support, etc." required>
+                        <span class="form-error" id="incomeSources-error">Please enter income sources.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Major Financial Obligations</h3>
+                <div class="form-row form-row--thirds">
+                    <div class="form-group">
+                        <label for="housingCost" class="form-label">Monthly Housing Cost <span class="form-required">*</span></label>
+                        <input type="text" id="housingCost" name="housingCost" class="form-input" required>
+                        <span class="form-error" id="housingCost-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicalExpenses" class="form-label">Significant Medical Expenses <span class="form-required">*</span></label>
+                        <input type="text" id="medicalExpenses" name="medicalExpenses" class="form-input" placeholder="$0 if none" required>
+                        <span class="form-error" id="medicalExpenses-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="childcareExpenses" class="form-label">Monthly Childcare Cost <span class="form-required">*</span></label>
+                        <input type="text" id="childcareExpenses" name="childcareExpenses" class="form-input" placeholder="$0 if none" required>
+                        <span class="form-error" id="childcareExpenses-error">Required.</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="otherSchoolTuition" class="form-label">Other School Tuition / Education Expenses <span class="form-required">*</span></label>
+                        <input type="text" id="otherSchoolTuition" name="otherSchoolTuition" class="form-input" placeholder="$0 if none" required>
+                        <span class="form-error" id="otherSchoolTuition-error">Required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="unusualObligations" class="form-label">Unusual Recurring Obligations <span class="form-optional">(optional)</span></label>
+                        <input type="text" id="unusualObligations" name="unusualObligations" class="form-input" placeholder="Caregiving, debt payment, court-ordered support, etc.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Assets and Circumstances</h3>
+                <div class="form-group">
+                    <label for="availableAssets" class="form-label">Significant Non-Retirement Savings, Investments, or Readily Available Resources <span class="form-required">*</span></label>
+                    <textarea id="availableAssets" name="availableAssets" class="form-input form-textarea" rows="3" placeholder="Briefly list significant available resources, or write none." required></textarea>
+                    <span class="form-error" id="availableAssets-error">Please answer this question.</span>
+                </div>
+                <div class="form-group">
+                    <label for="circumstances" class="form-label">Current Circumstances <span class="form-optional">(optional)</span></label>
+                    <p class="form-hint">Is there anything about your family's current circumstances that would help us understand your need?</p>
+                    <textarea id="circumstances" name="circumstances" class="form-input form-textarea" rows="5" placeholder="Job loss, death, divorce, temporary crisis, medical situation, or other context."></textarea>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Family Commitment</h3>
+                <div class="form-group">
+                    <label for="familyCommitment" class="form-label">What can your family reasonably contribute, and is that amount sustainable? <span class="form-required">*</span></label>
+                    <textarea id="familyCommitment" name="familyCommitment" class="form-input form-textarea" rows="4" required></textarea>
+                    <span class="form-error" id="familyCommitment-error">Please describe your family's contribution.</span>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Relationship Disclosure</h3>
+                <div class="form-group">
+                    <label for="insiderRelationship" class="form-label">Is the student or a member of the household related to a ZION board member, officer, scholarship reviewer, substantial donor, or employee? <span class="form-required">*</span></label>
+                    <textarea id="insiderRelationship" name="insiderRelationship" class="form-input form-textarea" rows="3" placeholder="If no, enter No. If yes, please explain." required>No</textarea>
+                    <span class="form-error" id="insiderRelationship-error">Please answer this question.</span>
+                </div>
+                <div class="form-group">
+                    <label for="donorRelationship" class="form-label">Has a donor offered or promised funding specifically for this student or family? <span class="form-required">*</span></label>
+                    <textarea id="donorRelationship" name="donorRelationship" class="form-input form-textarea" rows="3" placeholder="If no, enter No. If yes, please explain." required>No</textarea>
+                    <span class="form-error" id="donorRelationship-error">Please answer this question.</span>
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Tax Return Upload</h3>
+                <div class="scholarship-upload-box">
+                    <label for="taxReturn" class="form-label">Last Year's Tax Return - First Two Pages <span class="form-required">*</span></label>
+                    <p class="form-hint">Upload a PDF or image file. You may blank out Social Security numbers before uploading. Please leave names, filing status, dependents, and income lines visible.</p>
+                    <input type="file" id="taxReturn" name="taxReturn" class="form-input scholarship-file-input" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <span class="form-error" id="taxReturn-error">Please upload the first two pages of last year's tax return.</span>
+
+                    <label for="efaDocumentation" class="form-label scholarship-upload-secondary">EFA Documentation <span class="form-optional">(optional)</span></label>
+                    <p class="form-hint">Upload an EFA award letter, eligibility notice, or related documentation if available.</p>
+                    <input type="file" id="efaDocumentation" name="efaDocumentation" class="form-input scholarship-file-input" accept=".pdf,.jpg,.jpeg,.png">
+                </div>
+            </div>
+
+            <div class="inquiry-section">
+                <h3 class="inquiry-section-title">Certification</h3>
+                <label class="scholarship-check">
+                    <input type="checkbox" id="certification" name="certification" required>
+                    <span>I certify that the information provided is accurate to the best of my knowledge. I understand that my family must notify ZION outSchool of material changes, that this application does not guarantee assistance, and that any award is subject to eligibility, available funds, and ZION outSchool's scholarship-selection process.</span>
+                </label>
+                <span class="form-error" id="certification-error">Please confirm the certification.</span>
+
+                <div class="form-row scholarship-signature-row">
+                    <div class="form-group">
+                        <label for="signature" class="form-label">Parent / Guardian Signature <span class="form-required">*</span></label>
+                        <input type="text" id="signature" name="signature" class="form-input" placeholder="Type your full legal name" required>
+                        <span class="form-error" id="signature-error">Please type your full name.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signatureDate" class="form-label">Date <span class="form-required">*</span></label>
+                        <input type="date" id="signatureDate" name="signatureDate" class="form-input" required>
+                        <span class="form-error" id="signatureDate-error">Please enter the date.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inquiry-submit-wrap">
+                <button type="submit" class="form-submit inquiry-submit" id="scholarship-submit-btn">
+                    <span class="form-submit-text">Submit Scholarship Application →</span>
+                    <span class="form-submit-loading" style="display:none;">Sending...</span>
+                </button>
+                <p class="inquiry-submit-note">Applications are reviewed confidentially. Submission does not guarantee an award.</p>
+            </div>
+
+        </form>
+
+        <div id="scholarship-success" class="inquiry-success" style="display:none;">
+            <span class="form-success-mark">✦</span>
+            <h3>We have received your scholarship application.</h3>
+            <p id="scholarship-application-id" style="display:none;"></p>
+            <p>Thank you for trusting us with this information. ZION outSchool will review your application and follow up personally about next steps.</p>
+            <p class="form-success-close"><em>Your child was born to seek truth. We exist to make sure they get a chance.</em></p>
+        </div>
+
+        <div id="scholarship-error" class="form-error-msg" style="display:none;">
+            <p>We could not submit the application just now. Please try again, or email <a href="mailto:admissions@zionoutschool.com">admissions@zionoutschool.com</a> and we will help you submit your application securely.</p>
+        </div>
+
+    </div>
+</section>
+
+<script>
+const SCHOLARSHIP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyddJc4LWmEpzGGYN9TWEhDuqe4gHcjL3sCiSZotZbADoMCLUwgsEF_Ihl9BOyHludN1g/exec';
+
+const scholarshipForm = document.getElementById('scholarship-form');
+const scholarshipSubmitBtn = document.getElementById('scholarship-submit-btn');
+const signatureDate = document.getElementById('signatureDate');
+if (signatureDate && !signatureDate.value) {
+    signatureDate.value = new Date().toISOString().split('T')[0];
+}
+
+function validateScholarshipForm() {
+    let valid = true;
+    scholarshipForm.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+    scholarshipForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('form-input--error'));
+
+    scholarshipForm.querySelectorAll('[required]').forEach(field => {
+        const isCheckbox = field.type === 'checkbox';
+        const isFile = field.type === 'file';
+        const hasValue = isCheckbox ? field.checked : isFile ? field.files.length > 0 : field.value.trim();
+
+        if (!hasValue) {
+            valid = false;
+            field.classList.add('form-input--error');
+            const err = document.getElementById(field.id + '-error');
+            if (err) err.style.display = 'block';
+        }
+    });
+
+    const email = document.getElementById('guardianEmail');
+    if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        valid = false;
+        email.classList.add('form-input--error');
+        document.getElementById('guardianEmail-error').style.display = 'block';
+    }
+
+    return valid;
+}
+
+function parseCurrencyNumber(value) {
+    const normalized = String(value).replace(/[^0-9.-]/g, '');
+    return normalized ? Number(normalized) : 0;
+}
+
+function readUploadFile(file, type) {
+    return new Promise((resolve, reject) => {
+        if (!file) {
+            resolve(null);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result || '';
+            resolve({
+                type: type,
+                name: file.name,
+                mimeType: file.type || 'application/octet-stream',
+                data: String(result).split(',')[1] || ''
+            });
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+    });
+}
+
+async function collectScholarshipData() {
+    const taxReturnInput = document.getElementById('taxReturn');
+    const efaDocumentationInput = document.getElementById('efaDocumentation');
+    const files = [
+        await readUploadFile(taxReturnInput.files[0], 'taxReturn'),
+        await readUploadFile(efaDocumentationInput.files[0], 'efaDocumentation')
+    ].filter(Boolean);
+
+    return {
+        studentName: document.getElementById('studentName').value.trim(),
+        grade: document.getElementById('studentAgeGrade').value.trim(),
+        expectedStartDate: document.getElementById('anticipatedStart').value.trim(),
+        parent1: document.getElementById('guardianNames').value.trim(),
+        parent2: document.getElementById('guardianTwo').value.trim(),
+        email: document.getElementById('guardianEmail').value.trim(),
+        phone: document.getElementById('guardianPhone').value.trim(),
+        address: document.getElementById('guardianAddress').value.trim(),
+        householdAdults: Number(document.getElementById('householdAdults').value),
+        householdChildren: Number(document.getElementById('householdChildren').value),
+        childrenEducationExpenses: Number(document.getElementById('childrenWithTuition').value),
+        efaStatus: document.getElementById('efaStatus').value,
+        efaAmount: parseCurrencyNumber(document.getElementById('efaAmount').value),
+        otherAssistance: document.getElementById('otherFunding').value.trim(),
+        tuitionObligation: parseCurrencyNumber(document.getElementById('tuitionObligation').value),
+        familyMonthlyContribution: parseCurrencyNumber(document.getElementById('monthlyContribution').value),
+        assistanceRequested: parseCurrencyNumber(document.getElementById('assistanceRequested').value),
+        incomeRange: document.getElementById('incomeRange').value,
+        incomeSources: document.getElementById('incomeSources').value.trim(),
+        housingCost: parseCurrencyNumber(document.getElementById('housingCost').value),
+        childcareCost: parseCurrencyNumber(document.getElementById('childcareExpenses').value),
+        medicalExpenses: document.getElementById('medicalExpenses').value.trim(),
+        otherSchoolTuition: document.getElementById('otherSchoolTuition').value.trim(),
+        otherObligations: document.getElementById('unusualObligations').value.trim(),
+        availableAssets: document.getElementById('availableAssets').value.trim(),
+        specialCircumstances: document.getElementById('circumstances').value.trim(),
+        familyCommitment: document.getElementById('familyCommitment').value.trim(),
+        insiderRelationship: document.getElementById('insiderRelationship').value.trim(),
+        donorRelationship: document.getElementById('donorRelationship').value.trim(),
+        certification: document.getElementById('certification').checked,
+        signature: document.getElementById('signature').value.trim(),
+        signatureDate: document.getElementById('signatureDate').value,
+        website: '',
+        files: files
+    };
+}
+
+scholarshipForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    if (!validateScholarshipForm()) {
+        const firstError = scholarshipForm.querySelector('.form-input--error, input:invalid');
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+
+    const btnText = scholarshipSubmitBtn.querySelector('.form-submit-text');
+    const btnLoad = scholarshipSubmitBtn.querySelector('.form-submit-loading');
+    scholarshipSubmitBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoad.style.display = 'inline';
+
+    try {
+        if (!SCHOLARSHIP_SCRIPT_URL) {
+            throw new Error('Scholarship upload endpoint is not configured.');
+        }
+
+        const data = await collectScholarshipData();
+
+        const response = await fetch(SCHOLARSHIP_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (result.result !== 'success' && result.success !== true) {
+            throw new Error(result.message || 'Submission failed.');
+        }
+
+        scholarshipForm.style.display = 'none';
+        document.querySelector('.form-intro-header').style.display = 'none';
+        const applicationId = result.applicationId || result.id || '';
+        const applicationIdEl = document.getElementById('scholarship-application-id');
+        if (applicationId) {
+            applicationIdEl.innerHTML = '<strong>Application ID:</strong> ' + applicationId;
+            applicationIdEl.style.display = 'block';
+        }
+        document.getElementById('scholarship-success').style.display = 'block';
+        document.getElementById('scholarship-success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (error) {
+        scholarshipSubmitBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnLoad.style.display = 'none';
+        document.getElementById('scholarship-error').style.display = 'block';
+        document.getElementById('scholarship-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h3>ZION outSchool</h3>
+            <p>Truth. Discovered. Lived. Shared.</p>
+            <p class="footer-location">Now located in Lowell, Arkansas</p>
+        </div>
+        <div class="footer-links">
+            <a href="foundation.html">Foundation</a>
+            <a href="how-we-learn.html">How We Learn</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="teachers.html">Teachers</a>
+            <a href="tuition.html">Tuition & Funding</a>
+            <a href="faq.html">FAQs</a>
+            <a href="partners.html">Mission Partners</a>
+            <a href="build-with-us.html">Build With Us</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="documents.html">Documents</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-donate">
+            <givebutter-widget id="g8Mb72"></givebutter-widget>
+        </div>
+        <a href="inquiry-form.html" class="footer-btn">
+            Schedule a Conversation →
+        </a>
+    </div>
+    <div class="footer-nondiscrimination">
+        <h4>Notice of Nondiscriminatory Policy as to Students</h4>
+        <p>ZION outSchool admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. ZION outSchool does not discriminate on the basis of race, color, national and ethnic origin in the administration of its educational policies, admissions policies, scholarship and financial-assistance programs, and athletic and other school-administered programs.</p>
+    </div>
+</footer>
+
+<script src="script.js?v=scholarship-form-20260822"></script>
+</body>
+</html>
