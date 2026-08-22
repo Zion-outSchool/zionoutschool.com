@@ -57,10 +57,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 /* Active nav link */
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+const currentHash = window.location.hash;
 document.querySelectorAll('nav a').forEach(link => {
     const linkPage = link.getAttribute('href');
-    if (linkPage === currentPage) {
+    const [normalizedLinkPage, linkHashPart] = linkPage ? linkPage.split('#') : ['', ''];
+    const linkHash = linkHashPart ? '#' + linkHashPart : '';
+    const isSamePage = normalizedLinkPage === currentPage;
+    const isSameAnchor = linkHash && linkHash === currentHash;
+    const isPlainPageLink = !linkHash && !currentHash;
+
+    if (isSamePage && (isSameAnchor || isPlainPageLink)) {
         link.classList.add('active');
+        const navGroup = link.closest('.nav-group');
+        if (navGroup) {
+            navGroup.classList.add('active');
+        }
     }
 });
 
