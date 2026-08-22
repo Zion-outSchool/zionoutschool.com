@@ -1237,7 +1237,7 @@ footer {
 }
 
 .footer-donate givebutter-widget,
-.build-donate-feature givebutter-widget,
+.build-fund-actions givebutter-widget,
 .reg-footer-donate givebutter-widget {
     display: inline-block;
 }
@@ -5236,6 +5236,87 @@ footer {
     line-height: 1.8;
 }
 
+.editorial-page.build-page .build-fund-card {
+    cursor: default;
+}
+
+.editorial-page.build-page .build-fund-card p + p {
+    margin-top: 0.75rem;
+}
+
+.editorial-page.build-page .build-fund-card p strong {
+    color: var(--navy);
+}
+
+.editorial-page.build-page .build-fund-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.35rem;
+}
+
+.editorial-page.build-page .build-fund-button {
+    border-radius: 4px;
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.78rem 1rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.editorial-page.build-page .build-fund-button--primary {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
+.editorial-page.build-page .build-fund-button--primary:hover {
+    background: var(--gold-light);
+}
+
+.editorial-page.build-page .build-fund-button--secondary {
+    border: 1px solid var(--navy);
+    color: var(--navy);
+}
+
+.editorial-page.build-page .build-fund-button--secondary:hover {
+    background: var(--navy);
+    color: var(--white);
+}
+
+.editorial-page.build-page .build-scholarship-apply {
+    border-top: 1px solid var(--border);
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+}
+
+.editorial-page.build-page .build-scholarship-apply h4 {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.55rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.build-page .build-scholarship-apply p {
+    font-family: var(--sans);
+    font-size: 0.86rem;
+    line-height: 1.65;
+}
+
+.editorial-page.build-page .build-fund-note {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    margin: 1.5rem auto 0;
+    max-width: 900px;
+}
+
 .editorial-page.build-page .build-reality {
     background: var(--cream);
     padding: 5rem 0;
@@ -5285,41 +5366,6 @@ footer {
     line-height: 1.85;
     max-width: 620px;
     margin: 0 auto 2.5rem;
-}
-
-.editorial-page.build-page .build-donate-feature {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(201, 168, 76, 0.32);
-    border-radius: 6px;
-    margin: 0 auto 2.25rem;
-    max-width: 560px;
-    padding: 1.75rem;
-}
-
-.editorial-page.build-page .build-donate-eyebrow {
-    color: var(--gold-light);
-    display: block;
-    font-family: var(--sans);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    margin-bottom: 0.55rem;
-    text-transform: uppercase;
-}
-
-.editorial-page.build-page .build-donate-feature h3 {
-    color: var(--white);
-    font-size: 1.45rem;
-    font-weight: 400;
-    line-height: 1.25;
-    margin: 0 0 0.65rem;
-}
-
-.editorial-page.build-page .build-donate-feature p {
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    line-height: 1.65;
-    margin-bottom: 1.25rem;
 }
 
 .editorial-page.build-page .build-close-actions {
