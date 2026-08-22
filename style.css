@@ -2142,30 +2142,31 @@ footer {
 }
 
 .editorial-page .home-nondiscrimination {
-    background: #f7f9fb;
-    border-top: 3px solid var(--gold);
-    padding: 2.75rem 0;
+    background: var(--cream);
+    border-top: 1px solid rgba(201, 168, 76, 0.45);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 0;
 }
 
 .editorial-page .home-nondiscrimination-inner {
-    max-width: 920px;
+    max-width: 860px;
     margin: 0 auto;
 }
 
 .editorial-page .home-nondiscrimination h2 {
     color: var(--navy);
-    font-family: var(--sans);
-    font-size: 1.15rem;
-    font-weight: 700;
-    line-height: 1.35;
-    margin: 0 0 0.85rem;
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 2vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
 }
 
 .editorial-page .home-nondiscrimination p {
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 1rem;
-    line-height: 1.75;
+    color: var(--text-mid);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.8;
     margin: 0;
 }
 
@@ -2828,6 +2829,20 @@ footer {
     font-size: 1.15rem;
     line-height: 1.85;
     margin-bottom: 1.2rem;
+}
+
+.editorial-page.tuition-page .tuition-scholarship-note {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    margin-top: 2rem;
+    padding: 1.35rem 1.5rem;
+}
+
+.editorial-page.tuition-page .tuition-scholarship-note p {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 0.85rem;
 }
 
 .editorial-page.tuition-page .tuition-tools {
@@ -6121,6 +6136,10 @@ header {
     grid-template-columns: 1fr 1fr;
 }
 
+.inquiry-page .form-row--thirds {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .inquiry-page .form-group {
     display: flex;
     flex-direction: column;
@@ -6414,6 +6433,60 @@ header {
     color: var(--gold-light) !important;
     border-top: 1px solid rgba(255,255,255,0.12);
     padding-top: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.scholarship-form-wrap {
+    max-width: 860px;
+}
+
+.scholarship-page .form-intro-body {
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.scholarship-status-note {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.scholarship-upload-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    padding: 1.5rem;
+}
+
+.scholarship-file-input {
+    background: var(--white);
+    font-family: var(--sans) !important;
+    font-size: 0.9rem !important;
+}
+
+.scholarship-upload-secondary {
+    margin-top: 1.25rem;
+}
+
+.scholarship-check {
+    align-items: flex-start;
+    color: var(--text);
+    display: flex;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    gap: 0.75rem;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+}
+
+.scholarship-check input {
+    accent-color: var(--gold);
+    flex: 0 0 auto;
+    margin-top: 0.35rem;
+}
+
+.scholarship-signature-row {
     margin-top: 1.5rem;
 }
  
