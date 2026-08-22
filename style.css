@@ -1358,11 +1358,13 @@ footer {
     height: 68px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     box-shadow: none;
 }
 
 .editorial-page .logo {
+    left: 2rem;
+    position: absolute;
     font-family: var(--serif);
     font-size: 1.4rem;
     font-weight: 600;
@@ -2387,6 +2389,11 @@ footer {
 
     .editorial-page .mobile-menu {
         display: block;
+    }
+
+    .editorial-page .logo {
+        left: auto;
+        position: static;
     }
 
     .editorial-page nav {
