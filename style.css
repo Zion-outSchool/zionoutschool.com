@@ -1231,6 +1231,17 @@ footer {
     margin-top: 0.15rem;
 }
 
+.footer-donate {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-donate givebutter-widget,
+.build-donate-feature givebutter-widget,
+.reg-footer-donate givebutter-widget {
+    display: inline-block;
+}
+
 .footer-links {
     display: flex;
     flex-direction: column;
@@ -2233,6 +2244,12 @@ footer {
 .editorial-page .footer-brand .footer-location {
     color: var(--gold-light);
     letter-spacing: 0.06em;
+}
+
+.editorial-page .footer-donate {
+    align-items: center;
+    display: flex;
+    min-height: 44px;
 }
 
 .editorial-page .footer-links {
@@ -5270,6 +5287,41 @@ footer {
     margin: 0 auto 2.5rem;
 }
 
+.editorial-page.build-page .build-donate-feature {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(201, 168, 76, 0.32);
+    border-radius: 6px;
+    margin: 0 auto 2.25rem;
+    max-width: 560px;
+    padding: 1.75rem;
+}
+
+.editorial-page.build-page .build-donate-eyebrow {
+    color: var(--gold-light);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.55rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.build-page .build-donate-feature h3 {
+    color: var(--white);
+    font-size: 1.45rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0 0 0.65rem;
+}
+
+.editorial-page.build-page .build-donate-feature p {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+}
+
 .editorial-page.build-page .build-close-actions {
     display: flex;
     flex-wrap: wrap;
@@ -6898,6 +6950,14 @@ header {
 .reg-footer-col address a {
     color: #D4AF50;
     text-decoration: none;
+}
+
+.reg-footer-donate p {
+    color: rgba(255, 255, 255, 0.62);
+    font-family: var(--sans, Arial, sans-serif);
+    font-size: 0.87rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
 .reg-footer-bottom {
