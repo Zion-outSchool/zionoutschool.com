@@ -241,9 +241,15 @@
             <div class="inquiry-section">
                 <h3 class="inquiry-section-title">Family Commitment</h3>
                 <div class="form-group">
-                    <label for="familyCommitment" class="form-label">What can your family reasonably contribute, and is that amount sustainable? <span class="form-required">*</span></label>
+                    <label for="familyCommitment" class="form-label">How could your family contribute to ZION outSchool in a sustainable way? <span class="form-required">*</span></label>
+                    <p class="form-hint">This may include a financial contribution, cleaning, helping with school operations, sharing professional skills, or offering other practical support.</p>
                     <textarea id="familyCommitment" name="familyCommitment" class="form-input form-textarea" rows="4" required></textarea>
                     <span class="form-error" id="familyCommitment-error">Please describe your family's contribution.</span>
+                </div>
+                <div class="form-group">
+                    <label for="sponsorOutreach" class="form-label">Are there friends, relatives, grandparents, churches, or community members who may be willing to help sponsor your student's education? <span class="form-optional">(optional)</span></label>
+                    <p class="form-hint">If you have already asked, are planning to ask, or would like help thinking through how to invite support, you may share that here.</p>
+                    <textarea id="sponsorOutreach" name="sponsorOutreach" class="form-input form-textarea" rows="3"></textarea>
                 </div>
             </div>
 
@@ -423,6 +429,7 @@ async function collectScholarshipData() {
         availableAssets: document.getElementById('availableAssets').value.trim(),
         specialCircumstances: document.getElementById('circumstances').value.trim(),
         familyCommitment: document.getElementById('familyCommitment').value.trim(),
+        sponsorOutreach: document.getElementById('sponsorOutreach').value.trim(),
         insiderRelationship: document.getElementById('insiderRelationship').value.trim(),
         donorRelationship: document.getElementById('donorRelationship').value.trim(),
         certification: document.getElementById('certification').checked,
