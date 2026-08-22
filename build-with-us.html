@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=scholarship-form-20260822">
+    <link rel="stylesheet" href="style.css?v=nav-groups-20260822">
 
     <!-- ── PAGE ADDITIONS (open-ender pill + sticky jump button) ── -->
     <style>
@@ -105,19 +105,38 @@
 <header>
     <a href="index.html" class="logo">ZION <span>out</span>School</a>
     <button class="mobile-menu" aria-label="Open navigation">☰</button>
-    <nav id="nav-menu">
-        <a href="foundation.html">Foundation</a>
-        <a href="how-we-learn.html">How We Learn</a>
-        <a href="curriculum.html">Curriculum</a>
-        <a href="tuition.html">Tuition & Funding</a>
-        <a href="teachers.html">Who Teaches Here</a>
-        <a href="faq.html">FAQs</a>
-        <a href="partners.html">Mission Partners</a>
-        <a href="build-with-us.html">Build With Us</a>
-        <a href="calendar.html">Calendar</a>
-        <a href="contact.html">Contact</a>
-        <a href="inquiry-form.html" class="nav-cta">Family Inquiry →</a>
-        <a href="registration.html" class="nav-enroll">Enroll Now →</a>
+    <nav id="nav-menu" aria-label="Primary navigation">
+        <div class="nav-group">
+            <button type="button" class="nav-group-toggle" aria-haspopup="true">Discover ZION</button>
+            <div class="nav-dropdown-menu">
+                <a href="foundation.html">Foundation</a>
+                <a href="how-we-learn.html">How We Learn</a>
+                <a href="curriculum.html">Curriculum</a>
+                <a href="teachers.html">Who Teaches Here</a>
+                <a href="faq.html">FAQs</a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <button type="button" class="nav-group-toggle" aria-haspopup="true">Join ZION</button>
+            <div class="nav-dropdown-menu">
+                <a href="tuition.html">Tuition & Funding</a>
+                <a href="inquiry-form.html">Family Inquiry</a>
+                <a href="registration.html">Enroll Now</a>
+                <a href="calendar.html">Calendar</a>
+                <a href="contact.html">Contact</a>
+                <a href="scholarship-assistance.html">Scholarship Assistance</a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <button type="button" class="nav-group-toggle" aria-haspopup="true">Build With Us</button>
+            <div class="nav-dropdown-menu">
+                <a href="build-with-us.html">Build With Us</a>
+                <a href="build-with-us.html#build-zion-fund">Build ZION Fund</a>
+                <a href="build-with-us.html#student-scholarship-fund">Student Scholarship Fund</a>
+                <a href="partners.html">Mission Partners</a>
+                <a href="build-with-us.html#ways">Volunteer / Partner Opportunities</a>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -379,6 +398,7 @@
             </div>
 
             <div class="build-way-card build-way-card--primary build-fund-card build-fund-card--build"
+                 id="build-zion-fund"
                  data-no-modal>
                 <span class="build-way-num">06</span>
                 <h3>Build ZION Fund</h3>
@@ -392,6 +412,7 @@
             </div>
 
             <div class="build-way-card build-fund-card build-fund-card--scholarship"
+                 id="student-scholarship-fund"
                  data-no-modal>
                 <span class="build-way-num">07</span>
                 <h3>ZION outSchool Student Scholarship Fund</h3>
@@ -581,7 +602,7 @@
     </div>
 </div>
 
-<script src="script.js?v=build-inquiry-20260523"></script>
+<script src="script.js?v=nav-groups-20260822"></script>
 <script>
 // ── PARTNER MODAL SYSTEM ────────────────────────────────────
 const PARTNER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2qozk-XOkJZCsnBpDOfJwGqQfinVNfdBanDNhA48noZS5itSpGFSzM0gFIF4_gyg-/exec';
