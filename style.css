@@ -7639,8 +7639,88 @@ header {
     line-height: 1.7;
 }
 
-.editorial-page.payment-page .payment-fees {
+.editorial-page.payment-page .payment-schedule {
     background: var(--white);
+    padding: 5rem 0;
+}
+
+.editorial-page.payment-page .payment-schedule .section-intro {
+    max-width: 780px;
+}
+
+.editorial-page.payment-page .payment-schedule .section-intro h2 {
+    color: var(--navy);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.editorial-page.payment-page .payment-schedule .section-intro p {
+    color: var(--text);
+    font-size: 1.08rem;
+    line-height: 1.8;
+}
+
+.editorial-page.payment-page .payment-schedule-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 2rem;
+}
+
+.editorial-page.payment-page .payment-month-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    min-height: 190px;
+    padding: 1.45rem;
+}
+
+.editorial-page.payment-page .payment-month-card--delayed {
+    background: #fff7e6;
+    border-color: rgba(201,168,76,0.7);
+    box-shadow: inset 0 0 0 2px rgba(201,168,76,0.16);
+}
+
+.editorial-page.payment-page .payment-month {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.payment-page .payment-month-card strong {
+    color: var(--navy);
+    font-family: var(--serif);
+    font-size: 2.45rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.editorial-page.payment-page .payment-month-card p {
+    color: var(--text-mid);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.editorial-page.payment-page .payment-month-card p span {
+    color: #7a4d00;
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.payment-page .payment-fees {
+    background: var(--cream);
 }
 
 .editorial-page.payment-page .payment-classwallet {
@@ -7708,6 +7788,7 @@ header {
 
 @media (max-width: 900px) {
     .editorial-page.payment-page .payment-timeline,
+    .editorial-page.payment-page .payment-schedule-grid,
     .editorial-page.payment-page .payment-classwallet .container {
         grid-template-columns: 1fr;
     }
@@ -7715,9 +7796,14 @@ header {
 
 @media (max-width: 640px) {
     .editorial-page.payment-page .payment-overview,
+    .editorial-page.payment-page .payment-schedule,
     .editorial-page.payment-page .payment-classwallet,
     .editorial-page.payment-page .payment-note {
         padding: 3.5rem 0;
+    }
+
+    .editorial-page.payment-page .payment-month-card {
+        min-height: 0;
     }
 }
 
