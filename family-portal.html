@@ -6,7 +6,7 @@
     <title>Family Portal | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=family-portal-20260823">
+    <link rel="stylesheet" href="style.css?v=portal-testing-logos-20260823">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
@@ -62,7 +62,7 @@
         <span class="eyebrow">Current Families</span>
         <h1>One place for the details<br><em>families need next.</em></h1>
         <p class="hero-subtext">
-            The Family Portal will become the home for current-family calendars, payment timing, school communication, and student-specific updates as those systems come online.
+            The Family Portal gathers current-family resources in one place, including placement testing information, school calendar access, and future tools for payments and student communication.
         </p>
     </div>
 </section>
@@ -70,11 +70,12 @@
 <section class="portal-status">
     <div class="container-narrow">
         <span class="section-label">Portal Status</span>
-        <h2>Public preview now. Private access later.</h2>
+        <h2>Family resources now. Private access later.</h2>
         <p>
-            This page is intentionally public-safe for now. When student-specific communication is ready, those tools should move behind a secure login rather than living on the public website.
+            Testing information and general calendar links can live here publicly. When student-specific communication is ready, those tools should move behind a secure login rather than living on the public website.
         </p>
         <div class="portal-actions">
+            <a href="#testing-information" class="home-cta-primary">Open Testing Information →</a>
             <a href="calendar.html" class="home-cta-primary">View Public Calendar →</a>
             <a href="mailto:hello@zionoutschool.com" class="home-cta-secondary">Email the School</a>
         </div>
@@ -92,10 +93,11 @@
                 <a href="calendar.html">Open Calendar →</a>
             </article>
 
-            <article class="portal-tool-card">
-                <span class="portal-tool-status">Coming soon</span>
-                <h2>Detailed Family Calendar</h2>
-                <p>A more detailed calendar for enrolled families, including reminders and internal schedule details.</p>
+            <article class="portal-tool-card portal-tool-card--ready">
+                <span class="portal-tool-status">Available now</span>
+                <h2>Testing Information</h2>
+                <p>Use this section for placement testing links and guidance while families complete testing at home.</p>
+                <a href="#testing-information">Open Testing Information →</a>
             </article>
 
             <article class="portal-tool-card">
@@ -109,6 +111,146 @@
                 <h2>Student Communication</h2>
                 <p>Eventually, student-specific notes and family communication should live behind secure access.</p>
             </article>
+        </div>
+    </div>
+</section>
+
+<section id="testing-information" class="portal-testing">
+    <div class="container">
+        <div class="portal-testing-intro">
+            <span class="section-label">Placement Testing</span>
+            <h2>Every child begins where they are ready.</h2>
+            <p>
+                At ZION outSchool, curriculum placement is based on a student's demonstrated readiness rather than age or grade level alone. A student may be working at different levels in different subjects.
+            </p>
+            <p>
+                Our goal is not to produce the highest possible placement score. It is to identify the place where the student can learn successfully, build confidence, and progress toward mastery.
+            </p>
+        </div>
+
+        <div class="portal-testing-panel">
+            <div class="portal-testing-panel-copy">
+                <span class="portal-tool-status">Personalized assignments</span>
+                <h3>Your Child's Assigned Assessments</h3>
+                <p>
+                    This area will eventually show each student's assigned assessments, download links, due dates, submission status, and a secure upload button.
+                </p>
+            </div>
+            <div class="portal-assignment-card" aria-label="Assessment assignment example">
+                <span class="portal-assignment-label">Student assignment card</span>
+                <dl>
+                    <div>
+                        <dt>Child</dt>
+                        <dd>Assigned individually</dd>
+                    </div>
+                    <div>
+                        <dt>Assessments</dt>
+                        <dd>ELA, math, or program-specific placement</dd>
+                    </div>
+                    <div>
+                        <dt>Due date</dt>
+                        <dd>Provided by ZION</dd>
+                    </div>
+                    <div>
+                        <dt>Status</dt>
+                        <dd>Not yet submitted</dd>
+                    </div>
+                </dl>
+                <span class="portal-disabled-login" aria-disabled="true">Secure upload coming later</span>
+            </div>
+        </div>
+
+        <div class="portal-resource-section">
+            <span class="portal-tool-status">Testing links</span>
+            <h3>Common Placement Resources</h3>
+            <div class="portal-testing-links">
+                <a href="https://www.goodandbeautiful.com/pages/placement?srsltid=AfmBOoqZg14aACIYAmtAE8-Trr-NEmTQ4QiVTKWeVUtItfsvpccSB_W-" target="_blank" rel="noopener" class="portal-resource-card">
+                    <span class="portal-resource-logo">
+                        <img src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/G%26B%20logo.webp" alt="The Good and the Beautiful logo">
+                    </span>
+                    <strong>Good and Beautiful Placement</strong>
+                    <span>ELA and math placement resources</span>
+                </a>
+                <a href="https://beastacademy.com/resources/placementtests" target="_blank" rel="noopener" class="portal-resource-card">
+                    <span class="portal-resource-logo">
+                        <img src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/AoPS_BeastAcademy-logo.jpg" alt="Beast Academy logo">
+                    </span>
+                    <strong>Beast Academy Placement Tests</strong>
+                    <span>Math placement resources</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="portal-guidance-grid">
+            <article class="portal-guidance-card">
+                <h3>Before You Begin</h3>
+                <ul>
+                    <li>Review all directions.</li>
+                    <li>Gather permitted materials.</li>
+                    <li>Choose a quiet time and location.</li>
+                    <li>Contact ZION before testing if your child needs accommodations.</li>
+                    <li>Do not preview or teach the test questions beforehand.</li>
+                </ul>
+            </article>
+
+            <article class="portal-guidance-card">
+                <h3>While Your Child Is Testing</h3>
+                <p>
+                    Please encourage your child to do their best, but allow them to complete the work independently. Do not explain concepts, suggest strategies, point out errors, reword academic questions, or ask the child to reconsider an answer.
+                </p>
+                <p>
+                    If assistance is required to understand a general direction, note exactly what assistance was given when submitting the test.
+                </p>
+            </article>
+        </div>
+
+        <div class="portal-reminder">
+            <h3>Remember</h3>
+            <p>
+                This assessment is not something your child must pass. Helping may unintentionally place your child in curriculum that is too difficult and make learning more frustrating. An honest picture of current skills allows us to choose the right starting point.
+            </p>
+        </div>
+
+        <div class="portal-submit-grid">
+            <article class="portal-guidance-card">
+                <h3>Submit the Assessment</h3>
+                <p>The upload form should collect:</p>
+                <ul>
+                    <li>Parent name</li>
+                    <li>Student name</li>
+                    <li>Assessment subject and title</li>
+                    <li>Date completed</li>
+                    <li>Approximate completion time</li>
+                    <li>Breaks taken</li>
+                    <li>Accommodations or assistance provided</li>
+                    <li>Parent observations</li>
+                    <li>File upload</li>
+                    <li>Parent certification</li>
+                </ul>
+            </article>
+
+            <article class="portal-guidance-card portal-certification-card">
+                <h3>Parent Certification</h3>
+                <p>
+                    I confirm that my child completed this assessment independently except for the assistance or accommodations described above. The submitted pages represent my child's original work and have not been corrected or revised.
+                </p>
+            </article>
+        </div>
+
+        <div class="portal-next-steps">
+            <span class="portal-tool-status">What happens afterward</span>
+            <h3>What Happens Next?</h3>
+            <ul>
+                <li>ZION reviews the completed assessment and written work.</li>
+                <li>Staff may request a follow-up assessment, reading sample, or conversation.</li>
+                <li>Placement is determined using the full body of evidence, not necessarily the test company's score alone.</li>
+                <li>The family receives the recommended curriculum level.</li>
+                <li>Curriculum is ordered only after ZION confirms placement.</li>
+                <li>Placement may be adjusted after the student begins if classroom performance shows that a different level is more appropriate.</li>
+            </ul>
+            <p>
+                A placement assessment is an informed starting point, not an irreversible label. Please do not purchase curriculum until placement has been confirmed.
+            </p>
         </div>
     </div>
 </section>

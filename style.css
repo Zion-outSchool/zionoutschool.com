@@ -18,23 +18,34 @@
             --sans:       'Inter', system-ui, sans-serif;
         }
 
+        @media (max-width: 768px) {
+            :root {
+                --announcement-h: 64px;
+            }
+        }
+
         html { scroll-behavior: smooth; }
 
-        body {
-            font-family: var(--serif);
-            color: var(--text);
-            background: var(--white);
-            line-height: 1.7;
-        }
+body {
+    font-family: var(--serif);
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+}
 
         .announcement-bar {
             background: var(--navy-dark);
             border-bottom: 1px solid rgba(201, 168, 76, 0.4);
-            padding: 0.6rem 2rem;
+            display: flex;
+            align-items: center;
+            height: var(--announcement-h);
+            left: 0;
+            padding: 0 2rem;
+            position: fixed;
+            right: 0;
             text-align: center;
-            position: sticky;
             top: 0;
-            z-index: 101;
+            z-index: 1100;
         }
 
         .announcement-bar p {
@@ -1851,7 +1862,7 @@ header nav .nav-portal.active {
 }
 
 .editorial-page .home-hero {
-    margin-top: var(--header-h);
+    margin-top: calc(var(--header-h) + var(--announcement-h));
     padding: 0;
     position: relative;
     width: 100%;
@@ -6025,17 +6036,17 @@ header {
 }
 
 .page-hero {
-    margin-top: var(--header-h) !important;
+    margin-top: calc(var(--header-h) + var(--announcement-h)) !important;
 }
 
 .editorial-page .home-hero {
-    margin-top: var(--header-h);
+    margin-top: calc(var(--header-h) + var(--announcement-h));
 }
 
 @media (max-width: 768px) {
     .page-hero,
     .editorial-page .page-hero {
-        margin-top: 68px !important;
+        margin-top: calc(68px + var(--announcement-h)) !important;
     }
 }
 
@@ -7368,6 +7379,244 @@ header {
     color: var(--gold);
 }
 
+.editorial-page.portal-page .portal-testing {
+    background: var(--cream);
+    padding: 5rem 0;
+}
+
+.editorial-page.portal-page .portal-testing-intro,
+.editorial-page.portal-page .portal-resource-section,
+.editorial-page.portal-page .portal-next-steps {
+    max-width: 820px;
+}
+
+.editorial-page.portal-page .portal-testing-intro {
+    margin-bottom: 2.5rem;
+}
+
+.editorial-page.portal-page .portal-testing h2 {
+    color: var(--navy);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.editorial-page.portal-page .portal-testing p {
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.85;
+}
+
+.editorial-page.portal-page .portal-testing h3 {
+    color: var(--navy);
+    font-size: 1.45rem;
+    line-height: 1.25;
+    margin-bottom: 0.8rem;
+}
+
+.editorial-page.portal-page .portal-testing ul {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.94rem;
+    line-height: 1.7;
+    margin-left: 1.15rem;
+}
+
+.editorial-page.portal-page .portal-testing li + li {
+    margin-top: 0.45rem;
+}
+
+.editorial-page.portal-page .portal-testing-panel {
+    align-items: stretch;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+    margin: 0 0 3rem;
+    padding: 2rem;
+}
+
+.editorial-page.portal-page .portal-testing-panel-copy p {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.editorial-page.portal-page .portal-assignment-card {
+    background: #fbfaf7;
+    border: 1px solid rgba(201,168,76,0.32);
+    border-radius: 4px;
+    padding: 1.35rem;
+}
+
+.editorial-page.portal-page .portal-assignment-label {
+    color: var(--gold);
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.9rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.portal-page .portal-assignment-card dl {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0 0 1.25rem;
+}
+
+.editorial-page.portal-page .portal-assignment-card div {
+    border-bottom: 1px solid rgba(13,31,51,0.1);
+    padding-bottom: 0.65rem;
+}
+
+.editorial-page.portal-page .portal-assignment-card div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.editorial-page.portal-page .portal-assignment-card dt {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.editorial-page.portal-page .portal-assignment-card dd {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    margin: 0.15rem 0 0;
+}
+
+.editorial-page.portal-page .portal-resource-section {
+    margin-bottom: 3rem;
+}
+
+.editorial-page.portal-page .portal-testing-links {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1.35rem;
+}
+
+.editorial-page.portal-page .portal-testing-links a {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--gold);
+    border-radius: 4px;
+    display: grid;
+    gap: 0.25rem;
+    min-height: 190px;
+    padding: 1.35rem;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.editorial-page.portal-page .portal-testing-links a:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+}
+
+.editorial-page.portal-page .portal-resource-logo {
+    align-items: center;
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.1);
+    border-radius: 4px;
+    display: inline-flex;
+    height: 70px;
+    justify-content: center;
+    margin-bottom: 0.7rem;
+    padding: 0.65rem;
+    width: 160px;
+}
+
+.editorial-page.portal-page .portal-resource-logo img {
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.editorial-page.portal-page .portal-testing-links strong {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 1rem;
+}
+
+.editorial-page.portal-page .portal-testing-links span {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.86rem;
+}
+
+.editorial-page.portal-page .portal-guidance-grid,
+.editorial-page.portal-page .portal-submit-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1rem;
+}
+
+.editorial-page.portal-page .portal-guidance-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.6rem;
+}
+
+.editorial-page.portal-page .portal-guidance-card p {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.94rem;
+    line-height: 1.75;
+}
+
+.editorial-page.portal-page .portal-guidance-card p + p {
+    margin-top: 1rem;
+}
+
+.editorial-page.portal-page .portal-reminder,
+.editorial-page.portal-page .portal-next-steps {
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    color: var(--white);
+    margin-top: 1rem;
+    padding: 1.7rem 1.8rem;
+}
+
+.editorial-page.portal-page .portal-reminder h3,
+.editorial-page.portal-page .portal-next-steps h3 {
+    color: var(--white);
+}
+
+.editorial-page.portal-page .portal-reminder p,
+.editorial-page.portal-page .portal-next-steps p,
+.editorial-page.portal-page .portal-next-steps li {
+    color: rgba(255,255,255,0.76);
+}
+
+.editorial-page.portal-page .portal-next-steps {
+    margin-top: 1rem;
+    max-width: none;
+}
+
+.editorial-page.portal-page .portal-next-steps ul {
+    margin-bottom: 1.2rem;
+}
+
+.editorial-page.portal-page .portal-certification-card {
+    background: #fbfaf7;
+    border-left: 4px solid var(--gold);
+}
+
 .editorial-page.portal-page .portal-login-note {
     background: var(--navy);
     padding: 5rem 0;
@@ -7405,11 +7654,19 @@ header {
 @media (max-width: 640px) {
     .editorial-page.portal-page .portal-status,
     .editorial-page.portal-page .portal-tools,
+    .editorial-page.portal-page .portal-testing,
     .editorial-page.portal-page .portal-login-note {
         padding: 3.5rem 0;
     }
 
     .editorial-page.portal-page .portal-tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editorial-page.portal-page .portal-testing-panel,
+    .editorial-page.portal-page .portal-testing-links,
+    .editorial-page.portal-page .portal-guidance-grid,
+    .editorial-page.portal-page .portal-submit-grid {
         grid-template-columns: 1fr;
     }
 
