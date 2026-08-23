@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Portal | Zion outSchool</title>
+    <title>Payment Calendar | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=portal-hero-bg-20260823">
+    <link rel="stylesheet" href="style.css?v=payment-calendar-20260823">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page portal-page">
+<body class="editorial-page portal-page tuition-page payment-page">
 
 <div class="announcement-bar">
     <div class="container">
@@ -59,72 +59,99 @@
 
 <section class="page-hero portal-hero">
     <div class="container">
-        <span class="eyebrow">Current Families</span>
-        <h1>One place for the details<br><em>families need next.</em></h1>
+        <span class="eyebrow">Payment Calendar</span>
+        <h1>Clear dates for<br><em>monthly tuition payments.</em></h1>
         <p class="hero-subtext">
-            The Family Portal gathers current-family resources in one place, including placement testing information, payment timing, school calendar access, and future student communication tools.
+            Use this page to track monthly invoice timing, payment due dates, and ClassWallet direct-pay setup.
         </p>
     </div>
 </section>
 
-<section class="portal-status">
-    <div class="container-narrow">
-        <span class="section-label">Portal Status</span>
-        <h2>Family resources now. Private access later.</h2>
-        <p>
-            Testing information, payment timing, and general calendar links can live here publicly. When student-specific communication is ready, those tools should move behind a secure login rather than living on the public website.
-        </p>
-        <div class="portal-actions">
-            <a href="testing.html" class="home-cta-primary">Open Testing Information →</a>
-            <a href="payment-calendar.html" class="home-cta-primary">Open Payment Calendar →</a>
-            <a href="calendar.html" class="home-cta-primary">View Public Calendar →</a>
-            <a href="mailto:hello@zionoutschool.com" class="home-cta-secondary">Email the School</a>
-        </div>
-    </div>
-</section>
-
-<section class="portal-tools">
+<section class="payment-overview">
     <div class="container">
-        <span class="section-label">Family Tools</span>
-        <div class="portal-tool-grid">
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>School Calendar</h2>
-                <p>Use the public calendar for major school dates, breaks, events, and schedule notes.</p>
-                <a href="calendar.html">Open Calendar →</a>
+        <span class="section-label">Monthly Payment Rhythm</span>
+        <div class="payment-timeline">
+            <article class="payment-date-card">
+                <span class="payment-date">15</span>
+                <h2>Invoice Sent</h2>
+                <p>ZION sends monthly invoices on the 15th of each month.</p>
             </article>
-
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Testing Information</h2>
-                <p>Use this section for placement testing links and guidance while families complete testing at home.</p>
-                <a href="testing.html">Open Testing Information →</a>
+            <article class="payment-date-card payment-date-card--due">
+                <span class="payment-date">22</span>
+                <h2>Payment Due</h2>
+                <p>Payment is due on or before the 22nd of each month.</p>
             </article>
-
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Payment Calendar</h2>
-                <p>See invoice timing, payment due dates, late-fee policy, and ClassWallet direct-pay guidance.</p>
-                <a href="payment-calendar.html">Open Payment Calendar →</a>
-            </article>
-
-            <article class="portal-tool-card">
-                <span class="portal-tool-status">Future login</span>
-                <h2>Student Communication</h2>
-                <p>Eventually, student-specific notes and family communication should live behind secure access.</p>
+            <article class="payment-date-card payment-date-card--late">
+                <span class="payment-date">+5</span>
+                <h2>Grace Period</h2>
+                <p>A late fee of 10% of the outstanding balance is applied after a 5-day grace period.</p>
             </article>
         </div>
     </div>
 </section>
 
-<section class="portal-login-note">
+<section class="tuition-fees payment-fees">
+    <div class="container">
+        <span class="section-label">What It Costs</span>
+
+        <div class="fees-grid">
+            <div class="fee-item">
+                <span class="fee-label">Monthly Tuition</span>
+                <span class="fee-amount">$600</span>
+                <p>Paid in advance. No deductions for absences.</p>
+            </div>
+            <div class="fee-item">
+                <span class="fee-label">Unit Fee</span>
+                <span class="fee-amount">$135</span>
+                <p>Per unit x 4 units per year. Covers all books, materials, printing, subscriptions, and portfolio supplies.</p>
+            </div>
+            <div class="fee-item">
+                <span class="fee-label">Annual Curriculum Fee</span>
+                <span class="fee-amount">$200</span>
+                <p>Charged once per year. Includes mathematics curriculum selection and placement testing.</p>
+                <p class="fee-note">New students receive an initial teacher assessment at no additional cost. If a student advances into a new mathematics curriculum level during the year, an additional curriculum fee will apply to cover new materials.</p>
+            </div>
+        </div>
+
+        <div class="annual-total">
+            <div class="annual-total-inner">
+                <p class="annual-total-label">Annual Total</p>
+                <p class="annual-total-amount">$6,740</p>
+                <p class="annual-total-desc">Tuition + Unit Fees + Annual Curriculum Fee</p>
+                <p class="annual-total-efa">Fully covered by EFA for qualifying families</p>
+                <p class="annual-total-remaining"><strong>$468 remaining</strong> for uniform and supplies after all fees</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="payment-classwallet">
+    <div class="container">
+        <div class="payment-video-copy">
+            <span class="section-label">ClassWallet Direct Pay</span>
+            <h2>Setting up direct pay through the EFA portal.</h2>
+            <p>
+                Families using Education Freedom Account funds can use ClassWallet to direct eligible payments to ZION outSchool. This video walks through the direct-pay setup process.
+            </p>
+        </div>
+        <div class="payment-video-frame">
+            <iframe
+                src="https://www.youtube.com/embed/vt0oLysesB4"
+                title="How to set up direct pay in ClassWallet"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </div>
+</section>
+
+<section class="payment-note">
     <div class="container-narrow">
-        <span class="section-label">Security Note</span>
-        <h2>Private student information should require sign-in.</h2>
+        <span class="section-label">Payment Questions</span>
+        <h2>Need help with an invoice or ClassWallet?</h2>
         <p>
-            Calendar details and general family reminders can live here publicly if appropriate. Anything tied to a specific student, family, invoice, document, or private communication should be protected behind a login before it is published.
+            Email <a href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a> if you need help understanding an invoice, payment timing, or how to submit a ClassWallet payment.
         </p>
-        <span class="portal-disabled-login" aria-disabled="true">Family login coming later</span>
     </div>
 </section>
 
@@ -155,7 +182,7 @@
                 <span aria-hidden="true">↓</span>
             </a>
         </div>
-        <a href="contact.html" class="footer-btn">Begin the Conversation →</a>
+        <a href="family-portal.html" class="footer-btn">Back to Family Portal →</a>
     </div>
     <div class="footer-nondiscrimination">
         <h4>Notice of Nondiscriminatory Policy as to Students</h4>
