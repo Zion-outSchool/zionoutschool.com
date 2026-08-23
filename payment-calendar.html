@@ -6,7 +6,7 @@
     <title>Payment Calendar | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=payment-calendar-20260823">
+    <link rel="stylesheet" href="style.css?v=payment-table-20260823">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
@@ -94,7 +94,7 @@
     <div class="container">
         <div class="section-intro">
             <span class="section-label">EFA Calendar At A Glance</span>
-            <h2>Monthly amounts and expected ClassWallet timing.</h2>
+            <h2>Monthly EFA<br>payment schedule.</h2>
             <p>
                 This schedule starts in September and follows the full $6,740 billing plan, with EFA funds applied to the oldest open invoice first. Months marked as later payment windows may need to remain pending until the next EFA funds drop.
             </p>
@@ -102,6 +102,11 @@
 
         <div class="payment-schedule-table-wrap">
             <table class="payment-schedule-table">
+                <colgroup>
+                    <col class="payment-col-month">
+                    <col class="payment-col-breakdown">
+                    <col class="payment-col-notes">
+                </colgroup>
                 <thead>
                     <tr>
                         <th scope="col">Month & Payment</th>
@@ -124,7 +129,11 @@
                     <tr class="payment-delayed-row">
                         <td><strong>October</strong> $600</td>
                         <td>$600 tuition</td>
-                        <td>Delayed payment window. ClassWallet payments cannot be scheduled until the account has a positive EFA balance. Payment due Oct. 29.</td>
+                        <td>
+                            <span class="payment-note-badge">Delayed window</span>
+                            <strong>Due Oct. 29</strong>
+                            <span>Positive ClassWallet balance required before scheduling payment.</span>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>November</strong> $600</td>
@@ -142,7 +151,11 @@
                     <tr class="payment-delayed-row">
                         <td><strong>January</strong> $735</td>
                         <td>$600 tuition + $135 unit fee</td>
-                        <td>Delayed payment window. ClassWallet payments cannot be scheduled until the account has a positive EFA balance. Payment due Feb. 4.</td>
+                        <td>
+                            <span class="payment-note-badge">Delayed window</span>
+                            <strong>Due Feb. 4</strong>
+                            <span>Positive ClassWallet balance required before scheduling payment.</span>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>February</strong> $600</td>
@@ -155,7 +168,11 @@
                     <tr class="payment-delayed-row">
                         <td><strong>March</strong> $735</td>
                         <td>$600 tuition + $135 unit fee</td>
-                        <td>Delayed payment window. ClassWallet payments cannot be scheduled until the account has a positive EFA balance. Payment due Apr. 15.</td>
+                        <td>
+                            <span class="payment-note-badge">Delayed window</span>
+                            <strong>Due Apr. 15</strong>
+                            <span>Positive ClassWallet balance required before scheduling payment.</span>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>April</strong> $600</td>
