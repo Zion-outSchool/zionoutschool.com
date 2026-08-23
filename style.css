@@ -7662,6 +7662,77 @@ header {
     line-height: 1.8;
 }
 
+.editorial-page.payment-page .payment-schedule-table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.editorial-page.payment-page .payment-schedule-table {
+    background: var(--white);
+    border-collapse: collapse;
+    min-width: 760px;
+    width: 100%;
+}
+
+.editorial-page.payment-page .payment-schedule-table th,
+.editorial-page.payment-page .payment-schedule-table td {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.editorial-page.payment-page .payment-schedule-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.editorial-page.payment-page .payment-schedule-table td {
+    color: var(--text-mid);
+    font-size: 0.96rem;
+    line-height: 1.65;
+}
+
+.editorial-page.payment-page .payment-schedule-table td strong {
+    color: var(--navy);
+    display: block;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.editorial-page.payment-page .payment-schedule-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.editorial-page.payment-page .payment-efa-row td {
+    background: rgba(201,168,76,0.16);
+    color: var(--navy);
+    font-size: 0.9rem;
+}
+
+.editorial-page.payment-page .payment-efa-row td strong {
+    display: inline;
+    font-size: 0.92rem;
+    margin-right: 0.5rem;
+}
+
+.editorial-page.payment-page .payment-delayed-row td {
+    background: #fff7e6;
+}
+
+.editorial-page.payment-page .payment-delayed-row td:last-child {
+    border-left: 4px solid var(--gold);
+    color: #6c4a05;
+    font-weight: 600;
+}
+
 .editorial-page.payment-page .payment-schedule-grid {
     display: grid;
     gap: 1rem;
