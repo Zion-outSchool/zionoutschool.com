@@ -7280,7 +7280,7 @@ header {
 .editorial-page.portal-page .portal-hero {
     background:
         linear-gradient(to bottom, rgba(14,30,52,0.74) 0%, rgba(14,30,52,0.58) 58%, rgba(14,30,52,0.84) 100%),
-        url('https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Your%20Child%20has%20a%20place%20here%20banner%20-%20new%20building%20.png') center/cover no-repeat;
+        url('https://pub-ff92dd81bac74421977526b3aaf1374a.r2.dev/assets/images/background-hero.jpeg') center/cover no-repeat;
     min-height: 50vh;
 }
 
@@ -7427,75 +7427,6 @@ header {
     margin-top: 0.45rem;
 }
 
-.editorial-page.portal-page .portal-testing-panel {
-    align-items: stretch;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--navy);
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-    margin: 0 0 3rem;
-    padding: 2rem;
-}
-
-.editorial-page.portal-page .portal-testing-panel-copy p {
-    color: var(--text-mid);
-    font-family: var(--sans);
-    font-size: 0.95rem;
-    line-height: 1.75;
-}
-
-.editorial-page.portal-page .portal-assignment-card {
-    background: #fbfaf7;
-    border: 1px solid rgba(201,168,76,0.32);
-    border-radius: 4px;
-    padding: 1.35rem;
-}
-
-.editorial-page.portal-page .portal-assignment-label {
-    color: var(--gold);
-    display: block;
-    font-family: var(--sans);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    margin-bottom: 0.9rem;
-    text-transform: uppercase;
-}
-
-.editorial-page.portal-page .portal-assignment-card dl {
-    display: grid;
-    gap: 0.75rem;
-    margin: 0 0 1.25rem;
-}
-
-.editorial-page.portal-page .portal-assignment-card div {
-    border-bottom: 1px solid rgba(13,31,51,0.1);
-    padding-bottom: 0.65rem;
-}
-
-.editorial-page.portal-page .portal-assignment-card div:last-child {
-    border-bottom: 0;
-    padding-bottom: 0;
-}
-
-.editorial-page.portal-page .portal-assignment-card dt {
-    color: var(--navy);
-    font-family: var(--sans);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.editorial-page.portal-page .portal-assignment-card dd {
-    color: var(--text-mid);
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    margin: 0.15rem 0 0;
-}
-
 .editorial-page.portal-page .portal-resource-section {
     margin-bottom: 3rem;
 }
@@ -7557,8 +7488,7 @@ header {
     font-size: 0.86rem;
 }
 
-.editorial-page.portal-page .portal-guidance-grid,
-.editorial-page.portal-page .portal-submit-grid {
+.editorial-page.portal-page .portal-guidance-grid {
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -7584,6 +7514,7 @@ header {
 }
 
 .editorial-page.portal-page .portal-reminder,
+.editorial-page.portal-page .portal-email-submit,
 .editorial-page.portal-page .portal-next-steps {
     background: var(--navy);
     border-left: 4px solid var(--gold);
@@ -7593,14 +7524,23 @@ header {
 }
 
 .editorial-page.portal-page .portal-reminder h3,
+.editorial-page.portal-page .portal-email-submit h3,
 .editorial-page.portal-page .portal-next-steps h3 {
     color: var(--white);
 }
 
 .editorial-page.portal-page .portal-reminder p,
+.editorial-page.portal-page .portal-email-submit p,
 .editorial-page.portal-page .portal-next-steps p,
 .editorial-page.portal-page .portal-next-steps li {
     color: rgba(255,255,255,0.76);
+}
+
+.editorial-page.portal-page .portal-email-submit a {
+    color: var(--gold-light);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .editorial-page.portal-page .portal-next-steps {
@@ -7610,11 +7550,6 @@ header {
 
 .editorial-page.portal-page .portal-next-steps ul {
     margin-bottom: 1.2rem;
-}
-
-.editorial-page.portal-page .portal-certification-card {
-    background: #fbfaf7;
-    border-left: 4px solid var(--gold);
 }
 
 .editorial-page.portal-page .portal-login-note {
@@ -7663,10 +7598,8 @@ header {
         grid-template-columns: 1fr;
     }
 
-    .editorial-page.portal-page .portal-testing-panel,
     .editorial-page.portal-page .portal-testing-links,
-    .editorial-page.portal-page .portal-guidance-grid,
-    .editorial-page.portal-page .portal-submit-grid {
+    .editorial-page.portal-page .portal-guidance-grid {
         grid-template-columns: 1fr;
     }
 
