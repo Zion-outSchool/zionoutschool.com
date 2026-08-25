@@ -235,11 +235,18 @@ async function renderGradeReports(session) {
 
     setPortalMessage(status, 'Loading grade reports...', 'neutral');
 
+    const profile = await getPortalProfile(session);
+    let studentQuery = portalClient
+        .from('students')
+        .select('id, family_id, first_name, preferred_name, last_name, grade_level')
+        .order('last_name', { ascending: true });
+
+    if (!isStaffPortalProfile(profile)) {
+        studentQuery = studentQuery.eq('family_id', session.user.id);
+    }
+
     const [{ data: students, error: studentError }, { data: reports, error: reportError }] = await Promise.all([
-        portalClient
-            .from('students')
-            .select('id, first_name, preferred_name, last_name, grade_level')
-            .order('last_name', { ascending: true }),
+        studentQuery,
         portalClient
             .from('grade_reports')
             .select('id, student_id, title, school_year, term, report_type, status, gpa, credits_earned, file_url, storage_bucket, storage_path, published_at, updated_at')
@@ -662,7 +669,8 @@ async function renderFamilyGraduationProgress(session) {
 
     const { data: students, error } = await portalClient
         .from('students')
-        .select('id, first_name, preferred_name, last_name, grade_level')
+        .select('id, family_id, first_name, preferred_name, last_name, grade_level')
+        .eq('family_id', session.user.id)
         .order('last_name', { ascending: true });
 
     if (error || !students?.length) {
@@ -673,23 +681,31 @@ async function renderFamilyGraduationProgress(session) {
     }
 
     container.innerHTML = '';
+    let renderedStudents = 0;
 
     for (const student of students) {
-        const section = document.createElement('section');
-        section.className = 'graduation-student-section';
-        appendTextElement(section, 'h3', normalizeStudentName(student));
-
-        const studentContainer = document.createElement('div');
-        section.appendChild(studentContainer);
-        container.appendChild(section);
-
         try {
             const records = await loadGraduationRecords(student.id);
+            if (!records.entries.length && !records.milestones.length) continue;
+
+            const section = document.createElement('section');
+            section.className = 'graduation-student-section';
+            appendTextElement(section, 'h3', normalizeStudentName(student));
+
+            const studentContainer = document.createElement('div');
+            section.appendChild(studentContainer);
+            container.appendChild(section);
+
             renderGraduationPlannerTable(studentContainer, records.entries, records.milestones, { editable: false });
+            renderedStudents += 1;
         } catch (error) {
             console.error('Unable to load graduation records:', error);
-            appendTextElement(studentContainer, 'p', 'Graduation progress records are not available yet.', 'portal-inline-status');
         }
+    }
+
+    if (!renderedStudents) {
+        setPortalMessage(status, 'No graduation progress records are available for this login yet.', 'neutral');
+        return;
     }
 
     setPortalMessage(status, 'Graduation progress loaded.', 'success');
