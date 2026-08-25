@@ -109,7 +109,7 @@ for select
 to authenticated
 using (
     id = auth.uid()
-    or public.current_portal_role() in ('admin', 'staff')
+    or public.current_portal_role() in ('admin', 'teacher', 'staff')
 );
 
 create policy "Portal users can read allowed students"
@@ -119,6 +119,25 @@ to authenticated
 using (
     family_id = auth.uid()
     or public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+create policy "Staff can create student files"
+on public.students
+for insert
+to authenticated
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+create policy "Staff can update student files"
+on public.students
+for update
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+)
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
 );
 
 create policy "Portal users can read allowed published reports"
