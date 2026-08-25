@@ -6,7 +6,7 @@
     <title>Family Portal | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=portal-hero-bg-20260823">
+    <link rel="stylesheet" href="style.css?v=graduation-planner-20260824">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
@@ -105,9 +105,16 @@
             <article class="portal-tool-card portal-tool-card--protected">
                 <span class="portal-tool-status">Login required</span>
                 <h2>Grade Reports</h2>
-                <p>Grade reports and high school working transcripts are available only through family login.</p>
+                <p>Grade reports, graduation progress, and high school working transcripts are available only through family login.</p>
                 <a href="grade-reports.html" data-portal-authenticated hidden>Open Grade Reports →</a>
                 <span class="portal-protected-note" data-portal-guest>Sign in below to open.</span>
+            </article>
+
+            <article class="portal-tool-card portal-tool-card--staff" data-portal-staff hidden>
+                <span class="portal-tool-status">Staff tools</span>
+                <h2>Graduation Planner</h2>
+                <p>Admin, teacher, and staff logins can update Arkansas graduation planning records for high school students.</p>
+                <a href="graduation-planner.html">Open Planner →</a>
             </article>
         </div>
     </div>
@@ -142,6 +149,7 @@
             <p>Signed in as <strong data-portal-user-email></strong>.</p>
             <div class="portal-auth-actions">
                 <a href="grade-reports.html">Open Grade Reports →</a>
+                <a href="graduation-planner.html" data-portal-staff hidden>Open Staff Planner →</a>
                 <button type="button" data-portal-sign-out>Sign Out</button>
             </div>
         </div>
@@ -184,7 +192,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=grade-reports-20260824"></script>
+<script src="supabase-portal.js?v=graduation-planner-20260824"></script>
 <script src="script.js?v=family-portal-20260823"></script>
 </body>
 </html>

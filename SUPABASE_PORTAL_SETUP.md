@@ -55,9 +55,40 @@ create table if not exists public.grade_reports (
     constraint grade_reports_file_check check (file_url is not null or storage_path is not null)
 );
 
+create table if not exists public.graduation_plan_entries (
+    id uuid primary key default gen_random_uuid(),
+    student_id uuid not null references public.students(id) on delete cascade,
+    requirement_key text not null,
+    grade_level text not null,
+    course_name text,
+    credits numeric(4, 2),
+    status text not null default 'not_started',
+    notes text,
+    updated_by uuid references auth.users(id),
+    updated_at timestamptz not null default now(),
+    constraint graduation_plan_entries_grade_check check (grade_level in ('8', '9', '10', '11', '12')),
+    constraint graduation_plan_entries_status_check check (status in ('not_started', 'planned', 'in_progress', 'completed', 'waived')),
+    constraint graduation_plan_entries_unique unique (student_id, requirement_key, grade_level)
+);
+
+create table if not exists public.graduation_milestones (
+    id uuid primary key default gen_random_uuid(),
+    student_id uuid not null references public.students(id) on delete cascade,
+    milestone_key text not null,
+    status text not null default 'not_started',
+    completed_on date,
+    notes text,
+    updated_by uuid references auth.users(id),
+    updated_at timestamptz not null default now(),
+    constraint graduation_milestones_status_check check (status in ('not_started', 'in_progress', 'completed', 'waived')),
+    constraint graduation_milestones_unique unique (student_id, milestone_key)
+);
+
 alter table public.portal_users enable row level security;
 alter table public.students enable row level security;
 alter table public.grade_reports enable row level security;
+alter table public.graduation_plan_entries enable row level security;
+alter table public.graduation_milestones enable row level security;
 
 create or replace function public.current_portal_role()
 returns text
@@ -106,6 +137,72 @@ using (
         )
     )
 );
+
+create policy "Portal users can read allowed graduation plan entries"
+on public.graduation_plan_entries
+for select
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    or exists (
+        select 1
+        from public.students
+        where students.id = graduation_plan_entries.student_id
+        and students.family_id = auth.uid()
+    )
+);
+
+create policy "Staff can insert graduation plan entries"
+on public.graduation_plan_entries
+for insert
+to authenticated
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+create policy "Staff can update graduation plan entries"
+on public.graduation_plan_entries
+for update
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+)
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+create policy "Portal users can read allowed graduation milestones"
+on public.graduation_milestones
+for select
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    or exists (
+        select 1
+        from public.students
+        where students.id = graduation_milestones.student_id
+        and students.family_id = auth.uid()
+    )
+);
+
+create policy "Staff can insert graduation milestones"
+on public.graduation_milestones
+for insert
+to authenticated
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+create policy "Staff can update graduation milestones"
+on public.graduation_milestones
+for update
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+)
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
 ```
 
 ## Private PDF Storage
@@ -152,3 +249,12 @@ In Supabase Dashboard:
 5. For families, set `role` to `family` and add student rows with `family_id` set to the same Auth UID.
 6. For admins, teachers, and staff, set the appropriate `role`.
 7. Add published grade report rows linked to the student IDs.
+
+## Graduation Planner
+
+The staff planner page is `graduation-planner.html`.
+
+Admin, teacher, and staff logins can edit `graduation_plan_entries` and `graduation_milestones`.
+Family logins can view their student's saved graduation progress from `grade-reports.html`.
+
+The planner structure is based on `Arkansas_Graduation_Planning_Worksheet.xlsx`.
