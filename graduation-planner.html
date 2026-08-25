@@ -85,16 +85,20 @@
                 <div>
                     <span class="section-label">Student Files</span>
                     <h2>Create a student file</h2>
-                    <p>Add a student and link them to an existing family login.</p>
+                    <p>Admin logins can add a student and link them to an existing family login.</p>
                 </div>
             </div>
 
             <form class="student-file-form" data-student-file-form>
                 <label>
                     <span>Family Login</span>
-                    <select name="family_id" data-student-family-select required>
+                    <select name="family_id" data-student-family-select>
                         <option value="">Loading family logins...</option>
                     </select>
+                </label>
+                <label>
+                    <span>Family Auth UID</span>
+                    <input type="text" name="family_id_manual" autocomplete="off" placeholder="Optional fallback">
                 </label>
                 <label>
                     <span>First Name</span>

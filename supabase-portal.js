@@ -10,6 +10,7 @@ const portalClient = window.supabase
     : null;
 
 const STAFF_PORTAL_ROLES = ['admin', 'teacher', 'staff'];
+const ADMIN_PORTAL_ROLES = ['admin'];
 const GRADUATION_GRADES = ['8', '9', '10', '11', '12'];
 const GRADUATION_REQUIREMENTS = [
     { key: 'ela_category', label: 'English Language Arts', credits: '4', category: true },
@@ -70,11 +71,20 @@ function isStaffPortalProfile(profile) {
     return STAFF_PORTAL_ROLES.includes(profile?.role);
 }
 
+function isAdminPortalProfile(profile) {
+    return ADMIN_PORTAL_ROLES.includes(profile?.role);
+}
+
 function togglePortalProfileState(profile) {
     const isStaff = isStaffPortalProfile(profile);
+    const isAdmin = isAdminPortalProfile(profile);
 
     document.querySelectorAll('[data-portal-staff]').forEach(el => {
         el.hidden = !isStaff;
+    });
+
+    document.querySelectorAll('[data-portal-admin]').forEach(el => {
+        el.hidden = !isAdmin;
     });
 
     document.querySelectorAll('[data-portal-role]').forEach(el => {
@@ -577,14 +587,18 @@ async function initStudentFileForm(profile, onStudentCreated) {
     const familySelect = document.querySelector('[data-student-family-select]');
     const status = document.querySelector('[data-student-file-status]');
 
-    if (!form || !familySelect || !portalClient || !isStaffPortalProfile(profile)) return;
+    if (!form || !familySelect || !portalClient || !isAdminPortalProfile(profile)) return;
 
     try {
         await populateStudentFamilySelect(familySelect);
     } catch (error) {
         console.error('Unable to load family logins:', error);
-        setPortalMessage(status, 'Family logins could not be loaded. Check portal user policies.', 'error');
-        return;
+        familySelect.innerHTML = '';
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Use manual UID field';
+        familySelect.appendChild(option);
+        setPortalMessage(status, 'Family logins could not be loaded. You can paste the family Auth UID manually.', 'error');
     }
 
     if (form.dataset.bound === 'true') return;
@@ -594,14 +608,14 @@ async function initStudentFileForm(profile, onStudentCreated) {
         event.preventDefault();
 
         const submit = form.querySelector('[type="submit"]');
-        const familyId = form.elements.family_id?.value;
+        const familyId = form.elements.family_id?.value || form.elements.family_id_manual?.value.trim();
         const firstName = form.elements.first_name?.value.trim();
         const preferredName = form.elements.preferred_name?.value.trim();
         const lastName = form.elements.last_name?.value.trim();
         const gradeLevel = form.elements.grade_level?.value.trim();
 
         if (!familyId || !firstName || !lastName) {
-            setPortalMessage(status, 'Choose a family login and enter the student first and last name.', 'error');
+            setPortalMessage(status, 'Choose a family login or paste the family Auth UID, then enter the student first and last name.', 'error');
             return;
         }
 
@@ -629,7 +643,11 @@ async function initStudentFileForm(profile, onStudentCreated) {
         }
 
         form.reset();
-        await populateStudentFamilySelect(familySelect);
+        try {
+            await populateStudentFamilySelect(familySelect);
+        } catch (error) {
+            console.error('Unable to refresh family logins:', error);
+        }
         setPortalMessage(status, 'Student file created.', 'success');
         await onStudentCreated?.(data.id);
     });

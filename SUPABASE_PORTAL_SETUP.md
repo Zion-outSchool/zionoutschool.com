@@ -126,7 +126,7 @@ on public.students
 for insert
 to authenticated
 with check (
-    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    public.current_portal_role() = 'admin'
 );
 
 create policy "Staff can update student files"
@@ -134,10 +134,10 @@ on public.students
 for update
 to authenticated
 using (
-    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    public.current_portal_role() = 'admin'
 )
 with check (
-    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    public.current_portal_role() = 'admin'
 );
 
 create policy "Portal users can read allowed published reports"
