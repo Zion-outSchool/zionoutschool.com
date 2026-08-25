@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Portal | Zion outSchool</title>
+    <title>Grade Reports | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=portal-hero-bg-20260823">
+    <link rel="stylesheet" href="style.css?v=grade-reports-20260824">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page portal-page">
+<body class="editorial-page portal-page grade-reports-page" data-requires-auth="true">
 
 <div class="announcement-bar">
     <div class="container">
         <p>
-            <strong>There is still a place for you here.</strong>
-            We are still welcoming families who are looking for a school built for truth, inquiry, and belonging.
-            <a href="contact.html">Begin your inquiry →</a>
+            <strong>Family Portal</strong>
+            Grade reports and working transcripts are available only after family login.
+            <a href="family-portal.html">Back to portal →</a>
         </p>
     </div>
 </div>
@@ -59,92 +59,43 @@
 
 <section class="page-hero portal-hero">
     <div class="container">
-        <span class="eyebrow">Current Families</span>
-        <h1>One place for the details<br><em>families need next.</em></h1>
+        <span class="eyebrow">Protected Family Portal</span>
+        <h1>Grade reports<br><em>and working transcripts.</em></h1>
         <p class="hero-subtext">
-            The Family Portal gathers current-family resources in one place, including placement testing information, payment timing, school calendar access, and future student communication tools.
+            Families can review published grade reports here. High school working transcripts will appear alongside grade reports when they are ready.
         </p>
     </div>
 </section>
 
-<section class="portal-status">
-    <div class="container-narrow">
-        <span class="section-label">Portal Status</span>
-        <h2>A growing home for family resources.</h2>
-        <p>
-            We are beginning with the resources families need most often, including calendar details, testing information, payment timing, and general reminders. As the portal grows, anything connected to a specific student, family, invoice, document, or private communication will be shared through a secure login.
-        </p>
-    </div>
-</section>
-
-<section class="portal-tools">
+<section class="grade-reports-panel" data-portal-authenticated hidden>
     <div class="container">
-        <span class="section-label">Family Tools</span>
-        <div class="portal-tool-grid">
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>School Calendar</h2>
-                <p>Use the public calendar for major school dates, breaks, events, and schedule notes.</p>
-                <a href="calendar.html">Open Calendar →</a>
-            </article>
+        <div class="portal-dashboard-heading">
+            <div>
+                <span class="section-label">Signed In</span>
+                <h2>Family grade records</h2>
+                <p>Signed in as <strong data-portal-user-email></strong>.</p>
+            </div>
+            <button type="button" class="portal-sign-out" data-portal-sign-out>Sign Out</button>
+        </div>
 
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Testing Information</h2>
-                <p>Use this section for placement testing links and guidance while families complete testing at home.</p>
-                <a href="testing.html">Open Testing Information →</a>
-            </article>
+        <p class="portal-inline-status" data-grade-reports-status></p>
 
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Payment Calendar</h2>
-                <p>See invoice timing, payment due dates, late-fee policy, and ClassWallet direct-pay guidance.</p>
-                <a href="payment-calendar.html">Open Payment Calendar →</a>
-            </article>
+        <div class="grade-reports-list" data-grade-reports-list></div>
 
-            <article class="portal-tool-card portal-tool-card--protected">
-                <span class="portal-tool-status">Login required</span>
-                <h2>Grade Reports</h2>
-                <p>Grade reports and high school working transcripts are available only through family login.</p>
-                <a href="grade-reports.html" data-portal-authenticated hidden>Open Grade Reports →</a>
-                <span class="portal-protected-note" data-portal-guest>Sign in below to open.</span>
-            </article>
+        <div class="portal-empty-state" data-grade-reports-empty hidden>
+            <span class="portal-tool-status">No Published Reports</span>
+            <h2>Nothing has been posted for this family yet.</h2>
+            <p>When grade reports or high school working transcripts are published, they will appear here after login.</p>
         </div>
     </div>
 </section>
 
-<section class="portal-login-note">
+<section class="portal-login-note" data-portal-guest>
     <div class="container-narrow">
-        <span class="section-label">Family Login</span>
-        <h2>Private family records are protected.</h2>
-        <p>
-            Sign in to access grade reports and high school working transcripts. Family accounts are created by ZION outSchool administrators.
-        </p>
-
-        <div class="portal-login-card" data-portal-guest>
-            <form class="portal-login-form" data-portal-login-form>
-                <label>
-                    <span>Email</span>
-                    <input type="email" name="email" autocomplete="email" required>
-                </label>
-                <label>
-                    <span>Password</span>
-                    <input type="password" name="password" autocomplete="current-password" required>
-                </label>
-                <button type="submit">Sign In</button>
-                <p class="portal-login-status" data-portal-login-status></p>
-            </form>
-        </div>
-
-        <div class="portal-auth-card" data-portal-authenticated hidden>
-            <span class="portal-tool-status">Signed In</span>
-            <h3>Welcome back.</h3>
-            <p>Signed in as <strong data-portal-user-email></strong>.</p>
-            <div class="portal-auth-actions">
-                <a href="grade-reports.html">Open Grade Reports →</a>
-                <button type="button" data-portal-sign-out>Sign Out</button>
-            </div>
-        </div>
+        <span class="section-label">Login Required</span>
+        <h2>Please sign in from the Family Portal.</h2>
+        <p>Grade reports and transcripts are protected family records.</p>
+        <a class="portal-login-link" href="family-portal.html">Go to Family Login →</a>
     </div>
 </section>
 
