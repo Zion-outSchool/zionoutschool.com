@@ -663,8 +663,10 @@ async function initStudentFileForm(profile, onStudentCreated) {
 async function renderFamilyGraduationProgress(session) {
     const container = document.querySelector('[data-graduation-planner-readonly]');
     const status = document.querySelector('[data-graduation-progress-status]');
+    const progressView = document.querySelector('[data-graduation-progress-view]');
     if (!container || !portalClient || !session) return;
 
+    if (progressView) progressView.hidden = true;
     setPortalMessage(status, 'Loading graduation progress...', 'neutral');
 
     const { data: students, error } = await portalClient
@@ -686,7 +688,19 @@ async function renderFamilyGraduationProgress(session) {
     for (const student of students) {
         try {
             const records = await loadGraduationRecords(student.id);
-            if (!records.entries.length && !records.milestones.length) continue;
+            const meaningfulEntries = records.entries.filter(entry => (
+                entry.course_name ||
+                entry.credits ||
+                entry.notes ||
+                (entry.status && entry.status !== 'not_started')
+            ));
+            const meaningfulMilestones = records.milestones.filter(milestone => (
+                milestone.completed_on ||
+                milestone.notes ||
+                (milestone.status && milestone.status !== 'not_started')
+            ));
+
+            if (!meaningfulEntries.length && !meaningfulMilestones.length) continue;
 
             const section = document.createElement('section');
             section.className = 'graduation-student-section';
@@ -696,7 +710,7 @@ async function renderFamilyGraduationProgress(session) {
             section.appendChild(studentContainer);
             container.appendChild(section);
 
-            renderGraduationPlannerTable(studentContainer, records.entries, records.milestones, { editable: false });
+            renderGraduationPlannerTable(studentContainer, meaningfulEntries, meaningfulMilestones, { editable: false });
             renderedStudents += 1;
         } catch (error) {
             console.error('Unable to load graduation records:', error);
@@ -708,6 +722,7 @@ async function renderFamilyGraduationProgress(session) {
         return;
     }
 
+    if (progressView) progressView.hidden = false;
     setPortalMessage(status, 'Graduation progress loaded.', 'success');
 }
 
