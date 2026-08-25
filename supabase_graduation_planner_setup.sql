@@ -1,10 +1,3 @@
-# Supabase Graduation Planner Setup
-
-Run this after the original portal tables and `current_portal_role()` function already exist.
-
-This adds the editable Arkansas graduation planner used by `graduation-planner.html`.
-
-```sql
 drop policy if exists "Users can read their own portal profile" on public.portal_users;
 create policy "Users can read their own portal profile"
 on public.portal_users
@@ -139,43 +132,3 @@ using (
 with check (
     public.current_portal_role() in ('admin', 'teacher', 'staff')
 );
-```
-
-To grant a login access, update its portal user row:
-
-```sql
-update public.portal_users
-set role = 'admin'
-where id = 'PASTE_AUTH_USER_UID_HERE';
-```
-
-Use `admin`.
-
-Use `admin` to create student files. Use `admin`, `teacher`, or `staff` to edit graduation planner records.
-
-## If Family Logins Do Not Load
-
-Run this policy repair block if the student file form says family logins could not be loaded.
-
-```sql
-drop policy if exists "Users can read their own portal profile" on public.portal_users;
-
-create policy "Users can read their own portal profile"
-on public.portal_users
-for select
-to authenticated
-using (
-    id = auth.uid()
-    or public.current_portal_role() in ('admin', 'teacher', 'staff')
-);
-```
-
-Then confirm the signed-in staff/admin user has a staff role:
-
-```sql
-select id, display_name, role, active
-from public.portal_users
-where id = 'PASTE_STAFF_AUTH_USER_UID_HERE';
-```
-
-The `role` must be `admin`, `teacher`, or `staff`, and `active` must be `true`.
