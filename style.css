@@ -7344,6 +7344,11 @@ header {
     border-top-color: var(--navy);
 }
 
+.editorial-page.portal-page .portal-tool-card--staff {
+    background: #eef3f2;
+    border-top-color: #557a75;
+}
+
 .editorial-page.portal-page .portal-tool-status {
     color: var(--gold);
     display: block;
@@ -7714,7 +7719,8 @@ header {
     text-transform: uppercase;
 }
 
-.editorial-page.portal-page .grade-reports-panel {
+.editorial-page.portal-page .grade-reports-panel,
+.editorial-page.portal-page .graduation-planner-panel {
     background: var(--cream);
     padding: 5rem 0;
 }
@@ -7725,6 +7731,13 @@ header {
     gap: 1.5rem;
     justify-content: space-between;
     margin-bottom: 1.5rem;
+}
+
+.editorial-page.portal-page .portal-dashboard-heading--compact {
+    align-items: start;
+    border-top: 1px solid rgba(13,31,51,0.14);
+    margin-top: 3rem;
+    padding-top: 3rem;
 }
 
 .editorial-page.portal-page .portal-dashboard-heading h2,
@@ -7851,6 +7864,180 @@ header {
 .editorial-page.portal-page .portal-empty-state {
     background: var(--white);
     border-color: rgba(13,31,51,0.14);
+}
+
+.editorial-page.portal-page .planner-controls {
+    align-items: end;
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.14);
+    border-radius: 6px;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(240px, 1fr) auto;
+    margin-bottom: 1rem;
+    padding: 1.2rem;
+}
+
+.editorial-page.portal-page .planner-controls label {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.editorial-page.portal-page .planner-controls label span {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.editorial-page.portal-page .planner-controls select,
+.editorial-page.portal-page .graduation-planner-table input,
+.editorial-page.portal-page .graduation-milestone-controls input,
+.editorial-page.portal-page .graduation-milestone-controls select {
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.18);
+    border-radius: 4px;
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    min-height: 38px;
+    padding: 0.58rem 0.7rem;
+    width: 100%;
+}
+
+.editorial-page.portal-page .planner-controls button {
+    background: var(--navy);
+    border: 0;
+    border-radius: 4px;
+    color: var(--white);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    min-height: 42px;
+    padding: 0.75rem 1rem;
+    text-transform: uppercase;
+}
+
+.editorial-page.portal-page .planner-controls button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.editorial-page.portal-page .graduation-table-wrap {
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.14);
+    border-radius: 6px;
+    box-shadow: 0 16px 32px rgba(13,31,51,0.08);
+    overflow-x: auto;
+}
+
+.editorial-page.portal-page .graduation-planner-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1120px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.editorial-page.portal-page .graduation-planner-table th,
+.editorial-page.portal-page .graduation-planner-table td {
+    border-bottom: 1px solid rgba(13,31,51,0.12);
+    border-left: 1px solid rgba(13,31,51,0.08);
+    font-family: var(--sans);
+    padding: 0.85rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.editorial-page.portal-page .graduation-planner-table th:first-child,
+.editorial-page.portal-page .graduation-planner-table td:first-child {
+    border-left: 0;
+    width: 250px;
+}
+
+.editorial-page.portal-page .graduation-planner-table th:nth-child(2),
+.editorial-page.portal-page .graduation-planner-table td:nth-child(2) {
+    text-align: center;
+    width: 105px;
+}
+
+.editorial-page.portal-page .graduation-planner-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.editorial-page.portal-page .graduation-planner-table td {
+    color: var(--text-mid);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.editorial-page.portal-page .graduation-category-row td {
+    background: #f5ead1;
+    color: var(--navy);
+    font-weight: 800;
+}
+
+.editorial-page.portal-page .graduation-planner-table input + input {
+    margin-top: 0.45rem;
+}
+
+.editorial-page.portal-page .graduation-milestones {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+}
+
+.editorial-page.portal-page .graduation-milestones h3,
+.editorial-page.portal-page .graduation-student-section h3 {
+    color: var(--navy);
+    font-size: 1.45rem;
+    line-height: 1.25;
+}
+
+.editorial-page.portal-page .graduation-student-section + .graduation-student-section {
+    margin-top: 2rem;
+}
+
+.editorial-page.portal-page .graduation-milestone-card {
+    align-items: start;
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.14);
+    border-radius: 6px;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
+    padding: 1rem;
+}
+
+.editorial-page.portal-page .graduation-milestone-card h4 {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 0.25rem;
+}
+
+.editorial-page.portal-page .graduation-milestone-card p,
+.editorial-page.portal-page .graduation-milestone-controls span {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.editorial-page.portal-page .graduation-milestone-controls {
+    display: grid;
+    gap: 0.55rem;
 }
 
 @media (max-width: 980px) {
@@ -8340,5 +8527,10 @@ header {
     .editorial-page.portal-page .portal-sign-out {
         text-align: center;
         width: 100%;
+    }
+
+    .editorial-page.portal-page .planner-controls,
+    .editorial-page.portal-page .graduation-milestone-card {
+        grid-template-columns: 1fr;
     }
 }

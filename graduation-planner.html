@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade Reports | Zion outSchool</title>
+    <title>Graduation Planner | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=graduation-planner-20260824">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page portal-page grade-reports-page" data-requires-auth="true">
+<body class="editorial-page portal-page graduation-planner-page" data-requires-auth="true" data-requires-staff="true">
 
 <div class="announcement-bar">
     <div class="container">
         <p>
-            <strong>Family Portal</strong>
-            Grade reports and working transcripts are available only after family login.
+            <strong>Staff Portal</strong>
+            Graduation planning records are editable by admin, teacher, and staff logins.
             <a href="family-portal.html">Back to portal →</a>
         </p>
     </div>
@@ -59,46 +59,38 @@
 
 <section class="page-hero portal-hero">
     <div class="container">
-        <span class="eyebrow">Protected Family Portal</span>
-        <h1>Grade reports<br><em>and working transcripts.</em></h1>
+        <span class="eyebrow">Staff Portal</span>
+        <h1>Arkansas graduation<br><em>planning worksheet.</em></h1>
         <p class="hero-subtext">
-            Families can review published grade reports here. High school working transcripts will appear alongside grade reports when they are ready.
+            Update course planning, completed credits, and non-course graduation requirements for each high school student.
         </p>
     </div>
 </section>
 
-<section class="grade-reports-panel" data-portal-authenticated hidden>
+<section class="graduation-planner-panel" data-portal-authenticated hidden>
     <div class="container">
         <div class="portal-dashboard-heading">
             <div>
-                <span class="section-label">Signed In</span>
-                <h2>Family grade records</h2>
+                <span class="section-label">Staff Access</span>
+                <h2>Graduation planner</h2>
                 <p>Signed in as <strong data-portal-user-email></strong>.</p>
             </div>
             <button type="button" class="portal-sign-out" data-portal-sign-out>Sign Out</button>
         </div>
 
-        <p class="portal-inline-status" data-grade-reports-status></p>
+        <p class="portal-inline-status" data-graduation-planner-status></p>
 
-        <div class="grade-reports-list" data-grade-reports-list></div>
-
-        <div class="portal-empty-state" data-grade-reports-empty hidden>
-            <span class="portal-tool-status">No Published Reports</span>
-            <h2>Nothing has been posted for this family yet.</h2>
-            <p>When grade reports or high school working transcripts are published, they will appear here after login.</p>
+        <div class="planner-controls">
+            <label>
+                <span>Student</span>
+                <select data-planner-student-select>
+                    <option value="">Loading students...</option>
+                </select>
+            </label>
+            <button type="button" data-save-graduation-plan>Save Planner</button>
         </div>
 
-        <div class="graduation-progress-view">
-            <div class="portal-dashboard-heading portal-dashboard-heading--compact">
-                <div>
-                    <span class="section-label">Graduation Progress</span>
-                    <h2>Arkansas planning worksheet</h2>
-                    <p>Families can view saved course planning and graduation requirement progress here.</p>
-                </div>
-            </div>
-            <p class="portal-inline-status" data-graduation-progress-status></p>
-            <div data-graduation-planner-readonly></div>
-        </div>
+        <div data-graduation-planner-editable></div>
     </div>
 </section>
 
@@ -106,8 +98,17 @@
     <div class="container-narrow">
         <span class="section-label">Login Required</span>
         <h2>Please sign in from the Family Portal.</h2>
-        <p>Grade reports and transcripts are protected family records.</p>
+        <p>Graduation planning records are protected student records.</p>
         <a class="portal-login-link" href="family-portal.html">Go to Family Login →</a>
+    </div>
+</section>
+
+<section class="portal-login-note" data-portal-denied hidden>
+    <div class="container-narrow">
+        <span class="section-label">Staff Access Required</span>
+        <h2>This page is for admin, teacher, and staff logins.</h2>
+        <p>Family logins can view graduation progress from the Grade Reports page.</p>
+        <a class="portal-login-link" href="grade-reports.html">Open Family View →</a>
     </div>
 </section>
 
