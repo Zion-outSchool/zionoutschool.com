@@ -80,6 +80,43 @@
 
         <p class="portal-inline-status" data-graduation-planner-status></p>
 
+        <section class="student-file-panel">
+            <div class="portal-dashboard-heading portal-dashboard-heading--compact">
+                <div>
+                    <span class="section-label">Student Files</span>
+                    <h2>Create a student file</h2>
+                    <p>Add a student and link them to an existing family login.</p>
+                </div>
+            </div>
+
+            <form class="student-file-form" data-student-file-form>
+                <label>
+                    <span>Family Login</span>
+                    <select name="family_id" data-student-family-select required>
+                        <option value="">Loading family logins...</option>
+                    </select>
+                </label>
+                <label>
+                    <span>First Name</span>
+                    <input type="text" name="first_name" autocomplete="off" required>
+                </label>
+                <label>
+                    <span>Preferred Name</span>
+                    <input type="text" name="preferred_name" autocomplete="off">
+                </label>
+                <label>
+                    <span>Last Name</span>
+                    <input type="text" name="last_name" autocomplete="off" required>
+                </label>
+                <label>
+                    <span>Grade Level</span>
+                    <input type="text" name="grade_level" autocomplete="off" placeholder="9">
+                </label>
+                <button type="submit">Create Student</button>
+                <p class="portal-inline-status" data-student-file-status></p>
+            </form>
+        </section>
+
         <div class="planner-controls">
             <label>
                 <span>Student</span>

@@ -5,6 +5,37 @@ Run this after the original portal tables and `current_portal_role()` function a
 This adds the editable Arkansas graduation planner used by `graduation-planner.html`.
 
 ```sql
+drop policy if exists "Users can read their own portal profile" on public.portal_users;
+create policy "Users can read their own portal profile"
+on public.portal_users
+for select
+to authenticated
+using (
+    id = auth.uid()
+    or public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+drop policy if exists "Staff can create student files" on public.students;
+create policy "Staff can create student files"
+on public.students
+for insert
+to authenticated
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
+drop policy if exists "Staff can update student files" on public.students;
+create policy "Staff can update student files"
+on public.students
+for update
+to authenticated
+using (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+)
+with check (
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+);
+
 create table if not exists public.graduation_plan_entries (
     id uuid primary key default gen_random_uuid(),
     student_id uuid not null references public.students(id) on delete cascade,

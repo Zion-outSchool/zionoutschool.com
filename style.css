@@ -7878,12 +7878,33 @@ header {
     padding: 1.2rem;
 }
 
-.editorial-page.portal-page .planner-controls label {
+.editorial-page.portal-page .student-file-panel {
+    margin-bottom: 2rem;
+}
+
+.editorial-page.portal-page .student-file-form {
+    align-items: end;
+    background: var(--white);
+    border: 1px solid rgba(13,31,51,0.14);
+    border-radius: 6px;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(220px, 1.2fr) repeat(4, minmax(130px, 1fr)) auto;
+    padding: 1.2rem;
+}
+
+.editorial-page.portal-page .student-file-form .portal-inline-status {
+    grid-column: 1 / -1;
+}
+
+.editorial-page.portal-page .planner-controls label,
+.editorial-page.portal-page .student-file-form label {
     display: grid;
     gap: 0.4rem;
 }
 
-.editorial-page.portal-page .planner-controls label span {
+.editorial-page.portal-page .planner-controls label span,
+.editorial-page.portal-page .student-file-form label span {
     color: var(--navy);
     font-family: var(--sans);
     font-size: 0.72rem;
@@ -7893,7 +7914,10 @@ header {
 }
 
 .editorial-page.portal-page .planner-controls select,
+.editorial-page.portal-page .student-file-form input,
+.editorial-page.portal-page .student-file-form select,
 .editorial-page.portal-page .graduation-planner-table input,
+.editorial-page.portal-page .graduation-planner-table select,
 .editorial-page.portal-page .graduation-milestone-controls input,
 .editorial-page.portal-page .graduation-milestone-controls select {
     background: var(--white);
@@ -7907,7 +7931,8 @@ header {
     width: 100%;
 }
 
-.editorial-page.portal-page .planner-controls button {
+.editorial-page.portal-page .planner-controls button,
+.editorial-page.portal-page .student-file-form button {
     background: var(--navy);
     border: 0;
     border-radius: 4px;
@@ -7922,7 +7947,8 @@ header {
     text-transform: uppercase;
 }
 
-.editorial-page.portal-page .planner-controls button:disabled {
+.editorial-page.portal-page .planner-controls button:disabled,
+.editorial-page.portal-page .student-file-form button:disabled {
     cursor: wait;
     opacity: 0.7;
 }
@@ -8530,6 +8556,7 @@ header {
     }
 
     .editorial-page.portal-page .planner-controls,
+    .editorial-page.portal-page .student-file-form,
     .editorial-page.portal-page .graduation-milestone-card {
         grid-template-columns: 1fr;
     }

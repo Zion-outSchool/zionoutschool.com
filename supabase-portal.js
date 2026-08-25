@@ -506,6 +506,135 @@ async function loadGraduationRecords(studentId) {
     return { entries: entries || [], milestones: milestones || [] };
 }
 
+async function loadPlannerStudents() {
+    const { data, error } = await portalClient
+        .from('students')
+        .select('id, first_name, preferred_name, last_name, grade_level')
+        .order('last_name', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+}
+
+async function populatePlannerStudentSelect(select, selectedStudentId = '') {
+    const students = await loadPlannerStudents();
+    select.innerHTML = '';
+
+    if (!students.length) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No students found';
+        select.appendChild(option);
+        return students;
+    }
+
+    students.forEach(student => {
+        const option = document.createElement('option');
+        option.value = student.id;
+        option.textContent = normalizeStudentName(student);
+        option.selected = student.id === selectedStudentId;
+        select.appendChild(option);
+    });
+
+    return students;
+}
+
+async function populateStudentFamilySelect(select) {
+    const { data, error } = await portalClient
+        .from('portal_users')
+        .select('id, display_name, family_name')
+        .eq('role', 'family')
+        .eq('active', true)
+        .order('family_name', { ascending: true });
+
+    if (error) throw error;
+
+    select.innerHTML = '';
+
+    if (!data?.length) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No family logins found';
+        select.appendChild(option);
+        return;
+    }
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = 'Choose a family login';
+    select.appendChild(placeholder);
+
+    data.forEach(family => {
+        const option = document.createElement('option');
+        option.value = family.id;
+        option.textContent = family.family_name || family.display_name || family.id;
+        select.appendChild(option);
+    });
+}
+
+async function initStudentFileForm(profile, onStudentCreated) {
+    const form = document.querySelector('[data-student-file-form]');
+    const familySelect = document.querySelector('[data-student-family-select]');
+    const status = document.querySelector('[data-student-file-status]');
+
+    if (!form || !familySelect || !portalClient || !isStaffPortalProfile(profile)) return;
+
+    try {
+        await populateStudentFamilySelect(familySelect);
+    } catch (error) {
+        console.error('Unable to load family logins:', error);
+        setPortalMessage(status, 'Family logins could not be loaded. Check portal user policies.', 'error');
+        return;
+    }
+
+    if (form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        const submit = form.querySelector('[type="submit"]');
+        const familyId = form.elements.family_id?.value;
+        const firstName = form.elements.first_name?.value.trim();
+        const preferredName = form.elements.preferred_name?.value.trim();
+        const lastName = form.elements.last_name?.value.trim();
+        const gradeLevel = form.elements.grade_level?.value.trim();
+
+        if (!familyId || !firstName || !lastName) {
+            setPortalMessage(status, 'Choose a family login and enter the student first and last name.', 'error');
+            return;
+        }
+
+        if (submit) submit.disabled = true;
+        setPortalMessage(status, 'Creating student file...', 'neutral');
+
+        const { data, error } = await portalClient
+            .from('students')
+            .insert({
+                family_id: familyId,
+                first_name: firstName,
+                preferred_name: preferredName || null,
+                last_name: lastName,
+                grade_level: gradeLevel || null
+            })
+            .select('id')
+            .single();
+
+        if (submit) submit.disabled = false;
+
+        if (error) {
+            console.error('Unable to create student:', error);
+            setPortalMessage(status, 'Student file could not be created. Check Supabase insert policies.', 'error');
+            return;
+        }
+
+        form.reset();
+        await populateStudentFamilySelect(familySelect);
+        setPortalMessage(status, 'Student file created.', 'success');
+        await onStudentCreated?.(data.id);
+    });
+}
+
 async function renderFamilyGraduationProgress(session) {
     const container = document.querySelector('[data-graduation-planner-readonly]');
     const status = document.querySelector('[data-graduation-progress-status]');
@@ -567,37 +696,6 @@ async function initGraduationPlanner(profile) {
         return;
     }
 
-    setPortalMessage(status, 'Loading students...', 'neutral');
-
-    const { data: students, error } = await portalClient
-        .from('students')
-        .select('id, first_name, preferred_name, last_name, grade_level')
-        .order('last_name', { ascending: true });
-
-    if (error) {
-        console.error('Unable to load planner students:', error);
-        setPortalMessage(status, 'Students could not be loaded. Check Supabase policies and try again.', 'error');
-        return;
-    }
-
-    select.innerHTML = '';
-
-    if (!students?.length) {
-        const option = document.createElement('option');
-        option.value = '';
-        option.textContent = 'No students found';
-        select.appendChild(option);
-        setPortalMessage(status, 'No students are available for this login.', 'neutral');
-        return;
-    }
-
-    students.forEach(student => {
-        const option = document.createElement('option');
-        option.value = student.id;
-        option.textContent = normalizeStudentName(student);
-        select.appendChild(option);
-    });
-
     async function loadSelectedStudent() {
         if (!select.value) return;
         setPortalMessage(status, 'Loading planner...', 'neutral');
@@ -613,9 +711,33 @@ async function initGraduationPlanner(profile) {
         }
     }
 
-    select.addEventListener('change', loadSelectedStudent);
+    async function refreshStudents(selectedStudentId = '') {
+        setPortalMessage(status, 'Loading students...', 'neutral');
 
-    saveButton?.addEventListener('click', async () => {
+        try {
+            const students = await populatePlannerStudentSelect(select, selectedStudentId);
+            if (!students.length) {
+                container.innerHTML = '';
+                setPortalMessage(status, 'No students are available yet. Create a student file above.', 'neutral');
+                return;
+            }
+            await loadSelectedStudent();
+        } catch (error) {
+            console.error('Unable to load planner students:', error);
+            setPortalMessage(status, 'Students could not be loaded. Check Supabase policies and try again.', 'error');
+        }
+    }
+
+    if (select.dataset.bound !== 'true') {
+        select.dataset.bound = 'true';
+        select.addEventListener('change', loadSelectedStudent);
+    }
+
+    await initStudentFileForm(profile, refreshStudents);
+
+    if (saveButton && saveButton.dataset.bound !== 'true') {
+        saveButton.dataset.bound = 'true';
+        saveButton.addEventListener('click', async () => {
         if (!select.value) return;
 
         const entryRows = Array.from(container.querySelectorAll('td[data-requirement-key][data-grade-level]')).map(cell => ({
@@ -659,9 +781,10 @@ async function initGraduationPlanner(profile) {
         }
 
         setPortalMessage(status, 'Planner saved.', 'success');
-    });
+        });
+    }
 
-    await loadSelectedStudent();
+    await refreshStudents();
 }
 
 async function initPortalAuth() {
