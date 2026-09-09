@@ -8266,6 +8266,32 @@ header {
     text-transform: uppercase;
 }
 
+.editorial-page.payment-page .payment-schedule-note {
+    background: #f7eed6;
+    border-left: 5px solid var(--gold);
+    border-radius: 4px;
+    margin-top: 1.5rem;
+    padding: 1.6rem 1.8rem;
+}
+
+.editorial-page.payment-page .payment-schedule-note h3 {
+    color: var(--navy);
+    font-size: 1.45rem;
+    line-height: 1.25;
+    margin-bottom: 0.7rem;
+}
+
+.editorial-page.payment-page .payment-schedule-note p {
+    color: var(--text-mid);
+    font-family: var(--sans);
+    font-size: 0.96rem;
+    line-height: 1.7;
+}
+
+.editorial-page.payment-page .payment-schedule-note p + p {
+    margin-top: 0.75rem;
+}
+
 .editorial-page.payment-page .payment-schedule-grid {
     display: grid;
     gap: 1rem;
