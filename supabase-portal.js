@@ -259,7 +259,7 @@ async function renderGradeReports(session) {
         reportList.innerHTML = '';
         if (emptyState) emptyState.hidden = false;
         setPortalMessage(status, 'Grade reports are protected. No reports are published for this login yet.', 'neutral');
-        return;
+        return false;
     }
 
     const reportsByStudent = new Map();
@@ -276,7 +276,7 @@ async function renderGradeReports(session) {
     if (!visibleStudents.length) {
         if (emptyState) emptyState.hidden = false;
         setPortalMessage(status, 'No grade reports have been published for this login yet.', 'neutral');
-        return;
+        return false;
     }
 
     if (emptyState) emptyState.hidden = true;
@@ -341,6 +341,7 @@ async function renderGradeReports(session) {
     }
 
     setPortalMessage(status, 'Grade reports loaded.', 'success');
+    return true;
 }
 
 function graduationCellKey(requirementKey, gradeLevel) {
@@ -726,6 +727,21 @@ async function renderFamilyGraduationProgress(session) {
     setPortalMessage(status, 'Graduation progress loaded.', 'success');
 }
 
+async function renderFamilyGradeReportPage(session) {
+    const progressView = document.querySelector('[data-graduation-progress-view]');
+    const progressContainer = document.querySelector('[data-graduation-planner-readonly]');
+    const progressStatus = document.querySelector('[data-graduation-progress-status]');
+
+    if (progressView) progressView.hidden = true;
+    if (progressContainer) progressContainer.innerHTML = '';
+    setPortalMessage(progressStatus, '', 'neutral');
+
+    const hasPublishedReports = await renderGradeReports(session);
+    if (!hasPublishedReports) return;
+
+    await renderFamilyGraduationProgress(session);
+}
+
 async function initGraduationPlanner(profile) {
     const select = document.querySelector('[data-planner-student-select]');
     const container = document.querySelector('[data-graduation-planner-editable]');
@@ -851,8 +867,7 @@ async function initPortalAuth() {
     }
 
     if (document.body.classList.contains('grade-reports-page')) {
-        renderGradeReports(session);
-        renderFamilyGraduationProgress(session);
+        renderFamilyGradeReportPage(session);
     }
 
     if (document.body.classList.contains('graduation-planner-page')) {
@@ -867,8 +882,7 @@ async function initPortalAuth() {
 
             if (document.body.classList.contains('grade-reports-page')) {
                 if (nextSession) {
-                    renderGradeReports(nextSession);
-                    renderFamilyGraduationProgress(nextSession);
+                    renderFamilyGradeReportPage(nextSession);
                 } else {
                     window.location.href = 'family-portal.html';
                 }
