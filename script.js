@@ -157,6 +157,29 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     });
 });
 
+const targetedFaqId = window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : '';
+const targetedFaq = targetedFaqId ? document.getElementById(targetedFaqId) : null;
+if (targetedFaq && targetedFaq.classList.contains('faq-item')) {
+    const clusterBody = targetedFaq.closest('.cluster-body');
+    const clusterHeader = clusterBody ? clusterBody.previousElementSibling : null;
+    const question = targetedFaq.querySelector('.faq-question');
+    const answer = targetedFaq.querySelector('.faq-answer');
+
+    if (clusterBody && clusterHeader && clusterHeader.classList.contains('cluster-header')) {
+        clusterBody.classList.add('open');
+        clusterBody.style.display = 'block';
+        clusterHeader.setAttribute('aria-expanded', 'true');
+        const chevron = clusterHeader.querySelector('.cluster-chevron');
+        if (chevron) chevron.classList.add('open');
+    }
+
+    if (question && answer) {
+        answer.classList.add('open');
+        answer.style.display = 'block';
+        question.setAttribute('aria-expanded', 'true');
+    }
+}
+
 /* Testimonial expand/collapse */
 function toggleTestimonial(btn) {
     const full = btn.previousElementSibling;
