@@ -7300,8 +7300,8 @@ header {
     border-top: 4px solid var(--gold);
     border-radius: 4px;
     margin: 0 auto;
-    max-width: 760px;
     overflow: hidden;
+    width: 100%;
 }
 
 .editorial-page.portal-page .portal-council-art {
@@ -7314,7 +7314,7 @@ header {
     display: block;
     height: auto;
     margin: 0 auto;
-    max-width: 680px;
+    max-width: 560px;
     width: 100%;
 }
 
