@@ -1849,48 +1849,52 @@ header nav .nav-portal.active {
 
 .editorial-page .home-hero-control {
     align-items: center;
-    background: rgba(17, 39, 60, 0.58);
-    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 999px;
     color: var(--white);
     cursor: pointer;
     display: flex;
+    gap: 0.35rem;
     font-family: var(--font-body);
-    font-size: 2.2rem;
-    height: 2.75rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    height: auto;
     justify-content: center;
+    letter-spacing: 0.06em;
     line-height: 1;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    padding: 0.62rem 1rem;
+    position: static;
+    text-transform: uppercase;
+    transform: none;
     transition: background 180ms ease, border-color 180ms ease;
-    width: 2.75rem;
+    width: auto;
     z-index: 2;
 }
 
 .editorial-page .home-hero-control:hover,
 .editorial-page .home-hero-control:focus-visible {
-    background: rgba(17, 39, 60, 0.78);
+    background: rgba(255, 255, 255, 0.16);
     border-color: var(--white);
 }
 
-.editorial-page .home-hero-control--prev {
-    left: clamp(1rem, 3vw, 2.5rem);
-}
-
-.editorial-page .home-hero-control--next {
-    right: clamp(1rem, 3vw, 2.5rem);
+.editorial-page .home-hero-controls {
+    align-items: center;
+    background: var(--navy-dark);
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    line-height: 1;
+    padding: 0.75rem 1rem;
 }
 
 .editorial-page .home-hero-dots {
     align-items: center;
-    bottom: clamp(0.75rem, 2vw, 1.25rem);
     display: flex;
     gap: 0.55rem;
-    left: 50%;
     line-height: 1;
-    position: absolute;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
     z-index: 2;
 }
 
@@ -1951,22 +1955,6 @@ header nav .nav-portal.active {
     cursor: pointer;
     font: inherit;
     width: 100%;
-}
-
-.editorial-page .home-action-number {
-    align-items: center;
-    background: var(--gold);
-    border-radius: 50%;
-    color: var(--navy-dark);
-    display: flex;
-    flex: 0 0 auto;
-    font-family: var(--sans);
-    font-size: 0.78rem;
-    font-weight: 700;
-    height: 2rem;
-    justify-content: center;
-    line-height: 1;
-    width: 2rem;
 }
 
 .editorial-page .home-action-copy {
@@ -6310,14 +6298,17 @@ header {
         width: 100%;
     }
 
+    .editorial-page .home-hero-controls {
+        gap: 0.65rem;
+        padding: 0.65rem 0.75rem;
+    }
+
     .editorial-page .home-hero-control {
-        height: 2.25rem;
-        width: 2.25rem;
-        font-size: 1.8rem;
+        font-size: 0.72rem;
+        padding: 0.55rem 0.72rem;
     }
 
     .editorial-page .home-hero-dots {
-        bottom: 0.55rem;
         gap: 0.4rem;
     }
 
