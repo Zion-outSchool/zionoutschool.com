@@ -150,42 +150,57 @@ if (homeHeroCarousel) {
     }
 }
 
-/* Homepage open house modal */
-const openHouseModal = document.querySelector('[data-open-house-modal]');
-const openHouseOpen = document.querySelector('[data-open-house-open]');
-const openHouseClose = document.querySelector('[data-open-house-close]');
+/* Homepage action dialogs */
+const actionDialogs = [
+    {
+        modal: document.querySelector('[data-open-house-modal]'),
+        trigger: document.querySelector('[data-open-house-open]'),
+        close: document.querySelector('[data-open-house-close]')
+    },
+    {
+        modal: document.querySelector('[data-contact-modal]'),
+        trigger: document.querySelector('[data-contact-open]'),
+        close: document.querySelector('[data-contact-close]')
+    }
+];
 
-function closeOpenHouseModal() {
-    if (!openHouseModal) return;
+function closeActionDialog(modal) {
+    if (!modal) return;
 
-    openHouseModal.classList.remove('is-open');
-    openHouseModal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
 }
 
-function showOpenHouseModal() {
-    if (!openHouseModal) return;
+function openActionDialog(modal, closeButton) {
+    if (!modal) return;
 
-    openHouseModal.classList.add('is-open');
-    openHouseModal.setAttribute('aria-hidden', 'false');
-    openHouseClose?.focus();
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    closeButton?.focus();
 }
 
-if (openHouseModal && openHouseOpen) {
-    openHouseOpen.addEventListener('click', showOpenHouseModal);
-    openHouseClose?.addEventListener('click', closeOpenHouseModal);
+actionDialogs.forEach(({ modal, trigger, close }) => {
+    if (!modal || !trigger) return;
 
-    openHouseModal.addEventListener('click', (event) => {
-        if (event.target === openHouseModal) {
-            closeOpenHouseModal();
+    trigger.addEventListener('click', () => openActionDialog(modal, close));
+    close?.addEventListener('click', () => closeActionDialog(modal));
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeActionDialog(modal);
         }
     });
+});
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && openHouseModal.classList.contains('is-open')) {
-            closeOpenHouseModal();
+document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+
+    actionDialogs.forEach(({ modal }) => {
+        if (modal?.classList.contains('is-open')) {
+            closeActionDialog(modal);
         }
     });
-}
+});
 
 /* Scroll fade-in animation */
 const fadeEls = document.querySelectorAll('.fade-in, .card, .method-card, .value-card, .belief-item, .pricing-card');
