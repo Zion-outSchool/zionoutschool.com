@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=home-carousel-20261009">
+    <link rel="stylesheet" href="style.css?v=home-actions-20261009">
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
@@ -120,27 +120,25 @@
     <div class="container home-action-steps-inner">
         <button class="home-action-card home-action-card--button" type="button" data-open-house-open>
             <span class="home-action-number">1</span>
-            <span>
-                <span class="home-action-title">Open House Details</span>
-                <span class="home-action-text">October 22, 4-6pm</span>
+            <span class="home-action-copy">
+                <span class="home-action-title">Visit Our Open House</span>
+                <span class="home-action-text">View date, time, location, and calendar options.</span>
             </span>
         </button>
-        <a class="home-action-card" href="tuition.html">
+        <a class="home-action-card" href="tuition.html" aria-label="Explore tuition and funding">
             <span class="home-action-number">2</span>
-            <span>
-                <span class="home-action-title">Explore Tuition & Funding</span>
-                <span class="home-action-text">See EFA and tuition information.</span>
+            <span class="home-action-copy">
+                <span class="home-action-title">Explore</span>
+                <span class="home-action-text">Tuition and funding options.</span>
             </span>
         </a>
-        <a class="home-action-card" href="mailto:hello@zionoutschool.com?subject=Tell%20me%20more%20about%20ZION%20outSchool">
+        <button class="home-action-card home-action-card--button" type="button" data-contact-open>
             <span class="home-action-number">3</span>
-            <span>
-                <span class="home-action-title">Contact Us / Find Out More</span>
-                <span class="home-action-text">Racheal Whigham, Admissions Coordinator</span>
-                <span class="home-action-email">hello@zionoutschool.com</span>
-                <span class="home-action-email">706-363-0492</span>
+            <span class="home-action-copy">
+                <span class="home-action-title">Contact Us</span>
+                <span class="home-action-text">Email admissions or see the texting number.</span>
             </span>
-        </a>
+        </button>
         <div class="home-register-wrap">
             <a class="home-register-now" href="https://zionoutschool.com/registration">Register Now</a>
         </div>
@@ -160,6 +158,24 @@
         <div class="home-open-house-actions">
             <a class="home-cta-primary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ZION%20outSchool%20Open%20House&dates=20261022T160000/20261022T180000&ctz=America%2FChicago&location=519%20Latham%20Dr%2C%20Lowell%2C%20AR&details=Open%20House%20at%20ZION%20outSchool." target="_blank" rel="noopener">Add to Google Calendar</a>
             <a class="home-cta-secondary" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0AVERSION%3A2.0%0APRODID%3A-%2F%2FZION%20outSchool%2F%2FOpen%20House%2F%2FEN%0ABEGIN%3AVEVENT%0AUID%3Azion-open-house-20261022%40zionoutschool.com%0ADTSTAMP%3A20261009T160000Z%0ADTSTART%3A20261022T210000Z%0ADTEND%3A20261022T230000Z%0ASUMMARY%3AZION%20outSchool%20Open%20House%0ALOCATION%3A519%20Latham%20Dr%2C%20Lowell%2C%20AR%0ADESCRIPTION%3AOpen%20House%20at%20ZION%20outSchool.%0AEND%3AVEVENT%0AEND%3AVCALENDAR" download="zion-open-house.ics">Download iCal</a>
+        </div>
+    </div>
+</div>
+
+<div class="home-contact-modal" data-contact-modal aria-hidden="true">
+    <div class="home-open-house-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title">
+        <button class="home-open-house-close" type="button" aria-label="Close contact details" data-contact-close>&times;</button>
+        <span class="section-label">Admissions</span>
+        <h2 id="contact-dialog-title">Contact ZION outSchool.</h2>
+        <div class="home-open-house-details">
+            <p><strong>Racheal Whigham</strong></p>
+            <p>Admissions Coordinator</p>
+            <p><a href="mailto:hello@zionoutschool.com?subject=Tell%20me%20more%20about%20ZION%20outSchool">hello@zionoutschool.com</a></p>
+            <p><a href="sms:7063630492">Text 706-363-0492</a></p>
+        </div>
+        <div class="home-open-house-actions">
+            <a class="home-cta-primary" href="mailto:hello@zionoutschool.com?subject=Tell%20me%20more%20about%20ZION%20outSchool">Send Email</a>
+            <a class="home-cta-secondary" href="sms:7063630492">Text Us</a>
         </div>
     </div>
 </div>
@@ -332,6 +348,6 @@
     </div>
 </footer>
 
-<script src="script.js?v=home-carousel-20261009"></script>
+<script src="script.js?v=home-actions-20261009"></script>
 </body>
 </html>

@@ -1914,7 +1914,7 @@ header nav .nav-portal.active {
 .editorial-page .home-action-steps {
     background: var(--cream);
     border-bottom: 1px solid var(--border);
-    padding: 1.25rem 0;
+    padding: 1.4rem 0 1.6rem;
 }
 
 .editorial-page .home-action-steps-inner {
@@ -1925,24 +1925,25 @@ header nav .nav-portal.active {
 
 .editorial-page .home-action-card {
     align-items: center;
-    background: var(--white);
-    border: 1px solid var(--border);
+    background: var(--navy);
+    border: 1px solid rgba(13, 31, 51, 0.18);
     border-radius: 6px;
-    color: var(--text);
+    box-shadow: 0 12px 28px rgba(13, 31, 51, 0.12);
+    color: var(--white);
     display: flex;
     gap: 1rem;
-    min-height: 5.25rem;
-    padding: 1rem 1.15rem;
+    min-height: 5.5rem;
+    padding: 1rem 1.25rem;
     text-align: left;
     text-decoration: none;
-    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .editorial-page .home-action-card:hover,
 .editorial-page .home-action-card:focus-visible {
-    border-color: rgba(30, 63, 102, 0.35);
-    box-shadow: 0 10px 24px rgba(13, 31, 51, 0.08);
-    transform: translateY(-1px);
+    background: var(--navy-mid);
+    box-shadow: 0 16px 34px rgba(13, 31, 51, 0.18);
+    transform: translateY(-2px);
 }
 
 .editorial-page .home-action-card--button {
@@ -1954,9 +1955,9 @@ header nav .nav-portal.active {
 
 .editorial-page .home-action-number {
     align-items: center;
-    background: var(--navy);
-    border-radius: 999px;
-    color: var(--gold-light);
+    background: var(--gold);
+    border-radius: 50%;
+    color: var(--navy-dark);
     display: flex;
     flex: 0 0 auto;
     font-family: var(--sans);
@@ -1968,32 +1969,27 @@ header nav .nav-portal.active {
     width: 2rem;
 }
 
+.editorial-page .home-action-copy {
+    display: block;
+}
+
 .editorial-page .home-action-title {
-    color: var(--navy);
+    color: var(--white);
     display: block;
     font-family: var(--sans);
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
     line-height: 1.25;
     text-transform: uppercase;
 }
 
 .editorial-page .home-action-text {
-    color: var(--text-mid);
+    color: rgba(255, 255, 255, 0.78);
     display: block;
     font-size: 0.95rem;
     line-height: 1.4;
     margin-top: 0.25rem;
-}
-
-.editorial-page .home-action-email {
-    color: var(--navy);
-    display: block;
-    font-family: var(--sans);
-    font-size: 0.82rem;
-    line-height: 1.35;
-    margin-top: 0.2rem;
 }
 
 .editorial-page .home-register-wrap {
@@ -2030,7 +2026,8 @@ header nav .nav-portal.active {
     transform: translateY(-1px);
 }
 
-.editorial-page .home-open-house-modal {
+.editorial-page .home-open-house-modal,
+.editorial-page .home-contact-modal {
     align-items: center;
     background: rgba(13, 31, 51, 0.58);
     display: none;
@@ -2041,7 +2038,8 @@ header nav .nav-portal.active {
     z-index: 1000;
 }
 
-.editorial-page .home-open-house-modal.is-open {
+.editorial-page .home-open-house-modal.is-open,
+.editorial-page .home-contact-modal.is-open {
     display: flex;
 }
 
@@ -2099,6 +2097,14 @@ header nav .nav-portal.active {
     font-size: 1.15rem;
     line-height: 1.55;
     margin: 0.2rem 0;
+}
+
+.editorial-page .home-open-house-details a {
+    color: var(--navy);
+    font-family: var(--sans);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .editorial-page .home-open-house-actions {
