@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=home-actions-20261009">
+    <link rel="stylesheet" href="style.css?v=home-carousel-controls-20261009">
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
@@ -103,15 +103,23 @@
             aria-hidden="true"
         >
     </div>
-    <button class="home-hero-control home-hero-control--prev" type="button" aria-label="Show previous banner" data-home-hero-prev>&lsaquo;</button>
-    <button class="home-hero-control home-hero-control--next" type="button" aria-label="Show next banner" data-home-hero-next>&rsaquo;</button>
-    <div class="home-hero-dots" aria-label="Choose banner image">
-        <button type="button" class="is-active" aria-label="Show banner 1" aria-current="true" data-home-hero-dot></button>
-        <button type="button" aria-label="Show banner 2" data-home-hero-dot></button>
-        <button type="button" aria-label="Show banner 3" data-home-hero-dot></button>
-        <button type="button" aria-label="Show banner 4" data-home-hero-dot></button>
-        <button type="button" aria-label="Show banner 5" data-home-hero-dot></button>
-        <button type="button" aria-label="Show banner 6" data-home-hero-dot></button>
+    <div class="home-hero-controls" aria-label="Carousel controls">
+        <button class="home-hero-control home-hero-control--prev" type="button" aria-label="Show previous banner" data-home-hero-prev>
+            <span aria-hidden="true">&lsaquo;</span>
+            <span>Previous</span>
+        </button>
+        <div class="home-hero-dots" aria-label="Choose banner image">
+            <button type="button" class="is-active" aria-label="Show banner 1" aria-current="true" data-home-hero-dot></button>
+            <button type="button" aria-label="Show banner 2" data-home-hero-dot></button>
+            <button type="button" aria-label="Show banner 3" data-home-hero-dot></button>
+            <button type="button" aria-label="Show banner 4" data-home-hero-dot></button>
+            <button type="button" aria-label="Show banner 5" data-home-hero-dot></button>
+            <button type="button" aria-label="Show banner 6" data-home-hero-dot></button>
+        </div>
+        <button class="home-hero-control home-hero-control--next" type="button" aria-label="Show next banner" data-home-hero-next>
+            <span>Next</span>
+            <span aria-hidden="true">&rsaquo;</span>
+        </button>
     </div>
 </section>
 
@@ -119,21 +127,18 @@
 <section class="home-action-steps" aria-label="Enrollment action steps">
     <div class="container home-action-steps-inner">
         <button class="home-action-card home-action-card--button" type="button" data-open-house-open>
-            <span class="home-action-number">1</span>
             <span class="home-action-copy">
                 <span class="home-action-title">Visit Our Open House</span>
                 <span class="home-action-text">View date, time, location, and calendar options.</span>
             </span>
         </button>
         <a class="home-action-card" href="tuition.html" aria-label="Explore tuition and funding">
-            <span class="home-action-number">2</span>
             <span class="home-action-copy">
-                <span class="home-action-title">Explore</span>
+                <span class="home-action-title">Tuition &amp; EFA Funding</span>
                 <span class="home-action-text">Tuition and funding options.</span>
             </span>
         </a>
         <button class="home-action-card home-action-card--button" type="button" data-contact-open>
-            <span class="home-action-number">3</span>
             <span class="home-action-copy">
                 <span class="home-action-title">Contact Us</span>
                 <span class="home-action-text">Email admissions or see the texting number.</span>
@@ -348,6 +353,6 @@
     </div>
 </footer>
 
-<script src="script.js?v=home-actions-20261009"></script>
+<script src="script.js?v=home-carousel-controls-20261009"></script>
 </body>
 </html>
