@@ -75,6 +75,81 @@ document.querySelectorAll('nav a').forEach(link => {
     }
 });
 
+/* Homepage hero carousel */
+const homeHeroCarousel = document.querySelector('[data-home-hero-carousel]');
+
+if (homeHeroCarousel) {
+    const homeHero = homeHeroCarousel.closest('.home-hero-carousel');
+    const heroSlides = Array.from(homeHeroCarousel.querySelectorAll('.home-hero-img'));
+    const heroDots = Array.from(document.querySelectorAll('[data-home-hero-dot]'));
+    const heroPrev = document.querySelector('[data-home-hero-prev]');
+    const heroNext = document.querySelector('[data-home-hero-next]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let currentHeroSlide = 0;
+    let heroTimer = null;
+
+    function showHeroSlide(index) {
+        if (!heroSlides.length) return;
+
+        const nextIndex = (index + heroSlides.length) % heroSlides.length;
+
+        heroSlides.forEach((slide, slideIndex) => {
+            const isActive = slideIndex === nextIndex;
+            slide.classList.toggle('is-active', isActive);
+            slide.setAttribute('aria-hidden', String(!isActive));
+        });
+
+        heroDots.forEach((dot, dotIndex) => {
+            const isActive = dotIndex === nextIndex;
+            dot.classList.toggle('is-active', isActive);
+            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+
+        currentHeroSlide = nextIndex;
+    }
+
+    function stopHeroCarousel() {
+        if (heroTimer) {
+            clearInterval(heroTimer);
+            heroTimer = null;
+        }
+    }
+
+    function startHeroCarousel() {
+        stopHeroCarousel();
+        if (reduceMotion || heroSlides.length < 2) return;
+
+        heroTimer = setInterval(() => {
+            showHeroSlide(currentHeroSlide + 1);
+        }, 10000);
+    }
+
+    if (heroSlides.length > 1) {
+        heroPrev?.addEventListener('click', () => {
+            showHeroSlide(currentHeroSlide - 1);
+            startHeroCarousel();
+        });
+
+        heroNext?.addEventListener('click', () => {
+            showHeroSlide(currentHeroSlide + 1);
+            startHeroCarousel();
+        });
+
+        heroDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showHeroSlide(index);
+                startHeroCarousel();
+            });
+        });
+
+        homeHero?.addEventListener('mouseenter', stopHeroCarousel);
+        homeHero?.addEventListener('mouseleave', startHeroCarousel);
+        homeHero?.addEventListener('focusin', stopHeroCarousel);
+        homeHero?.addEventListener('focusout', startHeroCarousel);
+        startHeroCarousel();
+    }
+}
+
 /* Scroll fade-in animation */
 const fadeEls = document.querySelectorAll('.fade-in, .card, .method-card, .value-card, .belief-item, .pricing-card');
 

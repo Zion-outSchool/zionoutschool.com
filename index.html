@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=no-announcement-20261009">
+    <link rel="stylesheet" href="style.css?v=home-carousel-20261009">
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
@@ -53,12 +53,66 @@
 </header>
 
 <!-- ── HERO BANNER ── -->
-<section class="home-hero">
-    <img
-        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Your%20Child%20has%20a%20place%20here%20banner%20-%20new%20building%20.png"
-        alt="Your child has a place here at ZION outSchool's new building."
-        class="home-hero-img"
-    >
+<section class="home-hero home-hero-carousel" aria-label="ZION outSchool enrollment highlights">
+    <div class="home-hero-track" data-home-hero-carousel>
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Zion%20School%20Open%20House%20Banner.png"
+            alt="ZION outSchool open house invitation."
+            class="home-hero-img is-active"
+            fetchpriority="high"
+            aria-hidden="false"
+        >
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Warm%20classroom%20enrollment%20banner.png"
+            alt="Warm classroom enrollment invitation at ZION outSchool."
+            class="home-hero-img"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+        >
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Color-sorted%20microscopy%20gallery%20in%20classroom.png"
+            alt="Students exploring color-sorted microscopy work in class."
+            class="home-hero-img"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+        >
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Hands-on%20water%20tunnel%20experiment.png"
+            alt="Students working through a hands-on water tunnel experiment."
+            class="home-hero-img"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+        >
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Zion%20classroom%20speaking%20circle%20in%20action%20(1).png"
+            alt="ZION students participating in a classroom speaking circle."
+            class="home-hero-img"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+        >
+        <img
+            src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Student%20portfolio%20meeting%20around%20a%20round%20table.png"
+            alt="Student portfolio meeting around a round table."
+            class="home-hero-img"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+        >
+    </div>
+    <button class="home-hero-control home-hero-control--prev" type="button" aria-label="Show previous banner" data-home-hero-prev>&lsaquo;</button>
+    <button class="home-hero-control home-hero-control--next" type="button" aria-label="Show next banner" data-home-hero-next>&rsaquo;</button>
+    <div class="home-hero-dots" aria-label="Choose banner image">
+        <button type="button" class="is-active" aria-label="Show banner 1" aria-current="true" data-home-hero-dot></button>
+        <button type="button" aria-label="Show banner 2" data-home-hero-dot></button>
+        <button type="button" aria-label="Show banner 3" data-home-hero-dot></button>
+        <button type="button" aria-label="Show banner 4" data-home-hero-dot></button>
+        <button type="button" aria-label="Show banner 5" data-home-hero-dot></button>
+        <button type="button" aria-label="Show banner 6" data-home-hero-dot></button>
+    </div>
 </section>
 
 <!-- ── THE CLAIM ── -->
@@ -229,6 +283,6 @@
     </div>
 </footer>
 
-<script src="script.js?v=family-portal-20260823"></script>
+<script src="script.js?v=home-carousel-20261009"></script>
 </body>
 </html>
