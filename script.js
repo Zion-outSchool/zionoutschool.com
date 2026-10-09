@@ -150,6 +150,43 @@ if (homeHeroCarousel) {
     }
 }
 
+/* Homepage open house modal */
+const openHouseModal = document.querySelector('[data-open-house-modal]');
+const openHouseOpen = document.querySelector('[data-open-house-open]');
+const openHouseClose = document.querySelector('[data-open-house-close]');
+
+function closeOpenHouseModal() {
+    if (!openHouseModal) return;
+
+    openHouseModal.classList.remove('is-open');
+    openHouseModal.setAttribute('aria-hidden', 'true');
+}
+
+function showOpenHouseModal() {
+    if (!openHouseModal) return;
+
+    openHouseModal.classList.add('is-open');
+    openHouseModal.setAttribute('aria-hidden', 'false');
+    openHouseClose?.focus();
+}
+
+if (openHouseModal && openHouseOpen) {
+    openHouseOpen.addEventListener('click', showOpenHouseModal);
+    openHouseClose?.addEventListener('click', closeOpenHouseModal);
+
+    openHouseModal.addEventListener('click', (event) => {
+        if (event.target === openHouseModal) {
+            closeOpenHouseModal();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && openHouseModal.classList.contains('is-open')) {
+            closeOpenHouseModal();
+        }
+    });
+}
+
 /* Scroll fade-in animation */
 const fadeEls = document.querySelectorAll('.fade-in, .card, .method-card, .value-card, .belief-item, .pricing-card');
 
