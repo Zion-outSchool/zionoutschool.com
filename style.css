@@ -6308,6 +6308,15 @@ header {
         padding: 0.55rem 0.72rem;
     }
 
+    .editorial-page .home-hero-control span:not([aria-hidden]) {
+        display: none;
+    }
+
+    .editorial-page .home-hero-control span[aria-hidden] {
+        font-size: 1.1rem;
+        line-height: 0.8;
+    }
+
     .editorial-page .home-hero-dots {
         gap: 0.4rem;
     }
