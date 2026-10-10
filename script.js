@@ -88,6 +88,11 @@ if (homeHeroCarousel) {
     let currentHeroSlide = 0;
     let heroTimer = null;
 
+    heroSlides.forEach((slide) => {
+        const preload = new Image();
+        preload.src = slide.currentSrc || slide.src;
+    });
+
     function showHeroSlide(index) {
         if (!heroSlides.length) return;
 
