@@ -4,6 +4,8 @@ Run this after the original portal tables and `current_portal_role()` function a
 
 This adds the editable Arkansas graduation planner used by `graduation-planner.html`.
 
+The same setup is available in `supabase_graduation_planner_setup.sql`. Run that file in the Supabase SQL Editor after the original portal setup.
+
 ```sql
 drop policy if exists "Users can read their own portal profile" on public.portal_users;
 create policy "Users can read their own portal profile"
