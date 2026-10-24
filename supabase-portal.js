@@ -68,11 +68,11 @@ function togglePortalState(session) {
 }
 
 function isStaffPortalProfile(profile) {
-    return STAFF_PORTAL_ROLES.includes(profile?.role);
+    return profile?.active === true && STAFF_PORTAL_ROLES.includes(profile?.role);
 }
 
 function isAdminPortalProfile(profile) {
-    return ADMIN_PORTAL_ROLES.includes(profile?.role);
+    return profile?.active === true && ADMIN_PORTAL_ROLES.includes(profile?.role);
 }
 
 function togglePortalProfileState(profile) {
@@ -172,6 +172,7 @@ function bindPortalSignOut() {
             if (!portalClient) return;
             await portalClient.auth.signOut();
             togglePortalState(null);
+            togglePortalProfileState(null);
 
             if (document.body.dataset.requiresAuth === 'true') {
                 window.location.href = 'family-portal.html';
@@ -257,8 +258,8 @@ async function renderGradeReports(session) {
     if (studentError || reportError) {
         console.error('Unable to load grade report data:', studentError || reportError);
         reportList.innerHTML = '';
-        if (emptyState) emptyState.hidden = false;
-        setPortalMessage(status, 'Grade reports are protected. No reports are published for this login yet.', 'neutral');
+        if (emptyState) emptyState.hidden = true;
+        setPortalMessage(status, 'Grade reports could not be loaded. Please try again or contact the school.', 'error');
         return false;
     }
 
@@ -874,27 +875,40 @@ async function initPortalAuth() {
         initGraduationPlanner(profile);
     }
 
+    let authChangeVersion = 0;
     if (portalClient) {
-        portalClient.auth.onAuthStateChange(async (_event, nextSession) => {
-            const nextProfile = await getPortalProfile(nextSession);
+        portalClient.auth.onAuthStateChange((_event, nextSession) => {
+            const changeVersion = ++authChangeVersion;
+            // Release Supabase's auth lock before making further client calls.
+            // Hide staff controls immediately when a session ends.
             togglePortalState(nextSession);
-            togglePortalProfileState(nextProfile);
+            togglePortalProfileState(null);
+            setTimeout(async () => {
+                try {
+                    const nextProfile = await getPortalProfile(nextSession);
+                    if (changeVersion !== authChangeVersion) return;
+                    togglePortalState(nextSession);
+                    togglePortalProfileState(nextProfile);
 
-            if (document.body.classList.contains('grade-reports-page')) {
-                if (nextSession) {
-                    renderFamilyGradeReportPage(nextSession);
-                } else {
-                    window.location.href = 'family-portal.html';
-                }
-            }
+                    if (document.body.classList.contains('grade-reports-page')) {
+                        if (nextSession) {
+                            renderFamilyGradeReportPage(nextSession);
+                        } else {
+                            window.location.href = 'family-portal.html';
+                        }
+                    }
 
-            if (document.body.classList.contains('graduation-planner-page')) {
-                if (nextSession) {
-                    initGraduationPlanner(nextProfile);
-                } else {
-                    window.location.href = 'family-portal.html';
+                    if (document.body.classList.contains('graduation-planner-page')) {
+                        if (nextSession) {
+                            initGraduationPlanner(nextProfile);
+                        } else {
+                            window.location.href = 'family-portal.html';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Unable to refresh portal access:', error);
                 }
-            }
+            }, 0);
         });
     }
 }
