@@ -1,0 +1,48 @@
+/* Focused inquiry-page refinements; shared registration styles remain unchanged. */
+.inquiry-page [hidden] { display: none !important; }
+.inquiry-page :focus-visible { outline: 3px solid var(--navy); outline-offset: 4px; }
+.inquiry-page footer :focus-visible,
+.inquiry-page .form-intro-header :focus-visible { outline-color: var(--gold-light); }
+.inquiry-page .inquiry-form-section { padding: 0 0 48px; }
+.inquiry-page .inquiry-form-wrap { max-width: 844px; padding: 0 32px; }
+.inquiry-page .form-intro-header { margin: 0 -32px 28px; padding: 36px 32px 0; }
+.inquiry-page .form-intro-inner { padding-bottom: 28px; }
+.inquiry-page .form-intro-wordmark { text-decoration: none; width: fit-content; }
+.inquiry-page .form-intro-heading { font-weight: 600; margin-bottom: 16px; }
+.inquiry-page .form-intro-body { font: 400 15px/1.8 var(--sans); color: #edf0f3; font-style: normal; }
+.inquiry-page .form-intro-note { color: var(--gold-light); font-size: 13px; text-transform: none; letter-spacing: 0; }
+.inquiry-page .inquiry-status-note { margin-top: 20px; font-size: 14px; padding: 14px 18px; }
+.inquiry-page .inquiry-section { padding: 0 0 22px; margin-bottom: 26px; }
+.inquiry-page .inquiry-section:last-of-type { padding-bottom: 0; margin-bottom: 20px; }
+.inquiry-page .inquiry-section:last-of-type .form-group { margin-bottom: 0; }
+.inquiry-page .inquiry-submit-wrap { padding-top: 0; }
+.inquiry-page .inquiry-section-title { font-size: 27px; margin-bottom: 22px; }
+.inquiry-page .form-label { font-size: 13px; text-transform: none; letter-spacing: 0; line-height: 1.6; }
+.inquiry-page .form-input { font: 400 16px/1.6 var(--sans); min-height: 48px; padding: 10px 12px; }
+.inquiry-page .form-input:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+.inquiry-page .form-group { min-width: 0; margin-bottom: 20px; }
+.inquiry-page .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.inquiry-page .form-hint { font-size: 13px; margin-top: 6px; }
+.inquiry-page .student-block { padding: 22px; }
+.inquiry-page .student-block-header { margin-bottom: 18px; }
+.inquiry-page .student-block-label { font-size: 12px; }
+.inquiry-page .student-remove-btn { min-height: 44px; padding: 10px; }
+.inquiry-page .inquiry-more { border-top: 1px solid #d8d4ca; }
+.inquiry-page .inquiry-more summary { color: var(--navy); cursor: pointer; padding: 16px 0 4px; font: 600 14px/1.7 var(--sans); }
+.inquiry-page .inquiry-more-content { padding-top: 12px; }
+.inquiry-page .inquiry-more-content .form-group:last-child { margin-bottom: 0; }
+.inquiry-page .inquiry-submit-note { color: var(--text-mid); font: 400 13px/1.8 var(--sans); margin-top: 14px; }
+.inquiry-page .inquiry-success { padding-block: 32px; background: var(--cream); text-align: left; }
+.inquiry-page .inquiry-success h2 { color: var(--navy); font: 600 36px/1.2 var(--serif); }
+.inquiry-page .inquiry-success p { color: var(--text); font: 400 15px/1.8 var(--sans); margin-top: 16px; }
+.inquiry-page .inquiry-success a { color: var(--navy); text-decoration: underline; }
+.inquiry-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 600px) {
+    .inquiry-page .inquiry-form-wrap { padding-inline: 20px; }
+    .inquiry-page .form-intro-header { margin-inline: -20px; padding: 28px 20px 0; }
+    .inquiry-page .form-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .inquiry-page .student-block { padding: 18px; }
+    .inquiry-page .form-intro-heading { font-size: 35px; }
+    .inquiry-page .inquiry-section { margin-bottom: 22px; padding-bottom: 18px; }
+    .inquiry-page .form-submit { width: 100%; }
+}
