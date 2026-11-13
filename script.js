@@ -158,11 +158,6 @@ if (homeHeroCarousel) {
 /* Homepage action dialogs */
 const actionDialogs = [
     {
-        modal: document.querySelector('[data-open-house-modal]'),
-        trigger: document.querySelector('[data-open-house-open]'),
-        close: document.querySelector('[data-open-house-close]')
-    },
-    {
         modal: document.querySelector('[data-contact-modal]'),
         trigger: document.querySelector('[data-contact-open]'),
         close: document.querySelector('[data-contact-close]')

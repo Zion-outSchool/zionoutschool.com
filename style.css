@@ -1924,7 +1924,7 @@ header nav .nav-portal.active {
 .editorial-page .home-action-steps-inner {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .editorial-page .home-action-card {
@@ -2014,7 +2014,6 @@ header nav .nav-portal.active {
     transform: translateY(-1px);
 }
 
-.editorial-page .home-open-house-modal,
 .editorial-page .home-contact-modal {
     align-items: center;
     background: rgba(13, 31, 51, 0.58);
@@ -2026,7 +2025,6 @@ header nav .nav-portal.active {
     z-index: 1000;
 }
 
-.editorial-page .home-open-house-modal.is-open,
 .editorial-page .home-contact-modal.is-open {
     display: flex;
 }
