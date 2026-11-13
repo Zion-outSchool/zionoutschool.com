@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zion outSchool | Christ-Centered Education</title>
+    <title>ZION outSchool | Christ-Centered Education in Lowell, Arkansas</title>
+    <meta name="description" content="Christ-centered private education in Lowell, Arkansas. Explore Zion’s curriculum, faith in daily learning, tuition, and begin a family inquiry.">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,19 +12,22 @@
     <!-- Styles -->
     <link rel="stylesheet" href="style.css?v=mobile-carousel-controls-20261010">
 
+    <link rel="stylesheet" href="homepage.css?v=20261113">
+
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page">
+<body class="editorial-page homepage">
+<a class="home-skip" href="#main-content">Skip to content</a>
 <!-- ── HEADER ── -->
 <header>
     <a href="index.html" class="logo">ZION <span>out</span>School</a>
-    <button class="mobile-menu" aria-label="Open navigation">☰</button>
+    <button type="button" class="mobile-menu" aria-label="Open navigation" aria-controls="nav-menu" aria-expanded="false">☰</button>
     <nav id="nav-menu" aria-label="Primary navigation">
         <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Discover ZION</button>
-            <div class="nav-dropdown-menu">
+            <button type="button" class="nav-group-toggle" aria-expanded="false" aria-controls="home-nav-1">Discover ZION</button>
+            <div class="nav-dropdown-menu" id="home-nav-1" hidden>
                 <a href="foundation.html">Foundation</a>
                 <a href="how-we-learn.html">How We Learn</a>
                 <a href="curriculum.html">Curriculum</a>
@@ -32,27 +36,168 @@
             </div>
         </div>
         <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Join ZION</button>
-            <div class="nav-dropdown-menu">
+            <button type="button" class="nav-group-toggle" aria-expanded="false" aria-controls="home-nav-2">Join ZION</button>
+            <div class="nav-dropdown-menu" id="home-nav-2" hidden>
                 <a href="tuition.html">Tuition & Funding</a>
-                <a href="contact.html">Family Inquiry</a>
-                <a href="registration.html">Enroll Now</a>
+                <a href="/inquiry-form">Family Inquiry</a>
+                <a href="/registration">Registration</a>
                 <a href="calendar.html">Calendar</a>
                 <a href="scholarship-assistance.html">Scholarship Assistance</a>
             </div>
         </div>
-        <a href="family-portal.html" class="nav-portal">Family Portal</a>
+        <a href="/family-portal" class="nav-portal">Family Portal</a>
         <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Build With Us</button>
-            <div class="nav-dropdown-menu">
+            <button type="button" class="nav-group-toggle" aria-expanded="false" aria-controls="home-nav-3">Build With Us</button>
+            <div class="nav-dropdown-menu" id="home-nav-3" hidden>
                 <a href="build-with-us.html">Build With Us</a>
                 <a href="partners.html">Mission Partners</a>
             </div>
         </div>
+        <a class="home-button home-header-inquiry" href="/inquiry-form">Begin a Family Inquiry</a>
     </nav>
 </header>
 
-<!-- ── HERO BANNER ── -->
+<main id="main-content">
+    <section class="home-opening" aria-labelledby="opening-heading">
+        <div class="home-container">
+            <p class="home-intro">Christ-centered private education <span aria-hidden="true">·</span> Lowell, Arkansas</p>
+            <h1 id="opening-heading">An education that deepens understanding and strengthens faith.</h1>
+            <div class="home-opening-copy">
+                <p>At ZION outSchool, students build strong academic foundations while learning to pursue questions of their own. Small classes give teachers time to understand each student’s progress and adapt instruction when a different approach is needed.</p>
+                <p>Scripture anchors our school day. Through thoughtful study, students discover how faith informs their understanding of the world.</p>
+            </div>
+            <div class="home-actions">
+                <a class="home-button" href="/inquiry-form">Begin a Family Inquiry <span aria-hidden="true">↗</span></a>
+                <a class="home-text-link" href="/curriculum">Explore Our Curriculum <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="home-schedule">
+                <p class="home-grades">Kindergarten–12th grade</p>
+                <p>In-person learning Monday–Thursday, 8 a.m.–3 p.m. Friday learning continues at home.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-academics" aria-labelledby="academic-heading">
+        <div class="home-container home-academic-layout">
+            <div class="home-academic-intro">
+                <h2 id="academic-heading">Strong foundations open the door to deeper questions.</h2>
+                <p>Students need knowledge they can put to work. At Zion, carefully selected curriculum provides a structured foundation. Our Reason and Revelation approach helps students investigate further and take increasing responsibility for their learning.</p>
+                <p>In middle and high school science, students study Cambridge course material and connect it to current scientific research through extended investigations called QUESTs.</p>
+            </div>
+            <div class="home-study">
+                <h3>Could a kidney be preserved by freezing—and still function afterward?</h3>
+                <p>Students study current research from the scientific community, using their Cambridge coursework and laboratory observations to understand the science behind it. They examine what researchers have demonstrated and what remains uncertain, then explain their conclusions using evidence.</p>
+                <p>Teachers check understanding along the way. When students need further instruction, we revisit the concept and provide another opportunity to demonstrate learning.</p>
+                <a class="home-text-link" href="/how-we-learn">See How We Learn <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-explore" aria-labelledby="explore-heading">
+        <div class="home-container">
+            <h2 id="explore-heading">Take a closer look at Zion.</h2>
+            <div class="home-preview-grid">
+                <article class="home-preview">
+                    <span class="home-preview-number" aria-hidden="true">01</span>
+                    <div>
+                        <h3>What your child will study</h3>
+                        <p>Explore our approach to essential academic skills and the curriculum pathways available as students grow. Placement takes account of readiness, with room to adjust as teachers learn more about each student.</p>
+                        <a class="home-text-link" href="/curriculum">Explore the Curriculum <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="home-preview">
+                    <span class="home-preview-number" aria-hidden="true">02</span>
+                    <div>
+                        <h3>Faith in daily learning</h3>
+                        <p>Scripture anchors our units of study and the rhythm of the school day. Learn about Zion’s foundation in the teachings of The Church of Jesus Christ of Latter-day Saints and what that means for participating families.</p>
+                        <a class="home-text-link" href="/foundation">Read Our Foundation <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="home-preview">
+                    <span class="home-preview-number" aria-hidden="true">03</span>
+                    <div>
+                        <h3>Meet the teachers</h3>
+                        <p>Get to know the educators guiding your child’s learning. Read about their backgrounds and the experience they bring to Zion’s classrooms.</p>
+                        <a class="home-text-link" href="/teachers">Meet Our Faculty <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="home-preview">
+                    <span class="home-preview-number" aria-hidden="true">04</span>
+                    <div>
+                        <h3>School and home working together</h3>
+                        <p>Understand the weekly schedule and how families participate in learning beyond the classroom. Find answers about mixed-age learning and everyday school expectations.</p>
+                        <a class="home-text-link" href="/faq">Read the Family FAQs <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-funding" aria-labelledby="funding-heading">
+        <div class="home-container home-funding-layout">
+            <h2 id="funding-heading">Understanding tuition and funding</h2>
+            <div>
+                <p>Zion participates in Arkansas’s Education Freedom Account program. Explore tuition and required fees, along with funding options and private-payment information.</p>
+                <a class="home-text-link" href="/tuition">View Tuition &amp; Funding <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-invitation" aria-labelledby="invitation-heading">
+        <div class="home-container home-invitation-layout">
+            <div>
+                <h2 id="invitation-heading">Let’s begin with your child.</h2>
+                <p>Whether you are looking for a different school experience or simply exploring your options, we would be glad to hear from you. Ask about your child’s learning needs or what a school day at Zion could look like.</p>
+            </div>
+            <div class="home-invitation-action">
+                <a class="home-button" href="/inquiry-form">Begin a Family Inquiry <span aria-hidden="true">↗</span></a>
+                <p>A short form starts the conversation. We’ll respond personally within 48 hours.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h3>ZION outSchool</h3>
+            <p>Truth. Discovered. Lived. Shared.</p>
+            <address>519 Latham Dr<br>Lowell, AR</address>
+            <a class="home-footer-email" href="mailto:hello@zionoutschool.com">hello@zionoutschool.com</a>
+        </div>
+        <div class="footer-links">
+            <a href="foundation.html">Foundation</a>
+            <a href="how-we-learn.html">How We Learn</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="teachers.html">Teachers</a>
+            <a href="tuition.html">Tuition & Funding</a>
+            <a href="faq.html">FAQs</a>
+            <a href="partners.html">Mission Partners</a>
+            <a href="build-with-us.html">Build With Us</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="documents.html">Documents</a>
+            <a href="/family-portal">Family Portal</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-donate">
+            <a href="build-with-us.html#ways" class="footer-involved-btn">
+                <span>Ways to Get Involved</span>
+                <span aria-hidden="true">↓</span>
+            </a>
+        </div>
+        <a href="/inquiry-form" class="footer-btn">Begin a Family Inquiry</a>
+    </div>
+    <div class="footer-nondiscrimination">
+        <h4>Notice of Nondiscriminatory Policy as to Students</h4>
+        <p>ZION outSchool admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. ZION outSchool does not discriminate on the basis of race, color, national and ethnic origin in the administration of its educational policies, admissions policies, scholarship and financial-assistance programs, and athletic and other school-administered programs.</p>
+    </div>
+</footer>
+
+<!-- Carousel retained for future use. Template content is inert: no layout,
+     accessibility-tree presence, image requests, controls, or carousel timer.
+     To restore, move the section out of this template. Styles and JS remain intact. -->
+<template id="home-carousel-paused">
 <section class="home-hero home-hero-carousel" aria-label="ZION outSchool enrollment highlights">
     <div class="home-hero-track" data-home-hero-carousel>
         <img
@@ -117,237 +262,9 @@
         </button>
     </div>
 </section>
-
-<!-- ── ENROLLMENT ACTIONS ── -->
-<section class="home-action-steps" aria-label="Enrollment action steps">
-    <div class="container home-action-steps-inner">
-        <button class="home-action-card home-action-card--button" type="button" data-open-house-open>
-            <span class="home-action-copy">
-                <span class="home-action-title">Visit Our Open House</span>
-                <span class="home-action-text">View date, time, location, and calendar options.</span>
-            </span>
-        </button>
-        <a class="home-action-card" href="tuition.html" aria-label="Explore tuition and funding">
-            <span class="home-action-copy">
-                <span class="home-action-title">Tuition &amp; EFA Funding</span>
-                <span class="home-action-text">Tuition and funding options.</span>
-            </span>
-        </a>
-        <button class="home-action-card home-action-card--button" type="button" data-contact-open>
-            <span class="home-action-copy">
-                <span class="home-action-title">Contact Us</span>
-                <span class="home-action-text">Email admissions or see the texting number.</span>
-            </span>
-        </button>
-        <div class="home-register-wrap">
-            <a class="home-register-now" href="https://zionoutschool.com/registration">Register Now</a>
-        </div>
-    </div>
-</section>
-
-<div class="home-open-house-modal" data-open-house-modal aria-hidden="true">
-    <div class="home-open-house-dialog" role="dialog" aria-modal="true" aria-labelledby="open-house-title">
-        <button class="home-open-house-close" type="button" aria-label="Close open house details" data-open-house-close>&times;</button>
-        <span class="section-label">Open House</span>
-        <h2 id="open-house-title">Come see ZION outSchool.</h2>
-        <div class="home-open-house-details">
-            <p><strong>October 22, 2026</strong></p>
-            <p>4:00-6:00pm</p>
-            <p>519 Latham Dr<br>Lowell, AR</p>
-        </div>
-        <div class="home-open-house-actions">
-            <a class="home-cta-primary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ZION%20outSchool%20Open%20House&dates=20261022T160000/20261022T180000&ctz=America%2FChicago&location=519%20Latham%20Dr%2C%20Lowell%2C%20AR&details=Open%20House%20at%20ZION%20outSchool." target="_blank" rel="noopener">Add to Google Calendar</a>
-            <a class="home-cta-secondary" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0AVERSION%3A2.0%0APRODID%3A-%2F%2FZION%20outSchool%2F%2FOpen%20House%2F%2FEN%0ABEGIN%3AVEVENT%0AUID%3Azion-open-house-20261022%40zionoutschool.com%0ADTSTAMP%3A20261009T160000Z%0ADTSTART%3A20261022T210000Z%0ADTEND%3A20261022T230000Z%0ASUMMARY%3AZION%20outSchool%20Open%20House%0ALOCATION%3A519%20Latham%20Dr%2C%20Lowell%2C%20AR%0ADESCRIPTION%3AOpen%20House%20at%20ZION%20outSchool.%0AEND%3AVEVENT%0AEND%3AVCALENDAR" download="zion-open-house.ics">Download iCal</a>
-        </div>
-    </div>
-</div>
-
-<div class="home-contact-modal" data-contact-modal aria-hidden="true">
-    <div class="home-open-house-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title">
-        <button class="home-open-house-close" type="button" aria-label="Close contact details" data-contact-close>&times;</button>
-        <span class="section-label">Admissions</span>
-        <h2 id="contact-dialog-title">Contact ZION outSchool.</h2>
-        <div class="home-open-house-details">
-            <p><strong>Racheal Whigham</strong></p>
-            <p>Admissions Coordinator</p>
-            <p><a href="mailto:hello@zionoutschool.com?subject=Tell%20me%20more%20about%20ZION%20outSchool">hello@zionoutschool.com</a></p>
-            <p><a href="sms:7063630492">Text 706-363-0492</a></p>
-        </div>
-        <div class="home-open-house-actions">
-            <a class="home-cta-primary" href="mailto:hello@zionoutschool.com?subject=Tell%20me%20more%20about%20ZION%20outSchool">Send Email</a>
-            <a class="home-cta-secondary" href="sms:7063630492">Text Us</a>
-        </div>
-    </div>
-</div>
-
-<!-- ── THE CLAIM ── -->
-<section class="home-claim">
-    <div class="container home-claim-inner">
-        <span class="section-label">Truth. Discovered. Lived. Shared.</span>
-        <h1 class="home-headline">Your child was born<br><em>to seek for truth.</em></h1>
-        <p class="home-subtext">
-            ZION outSchool is a Christ-centered private school where Scripture is the foundation, inquiry is the method, and every subject becomes part of the search for eternal truth and the application of wisdom.
-        </p>
-        <p class="home-location-note">Now located in Lowell, Arkansas.</p>
-        <div class="home-ctas">
-            <a href="inquiry-form.html" class="home-cta-primary">Begin Family Inquiry →</a>
-            <a href="how-we-learn.html" class="home-cta-secondary">See How We Learn</a>
-        </div>
-    </div>
-</section>
-
-<!-- ── PROOF ── -->
-<section class="home-proof">
-    <div class="container-narrow">
-        <span class="section-label">This Week in the Classroom</span>
-        <h2 class="home-proof-heading">These are not hypotheticals.</h2>
-        <div class="proof-grid">
-            <div class="proof-item">
-                <p>A second grader builds a physical model of the human blood system to prove that water cannot do what blood does.</p>
-            </div>
-            <div class="proof-item">
-                <p>A third grader constructs clay riverbeds to test whether the shape of the Nile determined what the river carried — and where.</p>
-            </div>
-            <div class="proof-item">
-                <p>A seventh grader designs an experiment to feel thermal equilibration before she can name it scientifically.</p>
-            </div>
-        </div>
-        <p class="proof-closer">
-            Students here do not fill out worksheets and move on. They investigate, present, debate, write analytically, revise their thinking, and create work that matters beyond the classroom.
-        </p>
-    </div>
-</section>
-
-<!-- ── QUOTE BREAK ── -->
-<div class="quote-break">
-    <img
-        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
-        alt=""
-        aria-hidden="true"
-    >
-    <div class="quote-break-text">
-        <blockquote>
-            "We are not building students who have learned things. We are building students who have become someone."
-        </blockquote>
-        <cite>— Sandra J. Isenberger, Founder</cite>
-    </div>
-</div>
-
-<!-- ── WHAT MAKES THIS DIFFERENT ── -->
-<section class="home-different">
-    <div class="container">
-        <span class="section-label">What Makes This Different</span>
-        <div class="different-grid">
-            <div class="different-item">
-                <h3>Scripture Is the Spine</h3>
-                <p>Faith is not added onto learning here. Scripture forms the organizing center from which science, history, literature, mathematics, and art are all explored.</p>
-                <a href="foundation.html" class="different-link">Our foundation →</a>
-            </div>
-            <div class="different-item">
-                <h3>Students Seek, Build, and Defend</h3>
-                <p>Students investigate real questions, gather evidence, write analytically, create meaningful work, and learn to stand behind what they know.</p>
-                <a href="how-we-learn.html" class="different-link">How we learn →</a>
-            </div>
-            <div class="different-item">
-                <h3>Small by Design</h3>
-                <p>Students are known personally, challenged individually, and mentored by adults who believe children are capable of serious intellectual and spiritual work.</p>
-                <a href="teachers.html" class="different-link">Meet the faculty →</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ── EFA FUNDING ── -->
-<section class="home-efa">
-    <div class="container-narrow">
-        <span class="section-label">Tuition & Funding</span>
-        <h2>For most Arkansas families,<br>EFA funding covers the full cost.</h2>
-        <p>
-            ZION outSchool is an EFA-participating private learning institution. The Arkansas Education Freedom Account can cover tuition and required school fees — with funds remaining for required supplies.
-        </p>
-        <a href="tuition.html" class="different-link">Understand your funding options →</a>
-    </div>
-</section>
-
-<!-- ── NONDISCRIMINATION NOTICE ── -->
-<section class="home-nondiscrimination">
-    <div class="container">
-        <div class="home-nondiscrimination-inner">
-            <h2>Notice of Nondiscriminatory Policy as to Students</h2>
-            <p>
-                ZION outSchool admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. ZION outSchool does not discriminate on the basis of race, color, national and ethnic origin in the administration of its educational policies, admissions policies, scholarship and financial-assistance programs, and athletic and other school-administered programs.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- ── Quote Break ── -->
-<div class="quote-break">
-    <img
-        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
-        alt=""
-        aria-hidden="true"
-    >
-    <div class="quote-break-text">
-        <blockquote>
-            "Your child has a place here."
-        </blockquote>
-        <cite>— Zion outSchool Family</cite>
-    </div>
-</div>
-    
-<!-- ── CLOSING CTA ── -->
-<section class="home-close">
-    <div class="container-narrow">
-
-       
-        <h2 class="home-close-headline">
-            A child who seeks truth<br>deserves a school built for<em> that child.</em>
-        </h2>
-        <p class="home-close-body">
-            We currently serve students in Kindergarten through 12th grade. Tell us about your family. We will listen carefully, answer honestly, and help you understand whether this is the right fit.
-        </p>
-        <a href="contact.html" class="home-cta-primary">Begin the Conversation →</a>
-
-    </div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer>
-    <div class="footer-content">
-        <div class="footer-brand">
-            <h3>ZION outSchool</h3>
-            <p>Truth. Discovered. Lived. Shared.</p>
-            <p class="footer-location">Now located in Lowell, Arkansas</p>
-        </div>
-        <div class="footer-links">
-            <a href="foundation.html">Foundation</a>
-            <a href="how-we-learn.html">How We Learn</a>
-            <a href="curriculum.html">Curriculum</a>
-            <a href="teachers.html">Teachers</a>
-            <a href="tuition.html">Tuition & Funding</a>
-            <a href="faq.html">FAQs</a>
-            <a href="partners.html">Mission Partners</a>
-            <a href="build-with-us.html">Build With Us</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="documents.html">Documents</a>
-            <a href="family-portal.html">Family Portal</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div class="footer-donate">
-            <a href="build-with-us.html#ways" class="footer-involved-btn">
-                <span>Ways to Get Involved</span>
-                <span aria-hidden="true">↓</span>
-            </a>
-        </div>
-        <a href="contact.html" class="footer-btn">Begin the Conversation →</a>
-    </div>
-    <div class="footer-nondiscrimination">
-        <h4>Notice of Nondiscriminatory Policy as to Students</h4>
-        <p>ZION outSchool admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. ZION outSchool does not discriminate on the basis of race, color, national and ethnic origin in the administration of its educational policies, admissions policies, scholarship and financial-assistance programs, and athletic and other school-administered programs.</p>
-    </div>
-</footer>
+</template>
 
 <script src="script.js?v=home-carousel-controls-20261009"></script>
+<script src="home-navigation.js?v=20261113"></script>
 </body>
 </html>
