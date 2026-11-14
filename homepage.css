@@ -31,7 +31,7 @@
 .homepage main h3 { font-size: 30px; line-height: 1.18; margin-bottom: 16px; }
 .homepage main p + p { margin-top: 16px; }
 /* Midyear campaign: self-contained announcement in normal document flow. */
-.homepage main .home-enrollment { background: var(--gold); padding: 34px 0; }
+.homepage main .home-enrollment { background: var(--cream-dark); border-bottom: 2px solid var(--gold); padding: 28px 0; }
 .homepage .home-enrollment-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; }
 .homepage .home-enrollment-copy { min-width: 0; }
 .homepage main .home-enrollment-title { color: var(--navy); font: 600 clamp(28px, 2.5vw, 34px)/1.15 var(--serif); letter-spacing: -.02em; }
@@ -132,7 +132,7 @@
     .homepage .footer-nondiscrimination { margin-top: 28px; }
 }
 @media (max-width: 900px) {
-    .homepage main .home-enrollment { padding: 22px 0; }
+    .homepage main .home-enrollment { padding: 18px 0; }
     .homepage .home-enrollment-inner { align-items: flex-start; flex-direction: column; gap: 16px; }
     .homepage main .home-enrollment-title { font-size: 28px; }
     .homepage main .home-enrollment-support { font-size: 15px; margin-top: 6px; }
