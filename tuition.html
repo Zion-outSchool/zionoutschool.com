@@ -11,11 +11,13 @@
     <!-- Styles -->
     <link rel="stylesheet" href="style.css?v=no-announcement-20261009">
 
+    <link rel="stylesheet" href="family-info.css?v=20261114">
+
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page tuition-page">
+<body class="editorial-page tuition-page family-info-page">
 <!-- ── HEADER ── -->
 <header>
     <a href="index.html" class="logo">ZION <span>out</span>School</a>
@@ -35,7 +37,8 @@
             <button type="button" class="nav-group-toggle" aria-haspopup="true">Join ZION</button>
             <div class="nav-dropdown-menu">
                 <a href="tuition.html">Tuition & Funding</a>
-                <a href="contact.html">Family Inquiry</a>
+                <a href="/what-to-expect">What to Expect at Zion</a>
+                <a href="/inquiry-form">Family Inquiry</a>
                 <a href="registration.html">Enroll Now</a>
                 <a href="calendar.html">Calendar</a>
                 <a href="scholarship-assistance.html">Scholarship Assistance</a>
@@ -52,104 +55,123 @@
     </nav>
 </header>
 
-<!-- ── HERO ── -->
+<main id="main-content">
 <section class="page-hero">
     <div class="container">
-        <span class="eyebrow">Tuition & Funding</span>
-        <h1>A serious education should be<br><em>financially possible.</em></h1>
-        <p class="hero-subtext">
-            For most Arkansas families, EFA funding can cover the full cost of tuition and required school fees. Additional scholarship pathways may be available for qualifying students.
-        </p>
+        <span class="eyebrow">Tuition &amp; Funding</span>
+        <h1>A serious education should be financially possible.</h1>
+        <p>Understanding the cost of school should be straightforward. Below you’ll find Zion’s tuition, what each fee provides, and funding options your family may be able to use.</p>
+        <p>Zion outSchool participates in Arkansas’s Education Freedom Account program. Funding may cover some or all of a student’s tuition and eligible expenses, depending on approval and available funds.</p>
+        <p>Considering a January start? We would be glad to discuss your child, explain the costs, and help you understand your next steps.</p>
+        <a class="info-button" href="/inquiry-form">Let’s Talk About Your Child <span aria-hidden="true">→</span></a>
     </div>
 </section>
-
-<!-- ── BANNER DIVIDER ── -->
-<img
-    src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
-    alt=""
-    class="banner-divider"
-    aria-hidden="true"
->
-
-<!-- ── EFA HEADLINE ── -->
-<section class="tuition-efa-intro">
-    <div class="container-narrow">
-        <span class="section-label">Arkansas Education Freedom Account</span>
-        <h2>For qualifying Arkansas families, tuition and all required school expenses are fully covered by the EFA — with funds remaining for uniform and supplies.</h2>
-        <p>
-            Every K–12 student in Arkansas is eligible. The EFA provides <strong>$7,208 per student for the 2026–2027 school year</strong>, deposited quarterly into a ClassWallet account. ZION outSchool is a confirmed EFA-participating school. <strong>Your family's out-of-pocket cost can be zero.</strong>
-        </p>
-        <a href="https://dese.link/efa" target="_blank" class="tuition-efa-link">Apply for the EFA — Applications open through June 1 →</a>
-        <p class="tuition-fine-print">$7,208 reflects the expected 2026–2027 funding amount. Final figures are confirmed annually by the Arkansas Department of Education.</p>
-    </div>
-</section>
-
-<!-- ── FEE TABLE ── -->
-<section class="tuition-fees">
+<nav class="info-jump-links container" aria-label="Tuition page sections">
+    <a href="#tuition-fees">2026–27 costs</a><a href="#january-start">January entry</a><a href="#efa-funding">Funding</a><a href="#included-resources">Resources &amp; purchases</a><a href="#next-year">2027–28</a>
+</nav>
+<section class="info-section" id="tuition-fees" aria-labelledby="fees-heading">
     <div class="container">
-        <span class="section-label">What It Costs</span>
-
-        <div class="fees-grid">
-            <div class="fee-item">
-                <span class="fee-label">Monthly Tuition</span>
-                <span class="fee-amount">$600</span>
-                <p>Paid in advance. No deductions for absences.</p>
-            </div>
-            <div class="fee-item">
-                <span class="fee-label">Unit Fee</span>
-                <span class="fee-amount">$135</span>
-                <p>Per unit × 4 units per year. Covers all books, materials, printing, subscriptions, and portfolio supplies.</p>
-            </div>
-            <div class="fee-item">
-                <span class="fee-label">Annual Curriculum Fee</span>
-                <span class="fee-amount">$200</span>
-                <p>Charged once per year. Includes mathematics curriculum selection and placement testing.</p>
-                <p class="fee-note">New students receive an initial teacher assessment at no additional cost. If a student advances into a new mathematics curriculum level during the year, an additional curriculum fee will apply to cover new materials.</p>
-            </div>
+        <h2 id="fees-heading">2026–27 tuition and fees</h2>
+        <div class="info-fee-row">
+            <div><h3>Monthly tuition</h3><p class="info-price">$600</p></div>
+            <p>Tuition supports your child’s instruction and daily learning at Zion. It is paid in advance, and absences do not reduce tuition.</p>
         </div>
-
-        <!-- Annual Total -->
-        <div class="annual-total">
-            <div class="annual-total-inner">
-                <p class="annual-total-label">Annual Total</p>
-                <p class="annual-total-amount">$6,740</p>
-                <p class="annual-total-desc">Tuition + Unit Fees + Annual Curriculum Fee</p>
-                <p class="annual-total-efa">Fully covered by EFA for qualifying families</p>
-                <p class="annual-total-remaining"><strong>$468 remaining</strong> for uniform and supplies after all fees</p>
-            </div>
+        <div class="info-fee-row">
+            <div><h3>Enrollment &amp; Curriculum Fee</h3><p class="info-price">$200 <span>per student</span></p></div>
+            <div><p>This fee confirms your child’s place for the 2026–27 school year and supports enrollment planning and initial core curriculum purchases. It applies to students joining midyear as well as those enrolling at the beginning of the year.</p>
+            <p>The fee is separate from tuition and is not credited toward tuition. It becomes nonrefundable when Zion confirms your child’s place. If Zion cannot provide the confirmed place, the fee will be refunded.</p></div>
         </div>
+        <div class="info-fee-row">
+            <div><h3>Unit fee</h3><p class="info-price">$135 <span>per unit</span></p></div>
+            <p>Unit fees provide the literature OWLs, materials, and subscriptions specific to each unit. Students are charged only for units in which they participate.</p>
+        </div>
+        <div class="info-total">
+            <table class="info-table">
+                <caption>Full-school-year total — 2026–27</caption>
+                <tbody>
+                    <tr><th scope="row">Ten monthly tuition payments</th><td>$6,000</td></tr>
+                    <tr><th scope="row">Enrollment &amp; Curriculum Fee</th><td>$200</td></tr>
+                    <tr><th scope="row">Four unit fees</th><td>$540</td></tr>
+                    <tr class="info-table-total"><th scope="row">Full-school-year total</th><td>$6,740</td></tr>
+                </tbody>
+            </table>
+            <p>Required family purchases are separate and outlined below. This is the full-year price, not the cost of joining in January.</p>
+        </div>
+        <p>These tuition and fee amounts apply to the 2026–27 school year. Prices for subsequent school years will be announced before enrollment or re-enrollment opens.</p>
+        <div class="info-links"><a href="/payment-calendar">View the Payment Calendar →</a><a href="/documents#tuition-attendance-policy">Read the Tuition &amp; Attendance Policy →</a></div>
     </div>
 </section>
-
-<!-- ── HOW EFA WORKS ── -->
-<section class="tuition-how-efa">
-    <div class="container-narrow">
-        <span class="section-label">How the EFA Works</span>
-        <p>
-            Arkansas's Education Freedom Account deposits <strong>$1,802 per quarter</strong> into your ClassWallet account for the 2026–2027 school year. You direct those funds to ZION outSchool for tuition, unit fees, and the annual curriculum fee. Remaining funds — approximately <strong>$468</strong> — can be applied toward your student's required uniform and other approved educational expenses.
-        </p>
-        <p>
-            <strong>Applications for the 2026–2027 school year are open through June 1.</strong>
-        </p>
-        <a href="https://dese.ade.arkansas.gov/Offices/office-of-school-choice-and-parent-empowerment/education-freedom-accounts" target="_blank" class="different-link">Apply at the Arkansas Department of Education →</a>
-
-        <div class="efa-warning">
-            <p><strong>Already have an EFA? You must renew every year.</strong> Funding is not automatically continued. Returning families complete their renewal survey in ClassWallet before June 1. Missing this deadline means losing funding for the entire school year.</p>
+<section class="info-section info-section--cream" id="fee-coverage" aria-labelledby="coverage-heading">
+    <div class="container">
+        <h2 id="coverage-heading">What the curriculum and unit fees provide</h2>
+        <div class="info-grid">
+            <div><h3>Core curriculum provided through the Enrollment &amp; Curriculum Fee</h3><ul><li>One initial English language arts curriculum</li><li>One initial mathematics curriculum</li><li>Science and history curriculum resources for the full school year</li></ul></div>
+            <div><h3>Unit fees provide</h3><ul><li>Literature OWLs specific to that unit</li><li>Materials specific to that unit</li><li>Subscriptions specific to that unit</li></ul></div>
         </div>
-
-        <p class="tuition-fine-print">The Annual Curriculum Fee is invoiced at the start of each school year. Unit fees are invoiced at the start of each unit. Student supplies list provided prior to the start of term.</p>
+        <p class="info-note">Students progress through ELA and mathematics according to their readiness. If your child completes the initially provided curriculum, your family is responsible for purchasing the next curriculum. Teachers will discuss the next step and its cost with you before a purchase is needed.</p>
     </div>
 </section>
+<section class="info-section" id="january-start" aria-labelledby="january-heading">
+    <div class="container info-narrow">
+        <h2 id="january-heading">Starting in January?</h2>
+        <p>You do not need to wait until a new school year to explore Zion.</p>
+        <p>For students joining in January, charges include tuition beginning with enrollment, the 2026–27 Enrollment &amp; Curriculum Fee, and fees for the units in which the student participates.</p>
+        <p>Before your family finalizes enrollment, we will confirm your child’s placement, provide an itemized explanation of charges, and discuss payment arrangements and any available education funding.</p>
+        <a class="info-button" href="/inquiry-form">Ask About a January Start <span aria-hidden="true">→</span></a>
+    </div>
+</section>
+<section class="info-section info-section--cream" id="efa-funding" aria-labelledby="efa-heading">
+    <div class="container info-narrow">
+        <h2 id="efa-heading">Using Arkansas EFA funding</h2>
+        <p>Zion is an EFA-participating school. Your family’s available funding depends on program approval, funds awarded, and any funds already used.</p>
+        <h3>Already approved for an EFA?</h3>
+        <p>If your child currently receives EFA funding, contact us about a January transfer. We will help you identify the steps to confirm your available balance and arrange payment to Zion.</p>
+        <h3>Seeking funding for the current school year?</h3>
+        <p>We are confirming whether new applications and funding are available for students entering in January 2027. Please contact us to discuss your circumstances. We cannot guarantee a midyear award.</p>
+        <h3>Planning for 2027–28?</h3>
+        <p class="info-note">The anticipated EFA application window is <strong>March 1–June 1, 2027</strong>. These dates are estimates and have not yet been officially confirmed. Application and renewal information will be updated when available.</p>
+        <p>School enrollment and EFA approval are separate processes. Confirm your funding and payment arrangements with Zion before finalizing enrollment.</p>
+        <a href="https://dese.ade.arkansas.gov/Offices/office-of-school-choice-and-parent-empowerment/education-freedom-accounts" target="_blank" rel="noopener">Official EFA Information →</a>
+    </div>
+</section>
+<section class="info-section" id="zion-scholarships" aria-labelledby="scholarship-heading">
+    <div class="container info-narrow">
+        <h2 id="scholarship-heading">Zion scholarship assistance</h2>
+        <p>Families with a remaining tuition gap may apply for Zion’s need-based scholarship assistance.</p>
+        <p>Awards depend on demonstrated financial need and available scholarship resources. Applying does not guarantee an award or full coverage of a funding gap.</p>
+        <a href="/scholarship-assistance">Ask About Scholarship Assistance →</a>
+    </div>
+</section>
+<section class="info-section info-section--cream" id="included-resources" aria-labelledby="resources-heading">
+    <div class="container">
+        <h2 id="resources-heading">Included resources &amp; family purchases</h2>
+        <div class="info-grid info-comparison">
+            <div><h3>Provided through Zion and applicable fees</h3><ul><li>Initial ELA and mathematics curriculum</li><li>Science and history curriculum resources</li><li>Literature OWLs, materials, and subscriptions for participating units</li><li>A wide-margin scripture set</li></ul></div>
+            <div><h3>Purchased separately by families</h3><ul><li>A reliable laptop</li><li>Approved school uniforms</li><li>Personal supplies listed by the school</li><li>Additional ELA or mathematics curriculum after the initial curriculum is completed</li></ul></div>
+        </div>
+        <p>We will provide preparation and purchasing guidance before your child begins. If you plan to use EFA funds for a purchase, confirm current program requirements, approval, and available funds before buying.</p>
+        <a href="/what-to-expect#preparing-for-your-first-day">Preparing for Your First Day →</a>
+    </div>
+</section>
+<section class="info-section" id="next-year" aria-labelledby="next-year-heading">
+    <div class="container info-narrow">
+        <h2 id="next-year-heading">Looking ahead to 2027–28</h2>
+        <p>Returning families will be invited to re-enroll before the current school year ends.</p>
+        <p>An Annual Enrollment &amp; Curriculum Fee will reserve your child’s place for 2027–28 and support advance planning and core curriculum purchases. It is separate from tuition and is not credited toward tuition.</p>
+        <p>The fee amount, payment deadline, coverage, and refund terms will be provided before re-enrollment opens. Any transition arrangements for current families will be communicated directly.</p>
+    </div>
+</section>
+<section class="info-section info-invitation" aria-labelledby="invitation-heading">
+    <div class="container info-narrow">
+        <h2 id="invitation-heading">Let’s Begin With Your Child.</h2>
+        <p>Tell us what your child needs and what you are looking for in a school. We will discuss whether Zion is a good fit, explain placement and costs, and guide you through the next steps.</p>
+        <div class="info-links"><a class="info-button" href="/inquiry-form">Let’s Talk About Your Child <span aria-hidden="true">→</span></a><a href="/what-to-expect">What to Expect at Zion →</a></div>
+    </div>
+</section>
+</main>
 
-<!-- ── BANNER DIVIDER ── -->
-<img
-    src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
-    alt=""
-    class="banner-divider"
-    aria-hidden="true"
->
-
-<!-- ── PIAK ── -->
+<!-- Retained for a future confirmed participation update; inert and not rendered. -->
+<template id="tuition-piak-paused">
 <section class="tuition-piak">
     <div class="container-narrow">
         <span class="section-label">Additional Scholarship Pathway</span>
@@ -168,126 +190,7 @@
         </div>
     </div>
 </section>
-<!-- ── QUOTE BREAK ── -->
-<div class="quote-break">
-    <img
-        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/banner-thin1.webp"
-        alt=""
-        aria-hidden="true"
-    >
-    <div class="quote-break-text">
-        <blockquote>
-            "Your child was born to seek truth. We exist to make sure they get a chance."
-        </blockquote>
-        <cite>— Sandra J. Isenberger, Founder</cite>
-    </div>
-</div>
-<!-- ── REQUIRED LEARNING TOOLS ── -->
-<section class="tuition-tools">
-    <div class="container">
-        <span class="section-label">Required Learning Tools</span>
-        <p class="tools-intro">These items help students participate fully in daily research, writing, hands-on work, and classroom life. All are the family's responsibility to purchase and are EFA-eligible through ClassWallet.</p>
-
-        <!-- Laptop -->
-        <div class="tool-item">
-            <div class="tool-header">
-                <span class="tool-number">01</span>
-                <h3>Reliable Laptop</h3>
-                <span class="tool-badge">EFA-Eligible</span>
-            </div>
-            <p>Students use a laptop daily for research, writing, Google Classroom, and project work. Any functional laptop is acceptable — Chromebooks included. It should arrive fully charged each day.</p>
-
-            <div class="laptop-recommendations">
-                <div class="laptop-recommendations-intro">
-                    <h4>Recommended Options</h4>
-                    <p>These are practical, EFA-eligible options for families who want a straightforward purchase path.</p>
-                </div>
-
-                <div class="laptop-card-grid">
-                    <article class="laptop-card">
-                        <a href="https://www.amazon.com/ASUS-Vivobook-Display-Processor-E1504FA-AS52/dp/B0BXRD41GM/" target="_blank" rel="noopener" aria-label="Order the ASUS Vivobook on Amazon">
-                            <img
-                                src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Asus%20Vivobook.jpg"
-                                alt="ASUS Vivobook laptop"
-                            >
-                        </a>
-                        <div class="laptop-card-body">
-                            <span class="laptop-card-label">Windows Laptop</span>
-                            <h5>ASUS Vivobook</h5>
-                            <p>A full Windows laptop option for students who may need broader software flexibility.</p>
-                            <a class="laptop-card-link" href="https://www.amazon.com/ASUS-Vivobook-Display-Processor-E1504FA-AS52/dp/B0BXRD41GM/" target="_blank" rel="noopener">Order on Amazon →</a>
-                        </div>
-                    </article>
-
-                    <article class="laptop-card">
-                        <a href="https://www.amazon.com/acer-Chromebook-Plus-Laptop-Google/dp/B0DVCDZBWV/" target="_blank" rel="noopener" aria-label="Order the Acer Chromebook Plus on Amazon">
-                            <img
-                                src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Acer%20Chromebook.jpg"
-                                alt="Acer Chromebook Plus laptop"
-                            >
-                        </a>
-                        <div class="laptop-card-body">
-                            <span class="laptop-card-label">Chromebook</span>
-                            <h5>Acer Chromebook Plus</h5>
-                            <p>A simple Chromebook option for Google Classroom, writing, research, and daily school workflows.</p>
-                            <a class="laptop-card-link" href="https://www.amazon.com/acer-Chromebook-Plus-Laptop-Google/dp/B0DVCDZBWV/" target="_blank" rel="noopener">Order on Amazon →</a>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scrubs -->
-        <div class="tool-item tool-item--scrubs">
-            <div class="tool-header">
-                <span class="tool-number">02</span>
-                <h3>Required Uniform — Scrubs</h3>
-                <span class="tool-badge">EFA-Eligible</span>
-            </div>
-            <p>We chose scrubs deliberately. They are comfortable, durable, professional, and practical for students who think hard, move freely, and work with their hands. Students may choose any solid color.</p>
-
-            <div class="scrubs-feature">
-                <img
-                    src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Students%20in%20scrubs%20.png"
-                    alt="ZION outSchool students in their scrub uniforms"
-                    class="scrubs-img"
-                >
-                <div class="scrubs-links">
-                    <p>Please purchase <strong>RMF Scrubs</strong> from the links below. They will be specially monogrammed for Zion outSchool.</p><p>We have vetted them for durability and fit:</p>
-                    <ul class="scrubs-list">
-                        <li><a href="https://rmfscrubs.com/products/poplin-childrens-scrub-set-3-pockets-half-sleeves-2-pocket-top-1-pocket-pant?variant=50594689843482" target="_blank">Poplin Children's Scrub Set →</a></li>
-                        <li><a href="https://rmfscrubs.com/products/childrens-jogger-scrub-set-3-pocket-half-sleeve-top-2-pocket-with-bottom-1-pocket?variant=50594659402010" target="_blank">Children's Jogger Scrub Set →</a></li>
-                    </ul>
-                    <p><a href="scrub-ordering.html" class="scrubs-guide-link">View scrub ordering details, embroidery instructions, and logo download →</a></p>
-                    <p>Submit through ClassWallet for reimbursement.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scripture Set -->
-        <div class="tool-item tool-item--scripture">
-            <div class="tool-header">
-                <span class="tool-number">03</span>
-                <h3>Wide-Margin Quad Scripture Set</h3>
-                <span class="tool-badge tool-badge--included">Included</span>
-            </div>
-            <p>Every enrolled student receives a Wide-Margin Quad scripture set through our partnership with <a href="https://lineuponlineco.com" target="_blank"><strong>Line Upon Line Co.</strong></a></p>
-            <p>Scripture annotation is woven into the daily life of this school. Students write in the margins, trace ideas across texts, ask questions, and build a personal record of learning directly inside the scriptures themselves. The wide margins are not decorative. They are working space for a student actively engaging with truth.</p>
-        </div>
-
-    </div>
-</section>
-
-<!-- ── HANDOFF ── -->
-<section class="handoff">
-    <div class="container-narrow">
-        <p>Questions about funding? Ready to take the next step?</p>
-        <a href="contact.html" class="handoff-link">
-            Begin the conversation
-            <span class="handoff-arrow">→</span>
-        </a>
-    </div>
-</section>
+</template>
 
 <!-- ── FOOTER ── -->
 <footer>
