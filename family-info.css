@@ -1,0 +1,88 @@
+/* Tuition and the practical family overview share the established site palette. */
+.family-info-page :focus-visible { outline: 3px solid var(--navy); outline-offset: 4px; }
+.family-info-page header :focus-visible,
+.family-info-page footer :focus-visible,
+.family-info-page .info-invitation :focus-visible { outline-color: var(--gold-light); }
+.family-info-page .page-hero { min-height: 0; background: var(--cream); padding: 56px 0 44px; }
+.family-info-page .page-hero .container { width: 100%; max-width: 1100px; }
+.family-info-page .page-hero h1 { color: var(--navy); font-size: clamp(38px, 4.5vw, 56px); font-weight: 600; max-width: 830px; }
+.family-info-page .page-hero .eyebrow { color: var(--navy); }
+.family-info-page .page-hero p { max-width: 780px; }
+.family-info-page main p,
+.family-info-page main li { font: 400 15px/1.85 var(--sans); color: var(--text-mid); }
+.family-info-page main p + p { margin-top: 16px; }
+.family-info-page main a { font-family: var(--sans); color: var(--navy); text-decoration: underline; text-underline-offset: 4px; }
+.family-info-page main a:hover { text-decoration-thickness: 2px; }
+.family-info-page main h2 { color: var(--navy); font: 600 clamp(30px, 3vw, 40px)/1.15 var(--serif); margin-bottom: 24px; }
+.family-info-page main h3 { color: var(--navy); font: 600 26px/1.25 var(--serif); margin-bottom: 12px; }
+.family-info-page main p + h3 { margin-top: 28px; }
+.family-info-page main ul,
+.family-info-page main ol { padding-left: 22px; margin: 12px 0 20px; }
+.family-info-page main li + li { margin-top: 6px; }
+.family-info-page main .info-button { display: inline-flex; align-items: center; justify-content: center; gap: 18px; background: var(--gold); border: 1px solid var(--gold); border-radius: 2px; color: var(--navy-dark); font: 600 14px/1.6 var(--sans); text-align: center; text-decoration: none; min-height: 48px; padding: 12px 20px; margin-top: 24px; }
+.family-info-page main .info-button:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.family-info-page .info-jump-links { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 0 24px; padding-block: 16px; border-bottom: 1px solid var(--border); }
+.family-info-page main .info-jump-links a { display: inline-flex; color: var(--navy); padding: 10px 0; font: 500 12px/1.6 var(--sans); letter-spacing: 0; text-transform: none; }
+.family-info-page .info-section { padding: 48px 0; }
+.family-info-page .info-section--cream { background: var(--cream); }
+.family-info-page main [id] { scroll-margin-top: 88px; }
+.family-info-page .info-narrow { max-width: 844px; }
+.family-info-page .info-fee-row { display: grid; grid-template-columns: .8fr 1.2fr; gap: 24px 48px; border-top: 1px solid var(--border); padding: 26px 0; }
+.family-info-page .info-price { color: var(--navy); font: 600 38px/1.25 var(--serif); }
+.family-info-page .info-price span { color: var(--text-mid); font: 400 13px/1.6 var(--sans); }
+.family-info-page .info-total { background: var(--cream); padding: 24px 28px; margin: 8px 0 24px; }
+.family-info-page .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font: 400 15px/1.7 var(--sans); }
+.family-info-page .info-table caption { color: var(--navy); font: 600 27px/1.25 var(--serif); text-align: left; margin-bottom: 18px; }
+.family-info-page .info-table th,
+.family-info-page .info-table td { padding: 12px 0; border-bottom: 1px solid #d8d4ca; }
+.family-info-page .info-table th { color: var(--text); font-weight: 400; text-align: left; padding-right: 18px; }
+.family-info-page .info-table td { color: var(--navy); text-align: right; white-space: nowrap; }
+.family-info-page .info-table .info-table-total th,
+.family-info-page .info-table .info-table-total td { color: var(--navy); font-weight: 600; }
+.family-info-page .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 48px; margin-bottom: 24px; }
+.family-info-page .info-comparison > div { border-top: 2px solid var(--gold); padding-top: 20px; }
+.family-info-page .info-note { border-left: 3px solid var(--gold); background: var(--cream-dark); padding: 18px 22px; margin-block: 22px; }
+.family-info-page .info-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 22px; font: 600 14px/1.7 var(--sans); }
+.family-info-page .info-links .info-button { margin-top: 0; }
+.family-info-page .info-invitation { background: var(--navy); }
+.family-info-page .info-invitation h2,
+.family-info-page .info-invitation p { color: var(--cream); }
+.family-info-page .info-invitation a:not(.info-button) { color: var(--gold-light); }
+.family-info-page .tool-item { scroll-margin-top: 88px; padding-block: 32px; }
+.family-info-page .laptop-card h4 { color: var(--navy); font: 600 25px/1.25 var(--serif); margin-bottom: 10px; }
+.family-info-page .laptop-card img { object-fit: contain; background: white; }
+.family-info-page .scrubs-feature img { max-width: 100%; }
+.family-info-page .info-sequence li { padding-left: 6px; }
+.family-info-page footer .footer-links a,
+.family-info-page footer .footer-brand p { color: #c3cbd4; }
+/* Shared fragment for the separate future-year notice; no schedule rules change. */
+.payment-page .reenrollment-notice { background: var(--cream); padding: 40px 0; }
+.payment-page .reenrollment-notice h2 { color: var(--navy); font: 600 34px/1.2 var(--serif); margin-bottom: 20px; }
+.payment-page .reenrollment-notice p { color: var(--text); font: 400 15px/1.85 var(--sans); margin-top: 16px; }
+.payment-page .reenrollment-notice .advance-notice { border-left: 3px solid var(--gold); padding: 14px 18px; background: var(--cream-dark); }
+@media (max-width: 960px) {
+    .family-info-page header { justify-content: space-between; padding-inline: 20px; }
+}
+@media (max-width: 760px) {
+    .family-info-page .container { padding-inline: 20px; }
+    .family-info-page .page-hero { padding: 34px 0; }
+    .family-info-page .page-hero h1 { font-size: 39px; }
+    .family-info-page .info-section { padding: 34px 0; }
+    .family-info-page .info-grid,
+    .family-info-page .info-fee-row { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .family-info-page .info-total { padding: 20px; }
+    .family-info-page .info-jump-links { margin-inline: 20px; padding-inline: 0; gap: 0 18px; }
+    .family-info-page .info-table { font-size: 14px; }
+    .family-info-page .info-note { padding: 16px; }
+    .family-info-page .laptop-card-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+#tuition-attendance-policy { scroll-margin-top: 88px; }
+.payment-page .payment-schedule-table caption { color: var(--navy); font: 600 18px/1.5 var(--sans); text-align: left; padding: 16px; }
+.editorial-page.family-info-page .laptop-card-label { color: var(--navy); }
+.family-info-page .footer-nondiscrimination,
+.family-info-page .footer-nondiscrimination p,
+.family-info-page .footer-nondiscrimination h4 { color: #b7c1cd; }
+@media (max-width: 640px) {
+    .editorial-page.payment-page .payment-schedule-table caption { display: block; width: 100%; }
+}
