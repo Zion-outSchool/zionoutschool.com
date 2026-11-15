@@ -106,3 +106,15 @@ for (const config of [{ noSheet: true }, { failWrite: true }, { failMail: true }
     assert.doesNotMatch(response.message, /private|sheet failure|mail failure/);
 }
 console.log('Passed: frontend-to-backend contract, minimal and 3-child inquiries, 16-column storage, untouched history, captured email content, optional fields, legacy compatibility, validation before writes, literal sheet text, and service errors. All Google services mocked; no real emails or records.');
+for (const desiredStart of ['January 2027', 'Another start during 2026–27', '2027–28 school year', 'Just exploring']) {
+    h = harness();
+    const p = createInquiryPayload({ ...fields, desiredStart }, [child]);
+    assert.equal(h.submit(p).result, 'success');
+    assert.equal(h.history[1][15], `${p.message}\n\nDesired start: ${desiredStart}`);
+    assert.equal(h.emails[0].body.split(p.message).length - 1, 1);
+    assert.equal(h.emails[0].body.split(`Desired start: ${desiredStart}`).length - 1, 1);
+}
+h = harness();
+assert.equal(h.submit({ ...minimal, desiredStart: 'Unlisted choice' }).result, 'error');
+assert.equal(h.history.length, 1);
+console.log('Passed: desired start stored in existing notes column and captured notification once; blank allowed and unlisted values rejected.');

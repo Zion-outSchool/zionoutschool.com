@@ -1,4 +1,4 @@
-import { createInquiryPayload, validateInquiry, MAX_STUDENTS } from './inquiry-data.mjs';
+import { createInquiryPayload, validateInquiry, MAX_STUDENTS } from './inquiry-data.mjs?v=20261115-desired-start';
 
 // Existing production destination. Local browser checks replace fetch; never submit test records here.
 const INQUIRY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4UgELLE6qIz3ggT14LKnHjxrgb-PCdqvV5U2Sjgl2nZLkiE18Bl4QAJ9ClG2uNQii/exec';

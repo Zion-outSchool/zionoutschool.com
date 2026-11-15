@@ -44,30 +44,30 @@
 
     <div class="form-row">
         <div class="form-group">
-            <label class="form-label">Student's First Name <span class="form-required">*</span></label>
+            <label class="form-label" for="studentFirstName">Student's First Name <span class="form-required">*</span></label>
             <input type="text" id="studentFirstName" class="form-input" placeholder="First name" required>
             <span class="form-error" id="studentFirstName-error">Required.</span>
         </div>
         <div class="form-group">
-            <label class="form-label">Student's Last Name <span class="form-required">*</span></label>
+            <label class="form-label" for="studentLastName">Student's Last Name <span class="form-required">*</span></label>
             <input type="text" id="studentLastName" class="form-input" placeholder="Last name" required>
             <span class="form-error" id="studentLastName-error">Required.</span>
         </div>
     </div>
     <div class="form-group">
-        <label class="form-label">Student's Preferred Name <span class="form-required">*</span></label>
+        <label class="form-label" for="studentPreferred">Student's Preferred Name <span class="form-required">*</span></label>
         <input type="text" id="studentPreferred" class="form-input" placeholder="Preferred" required>
         <span class="form-error" id="studentPreferred-error">Required.</span>
     </div>
 
     <div class="form-row">
         <div class="form-group">
-            <label class="form-label">Date of Birth <span class="form-required">*</span></label>
+            <label class="form-label" for="studentDOB">Date of Birth <span class="form-required">*</span></label>
             <input type="date" id="studentDOB" class="form-input" required>
             <span class="form-error" id="studentDOB-error">Required.</span>
         </div>
         <div class="form-group">
-            <label class="form-label">Current Grade Level <span class="form-required">*</span></label>
+            <label class="form-label" for="studentGrade">Current Grade Level <span class="form-required">*</span></label>
             <select id="studentGrade" class="form-input form-select" required>
                 <option value="" disabled selected>Select grade</option>
                 <option>Kindergarten</option><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option>
@@ -80,13 +80,13 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label">What school is your child transferring from?</label>
+        <label class="form-label" for="previousSchool">What school is your child transferring from?</label>
         <p class="form-hint">Please include their phone number if possible.</p>
         <input type="text" id="previousSchool" class="form-input" placeholder="School name and phone number">
     </div>
 
     <div class="form-group">
-        <label class="form-label">Does your child have an IEP? <span class="form-required">*</span></label>
+        <label class="form-label" for="studentIEP">Does your child have an IEP? <span class="form-required">*</span></label>
         <select id="studentIEP" class="form-input form-select" required>
             <option value="" disabled selected>Select one</option>
             <option value="No">No</option>
@@ -101,12 +101,12 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Parent / Guardian 1 — Full Name <span class="form-required">*</span></label>
+                <label class="form-label" for="parent1Name">Parent / Guardian 1 — Full Name <span class="form-required">*</span></label>
                 <input type="text" id="parent1Name" class="form-input" placeholder="First and last name" required>
                 <span class="form-error" id="parent1Name-error">Required.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Parent 1 — Phone <span class="form-required">*</span></label>
+                <label class="form-label" for="parent1Phone">Parent 1 — Phone <span class="form-required">*</span></label>
                 <input type="tel" id="parent1Phone" class="form-input" placeholder="(555) 000-0000" required>
                 <span class="form-error" id="parent1Phone-error">Required.</span>
             </div>
@@ -114,12 +114,12 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Parent 1 — Email <span class="form-required">*</span></label>
+                <label class="form-label" for="parent1Email">Parent 1 — Email <span class="form-required">*</span></label>
                 <input type="email" id="parent1Email" class="form-input" placeholder="you@example.com" required>
                 <span class="form-error" id="parent1Email-error">Required — please enter a valid email.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Parent 1 — Address <span class="form-required">*</span></label>
+                <label class="form-label" for="parent1Address">Parent 1 — Address <span class="form-required">*</span></label>
                 <input type="text" id="parent1Address" class="form-input" placeholder="Street, City, State, ZIP" required>
                 <span class="form-error" id="parent1Address-error">Required.</span>
             </div>
@@ -127,22 +127,22 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Parent / Guardian 2 — Full Name <span class="form-optional">(optional)</span></label>
+                <label class="form-label" for="parent2Name">Parent / Guardian 2 — Full Name <span class="form-optional">(optional)</span></label>
                 <input type="text" id="parent2Name" class="form-input" placeholder="First and last name">
             </div>
             <div class="form-group">
-                <label class="form-label">Parent 2 — Phone <span class="form-optional">(optional)</span></label>
+                <label class="form-label" for="parent2Phone">Parent 2 — Phone <span class="form-optional">(optional)</span></label>
                 <input type="tel" id="parent2Phone" class="form-input" placeholder="(555) 000-0000">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Parent 2 — Email <span class="form-optional">(optional)</span></label>
+                <label class="form-label" for="parent2Email">Parent 2 — Email <span class="form-optional">(optional)</span></label>
                 <input type="email" id="parent2Email" class="form-input" placeholder="you@example.com">
             </div>
             <div class="form-group">
-                <label class="form-label">Parent 2 — Address <span class="form-optional">(optional)</span></label>
+                <label class="form-label" for="parent2Address">Parent 2 — Address <span class="form-optional">(optional)</span></label>
                 <input type="text" id="parent2Address" class="form-input" placeholder="Or type SAME if same as Parent 1">
             </div>
         </div>
@@ -189,24 +189,24 @@
         <div class="student-block-header"><span class="student-block-label">Emergency Contact 1</span></div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Full Name <span class="form-required">*</span></label>
+                <label class="form-label" for="ec1Name">Full Name <span class="form-required">*</span></label>
                 <input type="text" id="ec1Name" class="form-input" required>
                 <span class="form-error" id="ec1Name-error">Required.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Relationship to Student <span class="form-required">*</span></label>
+                <label class="form-label" for="ec1Relationship">Relationship to Student <span class="form-required">*</span></label>
                 <input type="text" id="ec1Relationship" class="form-input" placeholder="Grandmother, uncle, etc." required>
                 <span class="form-error" id="ec1Relationship-error">Required.</span>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Phone Number <span class="form-required">*</span></label>
+                <label class="form-label" for="ec1Phone">Phone Number <span class="form-required">*</span></label>
                 <input type="tel" id="ec1Phone" class="form-input" placeholder="Reliably reachable during school hours" required>
                 <span class="form-error" id="ec1Phone-error">Required.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">May this person make routine medical decisions if you cannot be reached? <span class="form-required">*</span></label>
+                <label class="form-label" for="ec1Medical">May this person make routine medical decisions if you cannot be reached? <span class="form-required">*</span></label>
                 <select id="ec1Medical" class="form-input form-select" required>
                     <option value="" disabled selected>Select one</option>
                     <option value="Yes">Yes</option>
@@ -221,24 +221,24 @@
         <div class="student-block-header"><span class="student-block-label">Emergency Contact 2</span></div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Full Name <span class="form-required">*</span></label>
+                <label class="form-label" for="ec2Name">Full Name <span class="form-required">*</span></label>
                 <input type="text" id="ec2Name" class="form-input" required>
                 <span class="form-error" id="ec2Name-error">Required.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Relationship to Student <span class="form-required">*</span></label>
+                <label class="form-label" for="ec2Relationship">Relationship to Student <span class="form-required">*</span></label>
                 <input type="text" id="ec2Relationship" class="form-input" required>
                 <span class="form-error" id="ec2Relationship-error">Required.</span>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Phone Number <span class="form-required">*</span></label>
+                <label class="form-label" for="ec2Phone">Phone Number <span class="form-required">*</span></label>
                 <input type="tel" id="ec2Phone" class="form-input" required>
                 <span class="form-error" id="ec2Phone-error">Required.</span>
             </div>
             <div class="form-group">
-                <label class="form-label">May this person make routine medical decisions? <span class="form-required">*</span></label>
+                <label class="form-label" for="ec2Medical">May this person make routine medical decisions? <span class="form-required">*</span></label>
                 <select id="ec2Medical" class="form-input form-select" required>
                     <option value="" disabled selected>Select one</option>
                     <option value="Yes">Yes</option>
@@ -253,21 +253,21 @@
         <div class="student-block-header"><span class="student-block-label">Emergency Contact 3 <span class="form-optional">(optional)</span></span></div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Full Name</label>
+                <label class="form-label" for="ec3Name">Full Name</label>
                 <input type="text" id="ec3Name" class="form-input">
             </div>
             <div class="form-group">
-                <label class="form-label">Relationship to Student</label>
+                <label class="form-label" for="ec3Relationship">Relationship to Student</label>
                 <input type="text" id="ec3Relationship" class="form-input">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label class="form-label">Phone Number</label>
+                <label class="form-label" for="ec3Phone">Phone Number</label>
                 <input type="tel" id="ec3Phone" class="form-input">
             </div>
             <div class="form-group">
-                <label class="form-label">May this person make routine medical decisions?</label>
+                <label class="form-label" for="ec3Medical">May this person make routine medical decisions?</label>
                 <select id="ec3Medical" class="form-input form-select">
                     <option value="">N/A</option>
                     <option value="Yes">Yes</option>
@@ -293,35 +293,35 @@
     <div class="student-block">
         <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 1</span></div>
         <div class="form-row">
-            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup1Name" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup1Phone" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup1Name">Name</label><input type="text" id="pickup1Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup1Phone">Phone</label><input type="tel" id="pickup1Phone" class="form-input"></div>
         </div>
-        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup1Rel" class="form-input"></div>
+        <div class="form-group"><label class="form-label" for="pickup1Rel">Relationship to Student</label><input type="text" id="pickup1Rel" class="form-input"></div>
     </div>
 
     <div class="student-block" style="margin-top:1rem;">
         <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 2</span></div>
         <div class="form-row">
-            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup2Name" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup2Phone" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup2Name">Name</label><input type="text" id="pickup2Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup2Phone">Phone</label><input type="tel" id="pickup2Phone" class="form-input"></div>
         </div>
-        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup2Rel" class="form-input"></div>
+        <div class="form-group"><label class="form-label" for="pickup2Rel">Relationship to Student</label><input type="text" id="pickup2Rel" class="form-input"></div>
     </div>
 
     <div class="student-block" style="margin-top:1rem;">
         <div class="student-block-header"><span class="student-block-label">Authorized Pick-Up Person 3 <span class="form-optional">(optional)</span></span></div>
         <div class="form-row">
-            <div class="form-group"><label class="form-label">Name</label><input type="text" id="pickup3Name" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="pickup3Phone" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup3Name">Name</label><input type="text" id="pickup3Name" class="form-input"></div>
+            <div class="form-group"><label class="form-label" for="pickup3Phone">Phone</label><input type="tel" id="pickup3Phone" class="form-input"></div>
         </div>
-        <div class="form-group"><label class="form-label">Relationship to Student</label><input type="text" id="pickup3Rel" class="form-input"></div>
+        <div class="form-group"><label class="form-label" for="pickup3Rel">Relationship to Student</label><input type="text" id="pickup3Rel" class="form-input"></div>
     </div>
 
     <div class="reg-policy-block" style="margin-top:2rem;">
         <h4>Section 3C — Custody & Legal Restrictions</h4>
         <p>Both legal parents or guardians are assumed to have pickup rights unless a court order states otherwise. If a custody agreement restricts a legal parent or guardian from picking up your student, we need documentation on file.</p>
         <div class="form-group" style="margin-top:1.25rem;">
-            <label class="form-label">Is there a court order or custody agreement that restricts a legal parent or guardian from picking up your student? <span class="form-required">*</span></label>
+            <label class="form-label" for="custodyOrder">Is there a court order or custody agreement that restricts a legal parent or guardian from picking up your student? <span class="form-required">*</span></label>
             <select id="custodyOrder" class="form-input form-select" required>
                 <option value="" disabled selected>Select one</option>
                 <option value="No">No</option>
@@ -335,7 +335,7 @@
             </div>
         </div>
         <div class="form-group" style="margin-top:1.25rem;">
-            <label class="form-label">Type your full name to acknowledge that without court documentation on file, ZION outSchool will release your student to either legal parent or guardian. <span class="form-required">*</span></label>
+            <label class="form-label" for="custodyAck">Type your full name to acknowledge that without court documentation on file, ZION outSchool will release your student to either legal parent or guardian. <span class="form-required">*</span></label>
             <input type="text" id="custodyAck" class="form-input" placeholder="Your full legal name" required>
             <span class="form-error" id="custodyAck-error">Required.</span>
         </div>
@@ -355,7 +355,7 @@
     <p class="form-hint" style="margin-bottom:1rem;">Arkansas law requires schools to maintain immunization records for all enrolled students (Ark. Code Ann. § 6-18-702).</p>
 
     <div class="form-group">
-        <label class="form-label">Immunization status <span class="form-required">*</span></label>
+        <label class="form-label" for="immunizationStatus">Immunization status <span class="form-required">*</span></label>
         <select id="immunizationStatus" class="form-input form-select" required>
             <option value="" disabled selected>Select one</option>
             <option value="No — student is fully immunized">No exemption — student is fully immunized</option>
@@ -373,7 +373,7 @@
     <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 5 — Health Information</h3>
 
     <div class="form-group">
-        <label class="form-label">Does your child have any life-threatening allergies or medical conditions? <span class="form-required">*</span></label>
+        <label class="form-label" for="lifeThreateningAllergy">Does your child have any life-threatening allergies or medical conditions? <span class="form-required">*</span></label>
         <select id="lifeThreateningAllergy" class="form-input form-select" required onchange="toggleField('allergyDetails-group', this.value === 'Yes')">
             <option value="" disabled selected>Select one</option>
             <option value="No">No</option>
@@ -383,12 +383,12 @@
     </div>
 
     <div class="form-group" id="allergyDetails-group" style="display:none;">
-        <label class="form-label">Please describe — include EpiPen requirements or other emergency protocols.</label>
+        <label class="form-label" for="allergyDetails">Please describe — include EpiPen requirements or other emergency protocols.</label>
         <textarea id="allergyDetails" class="form-input form-textarea" rows="4"></textarea>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Does your student take any regularly prescribed medication? <span class="form-required">*</span></label>
+        <label class="form-label" for="prescribedMedication">Does your student take any regularly prescribed medication? <span class="form-required">*</span></label>
         <select id="prescribedMedication" class="form-input form-select" required onchange="toggleField('medication-section', this.value === 'Yes')">
             <option value="" disabled selected>Select one</option>
             <option value="No">No</option>
@@ -402,7 +402,7 @@
             <div class="student-block-header"><span class="student-block-label">Medication Details</span></div>
 
             <div class="form-group">
-                <label class="form-label">Does your student require medication during school hours?</label>
+                <label class="form-label" for="medicationDuringSchool">Does your student require medication during school hours?</label>
                 <select id="medicationDuringSchool" class="form-input form-select">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -410,13 +410,13 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Medication name, dosage, and time to be administered</label>
+                <label class="form-label" for="medicationDetails">Medication name, dosage, and time to be administered</label>
                 <p class="form-hint">Example: Metformin 500mg — with lunch, approximately 12:00 PM</p>
                 <textarea id="medicationDetails" class="form-input form-textarea" rows="3"></textarea>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Who administers this medication?</label>
+                <label class="form-label" for="medicationAdmin">Who administers this medication?</label>
                 <select id="medicationAdmin" class="form-input form-select">
                     <option value="">Select one</option>
                     <option value="My student self-administers">My student self-administers</option>
@@ -426,12 +426,12 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Storage requirements</label>
+                <label class="form-label" for="medicationStorage">Storage requirements</label>
                 <input type="text" id="medicationStorage" class="form-input" placeholder="e.g. refrigeration required, original packaging">
             </div>
 
             <div class="form-group">
-                <label class="form-label">Does your student take any medication that affects attention, focus, mood, or behavior?</label>
+                <label class="form-label" for="medicationBehavior">Does your student take any medication that affects attention, focus, mood, or behavior?</label>
                 <select id="medicationBehavior" class="form-input form-select" onchange="toggleField('medicationBehaviorInfo-group', this.value === 'Yes')">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -440,20 +440,20 @@
             </div>
 
             <div class="form-group" id="medicationBehaviorInfo-group" style="display:none;">
-                <label class="form-label">What should staff know?</label>
+                <label class="form-label" for="medicationBehaviorInfo">What should staff know?</label>
                 <p class="form-hint">You do not need to disclose the medication name. We are asking what staff need to observe — for example: "If my student seems unusually distracted, a missed dose may be a factor."</p>
                 <textarea id="medicationBehaviorInfo" class="form-input form-textarea" rows="3"></textarea>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Is there anything about your student's medication routine that could affect their school day if disrupted?</label>
+                <label class="form-label" for="medicationDisruption">Is there anything about your student's medication routine that could affect their school day if disrupted?</label>
                 <textarea id="medicationDisruption" class="form-input form-textarea" rows="3" placeholder="Missed doses, side effects, end-of-day fatigue, etc."></textarea>
             </div>
         </div>
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">Does your student carry or require access to emergency medication? <span class="form-required">*</span></label>
+        <label class="form-label" for="emergencyMedication">Does your student carry or require access to emergency medication? <span class="form-required">*</span></label>
         <select id="emergencyMedication" class="form-input form-select" required onchange="toggleField('emergencyMedDetails-group', this.value !== 'No')">
             <option value="" disabled selected>Select one</option>
             <option value="No">No</option>
@@ -465,10 +465,10 @@
     </div>
 
     <div class="form-group" id="emergencyMedDetails-group" style="display:none;">
-        <label class="form-label">Please describe and specify storage location during the school day.</label>
+        <label class="form-label" for="emergencyMedDetails">Please describe and specify storage location during the school day.</label>
         <p class="form-hint">Example: "EpiPen kept in student's backpack at all times. Student knows how to self-administer. Staff should call 911 immediately if used."</p>
         <textarea id="emergencyMedDetails" class="form-input form-textarea" rows="3"></textarea>
-        <label class="form-label" style="margin-top:1rem;">Staff training needed?</label>
+        <label class="form-label" for="staffTraining" style="margin-top:1rem;">Staff training needed?</label>
         <select id="staffTraining" class="form-input form-select">
             <option value="Student self-administers — no staff training needed">Student self-administers — no training needed</option>
             <option value="Staff training would be helpful — please contact me">Staff training would be helpful — contact me</option>
@@ -489,7 +489,7 @@
     <h3 class="inquiry-section-title">Section 6 — Siblings</h3>
 
     <div class="form-group">
-        <label class="form-label">Does your student have siblings also enrolled at ZION outSchool? <span class="form-required">*</span></label>
+        <label class="form-label" for="siblings">Does your student have siblings also enrolled at ZION outSchool? <span class="form-required">*</span></label>
         <select id="siblings" class="form-input form-select" required onchange="toggleField('siblingNames-group', this.value === 'Yes')">
             <option value="" disabled selected>Select one</option>
             <option value="No">No</option>
@@ -499,14 +499,14 @@
     </div>
 
     <div class="form-group" id="siblingNames-group" style="display:none;">
-        <label class="form-label">Please list their names and ages.</label>
+        <label class="form-label" for="siblingNames">Please list their names and ages.</label>
         <textarea id="siblingNames" class="form-input form-textarea" rows="3"></textarea>
     </div>
 
     <h3 class="inquiry-section-title" style="margin-top:2.5rem;">Section 7 — EFA Information</h3>
 
     <div class="form-group">
-        <label class="form-label">Are you using Arkansas EFA funds to pay tuition?</label>
+        <label class="form-label" for="efaStatus">Are you using Arkansas EFA funds to pay tuition?</label>
         <select id="efaStatus" class="form-input form-select" onchange="toggleField('classwallet-group', this.value.startsWith('Yes'))">
             <option value="">Select one</option>
             <option value="Yes — I have an active EFA account">Yes — I have an active EFA account</option>
@@ -517,7 +517,7 @@
     </div>
 
     <div class="form-group" id="classwallet-group" style="display:none;">
-        <label class="form-label">Please confirm your ClassWallet account is active and linked to ZION outSchool.</label>
+        <label class="form-label" for="classWallet">Please confirm your ClassWallet account is active and linked to ZION outSchool.</label>
         <select id="classWallet" class="form-input form-select">
             <option value="">Select one</option>
             <option value="Yes, my ClassWallet account is active and linked">Yes — active and linked</option>
@@ -550,7 +550,7 @@
     </div>
 
     <div class="form-group" style="margin-top:1.75rem;">
-        <label class="form-label">Authorization for Records Request <span class="form-required">*</span></label>
+        <label class="form-label" for="ferpaAck">Authorization for Records Request <span class="form-required">*</span></label>
         <p class="form-hint">Type the following exactly, filling in the blanks with your name and your student's name:</p>
         <p class="reg-sig-prompt">I ____________, the parent/guardian of ____________ authorize ZION outSchool to request my student's education records from their previous school(s).</p>
         <textarea id="ferpaAck" class="form-input form-textarea" rows="3" placeholder="Type the full statement above with your names filled in." required></textarea>
@@ -558,32 +558,32 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
+        <label class="form-label" for="ferpaSignature">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
         <input type="text" id="ferpaSignature" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="ferpaSignature-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Today's Date <span class="form-required">*</span></label>
+        <label class="form-label" for="ferpaDate">Today's Date <span class="form-required">*</span></label>
         <input type="date" id="ferpaDate" class="form-input" required>
         <span class="form-error" id="ferpaDate-error">Required.</span>
     </div>
 
     <div class="form-group" style="margin-top:2rem;">
-        <label class="form-label">Authorization to Maintain Records <span class="form-required">*</span></label>
+        <label class="form-label" for="recordsAck">Authorization to Maintain Records <span class="form-required">*</span></label>
         <p class="reg-sig-prompt">I ____________, the parent/guardian of ____________ authorize ZION outSchool to maintain my student's education records as required by FERPA and ADE 351.</p>
         <textarea id="recordsAck" class="form-input form-textarea" rows="3" placeholder="Type the full statement above with your names filled in." required></textarea>
         <span class="form-error" id="recordsAck-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
+        <label class="form-label" for="recordsSignature">Type your full legal name as your digital signature. <span class="form-required">*</span></label>
         <input type="text" id="recordsSignature" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="recordsSignature-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Today's Date <span class="form-required">*</span></label>
+        <label class="form-label" for="recordsDate">Today's Date <span class="form-required">*</span></label>
         <input type="date" id="recordsDate" class="form-input" required>
         <span class="form-error" id="recordsDate-error">Required.</span>
     </div>
@@ -605,7 +605,8 @@
         <p>ZION outSchool will provide a Christ-centered, literature-driven, inquiry-based learning environment. We will maintain high moral and academic standards in all instruction and materials, support each child's unique learning path, communicate regularly with parents about student progress, and ensure a safe, respectful, and welcoming environment for all students.</p>
 
         <h4 style="margin-top:1.5rem;">Parent / Guardian Commitment</h4>
-        <p>I agree to support the ZION outSchool mission and values; oversee at-home reading and assignments; ensure consistent attendance and communicate promptly about absences; encourage respectful behavior toward staff and other students; honor financial commitments by paying tuition and fees on time; and partner in accountability for my child's learning.</p>
+        <p>Parents retain stewardship over their children. I understand that my observations and concerns are welcome and that Zion’s teachers direct classroom instruction. Teaching methods, daily learning activities, placement, and curriculum are guided by the school’s approach and each student’s needs; daily teaching decisions do not require individual parent approval.</p>
+        <p>I agree to support daily reading and oversee Friday at-home work, communicate promptly about attendance and absences, respond in a timely way to school communications, and honor financial commitments. I will bring concerns directly to the teacher and bring unresolved concerns to school leadership. Parents are heard and concerns are considered carefully; instructional changes are determined by the school through discussion with the family.</p>
 
         <h4 style="margin-top:1.5rem;">Student Commitment</h4>
         <p>I agree to arrive on time and prepared; set a daily learning goal; treat fellow students, facilitators, and materials with respect; take ownership of my learning including reading OWLs and completing assigned projects; and engage with curiosity.</p>
@@ -619,7 +620,7 @@
     </div>
 
     <div class="form-group" style="margin-top:1.75rem;">
-        <label class="form-label">I have read and understand the Parent Agreement. Type your full name to signify agreement. <span class="form-required">*</span></label>
+        <label class="form-label" for="parentAgreementSig">I have read and understand the Parent Agreement. Type your full name to signify agreement. <span class="form-required">*</span></label>
         <input type="text" id="parentAgreementSig" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="parentAgreementSig-error">Required.</span>
     </div>
@@ -635,13 +636,13 @@
     </div>
 
     <div class="form-group" style="margin-top:1.75rem;">
-        <label class="form-label">Parent — type your full name to acknowledge you have read this Code of Conduct with your student. <span class="form-required">*</span></label>
+        <label class="form-label" for="codeOfConductParent">Parent — type your full name to acknowledge you have read this Code of Conduct with your student. <span class="form-required">*</span></label>
         <input type="text" id="codeOfConductParent" class="form-input" placeholder="Parent's full legal name" required>
         <span class="form-error" id="codeOfConductParent-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="codeOfConductStudent">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="codeOfConductStudent" class="form-input" placeholder="Student's full name" required>
         <span class="form-error" id="codeOfConductStudent-error">Required.</span>
     </div>
@@ -663,25 +664,27 @@
 
         <h4 style="margin-top:1.5rem;">Tuition & Fees</h4>
         <ul style="margin:0.75rem 0 0 1.5rem; line-height:2;">
-            <li>Annual Curriculum Fee: $200 — charged once per year, all students</li>
+            <li>2026–27 Curriculum Fee: $200 per student, including January entrants — supports one initial ELA curriculum, one initial mathematics curriculum, and science and history curriculum resources for the full 2026–27 school year; separate from tuition and not credited toward tuition</li>
             <li>Tuition: $600/month — paid in advance; absences do not reduce tuition</li>
-            <li>Unit Fee: $135/unit × 4 units per year</li>
+            <li>Unit Fee: $135 per participating unit — provides the selected OWLs and unit-specific materials and subscriptions</li>
             <li>Late Payment: 10% late fee after a 5-day grace period</li>
             <li>
                 Early Withdrawal Policy:
                 <ul>
                     <li>Because ZION outSchool operates through highly individualized instruction, collaborative learning cohorts, and long-term project-based educational design, enrollment represents a year-long commitment between the school and family. Significant staffing, curriculum development, scheduling, and classroom planning decisions are made in reliance upon each student's enrollment for the full academic year.</li>
-                    <li>The annual $200 curriculum and materials fee is non-refundable once enrollment is finalized.</li>
+                    <li>The 2026–27 Curriculum Fee becomes nonrefundable when Zion confirms your child’s place. If Zion cannot provide the confirmed place, the fee will be refunded.</li>
                     <li>Tuition paid for the current month is non-refundable upon withdrawal.</li>
                     <li>A $300 withdrawal fee per enrolled student will be assessed at the time of withdrawal to help offset administrative, staffing, and classroom restructuring costs associated with mid-year withdrawal.</li>
                     <li>We understand that unexpected circumstances can arise. Families experiencing significant hardship are encouraged to communicate with the administration, and exceptional situations may be reviewed at the school's discretion.</li>
                 </ul>
             </li>
         </ul>
+        <p>Families purchase additional ELA or mathematics curriculum if the initially provided curriculum is completed. Teachers will discuss the next step and its cost before a purchase is needed.</p>
+        <p>Choosing to enroll or re-enroll for 2027–28 involves a separate Annual Enrollment &amp; Curriculum Fee for that school year. It is not credited toward tuition. Its amount, deadline, coverage, and refund terms will be announced before re-enrollment opens. The 2026–27 Curriculum Fee does not pay for 2027–28 curriculum or reserve next year’s place.</p>
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">Type your full name to acknowledge the Tuition, Fees & Attendance Policy. <span class="form-required">*</span></label>
+        <label class="form-label" for="tuitionSig">Type your full name to acknowledge the Tuition, Fees & Attendance Policy. <span class="form-required">*</span></label>
         <input type="text" id="tuitionSig" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="tuitionSig-error">Required.</span>
     </div>
@@ -693,7 +696,7 @@
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">Photo / Media Release <span class="form-required">*</span></label>
+        <label class="form-label" for="photoConsent">Photo / Media Release <span class="form-required">*</span></label>
         <select id="photoConsent" class="form-input form-select" required>
             <option value="" disabled selected>Select one</option>
             <option value="Yes, I give permission">Yes — I give permission</option>
@@ -703,7 +706,7 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="photoSig">Type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="photoSig" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="photoSig-error">Required.</span>
     </div>
@@ -717,13 +720,13 @@
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">Parent — type your full name to acknowledge the Technology Agreement. <span class="form-required">*</span></label>
+        <label class="form-label" for="techAgreementParent">Parent — type your full name to acknowledge the Technology Agreement. <span class="form-required">*</span></label>
         <input type="text" id="techAgreementParent" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="techAgreementParent-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="techAgreementStudent">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="techAgreementStudent" class="form-input" placeholder="Student's full name" required>
         <span class="form-error" id="techAgreementStudent-error">Required.</span>
     </div>
@@ -735,13 +738,13 @@
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">Parent — type your full name to acknowledge the Cell Phone Policy. <span class="form-required">*</span></label>
+        <label class="form-label" for="cellPhoneParent">Parent — type your full name to acknowledge the Cell Phone Policy. <span class="form-required">*</span></label>
         <input type="text" id="cellPhoneParent" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="cellPhoneParent-error">Required.</span>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="cellPhoneStudent">Student — type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="cellPhoneStudent" class="form-input" placeholder="Student's full name" required>
         <span class="form-error" id="cellPhoneStudent-error">Required.</span>
     </div>
@@ -763,7 +766,7 @@
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">I consent to Emergency Medical Treatment as described above. <span class="form-required">*</span></label>
+        <label class="form-label" for="medicalConsent">I consent to Emergency Medical Treatment as described above. <span class="form-required">*</span></label>
         <select id="medicalConsent" class="form-input form-select" required onchange="toggleField('medicalConsentNo-group', this.value.startsWith('No'))">
             <option value="" disabled selected>Select one</option>
             <option value="Yes, I consent to Emergency Medical Treatment as described above.">Yes — I consent</option>
@@ -772,12 +775,12 @@
         <span class="form-error" id="medicalConsent-error">Required.</span>
     </div>
     <div class="form-group" id="medicalConsentNo-group" style="display:none;">
-        <label class="form-label">If no, please explain how you would like us to proceed in the event of an emergency.</label>
+        <label class="form-label" for="noEmergencyExplanation">If no, please explain how you would like us to proceed in the event of an emergency.</label>
         <textarea id="noEmergencyExplanation" class="form-input form-textarea" rows="6"></textarea>
     </div>
 
     <div class="form-group">
-        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="medicalConsentSig">Type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="medicalConsentSig" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="medicalConsentSig-error">Required.</span>
     </div>
@@ -789,7 +792,7 @@
     </div>
 
     <div class="form-group" style="margin-top:1.5rem;">
-        <label class="form-label">I have read and agree to the Liability Waiver. <span class="form-required">*</span></label>
+        <label class="form-label" for="liabilityAck">I have read and agree to the Liability Waiver. <span class="form-required">*</span></label>
         <select id="liabilityAck" class="form-input form-select" required>
             <option value="" disabled selected>Select one</option>
             <option value="Yes, I have read and agree to the Liability Waiver.">Yes — I have read and agree</option>
@@ -798,7 +801,7 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label">Type your full name to acknowledge. <span class="form-required">*</span></label>
+        <label class="form-label" for="liabilitySig">Type your full name to acknowledge. <span class="form-required">*</span></label>
         <input type="text" id="liabilitySig" class="form-input" placeholder="Your full legal name" required>
         <span class="form-error" id="liabilitySig-error">Required.</span>
     </div>
@@ -877,17 +880,17 @@
         <div class="reg-footer-col">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="/index.html#vision">Vision</a></li>
-                <li><a href="/index.html#mission">Mission</a></li>
-                <li><a href="/index.html#methods">Methods</a></li>
-                <li><a href="/index.html#curriculum">Curriculum</a></li>
-                <li><a href="/index.html#schedule">Schedule</a></li>
-                <li><a href="/index.html#tuition">Tuition &amp; Fees</a></li>
-                <li><a href="/index.html#teacher">Our Teacher</a></li>
-                <li><a href="/index.html#faq">FAQ</a></li>
+                <li><a href="/foundation">Vision</a></li>
+                <li><a href="/foundation">Mission</a></li>
+                <li><a href="/how-we-learn">Methods</a></li>
+                <li><a href="/curriculum">Curriculum</a></li>
+                <li><a href="/what-to-expect#daily-life">Schedule</a></li>
+                <li><a href="/tuition">Tuition &amp; Fees</a></li>
+                <li><a href="/teachers">Our Teacher</a></li>
+                <li><a href="/faq">FAQ</a></li>
                 <li><a href="documents.html">Documents</a></li>
                 <li><a href="family-portal.html">Family Portal</a></li>
-                <li><a href="/index.html#contact">Contact</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
         </div>
 
@@ -1201,6 +1204,8 @@ async function submitFinal() {
         return;
     }
     document.getElementById('checklist-error').style.display = 'none';
+    // Clear the previous attempt's error before a valid retry.
+    document.getElementById('reg-error').style.display = 'none';
 
     const btn     = document.getElementById('final-submit-btn');
     const txt     = document.getElementById('final-submit-text');

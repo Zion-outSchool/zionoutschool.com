@@ -36,7 +36,7 @@ function runInquiryIntegrationTest() {
       label: 'three children — one family message',
       data: {
         parentName: 'TEST ONLY — Multiple Children', parentEmail: recipient,
-        schoolYear: 'Just exploring',
+        schoolYear: 'Just exploring', desiredStart: 'January 2027',
         message: testId + ': How would the schedule work for these three children?',
         students: [
           { studentAge: '6, grade 1', studentSubjects: 'Gardening', studentLearning: 'Quiet time helps' },
@@ -49,7 +49,7 @@ function runInquiryIntegrationTest() {
   var notificationsSubmitted = 0;
   fixtures.forEach(function(fixture) {
     // Match the actual frontend's legacy neutral-notes alias.
-    fixture.data.anythingElse = fixture.data.message;
+    fixture.data.anythingElse = fixture.data.message + (fixture.data.desiredStart ? '\n\nDesired start: ' + fixture.data.desiredStart : '');
     var inquiry = normalizeInquiry_(fixture.data);
     var firstRow = sheet.getLastRow() + 1;
     var timestamp = new Date();
@@ -66,7 +66,7 @@ function runInquiryIntegrationTest() {
       assertInquiryIntegration_(row[8] === inquiry.students[index].studentSubjects, 'Interests storage mismatch.');
       assertInquiryIntegration_(row[9] === inquiry.students[index].studentLearning, 'Learning context storage mismatch.');
       assertInquiryIntegration_(row[13] === inquiry.schoolYear, 'Optional school year storage mismatch.');
-      assertInquiryIntegration_(row[15] === inquiry.message, 'Family message must be stored in column P.');
+      assertInquiryIntegration_(row[15] === inquiryNotes_(inquiry), 'Family message and desired start must be stored in column P.');
     });
     var body = inquiryEmail_(inquiry);
     assertInquiryIntegration_(body.split(inquiry.message).length - 1 === 1,
