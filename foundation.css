@@ -1,0 +1,10 @@
+/* Product image beside the existing scripture-annotation explanation. */
+#scripture-annotation { scroll-margin-top: 88px; }
+#scripture-annotation .scripture-annotation-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); align-items: center; gap: 48px; }
+#scripture-annotation .scripture-product { width: 100%; max-width: 340px; margin: 0; }
+#scripture-annotation .scripture-product img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: 50% 70%; border-radius: 2px; }
+#scripture-annotation .scripture-product figcaption { margin-top: 10px; color: var(--text-mid); font: 400 12px/1.7 var(--sans); }
+@media (max-width: 860px) {
+    #scripture-annotation .scripture-annotation-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    #scripture-annotation .scripture-product { margin-inline: auto; }
+}
