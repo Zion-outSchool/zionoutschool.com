@@ -86,3 +86,27 @@
 @media (max-width: 640px) {
     .editorial-page.payment-page .payment-schedule-table caption { display: block; width: 100%; }
 }
+
+/* What to Expect refinements: reading room first, optional shopping second. */
+.expectations-page .daily-home-summary { grid-column: 1 / -1; max-width: 780px; }
+.expectations-page .mixed-age-explanation { max-width: 780px; border-top: 1px solid var(--border); padding-top: 28px; margin-top: 28px; }
+.expectations-page .mixed-age-explanation > a { display: inline-block; margin-top: 16px; }
+.expectations-page details.laptop-recommendations { margin-top: 22px; border: 1px solid var(--border); border-radius: 2px; }
+.expectations-page .laptop-recommendations summary { display: list-item; list-style-position: inside; padding: 16px 18px; background: var(--cream); color: var(--navy); cursor: pointer; font: 600 14px/1.7 var(--sans); }
+.expectations-page .laptop-recommendations summary::marker { color: var(--navy); }
+.expectations-page .laptop-recommendations-content { padding: 18px; }
+.expectations-page .laptop-recommendations-content > p { margin-bottom: 18px; }
+.editorial-page.expectations-page .laptop-card-grid { gap: 16px; }
+.editorial-page.expectations-page .laptop-card { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: start; }
+.editorial-page.expectations-page .laptop-card > a { padding: 12px; background: var(--white); }
+.editorial-page.expectations-page .laptop-card img { height: 104px; object-fit: contain; }
+.editorial-page.expectations-page .laptop-card-body { padding: 14px; }
+.editorial-page.expectations-page .laptop-card h4 { font-size: 22px; }
+.editorial-page.expectations-page .laptop-card p { font-size: 14px; margin-bottom: 12px; }
+.editorial-page.expectations-page .laptop-card-link:hover { color: var(--navy-dark); }
+@media (max-width: 420px) {
+    .editorial-page.expectations-page .laptop-card { grid-template-columns: 88px minmax(0, 1fr); }
+    .editorial-page.expectations-page .laptop-card > a { padding: 8px; }
+    .editorial-page.expectations-page .laptop-card img { height: 88px; }
+    .expectations-page .laptop-recommendations-content { padding: 14px; }
+}
