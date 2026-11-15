@@ -4,12 +4,14 @@ export const MAX_STUDENTS = 3;
 
 export function createInquiryPayload(fields, students) {
     const message = clean(fields.message);
+    const desiredStart = clean(fields.desiredStart);
     return {
         parentName: clean(fields.parentName),
         parentEmail: clean(fields.parentEmail),
         parentPhone: clean(fields.parentPhone),
         heardAbout: clean(fields.heardAbout),
         schoolYear: clean(fields.schoolYear),
+        desiredStart,
         students: students.map(student => ({
             studentName: clean(student.studentName),
             studentAge: clean(student.studentAge),
@@ -18,9 +20,9 @@ export function createInquiryPayload(fields, students) {
             studentLearning: clean(student.studentLearning)
         })),
         message,
-        // Existing neutral notes field carries the same message for legacy consumers.
-        // The server must prefer message, label it neutrally, and not render it twice.
-        anythingElse: message
+        // Preserve both values for older receivers that only store/email neutral notes.
+        // The updated backend recognizes this alias and renders each value once.
+        anythingElse: desiredStart ? `${message}\n\nDesired start: ${desiredStart}` : message
     };
 }
 

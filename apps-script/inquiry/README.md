@@ -1,6 +1,6 @@
 # Inquiry Apps Script
 
-`Code.gs` is the prepared replacement for the handler supplied by the owner. The owner reports saving it to the remote Apps Script project. Remote source readback remains unavailable; no deployment update has been reported or performed here.
+`Code.gs` is the local source for the handler supplied by the owner. The owner previously reported deploying the earlier version and running the isolated integration test successfully, including receipt of two test emails. This update adds optional desired-start support; it has not been saved or deployed remotely here. Remote source readback and deployed endpoint correspondence remain unverified.
 
 ## Verified from the supplied source
 
@@ -11,11 +11,13 @@
 
 ## Changes
 
-The replacement validates parent name, email, a family message, and each child’s combined age/grade field before any writes. It accepts one to three children. Names, phone, school year, referral source, descriptions, interests, and learning considerations are optional. “4, not yet in school” is valid free text.
+The replacement validates parent name, email, a family message, and each child’s combined age/grade field before any writes. It accepts one to three children. Names, phone, school year, desired start, referral source, descriptions, interests, and learning considerations are optional. “4, not yet in school” is valid free text.
 
 The general message is read from `message`, falling back to the frontend’s neutral `anythingElse` alias. A final `lookingFor` fallback accepts older form submissions during a transition. Distinct legacy values are retained, not relabeled as the new general message or discarded.
 
 The notification labels the message **Family questions and context**, prints it once, includes every child, and omits empty optional lines. It remains plain text. The admissions recipient is unchanged.
+
+The optional `desiredStart` accepts exactly the four form choices. It is stored in the existing column P with the family message and included in the notification. The frontend also appends it to the legacy `anythingElse` alias so the originally supplied receiver does not silently lose it. The updated handler recognizes this combined alias and avoids duplicate message/start lines. No column is added.
 
 Spreadsheet positions remain:
 
@@ -27,7 +29,7 @@ Spreadsheet positions remain:
 | K–M | Legacy context, reading status, faith questions if provided by an older client |
 | N | Optional school year |
 | O | Legacy funding answer if provided by an older client |
-| P | General family message, plus distinct legacy extra notes if present |
+| P | General family message, optional desired start, plus distinct legacy extra notes if present |
 
 The handler only appends rows. It does not edit headers, rename/delete columns, clear the sheet, or modify historical records. Text that could be interpreted as a spreadsheet formula is written as literal text. Google documents formula interpretation for spreadsheet values in its [Range reference](https://developers.google.com/apps-script/reference/spreadsheet/range).
 
@@ -49,7 +51,7 @@ These checks do not prove live email delivery, spreadsheet permissions, quotas, 
 
 ## Applying the change later
 
-Once separately authorized, use this file to replace the supplied inquiry handler in its existing spreadsheet-bound Apps Script project. Preserve unrelated project files and project settings. The original empty `myFunction` stub is unnecessary. Saving source and updating a deployed web-app version are separate operations; no deployed version has been updated here.
+For the desired-start update, use this file to replace the supplied inquiry handler in its existing spreadsheet-bound Apps Script project. Preserve unrelated project files and project settings. The original empty `myFunction` stub is unnecessary. Saving source and updating a deployed web-app version are separate operations; no deployed version has been updated here.
 
 Use an isolated test spreadsheet and a specifically configured test recipient before a live release. Verify the received email and stored row, then retain the existing web-app deployment URL/settings when publishing an approved version. Do not run the current handler with synthetic data against the production sheet or admissions address.
 
@@ -59,9 +61,9 @@ The owner designated `admin@zionoutschool.com` for test notifications.
 
 1. Add a separate script file named `IntegrationTest` to the same Apps Script project; paste `IntegrationTest.gs` into it. Keep the saved `Code.gs` in place.
 2. Save, select `runInquiryIntegrationTest` in the editor, and run it. Approve the Google permissions required for the test spreadsheet and email if prompted.
-3. Inspect the execution log for the new test spreadsheet URL and JSON report. Check that the test spreadsheet contains a header and four student rows and that column P contains the family message.
+3. Inspect the execution log for the new test spreadsheet URL and JSON report. Check that the test spreadsheet contains a header and four student rows and that column P contains the family message. The three-child fixture also includes `Desired start: January 2027` in column P and its notification.
 4. Confirm that `admin@zionoutschool.com` received the two `[ZION TEST ONLY]` notifications: one minimal inquiry and one three-child inquiry. Each notification should contain its family message once.
 
 This runner calls the saved handler’s normalization, row-construction, and notification-template helpers with live Google services. It creates a brand-new spreadsheet; it never uses the bound production spreadsheet, invokes `doPost`, or calls a deployed endpoint. It does not change `Code.gs`, the production recipient, or deployment settings. It logs the isolated sheet URL immediately so it can be found even if a later step fails. Running it again creates another isolated sheet and sends two more labeled test messages.
 
-The runner is locally tested by `node tests/inquiry-integration-runner.test.mjs` with Google services mocked, including hard failures on any production-sheet access or production-handler invocation. **It has not yet been run in Google, and inbox delivery is unverified.** A passing editor run verifies helpers and Google services, not deployed HTTP behavior.
+The runner is locally tested by `node tests/inquiry-integration-runner.test.mjs` with Google services mocked, including hard failures on any production-sheet access or production-handler invocation. **The owner previously reported a successful Google run (four rows, three invalid inquiries rejected, two notifications) and confirmed inbox receipt for the earlier version. The desired-start revision has only been tested locally; its Google execution and delivery are unverified.** A passing editor run verifies helpers and Google services, not deployed HTTP behavior.

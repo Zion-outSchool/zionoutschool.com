@@ -58,13 +58,16 @@ function normalizeInquiry_(data) {
   }
   var inquiry = {};
   [
-    'parentName', 'parentEmail', 'parentPhone', 'heardAbout', 'schoolYear',
+    'parentName', 'parentEmail', 'parentPhone', 'heardAbout', 'schoolYear', 'desiredStart',
     'lookingFor', 'readHowWeLearn', 'faithQuestions', 'efaPlanning', 'anythingElse', 'message'
   ].forEach(function(key) { inquiry[key] = inquiryText_(data[key]); });
 
   // The new client sends the message and its legacy neutral-notes alias.
   // The lookingFor fallback also accepts in-flight submissions from the old form.
   inquiry.message = inquiry.message || inquiry.anythingElse || inquiry.lookingFor;
+  if (inquiry.desiredStart && ['January 2027', 'Another start during 2026–27', '2027–28 school year', 'Just exploring'].indexOf(inquiry.desiredStart) === -1) {
+    throw inquiryValidationError_('Please select a listed desired start or leave it blank.');
+  }
   if (!inquiry.parentName) throw inquiryValidationError_('Please enter your name.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inquiry.parentEmail)) {
     throw inquiryValidationError_('Please enter a valid email address.');
@@ -93,12 +96,18 @@ function normalizeInquiry_(data) {
   return inquiry;
 }
 
+function inquiryExtraNotes_(inquiry) {
+  var alias = inquiry.message + (inquiry.desiredStart ? '\n\nDesired start: ' + inquiry.desiredStart : '');
+  return inquiry.anythingElse && inquiry.anythingElse !== inquiry.message && inquiry.anythingElse !== alias
+    ? inquiry.anythingElse : '';
+}
+
 function inquiryNotes_(inquiry) {
-  // Preserve distinct legacy notes if an older client supplies both fields.
-  if (inquiry.anythingElse && inquiry.anythingElse !== inquiry.message) {
-    return inquiry.message + '\n\nAdditional family context:\n' + inquiry.anythingElse;
-  }
-  return inquiry.message;
+  var notes = inquiry.message;
+  if (inquiry.desiredStart) notes += '\n\nDesired start: ' + inquiry.desiredStart;
+  var extra = inquiryExtraNotes_(inquiry);
+  if (extra) notes += '\n\nAdditional family context:\n' + extra;
+  return notes;
 }
 
 function inquirySheetText_(value) {
@@ -143,10 +152,10 @@ function inquiryEmail_(inquiry) {
   optional('Phone', inquiry.parentPhone);
   optional('Heard about us', inquiry.heardAbout);
   optional('School year of interest', inquiry.schoolYear);
+  optional('Desired start', inquiry.desiredStart);
   lines.push('', '── FAMILY QUESTIONS AND CONTEXT ──', inquiry.message);
-  if (inquiry.anythingElse && inquiry.anythingElse !== inquiry.message) {
-    lines.push('', 'Additional family context:', inquiry.anythingElse);
-  }
+  var extra = inquiryExtraNotes_(inquiry);
+  if (extra) lines.push('', 'Additional family context:', extra);
   // Retain distinct context from old form submissions without mislabeling the
   // new general message or printing the alias a second time.
   if (inquiry.lookingFor && inquiry.lookingFor !== inquiry.message) {

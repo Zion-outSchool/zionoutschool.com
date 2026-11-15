@@ -36,3 +36,12 @@ assert.ok(validateInquiry(createInquiryPayload(family, [child, child, child, chi
 assert.deepEqual(validateInquiry(createInquiryPayload(family, [child, {}])), ['students.1.studentAge']);
 assert.equal(child.studentName, undefined, 'Serialization does not mutate input records');
 console.log('Passed: minimal inquiry, optional values, message compatibility alias, obsolete fields absent, per-child validation, multiple children, limits, and non-mutating serialization.');
+for (const desiredStart of ['January 2027', 'Another start during 2026–27', '2027–28 school year', 'Just exploring']) {
+    const p = createInquiryPayload({ ...family, desiredStart }, [child]);
+    assert.deepEqual(validateInquiry(p), []);
+    assert.equal(p.desiredStart, desiredStart);
+    assert.equal(p.message, payload.message);
+    assert.equal(p.anythingElse, `${p.message}\n\nDesired start: ${desiredStart}`);
+}
+assert.equal(payload.desiredStart, '', 'Desired start stays optional');
+console.log('Passed: optional desired start and legacy neutral-notes fallback for all four choices.');
