@@ -245,6 +245,7 @@ async function initPortalCommunications() {
         for (const post of rows) {
             const article = communicationElement(postList, 'article');
             article.className = 'communication-post';
+            article.id = 'update-' + post.id;
             communicationElement(article, 'small', (post.course_id ? 'Classroom · ' : '') +
                 COMMUNICATION_POST_LABELS[post.kind] + ' · ' + communicationTime(post.created_at));
             communicationElement(article, 'h3', post.title);
@@ -373,7 +374,13 @@ async function initPortalCommunications() {
         }
         content.hidden = false;
         await Promise.all([loadThreads(), loadPosts()]);
-        if (active) alert('');
+        if (active) {
+            alert('');
+            const target = location.hash.slice(1);
+            if (target === 'school-updates' || target === 'student-messages' || /^update-[a-f0-9-]{36}$/i.test(target)) {
+                document.getElementById(target)?.scrollIntoView();
+            }
+        }
     } catch (error) { showError(error); }
 }
 

@@ -6,215 +6,120 @@
     <title>Family Portal | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=portal-password-reset-1">
+    <link rel="stylesheet" href="portal-theme.css?v=1">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
-<body class="editorial-page portal-page">
-<header>
-    <a href="index.html" class="logo">ZION <span>out</span>School</a>
-    <button class="mobile-menu" aria-label="Open navigation">☰</button>
-    <nav id="nav-menu" aria-label="Primary navigation">
-        <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Discover ZION</button>
-            <div class="nav-dropdown-menu">
-                <a href="foundation.html">Foundation</a>
-                <a href="how-we-learn.html">How We Learn</a>
-                <a href="curriculum.html">Curriculum</a>
-                <a href="teachers.html">Who Teaches Here</a>
-                <a href="faq.html">FAQs</a>
-            </div>
+<body class="zion-portal portal-home">
+<header class="portal-topbar">
+    <div class="portal-topbar-inner">
+        <a class="portal-brand" href="family-portal.html" aria-current="page">
+            <span>Family Portal</span>
+            <small>Zion outSchool</small>
+        </a>
+        <div class="portal-topbar-actions">
+            <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+            <button class="portal-session-button" type="button" data-portal-sign-out data-portal-authenticated hidden>Sign out</button>
         </div>
-        <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Join ZION</button>
-            <div class="nav-dropdown-menu">
-                <a href="tuition.html">Tuition & Funding</a>
-                <a href="/what-to-expect">What to Expect at Zion</a>
-                <a href="contact.html">Family Inquiry</a>
-                <a href="registration.html">Enroll Now</a>
-                <a href="calendar.html">Calendar</a>
-                <a href="scholarship-assistance.html">Scholarship Assistance</a>
-            </div>
-        </div>
-        <a href="family-portal.html" class="nav-portal">Family Portal</a>
-        <div class="nav-group">
-            <button type="button" class="nav-group-toggle" aria-haspopup="true">Build With Us</button>
-            <div class="nav-dropdown-menu">
-                <a href="build-with-us.html">Build With Us</a>
-                <a href="partners.html">Mission Partners</a>
-            </div>
-        </div>
-    </nav>
+    </div>
 </header>
+<main class="portal-home-main">
+    <section class="portal-welcome" aria-labelledby="portal-welcome-title">
+        <h1 id="portal-welcome-title">Welcome, Zion families!</h1>
+        <p>We’re so glad you’re here! The Family Portal is where we <strong>coordinate, communicate, and connect</strong> as a school community.</p>
+    </section>
 
-<section class="page-hero portal-hero">
-    <div class="container">
-        <span class="eyebrow">Current Families</span>
-        <h1>One place for the details<br><em>families need next.</em></h1>
-        <p class="hero-subtext">
-            Find school resources, student messages, and updates for your family.
-        </p>
-    </div>
-</section>
-
-<section class="portal-council-banner" aria-labelledby="council-banner-title">
-    <div class="container-narrow">
-        <div class="portal-council-announcement">
-            <div class="portal-council-art">
-                <img
-                    src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Student%20Purpose%20Family%20Council.png"
-                    alt="Student Purpose and Progress Councils: students leading, families guiding, growing together"
-                >
-            </div>
-            <div class="portal-council-panel">
-                <div class="portal-council-content">
-                    <h2 id="council-banner-title">Share Your Council Feedback</h2>
-                    <p>
-                        Now that we've completed this unit's Purpose &amp; Progress Councils, please leave a comment sharing how yours went. Was it worthwhile for your child and family, and what would make the next council more useful? We welcome honest feedback about what worked and what didn't.
-                    </p>
+    <!-- Remove hidden when Student Purpose & Progress Councils return. -->
+    <section class="portal-council-banner" hidden aria-labelledby="council-banner-title">
+        <div class="container-narrow">
+            <div class="portal-council-announcement">
+                <div class="portal-council-art">
+                    <img
+                        src="https://pub-8e75cf97b77a401381bf81d6b7464bf6.r2.dev/assets/images/Student%20Purpose%20Family%20Council.png"
+                        loading="lazy"
+                        alt="Student Purpose and Progress Councils: students leading, families guiding, growing together"
+                    >
                 </div>
-                <div class="portal-council-actions">
-                    <a class="portal-council-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeysN6uoqGLUSH9fZfhtyX-QuD9ZWxjD_rQBIDkrEoSwoieTQ/viewform?usp=header" target="_blank" rel="noopener">Leave Feedback</a>
+                <div class="portal-council-panel">
+                    <div class="portal-council-content">
+                        <h2 id="council-banner-title">Share Your Council Feedback</h2>
+                        <p>
+                            Now that we've completed this unit's Purpose &amp; Progress Councils, please leave a comment sharing how yours went. Was it worthwhile for your child and family, and what would make the next council more useful? We welcome honest feedback about what worked and what didn't.
+                        </p>
+                    </div>
+                    <div class="portal-council-actions">
+                        <a class="portal-council-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeysN6uoqGLUSH9fZfhtyX-QuD9ZWxjD_rQBIDkrEoSwoieTQ/viewform?usp=header" target="_blank" rel="noopener">Leave Feedback</a>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="portal-sign-in" data-portal-guest hidden aria-labelledby="portal-sign-in-title">
+        <h2 id="portal-sign-in-title">Sign in</h2>
+        <form class="portal-sign-in-form" data-portal-login-form method="post">
+            <label>Email <input type="email" name="email" autocomplete="username" required></label>
+            <label>Password <input type="password" name="password" autocomplete="current-password" required></label>
+            <button class="portal-primary-button" type="submit">Sign in</button>
+            <p class="portal-form-status" data-portal-login-status role="status" aria-live="polite"></p>
+            <a href="portal-password-reset.html">Forgot password?</a>
+        </form>
+    </section>
+    <noscript><p>Enable JavaScript to sign in to the Family Portal.</p></noscript>
+
+    <p class="portal-access-note" data-portal-unavailable hidden>This account doesn’t have access to the portal. <a href="contact.html">Contact the school</a> for help.</p>
+
+    <div class="portal-home-dashboard" data-portal-active hidden>
+        <section aria-labelledby="portal-tools-title">
+            <h2 id="portal-tools-title">Your portal</h2>
+            <ul class="portal-link-grid">
+                <li data-portal-messages hidden><a href="portal-communications.html#student-messages">
+                    <strong>Student Messages</strong><span>Read and reply to conversations.</span>
+                </a></li>
+                <li><a href="portal-communications.html#school-updates">
+                    <strong>News &amp; Announcements</strong><span>Read school updates and open documents.</span>
+                </a></li>
+                <li data-portal-family hidden><a href="grade-reports.html">
+                    <strong>Grade Reports</strong><span>View published grades, feedback, and graduation progress.</span>
+                </a></li>
+                <li data-portal-gradebook hidden><a href="gradebook.html">
+                    <strong>Teacher Gradebook</strong><span>Manage assignments, scores, and feedback.</span>
+                </a></li>
+                <li data-portal-gradebook hidden><a href="student-records.html">
+                    <strong>Student Records</strong><span>Open registration records and student conversations.</span>
+                </a></li>
+                <li data-portal-staff hidden><a href="graduation-planner.html">
+                    <strong>Graduation Planner</strong><span>Update course plans, credits, and milestones.</span>
+                </a></li>
+                <li data-portal-admin hidden><a href="portal-admin.html">
+                    <strong>Portal Administration</strong><span>Manage accounts, students, and classroom rosters.</span>
+                </a></li>
+            </ul>
+        </section>
+
+        <section class="portal-latest" data-portal-school-updates hidden aria-labelledby="portal-school-updates-title">
+            <h2 id="portal-school-updates-title">Latest updates</h2>
+            <ul data-portal-school-update-list></ul>
+        </section>
+
+        <section aria-labelledby="portal-resources-title">
+            <h2 id="portal-resources-title">School resources</h2>
+            <ul class="portal-link-grid portal-resource-grid">
+                <li><a href="calendar.html">
+                    <strong>School Calendar</strong><span>School dates, events, and breaks.</span>
+                </a></li>
+                <li><a href="testing.html">
+                    <strong>Placement Testing</strong><span>Testing links and at-home guidance.</span>
+                </a></li>
+                <li><a href="payment-calendar.html">
+                    <strong>Payment Calendar</strong><span>Tuition due dates and ClassWallet guidance.</span>
+                </a></li>
+            </ul>
+        </section>
     </div>
-</section>
-
-<section class="portal-status">
-    <div class="container-narrow">
-        <span class="section-label">Portal Status</span>
-        <h2>A growing home for family resources.</h2>
-        <p>
-            Find calendar details, testing information, and payment timing below. Sign in for student records, messages, and school updates.
-        </p>
-    </div>
-</section>
-
-<section class="portal-tools">
-    <div class="container">
-        <span class="section-label">Family Tools</span>
-        <div class="portal-tool-grid">
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>School Calendar</h2>
-                <p>Use the public calendar for major school dates, breaks, events, and schedule notes.</p>
-                <a href="calendar.html">Open Calendar →</a>
-            </article>
-
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Testing Information</h2>
-                <p>Use this section for placement testing links and guidance while families complete testing at home.</p>
-                <a href="testing.html">Open Testing Information →</a>
-            </article>
-
-            <article class="portal-tool-card portal-tool-card--ready">
-                <span class="portal-tool-status">Available now</span>
-                <h2>Payment Calendar</h2>
-                <p>See monthly invoice timing, the 8th payment due date, EFA processing notes, and ClassWallet direct-pay guidance.</p>
-                <a href="payment-calendar.html">Open Payment Calendar →</a>
-            </article>
-
-            <article class="portal-tool-card portal-tool-card--protected">
-                <span class="portal-tool-status">Family login</span>
-                <h2>Grade Reports</h2>
-                <p>Sign in to view published grades, teacher feedback, graduation progress, and working transcripts.</p>
-                <a href="grade-reports.html" data-portal-family hidden>Open Grade Reports</a>
-            </article>
-
-            <article class="portal-tool-card portal-tool-card--staff" data-portal-staff hidden>
-                <span class="portal-tool-status">Staff tools</span>
-                <h2>Graduation Planner</h2>
-                <p>Admin, teacher, and staff logins can update Arkansas graduation planning records for high school students.</p>
-                <a href="graduation-planner.html">Open Planner →</a>
-            </article>
-        </div>
-    </div>
-</section>
-
-<section class="portal-login-note">
-    <div class="container-narrow">
-        <span class="section-label">Family Login</span>
-        <h2>Private family records are protected.</h2>
-        <p>
-            Sign in for messages, school updates, grade reports, and high school working transcripts. Family accounts are created by ZION outSchool administrators.
-        </p>
-
-        <div class="portal-login-card" data-portal-guest>
-            <form class="portal-login-form" data-portal-login-form>
-                <label>
-                    <span>Email</span>
-                    <input type="email" name="email" autocomplete="email" required>
-                </label>
-                <label>
-                    <span>Password</span>
-                    <input type="password" name="password" autocomplete="current-password" required>
-                </label>
-                <button type="submit">Sign In</button>
-                <a class="portal-password-reset-link" href="portal-password-reset.html">Forgot password?</a>
-                <p class="portal-login-status" data-portal-login-status></p>
-            </form>
-        </div>
-
-        <div class="portal-auth-card" data-portal-authenticated hidden>
-            <span class="portal-tool-status">Signed In</span>
-            <h3>Welcome back.</h3>
-            <p>Signed in as <strong data-portal-user-email></strong>.</p>
-            <div class="portal-auth-actions">
-                <a href="portal-communications.html#student-messages" data-portal-messages hidden>Student Messages</a>
-                <a href="portal-communications.html#school-updates" data-portal-active hidden>News, Announcements &amp; Documents</a>
-                <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
-                <a href="gradebook.html" data-portal-gradebook hidden>Open Teacher Gradebook</a>
-                <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
-                <a href="graduation-planner.html" data-portal-staff hidden>Open Staff Planner →</a>
-                <button type="button" data-portal-sign-out>Sign Out</button>
-            </div>
-            <section class="portal-school-updates" data-portal-school-updates hidden aria-labelledby="portal-school-updates-title">
-                <h4 id="portal-school-updates-title">Latest from the school</h4>
-                <ul data-portal-school-update-list></ul>
-            </section>
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="footer-content">
-        <div class="footer-brand">
-            <h3>ZION outSchool</h3>
-            <p>Truth. Discovered. Lived. Shared.</p>
-            <p class="footer-location">Now located in Lowell, Arkansas</p>
-        </div>
-        <div class="footer-links">
-            <a href="foundation.html">Foundation</a>
-            <a href="how-we-learn.html">How We Learn</a>
-            <a href="curriculum.html">Curriculum</a>
-            <a href="teachers.html">Teachers</a>
-            <a href="tuition.html">Tuition & Funding</a>
-            <a href="faq.html">FAQs</a>
-            <a href="partners.html">Mission Partners</a>
-            <a href="build-with-us.html">Build With Us</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="documents.html">Documents</a>
-            <a href="family-portal.html">Family Portal</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div class="footer-donate">
-            <a href="build-with-us.html#ways" class="footer-involved-btn">
-                <span>Ways to Get Involved</span>
-                <span aria-hidden="true">↓</span>
-            </a>
-        </div>
-        <a href="contact.html" class="footer-btn">Begin the Conversation →</a>
-    </div>
-    <div class="footer-nondiscrimination">
-        <h4>Notice of Nondiscriminatory Policy as to Students</h4>
-        <p>ZION outSchool admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. ZION outSchool does not discriminate on the basis of race, color, national and ethnic origin in the administration of its educational policies, admissions policies, scholarship and financial-assistance programs, and athletic and other school-administered programs.</p>
-    </div>
-</footer>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=communications-1"></script>
-<script src="script.js?v=student-councils-20261003"></script>
+<script src="supabase-portal.js?v=portal-ux-1"></script>
 </body>
 </html>

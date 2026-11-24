@@ -89,13 +89,13 @@ async function refreshPortalSchoolUpdates(profile) {
     list.replaceChildren();
     if (!profile?.active) return;
 
-    const { data, error } = await portalClient.from('communication_posts').select('title')
-        .order('created_at', { ascending: false }).limit(3);
+    const { data, error } = await portalClient.from('communication_posts').select('id, title')
+        .order('created_at', { ascending: false }).order('id', { ascending: false }).limit(3);
     if (version !== schoolUpdatesVersion || error || !data?.length) return;
-    for (const { title } of data) {
+    for (const { id, title } of data) {
         const item = document.createElement('li');
         const link = document.createElement('a');
-        link.href = 'portal-communications.html#school-updates';
+        link.href = 'portal-communications.html#update-' + encodeURIComponent(id);
         link.textContent = title;
         item.append(link);
         list.append(item);
@@ -191,21 +191,21 @@ function bindPortalLogin() {
         if (submit) submit.disabled = true;
         setPortalMessage(status, 'Signing in...', 'neutral');
 
-        const { data, error } = await portalClient.auth.signInWithPassword({ email, password });
+        try {
+            const { data, error } = await portalClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                setPortalMessage(status, 'The email or password was not accepted.', 'error');
+                return;
+            }
 
-        if (submit) submit.disabled = false;
-
-        if (error) {
-            setPortalMessage(status, 'The email or password was not accepted.', 'error');
-            return;
-        }
-
-        loginForm.reset();
-        togglePortalState(data.session);
-        setPortalMessage(status, 'You are signed in.', 'success');
-
-        if (loginForm.dataset.redirectAfterLogin) {
-            window.location.href = loginForm.dataset.redirectAfterLogin;
+            loginForm.reset();
+            togglePortalState(data.session);
+            setPortalMessage(status, 'You are signed in.', 'success');
+            if (loginForm.dataset.redirectAfterLogin) window.location.href = loginForm.dataset.redirectAfterLogin;
+        } catch {
+            setPortalMessage(status, 'We couldn’t sign you in. Please try again.', 'error');
+        } finally {
+            if (submit) submit.disabled = false;
         }
     });
 }
@@ -218,8 +218,8 @@ function bindPortalSignOut() {
             togglePortalState(null);
             togglePortalProfileState(null);
 
-            if (document.body.dataset.requiresAuth === 'true') {
-                window.location.href = 'family-portal.html';
+            if (document.body.dataset.portalPageRole) {
+                window.location.replace('family-portal.html');
             }
         });
     });
@@ -908,12 +908,6 @@ async function initGraduationPlanner(profile) {
 
     if (!isStaffPortalProfile(profile)) {
         if (exportButton) exportButton.disabled = true;
-        document.querySelectorAll('[data-portal-denied]').forEach(el => {
-            el.hidden = false;
-        });
-        document.querySelectorAll('.graduation-planner-panel').forEach(el => {
-            el.hidden = true;
-        });
         setPortalMessage(status, 'Staff access is required for this page.', 'error');
         return;
     }
@@ -1057,58 +1051,68 @@ async function initGraduationPlanner(profile) {
     await refreshStudents();
 }
 
+function canOpenPortalPage(requiredRole, profile) {
+    if (!profile?.active) return false;
+    if (requiredRole === 'active') return true;
+    if (requiredRole === 'staff') return isStaffPortalProfile(profile);
+    if (requiredRole === 'admin') return isAdminPortalProfile(profile);
+    if (requiredRole === 'gradebook') return ['admin', 'teacher'].includes(profile.role);
+    return false;
+}
+
 async function initPortalAuth() {
-    const session = await getPortalSession();
-    togglePortalState(session);
-    const profile = await getPortalProfile(session);
-    togglePortalProfileState(profile);
+    const requiredRole = document.body.dataset.portalPageRole;
+    const page = document.querySelector('[data-portal-page-content]');
+    const unavailable = document.querySelector('[data-portal-unavailable]');
+    const pageSignOut = requiredRole && document.querySelector('[data-portal-sign-out]');
+    let displayedUser;
+    let displayedRole;
+
+    function showPortal(session, profile) {
+        togglePortalState(session);
+        togglePortalProfileState(profile);
+        if (unavailable) unavailable.hidden = !session || profile?.active === true;
+        if (!requiredRole) return;
+        if (!canOpenPortalPage(requiredRole, profile)) {
+            if (page) page.hidden = true;
+            if (pageSignOut) pageSignOut.hidden = true;
+            window.location.replace('family-portal.html');
+            return;
+        }
+        if (page) page.hidden = false;
+        if (pageSignOut) pageSignOut.hidden = false;
+        if (displayedUser === session.user.id && displayedRole === profile.role) return;
+        displayedUser = session.user.id;
+        displayedRole = profile.role;
+        if (document.body.classList.contains('grade-reports-page')) void renderFamilyGradeReportPage(session);
+        if (document.body.classList.contains('graduation-planner-page')) void initGraduationPlanner(profile);
+    }
 
     bindPortalLogin();
     bindPortalSignOut();
+    const session = await getPortalSession();
+    const profile = await getPortalProfile(session);
+    showPortal(session, profile);
 
-    if (document.body.dataset.requiresAuth === 'true' && !session) {
-        window.location.href = 'family-portal.html';
-        return;
-    }
-
-    if (document.body.classList.contains('grade-reports-page')) {
-        renderFamilyGradeReportPage(session);
-    }
-
-    if (document.body.classList.contains('graduation-planner-page')) {
-        initGraduationPlanner(profile);
-    }
-
+    let currentUser = session?.user?.id;
     let authChangeVersion = 0;
     if (portalClient) {
         portalClient.auth.onAuthStateChange((_event, nextSession) => {
             const changeVersion = ++authChangeVersion;
-            // Release Supabase's auth lock before making further client calls.
-            // Hide staff controls immediately when a session ends.
-            togglePortalState(nextSession);
-            togglePortalProfileState(null);
+            if (currentUser !== nextSession?.user?.id) {
+                currentUser = nextSession?.user?.id;
+                togglePortalState(nextSession);
+                togglePortalProfileState(null);
+                if (unavailable) unavailable.hidden = true;
+                if (page) page.hidden = true;
+                if (pageSignOut) pageSignOut.hidden = true;
+            }
+            // Supabase callbacks must release the auth lock before further requests.
             setTimeout(async () => {
                 try {
                     const nextProfile = await getPortalProfile(nextSession);
                     if (changeVersion !== authChangeVersion) return;
-                    togglePortalState(nextSession);
-                    togglePortalProfileState(nextProfile);
-
-                    if (document.body.classList.contains('grade-reports-page')) {
-                        if (nextSession) {
-                            renderFamilyGradeReportPage(nextSession);
-                        } else {
-                            window.location.href = 'family-portal.html';
-                        }
-                    }
-
-                    if (document.body.classList.contains('graduation-planner-page')) {
-                        if (nextSession) {
-                            initGraduationPlanner(nextProfile);
-                        } else {
-                            window.location.href = 'family-portal.html';
-                        }
-                    }
+                    showPortal(nextSession, nextProfile);
                 } catch (error) {
                     console.error('Unable to refresh portal access:', error);
                 }
