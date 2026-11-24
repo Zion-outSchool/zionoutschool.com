@@ -52,7 +52,7 @@
         <span class="eyebrow">Current Families</span>
         <h1>One place for the details<br><em>families need next.</em></h1>
         <p class="hero-subtext">
-            The Family Portal gathers current-family resources in one place, including placement testing information, payment timing, school calendar access, and future student communication tools.
+            Find school resources, student messages, and updates for your family.
         </p>
     </div>
 </section>
@@ -86,7 +86,7 @@
         <span class="section-label">Portal Status</span>
         <h2>A growing home for family resources.</h2>
         <p>
-            We are beginning with the resources families need most often, including calendar details, testing information, payment timing, and general reminders. As the portal grows, anything connected to a specific student, family, invoice, document, or private communication will be shared through a secure login.
+            Find calendar details, testing information, and payment timing below. Sign in for student records, messages, and school updates.
         </p>
     </div>
 </section>
@@ -138,7 +138,7 @@
         <span class="section-label">Family Login</span>
         <h2>Private family records are protected.</h2>
         <p>
-            Sign in to access grade reports and high school working transcripts. Family accounts are created by ZION outSchool administrators.
+            Sign in for messages, school updates, grade reports, and high school working transcripts. Family accounts are created by ZION outSchool administrators.
         </p>
 
         <div class="portal-login-card" data-portal-guest>
@@ -161,12 +161,18 @@
             <h3>Welcome back.</h3>
             <p>Signed in as <strong data-portal-user-email></strong>.</p>
             <div class="portal-auth-actions">
+                <a href="portal-communications.html#student-messages" data-portal-messages hidden>Student Messages</a>
+                <a href="portal-communications.html#school-updates" data-portal-active hidden>News, Announcements &amp; Documents</a>
                 <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
                 <a href="gradebook.html" data-portal-gradebook hidden>Open Teacher Gradebook</a>
                 <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
                 <a href="graduation-planner.html" data-portal-staff hidden>Open Staff Planner →</a>
                 <button type="button" data-portal-sign-out>Sign Out</button>
             </div>
+            <section class="portal-school-updates" data-portal-school-updates hidden aria-labelledby="portal-school-updates-title">
+                <h4 id="portal-school-updates-title">Latest from the school</h4>
+                <ul data-portal-school-update-list></ul>
+            </section>
         </div>
     </div>
 </section>
@@ -207,7 +213,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=portal-admin-20261124"></script>
+<script src="supabase-portal.js?v=communications-1"></script>
 <script src="script.js?v=student-councils-20261003"></script>
 </body>
 </html>

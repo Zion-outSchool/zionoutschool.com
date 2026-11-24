@@ -10,6 +10,18 @@ This site uses Supabase Auth for the Family Portal.
 
 Do not put the Supabase `service_role` key in this repository or in browser code.
 
+## Updating an Existing Portal
+
+Apply these files in order after the core portal and planner tables exist.
+
+1. [Family visibility and private report PDFs](supabase_family_visibility_repair.sql)
+2. [Portal accounts and invitations](supabase_portal_accounts.sql)
+3. [Graduation final grades](supabase_graduation_final_grade.sql)
+4. [Teacher gradebook](supabase_gradebook.sql)
+5. [Registration records](supabase_registration_records.sql)
+
+After the database update, follow the [invitation setup](#deploying-in-app-invitations) and the [registration sync setup](apps-script/registration/README.md). Use fictional records to verify account activation, grade finalization, registration delivery, and family access before releasing the website.
+
 ## Suggested First Data Model
 
 Run this in Supabase SQL Editor when you are ready to publish grade reports from Supabase.
@@ -118,8 +130,8 @@ on public.students
 for select
 to authenticated
 using (
-    family_id = auth.uid()
-    or public.current_portal_role() in ('admin', 'teacher', 'staff')
+    public.current_portal_role() in ('admin', 'teacher', 'staff')
+    or (public.current_portal_role() = 'family' and family_id = auth.uid())
 );
 
 create policy "Staff can create student files"
@@ -147,15 +159,7 @@ for select
 to authenticated
 using (
     status = 'published'
-    and (
-        public.current_portal_role() in ('admin', 'teacher', 'staff')
-        or exists (
-            select 1
-            from public.students
-            where students.id = grade_reports.student_id
-            and students.family_id = auth.uid()
-        )
-    )
+    and exists (select 1 from public.students s where s.id = grade_reports.student_id)
 );
 
 create policy "Portal users can read allowed graduation plan entries"
@@ -163,13 +167,7 @@ on public.graduation_plan_entries
 for select
 to authenticated
 using (
-    public.current_portal_role() in ('admin', 'teacher', 'staff')
-    or exists (
-        select 1
-        from public.students
-        where students.id = graduation_plan_entries.student_id
-        and students.family_id = auth.uid()
-    )
+    exists (select 1 from public.students s where s.id = graduation_plan_entries.student_id)
 );
 
 create policy "Staff can insert graduation plan entries"
@@ -196,13 +194,7 @@ on public.graduation_milestones
 for select
 to authenticated
 using (
-    public.current_portal_role() in ('admin', 'teacher', 'staff')
-    or exists (
-        select 1
-        from public.students
-        where students.id = graduation_milestones.student_id
-        and students.family_id = auth.uid()
-    )
+    exists (select 1 from public.students s where s.id = graduation_milestones.student_id)
 );
 
 create policy "Staff can insert graduation milestones"
@@ -231,32 +223,7 @@ For grade report PDFs and working transcripts, use a private Supabase Storage bu
 
 Store each file path on `grade_reports.storage_path`. The website creates a short-lived signed URL after the family logs in.
 
-You can create the bucket in Storage, or run:
-
-```sql
-insert into storage.buckets (id, name, public)
-values ('grade-reports', 'grade-reports', false)
-on conflict (id) do update set public = false;
-
-create policy "Portal users can read allowed grade report files"
-on storage.objects
-for select
-to authenticated
-using (
-    bucket_id = 'grade-reports'
-    and exists (
-        select 1
-        from public.grade_reports
-        join public.students on students.id = grade_reports.student_id
-        where grade_reports.storage_path = storage.objects.name
-        and grade_reports.status = 'published'
-        and (
-            public.current_portal_role() in ('admin', 'teacher', 'staff')
-            or students.family_id = auth.uid()
-        )
-    )
-);
-```
+Run [supabase_family_visibility_repair.sql](supabase_family_visibility_repair.sql) after the core portal tables and planner tables exist. It creates or updates the private bucket and ensures the database applies the same active-family and published-report rules to PDF downloads.
 
 ## Creating Portal Logins
 
@@ -267,7 +234,7 @@ Classroom rosters support K–12. Use a graduation requirement for an eligible c
 ### Deploying in-app invitations
 
 1. Run [supabase_portal_accounts.sql](supabase_portal_accounts.sql) after the portal tables exist.
-2. Deploy [portal-invite](supabase/functions/portal-invite/index.ts) as a Supabase Edge Function. It uses the project URL and service role key supplied by the Edge Function runtime. Keep the service role key on the server.
+2. Deploy [portal-invite](supabase/functions/portal-invite/index.ts) as a Supabase Edge Function. The repository disables legacy gateway JWT verification for this function. The handler validates the caller's Supabase Auth token and requires an active admin profile before sending an invite. It uses the project URL and service role key supplied by the Edge Function runtime. Keep the service role key on the server.
 3. Add `https://zionoutschool.com/portal-activate.html` to the [Auth redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls). Keep the standard confirmation link in the invite email template. For a separate test site, set `PORTAL_SITE_URL` on that project's Edge Function and allow its activation path.
 4. Confirm [custom SMTP or an Auth email hook](https://supabase.com/docs/guides/auth/auth-smtp) is set up to send to families outside the Supabase project team.
 
@@ -291,3 +258,52 @@ Admin, teacher, and staff logins can edit `graduation_plan_entries` and `graduat
 Family logins can view their student's saved graduation progress from `grade-reports.html`.
 
 The planner structure is based on `Arkansas_Graduation_Planning_Worksheet.xlsx`.
+
+## School Communications
+
+The Communications page opens from the signed-in Family Portal and from Student Records. An administrator can contact any linked family. A teacher can contact families for current classroom rosters. A family can reply to a conversation in the portal or use the reply address on an email. Each conversation is filed by student. Email-only conversations are visible to authorized school users in the student file.
+
+Administrators can publish news, announcements, and PDFs up to 10 MB to active portal accounts. An update can also be emailed individually to each active family with a confirmed address. PDF emails contain a portal link. Families download the PDF after signing in.
+
+### Set up communications in a test environment
+
+1. Apply [supabase_communications.sql](supabase_communications.sql) after the family access, portal account, and gradebook SQL. The migration creates the communication tables and the private `portal-documents` bucket.
+2. Deploy [communication-email](supabase/functions/communication-email/index.ts) with the per-function configuration in [supabase/config.toml](supabase/config.toml). Provide the Edge Function secrets listed below. These are separate from Supabase Auth's SMTP configuration.
+3. Create a dedicated Google Workspace mailbox, such as `portal-replies@zionoutschool.com`. In a separate Apps Script project owned by that mailbox, install [PortalReplies.gs](apps-script/communications/PortalReplies.gs) and its [manifest](apps-script/communications/appsscript.json). Set these Script Properties and install a one-minute time-driven trigger for `syncPortalEmailReplies`.
+
+   | Script property | Value |
+   | --- | --- |
+   | `COMMUNICATION_REPLY_ADDRESS` | The dedicated mailbox address used in the Edge Function configuration |
+   | `COMMUNICATION_REPLY_URL` | The deployed Edge Function URL ending in `/communication-email/reply` |
+   | `COMMUNICATION_INBOUND_KEY` | The same inbound secret used by the Edge Function |
+
+   Messages in that mailbox are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
+4. In Supabase, schedule a once-per-minute POST to `/functions/v1/communication-email/deliver`. Store the scheduler key and endpoint in Vault. For example, create Vault entries named `portal_communication_delivery_key` and `portal_communication_delivery_url`, then schedule this SQL. [Supabase scheduling guide](https://supabase.com/docs/guides/functions/schedule-functions)
+
+   ```sql
+   select net.http_post(
+       url := (select decrypted_secret from vault.decrypted_secrets
+               where name = 'portal_communication_delivery_url'),
+       headers := jsonb_build_object(
+           'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets
+                                          where name = 'portal_communication_delivery_key'),
+           'Content-Type', 'application/json'
+       ),
+       body := '{}'::jsonb,
+       timeout_milliseconds := 140000
+   );
+   ```
+
+5. Before enabling school-wide sends, verify with fictional records that a teacher can send to an assigned student's test family, a reply to the email appears in the same conversation as a portal reply, and a different family cannot open the conversation. Verify bulletin delivery and PDF access separately.
+
+| Edge Function setting | Value |
+| --- | --- |
+| `COMMUNICATION_CLOUDFLARE_ACCOUNT` | Cloudflare account ID |
+| `COMMUNICATION_CLOUDFLARE_TOKEN` | A token scoped to Email Sending for that account |
+| `COMMUNICATION_FROM` | A sender address on a Cloudflare-enabled domain |
+| `COMMUNICATION_REPLY_ADDRESS` | The dedicated Google Workspace mailbox |
+| `COMMUNICATION_PORTAL_URL` | The HTTPS URL of `portal-communications.html` |
+| `COMMUNICATION_DELIVERY_KEY` | A random scheduler secret of at least 32 characters |
+| `COMMUNICATION_INBOUND_KEY` | A separate random inbox secret of at least 32 characters |
+
+An email provider response can be accepted, failed, or uncertain. The delivery worker retries rate-limited requests. If the provider may have accepted a message but the result is unknown, review delivery before sending it again.

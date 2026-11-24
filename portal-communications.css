@@ -1,0 +1,28 @@
+.portal-communication-main { max-width: 72rem; }
+.portal-communication-main form { display: grid; gap: .8rem; margin: 1rem 0; }
+.portal-communication-main form > button { justify-self: start; }
+.portal-communication-main details { margin-top: 1rem; }
+#communication-status[data-tone="error"] { color: #922b23; }
+#communication-status[data-tone="success"] { color: #205539; }
+
+.communication-message-layout {
+    display: grid;
+    grid-template-columns: minmax(11rem, 1fr) minmax(0, 2fr);
+    gap: 1.25rem;
+}
+.communication-threads, .communication-history { list-style: none; padding: 0; margin: .65rem 0; }
+.communication-threads li + li, .communication-history li + li { margin-top: .55rem; }
+.communication-threads button { width: 100%; text-align: left; background: #fff; color: #193550; }
+.communication-threads button[aria-pressed="true"] { background: #193550; color: #fff; }
+.communication-history li { border: 1px solid #c8cbd0; border-radius: .5rem; padding: .75rem; }
+.communication-history small, .communication-post small { display: block; color: #4d5c6b; }
+.communication-history p, .communication-post p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.communication-post { padding: .7rem 0; border-bottom: 1px solid #c8cbd0; }
+.communication-post h3 { margin: .3rem 0; overflow-wrap: anywhere; }
+.communication-post a, .communication-post button { margin-right: .75rem; }
+.communication-checkbox { display: flex; align-items: baseline; gap: .5rem; }
+.communication-checkbox input { width: auto; }
+
+@media (max-width: 40rem) {
+    .communication-message-layout { grid-template-columns: minmax(0, 1fr); gap: .55rem; }
+}

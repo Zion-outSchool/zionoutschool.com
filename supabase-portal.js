@@ -75,6 +75,31 @@ function isAdminPortalProfile(profile) {
     return profile?.active === true && ADMIN_PORTAL_ROLES.includes(profile?.role);
 }
 
+let schoolUpdatesVersion = 0;
+
+async function refreshPortalSchoolUpdates(profile) {
+    const section = document.querySelector('[data-portal-school-updates]');
+    if (!section || !portalClient) return;
+    const list = section.querySelector('[data-portal-school-update-list]');
+    const version = ++schoolUpdatesVersion;
+    section.hidden = true;
+    list.replaceChildren();
+    if (!profile?.active) return;
+
+    const { data, error } = await portalClient.from('communication_posts').select('title')
+        .order('created_at', { ascending: false }).limit(3);
+    if (version !== schoolUpdatesVersion || error || !data?.length) return;
+    for (const { title } of data) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = 'portal-communications.html#school-updates';
+        link.textContent = title;
+        item.append(link);
+        list.append(item);
+    }
+    section.hidden = false;
+}
+
 function togglePortalProfileState(profile) {
     const isStaff = isStaffPortalProfile(profile);
     const isAdmin = isAdminPortalProfile(profile);
@@ -97,6 +122,15 @@ function togglePortalProfileState(profile) {
     document.querySelectorAll('[data-portal-role]').forEach(el => {
         el.textContent = profile?.role || '';
     });
+
+    document.querySelectorAll('[data-portal-active]').forEach(el => {
+        el.hidden = profile?.active !== true;
+    });
+    document.querySelectorAll('[data-portal-messages]').forEach(el => {
+        el.hidden = !profile?.active || !['family', 'teacher', 'admin'].includes(profile.role);
+    });
+
+    void refreshPortalSchoolUpdates(profile).catch(() => {});
 }
 
 async function getPortalProfile(session) {
