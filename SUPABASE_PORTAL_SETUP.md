@@ -269,7 +269,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
 
 1. Apply [supabase_communications.sql](supabase_communications.sql) after the family access, portal account, and gradebook SQL. The migration creates the communication tables and the private `portal-documents` bucket.
 2. Deploy [communication-email](supabase/functions/communication-email/index.ts) with the per-function configuration in [supabase/config.toml](supabase/config.toml). Provide the Edge Function secrets listed below. These are separate from Supabase Auth's SMTP configuration.
-3. Use a dedicated Google Workspace mailbox or an alias that receives replies, such as `portal-replies@zionoutschool.com`. In a separate Apps Script project owned by the account that receives replies, install [PortalReplies.gs](apps-script/communications/PortalReplies.gs) and its [manifest](apps-script/communications/appsscript.json). Set these Script Properties and install a one-minute time-driven trigger for `syncPortalEmailReplies`.
+3. Use a Google Workspace mailbox or an alias that receives replies. In a separate Apps Script project owned by the account that receives replies, install [PortalReplies.gs](apps-script/communications/PortalReplies.gs) and its [manifest](apps-script/communications/appsscript.json). Set these Script Properties, then run `installPortalReplySync` once to authorize the importer and install its one-minute trigger.
 
    | Script property | Value |
    | --- | --- |
@@ -279,7 +279,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
    | `COMMUNICATION_REPLY_URL` | The deployed Edge Function URL ending in `/communication-email/reply` |
    | `COMMUNICATION_INBOUND_KEY` | The same inbound secret used by the Edge Function |
 
-   The script checks the conversation recipient before retrieving a message body. In alias mode it also narrows the search to the reply alias. Replies are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
+   The script watches Gmail for new messages and retrieves a body only when the recipient matches the portal's tagged conversation address. Replies are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
 4. In Supabase, enable the `http` extension and schedule a once-per-minute POST to `/functions/v1/communication-email/deliver` using Supabase Cron. Create Vault entries named `portal_communication_delivery_key` and `portal_communication_delivery_url`, then use this SQL for the job. [Supabase HTTP extension](https://supabase.com/docs/guides/database/extensions/http)
 
    ```sql
