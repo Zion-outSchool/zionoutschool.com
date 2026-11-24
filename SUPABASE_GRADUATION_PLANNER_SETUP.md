@@ -45,6 +45,7 @@ create table if not exists public.graduation_plan_entries (
     grade_level text not null,
     course_name text,
     credits numeric(4, 2),
+    final_grade text,
     status text not null default 'not_started',
     notes text,
     updated_by uuid references auth.users(id),
@@ -154,6 +155,16 @@ where id = 'PASTE_AUTH_USER_UID_HERE';
 Use `admin`.
 
 Use `admin` to create student files. Use `admin`, `teacher`, or `staff` to edit graduation planner records.
+
+## Adding Final Grades to an Existing Planner
+
+Run [supabase_graduation_final_grade.sql](supabase_graduation_final_grade.sql) in the Supabase SQL Editor before deploying the updated portal. Existing entries can keep the grade blank. Staff can enter a letter grade or a numeric mark and save it with the course. Families can see it in their read-only graduation progress.
+
+## Teacher Gradebook
+
+Run [supabase_gradebook.sql](supabase_gradebook.sql) after the portal and final-grade setup. The gradebook is available from the Family Portal or Graduation Planner after a teacher or administrator signs in. Administrators can assign courses to active teachers.
+
+Set the grading method, missing-work policy, categories, and letter-grade thresholds for each course. At finalization, review the calculated grade and enter earned credits. Finalized courses appear in the Graduation Planner and working transcript. Reopening withdraws that course from the planner until it is finalized again and records the reason in the grade history. Families can see their student's finalized courses and their teachers' family feedback.
 
 ## If Family Logins Do Not Load
 

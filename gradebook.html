@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teacher Gradebook | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=portal-admin-20261124">
+</head>
+<body>
+    <header class="gradebook-header">
+        <a href="family-portal.html">ZION outSchool</a>
+        <nav aria-label="Staff navigation">
+            <a href="graduation-planner.html">Graduation Planner</a>
+            <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
+            <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
+            <button type="button" data-portal-sign-out hidden>Sign out</button>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Teacher Gradebook</h1>
+        <p id="gradebook-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <p id="gradebook-login" hidden><a href="family-portal.html">Sign in through the Family Portal</a></p>
+
+        <div id="gradebook" hidden>
+            <div class="gradebook-toolbar">
+                <label>Course and term <select id="gradebook-course"></select></label>
+                <button type="button" id="gradebook-new-course">New course</button>
+            </div>
+
+            <details id="course-settings-panel" class="gradebook-panel" hidden>
+                <summary>Course settings</summary>
+                <form id="course-settings">
+                    <div class="gradebook-form-grid">
+                        <label>Course name <input name="name" maxlength="120" required></label>
+                        <label>Term and school year <input name="term" maxlength="60" placeholder="Fall 2026" required></label>
+                        <label id="gradebook-teacher-label" hidden>Assigned teacher <select name="teacher_id"></select></label>
+                        <label>Calculation
+                            <select name="weighting">
+                                <option value="points">Total points</option>
+                                <option value="weighted">Weighted categories</option>
+                            </select>
+                        </label>
+                        <label>Missing work
+                            <select name="missing_is_zero">
+                                <option value="true">Count as zero</option>
+                                <option value="false">Exclude from calculation</option>
+                            </select>
+                        </label>
+                        <label>Categories
+                            <textarea name="categories" rows="4" required aria-describedby="category-help"></textarea>
+                            <small id="category-help">One category per line, such as Projects. For weights, use Projects=60. Weighted categories must total 100.</small>
+                        </label>
+                        <label>Letter-grade thresholds
+                            <textarea name="scale" rows="4" required aria-describedby="scale-help"></textarea>
+                            <small id="scale-help">One minimum percentage per line, such as A=90. Include a grade at 0. Confirm the scale before entering scores.</small>
+                        </label>
+                    </div>
+                    <button type="submit">Save course settings</button>
+                </form>
+            </details>
+
+            <div id="gradebook-workspace" hidden>
+                <div class="gradebook-setup">
+                    <details class="gradebook-panel">
+                        <summary>Manage roster</summary>
+                        <form id="gradebook-enroll" class="gradebook-form-grid">
+                            <label>Student <select name="student_id" required></select></label>
+                            <label>Graduation requirement <select name="requirement_key"></select></label>
+                            <label>Grade year <select name="grade_level" required></select></label>
+                            <label>Maximum course credits <input name="credits" type="number" min="0" max="99.99" step=".01" required></label>
+                            <button type="submit" id="gradebook-enrollment-submit">Add to roster</button>
+                            <button type="button" id="gradebook-enrollment-cancel" hidden>Cancel roster edit</button>
+                        </form>
+                    </details>
+                    <details class="gradebook-panel">
+                        <summary>Manage assignments</summary>
+                        <form id="gradebook-assignment" class="gradebook-form-grid">
+                            <label>Assignment <select name="assignment_id"></select></label>
+                            <button type="button" id="gradebook-duplicate-assignment">Duplicate selected assignment</button>
+                            <label>Copy from another course <select id="gradebook-copy-course"></select></label>
+                            <label>Assignment to copy <select id="gradebook-copy-assignment"></select></label>
+                            <label>Title <input name="title" maxlength="120" required></label>
+                            <label>Category <select name="category" required></select></label>
+                            <label>Due date <input name="due_on" type="date"></label>
+                            <label>Maximum points <input name="points" type="number" min=".01" max="9999999.99" step=".01" required></label>
+                            <label>Rubric criteria (optional)
+                                <textarea name="rubric" rows="3" placeholder="Evidence=10&#10;Presentation=10"></textarea>
+                                <small>Use one criterion and its maximum points per line. The points must add up to the assignment maximum.</small>
+                            </label>
+                            <button type="submit">Save assignment</button>
+                        </form>
+                    </details>
+                </div>
+
+                <section class="gradebook-panel" aria-labelledby="roster-title">
+                    <h2 id="roster-title">Roster and scores</h2>
+                    <p>Paste a column of scores into an assignment, or open Details for rubric scores and feedback. Save scores before reviewing final grades.</p>
+                    <p id="gradebook-rules"></p>
+                    <div id="gradebook-grid" class="gradebook-grid" tabindex="0" aria-label="Scrollable assignment scores"></div>
+                    <button type="button" id="gradebook-save">Save scores</button>
+                    <button type="button" id="gradebook-discard">Discard unsaved scores</button>
+                </section>
+            </div>
+        </div>
+
+        <dialog id="gradebook-score-dialog">
+            <form method="dialog" class="gradebook-dialog">
+                <h2>Assignment details</h2>
+                <p id="gradebook-score-heading"></p>
+                <div id="gradebook-rubric"></div>
+                <label>Feedback for family <textarea name="family_feedback" rows="3"></textarea></label>
+                <label>Private teacher note <textarea name="private_note" rows="3"></textarea></label>
+                <div class="gradebook-toolbar">
+                    <button value="cancel" formnovalidate>Cancel</button>
+                    <button value="apply">Apply to grid</button>
+                </div>
+            </form>
+        </dialog>
+
+        <dialog id="gradebook-final-dialog">
+            <form method="dialog" class="gradebook-dialog">
+                <h2>Review final grade</h2>
+                <p id="gradebook-final-summary"></p>
+                <ul id="gradebook-grade-breakdown"></ul>
+                <label id="gradebook-earned-label">Earned credits <input name="earned_credits" type="number" min="0" step=".01" required></label>
+                <label id="gradebook-override-label">Override grade <select name="override"></select></label>
+                <label>Reason <textarea name="reason" rows="3"></textarea></label>
+                <details>
+                    <summary>Finalization history</summary>
+                    <ol id="gradebook-history"></ol>
+                </details>
+                <div class="gradebook-toolbar">
+                    <button value="cancel" formnovalidate>Cancel</button>
+                    <button id="gradebook-confirm" value="confirm">Finalize grade</button>
+                </div>
+            </form>
+        </dialog>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
+    <script src="gradebook.js?v=portal-admin-20261124"></script>
+</body>
+</html>

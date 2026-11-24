@@ -117,10 +117,10 @@
             </article>
 
             <article class="portal-tool-card portal-tool-card--protected">
-                <span class="portal-tool-status">Coming soon</span>
+                <span class="portal-tool-status">Family login</span>
                 <h2>Grade Reports</h2>
-                <p>Grade reports, graduation progress, and high school working transcripts will be available here soon.</p>
-                <span class="portal-protected-note">Coming soon</span>
+                <p>Sign in to view published grades, teacher feedback, graduation progress, and working transcripts.</p>
+                <a href="grade-reports.html" data-portal-family hidden>Open Grade Reports</a>
             </article>
 
             <article class="portal-tool-card portal-tool-card--staff" data-portal-staff hidden>
@@ -161,6 +161,9 @@
             <h3>Welcome back.</h3>
             <p>Signed in as <strong data-portal-user-email></strong>.</p>
             <div class="portal-auth-actions">
+                <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
+                <a href="gradebook.html" data-portal-gradebook hidden>Open Teacher Gradebook</a>
+                <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
                 <a href="graduation-planner.html" data-portal-staff hidden>Open Staff Planner →</a>
                 <button type="button" data-portal-sign-out>Sign Out</button>
             </div>
@@ -204,7 +207,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=portal-auth-20261017"></script>
+<script src="supabase-portal.js?v=portal-admin-20261124"></script>
 <script src="script.js?v=student-councils-20261003"></script>
 </body>
 </html>

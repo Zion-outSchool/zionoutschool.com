@@ -87,6 +87,13 @@ function togglePortalProfileState(profile) {
         el.hidden = !isAdmin;
     });
 
+    document.querySelectorAll('[data-portal-gradebook]').forEach(el => {
+        el.hidden = !profile?.active || !['admin', 'teacher'].includes(profile.role);
+    });
+    document.querySelectorAll('[data-portal-family]').forEach(el => {
+        el.hidden = !profile?.active || profile.role !== 'family';
+    });
+
     document.querySelectorAll('[data-portal-role]').forEach(el => {
         el.textContent = profile?.role || '';
     });
@@ -365,11 +372,12 @@ function buildMilestoneMap(milestones) {
     return map;
 }
 
-function createPlannerInput(name, value, placeholder = '') {
+function createPlannerInput(name, value, label = '') {
     const input = document.createElement('input');
     input.name = name;
     input.value = value || '';
-    input.placeholder = placeholder;
+    input.placeholder = label;
+    input.setAttribute('aria-label', label);
     return input;
 }
 
@@ -399,6 +407,12 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
 
     const editable = Boolean(options.editable);
     const entryMap = buildGraduationEntryMap(entries);
+    const syncedCourses = new Map();
+    for (const entry of options.finalCourses || []) {
+        const key = graduationCellKey(entry.requirement_key, entry.grade_level);
+        if (!syncedCourses.has(key)) syncedCourses.set(key, []);
+        syncedCourses.get(key).push(entry);
+    }
     const milestoneMap = buildMilestoneMap(milestones);
 
     container.innerHTML = '';
@@ -428,22 +442,30 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
         GRADUATION_GRADES.forEach(grade => {
             const cell = document.createElement('td');
             const entry = entryMap.get(graduationCellKey(requirement.key, grade));
+            const finalized = syncedCourses.get(graduationCellKey(requirement.key, grade)) || [];
 
             if (!requirement.category && editable) {
                 cell.dataset.requirementKey = requirement.key;
                 cell.dataset.gradeLevel = grade;
                 cell.appendChild(createPlannerInput('course_name', entry?.course_name, 'Course'));
                 cell.appendChild(createPlannerInput('credits', entry?.credits, 'Credits'));
+                cell.appendChild(createPlannerInput('final_grade', entry?.final_grade, 'Final grade'));
                 cell.appendChild(createPlannerStatusSelect(entry?.status));
                 cell.appendChild(createPlannerInput('notes', entry?.notes, 'Notes'));
             } else {
                 const parts = [
                     entry?.course_name,
                     entry?.credits ? `${entry.credits} credit${Number(entry.credits) === 1 ? '' : 's'}` : '',
+                    entry?.final_grade ? `Final grade: ${entry.final_grade}` : '',
                     entry?.status && entry.status !== 'not_started' ? entry.status.replace('_', ' ') : '',
                     entry?.notes
                 ].filter(Boolean);
                 cell.textContent = parts.join(' | ');
+            }
+            for (const course of finalized) {
+                appendTextElement(cell, 'p', [
+                    course.course_name, course.term, `Final grade: ${course.final_grade}`, `${course.credits} credits`
+                ].join(' · '), 'planner-gradebook-course');
             }
 
             row.appendChild(cell);
@@ -507,22 +529,95 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
 }
 
 async function loadGraduationRecords(studentId) {
-    const [{ data: entries, error: entryError }, { data: milestones, error: milestoneError }] = await Promise.all([
+    const [{ data: entries, error: entryError }, { data: milestones, error: milestoneError }, finals] = await Promise.all([
         portalClient
             .from('graduation_plan_entries')
-            .select('id, student_id, requirement_key, grade_level, course_name, credits, status, notes')
+            .select('id, student_id, requirement_key, grade_level, course_name, credits, final_grade, status, notes')
             .eq('student_id', studentId),
         portalClient
             .from('graduation_milestones')
             .select('id, student_id, milestone_key, status, completed_on, notes')
+            .eq('student_id', studentId),
+        portalClient
+            .from('gradebook_final_courses')
+            .select('course_name, term, requirement_key, grade_level, credits, final_grade')
             .eq('student_id', studentId)
     ]);
 
     if (entryError || milestoneError) {
         throw entryError || milestoneError;
     }
+    if (finals.error && !['42P01', 'PGRST205'].includes(finals.error.code)) throw finals.error;
 
-    return { entries: entries || [], milestones: milestones || [] };
+    return { entries: entries || [], milestones: milestones || [], finalCourses: finals.data || [] };
+}
+
+function completedTranscriptCourses(entries, finalCourses) {
+    const creditCourses = finalCourses.filter(course => course.requirement_key && GRADUATION_GRADES.includes(course.grade_level));
+    const sameCourse = (entry, final) => entry.grade_level === final.grade_level
+        && entry.requirement_key === final.requirement_key
+        && entry.course_name?.trim().toLowerCase() === final.course_name.trim().toLowerCase();
+    return [
+        ...entries.filter(entry => entry.status === 'completed' && !creditCourses.some(final => sameCourse(entry, final))),
+        ...creditCourses
+    ];
+}
+
+function printGraduationTranscript(student, courses) {
+    const transcript = document.createElement('article');
+    transcript.className = 'planner-transcript';
+
+    appendTextElement(transcript, 'p', 'ZION outSchool', 'transcript-school');
+    appendTextElement(transcript, 'h1', 'Working Transcript');
+    appendTextElement(transcript, 'p', [student.first_name, student.last_name].filter(Boolean).join(' '), 'transcript-student');
+    appendTextElement(transcript, 'p', `Generated ${formatPortalDate(new Date())}`);
+
+    const table = document.createElement('table');
+    const headings = table.createTHead().insertRow();
+    ['Course and term', 'Graduation requirement', 'Final grade', 'Earned credits'].forEach(label => {
+        appendTextElement(headings, 'th', label).scope = 'col';
+    });
+
+    const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+    let earnedCredits = 0;
+    for (const grade of GRADUATION_GRADES) {
+        const gradeCourses = courses.filter(course => course.grade_level === grade)
+            .sort((first, second) => (first.course_name || '').localeCompare(second.course_name || ''));
+        if (!gradeCourses.length) continue;
+
+        const group = table.createTBody();
+        const gradeHeading = appendTextElement(group.insertRow(), 'th', `Grade ${grade}`, 'transcript-grade');
+        gradeHeading.colSpan = 4;
+        gradeHeading.scope = 'rowgroup';
+
+        for (const course of gradeCourses) {
+            const row = group.insertRow();
+            const requirement = GRADUATION_REQUIREMENTS.find(item => item.key === course.requirement_key);
+            appendTextElement(row, 'td', [course.course_name, course.term].filter(Boolean).join(' · ') || '—');
+            appendTextElement(row, 'td', requirement?.label || course.requirement_key);
+            appendTextElement(row, 'td', course.final_grade || '—');
+            appendTextElement(row, 'td', course.credits == null ? '—' : numberFormat.format(course.credits));
+            earnedCredits += Number(course.credits ?? 0);
+        }
+    }
+    transcript.appendChild(table);
+    appendTextElement(transcript, 'p', `Total earned credits: ${numberFormat.format(earnedCredits)}`, 'transcript-total');
+
+    document.body.appendChild(transcript);
+    const originalTitle = document.title;
+    document.title = 'ZION outSchool - Working Transcript';
+    const closeTranscript = () => {
+        window.removeEventListener('afterprint', closeTranscript);
+        transcript.remove();
+        document.title = originalTitle;
+    };
+    window.addEventListener('afterprint', closeTranscript);
+    try {
+        window.print();
+    } catch (error) {
+        closeTranscript();
+        throw error;
+    }
 }
 
 async function loadPlannerStudents() {
@@ -580,7 +675,7 @@ async function populateStudentFamilySelect(select) {
 
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.textContent = 'Choose a family login';
+    placeholder.textContent = 'Link a family login later';
     select.appendChild(placeholder);
 
     data.forEach(family => {
@@ -623,8 +718,8 @@ async function initStudentFileForm(profile, onStudentCreated) {
         const lastName = form.elements.last_name?.value.trim();
         const gradeLevel = form.elements.grade_level?.value.trim();
 
-        if (!familyId || !firstName || !lastName) {
-            setPortalMessage(status, 'Choose a family login or paste the family Auth UID, then enter the student first and last name.', 'error');
+        if (!firstName || !lastName) {
+            setPortalMessage(status, 'Enter the student’s first and last name.', 'error');
             return;
         }
 
@@ -634,7 +729,7 @@ async function initStudentFileForm(profile, onStudentCreated) {
         const { data, error } = await portalClient
             .from('students')
             .insert({
-                family_id: familyId,
+                family_id: familyId || null,
                 first_name: firstName,
                 preferred_name: preferredName || null,
                 last_name: lastName,
@@ -693,6 +788,7 @@ async function renderFamilyGraduationProgress(session) {
             const meaningfulEntries = records.entries.filter(entry => (
                 entry.course_name ||
                 entry.credits ||
+                entry.final_grade ||
                 entry.notes ||
                 (entry.status && entry.status !== 'not_started')
             ));
@@ -702,7 +798,7 @@ async function renderFamilyGraduationProgress(session) {
                 (milestone.status && milestone.status !== 'not_started')
             ));
 
-            if (!meaningfulEntries.length && !meaningfulMilestones.length) continue;
+            if (!meaningfulEntries.length && !meaningfulMilestones.length && !records.finalCourses.length) continue;
 
             const section = document.createElement('section');
             section.className = 'graduation-student-section';
@@ -712,7 +808,27 @@ async function renderFamilyGraduationProgress(session) {
             section.appendChild(studentContainer);
             container.appendChild(section);
 
-            renderGraduationPlannerTable(studentContainer, meaningfulEntries, meaningfulMilestones, { editable: false });
+            renderGraduationPlannerTable(studentContainer, meaningfulEntries, meaningfulMilestones, { finalCourses: records.finalCourses });
+            if (records.finalCourses.length) {
+                const otherCourses = records.finalCourses.filter(course => !course.requirement_key);
+                if (otherCourses.length) {
+                    appendTextElement(section, 'h4', 'Classroom grades');
+                    const courses = document.createElement('ul');
+                    for (const course of otherCourses) {
+                        appendTextElement(courses, 'li', `${course.course_name} · ${course.term} · Final grade: ${course.final_grade}`);
+                    }
+                    section.appendChild(courses);
+                }
+                const { data: feedback } = await portalClient.rpc('gradebook_family_feedback', { target_student: student.id });
+                if (feedback?.length) {
+                    const list = document.createElement('ul');
+                    appendTextElement(section, 'h4', 'Teacher feedback');
+                    for (const item of feedback) {
+                        appendTextElement(list, 'li', `${item.course_name} · ${item.term} · ${item.assignment_title}: ${item.feedback}`);
+                    }
+                    section.appendChild(list);
+                }
+            }
             renderedStudents += 1;
         } catch (error) {
             console.error('Unable to load graduation records:', error);
@@ -748,10 +864,13 @@ async function initGraduationPlanner(profile) {
     const container = document.querySelector('[data-graduation-planner-editable]');
     const status = document.querySelector('[data-graduation-planner-status]');
     const saveButton = document.querySelector('[data-save-graduation-plan]');
+    const exportButton = document.querySelector('[data-export-graduation-transcript]');
+    let students = [];
 
     if (!select || !container || !portalClient) return;
 
     if (!isStaffPortalProfile(profile)) {
+        if (exportButton) exportButton.disabled = true;
         document.querySelectorAll('[data-portal-denied]').forEach(el => {
             el.hidden = false;
         });
@@ -763,14 +882,22 @@ async function initGraduationPlanner(profile) {
     }
 
     async function loadSelectedStudent() {
-        if (!select.value) return;
+        const studentId = select.value;
+        delete container.dataset.studentId;
+        if (saveButton) saveButton.disabled = true;
+        container.replaceChildren();
+        if (!studentId) return;
         setPortalMessage(status, 'Loading planner...', 'neutral');
 
         try {
-            const records = await loadGraduationRecords(select.value);
-            renderGraduationPlannerTable(container, records.entries, records.milestones, { editable: true });
+            const records = await loadGraduationRecords(studentId);
+            if (select.value !== studentId) return;
+            renderGraduationPlannerTable(container, records.entries, records.milestones, { editable: true, finalCourses: records.finalCourses });
+            container.dataset.studentId = studentId;
+            if (saveButton) saveButton.disabled = false;
             setPortalMessage(status, 'Planner loaded.', 'success');
         } catch (error) {
+            if (select.value !== studentId) return;
             console.error('Unable to load planner records:', error);
             container.innerHTML = '';
             setPortalMessage(status, 'Planner records could not be loaded. Run the graduation planner SQL setup first.', 'error');
@@ -781,7 +908,8 @@ async function initGraduationPlanner(profile) {
         setPortalMessage(status, 'Loading students...', 'neutral');
 
         try {
-            const students = await populatePlannerStudentSelect(select, selectedStudentId);
+            students = await populatePlannerStudentSelect(select, selectedStudentId);
+            if (exportButton) exportButton.disabled = !students.length;
             if (!students.length) {
                 container.innerHTML = '';
                 setPortalMessage(status, 'No students are available yet. Create a student file above.', 'neutral');
@@ -794,6 +922,42 @@ async function initGraduationPlanner(profile) {
         }
     }
 
+    if (exportButton) {
+        exportButton.onclick = async () => {
+            const student = students.find(record => record.id === select.value);
+            if (!student) return;
+            if (saveButton?.disabled && container.dataset.studentId === student.id) {
+                setPortalMessage(status, 'Wait for the planner to finish saving before exporting.', 'neutral');
+                return;
+            }
+
+            exportButton.disabled = true;
+            setPortalMessage(status, 'Preparing transcript…', 'neutral');
+            try {
+                const { entries, finalCourses } = await loadGraduationRecords(student.id);
+                const session = await getPortalSession();
+                if (session?.user?.id !== profile.id) return;
+                if (select.value !== student.id) {
+                    setPortalMessage(status, 'Select the student again to export their transcript.', 'neutral');
+                    return;
+                }
+
+                const courses = completedTranscriptCourses(entries, finalCourses);
+                if (!courses.length) {
+                    setPortalMessage(status, 'Save at least one completed course before exporting a transcript.', 'neutral');
+                    return;
+                }
+                setPortalMessage(status, 'Choose Save as PDF in the print dialog.', 'success');
+                printGraduationTranscript(student, courses);
+            } catch (error) {
+                console.error('Unable to export transcript:', error);
+                setPortalMessage(status, 'The transcript could not be exported. Try again.', 'error');
+            } finally {
+                exportButton.disabled = false;
+            }
+        };
+    }
+
     if (select.dataset.bound !== 'true') {
         select.dataset.bound = 'true';
         select.addEventListener('change', loadSelectedStudent);
@@ -804,49 +968,52 @@ async function initGraduationPlanner(profile) {
     if (saveButton && saveButton.dataset.bound !== 'true') {
         saveButton.dataset.bound = 'true';
         saveButton.addEventListener('click', async () => {
-        if (!select.value) return;
+            const studentId = container.dataset.studentId;
+            if (!studentId || select.value !== studentId) return;
 
-        const entryRows = Array.from(container.querySelectorAll('td[data-requirement-key][data-grade-level]')).map(cell => ({
-            student_id: select.value,
-            requirement_key: cell.dataset.requirementKey,
-            grade_level: cell.dataset.gradeLevel,
-            course_name: cell.querySelector('[name="course_name"]')?.value.trim() || null,
-            credits: cell.querySelector('[name="credits"]')?.value.trim() || null,
-            notes: cell.querySelector('[name="notes"]')?.value.trim() || null,
-            status: cell.querySelector('[name="status"]')?.value || 'not_started',
-            updated_by: profile.id
-        }));
+            const entryRows = Array.from(container.querySelectorAll('td[data-requirement-key][data-grade-level]')).map(cell => ({
+                student_id: studentId,
+                requirement_key: cell.dataset.requirementKey,
+                grade_level: cell.dataset.gradeLevel,
+                course_name: cell.querySelector('[name="course_name"]')?.value.trim() || null,
+                credits: cell.querySelector('[name="credits"]')?.value.trim() || null,
+                final_grade: cell.querySelector('[name="final_grade"]')?.value.trim() || null,
+                notes: cell.querySelector('[name="notes"]')?.value.trim() || null,
+                status: cell.querySelector('[name="status"]')?.value || 'not_started',
+                updated_by: profile.id
+            }));
 
-        const milestoneRows = Array.from(container.querySelectorAll('.graduation-milestone-card[data-milestone-key]')).map(card => ({
-            student_id: select.value,
-            milestone_key: card.dataset.milestoneKey,
-            status: card.querySelector('[name="status"]')?.value || 'not_started',
-            completed_on: card.querySelector('[name="completed_on"]')?.value.trim() || null,
-            notes: card.querySelector('[name="notes"]')?.value.trim() || null,
-            updated_by: profile.id
-        }));
+            const milestoneRows = Array.from(container.querySelectorAll('.graduation-milestone-card[data-milestone-key]')).map(card => ({
+                student_id: studentId,
+                milestone_key: card.dataset.milestoneKey,
+                status: card.querySelector('[name="status"]')?.value || 'not_started',
+                completed_on: card.querySelector('[name="completed_on"]')?.value.trim() || null,
+                notes: card.querySelector('[name="notes"]')?.value.trim() || null,
+                updated_by: profile.id
+            }));
 
-        setPortalMessage(status, 'Saving planner...', 'neutral');
-        if (saveButton) saveButton.disabled = true;
+            setPortalMessage(status, 'Saving planner...', 'neutral');
+            if (saveButton) saveButton.disabled = true;
 
-        const [{ error: entryError }, { error: milestoneError }] = await Promise.all([
-            portalClient
-                .from('graduation_plan_entries')
-                .upsert(entryRows, { onConflict: 'student_id,requirement_key,grade_level' }),
-            portalClient
-                .from('graduation_milestones')
-                .upsert(milestoneRows, { onConflict: 'student_id,milestone_key' })
-        ]);
+            const [{ error: entryError }, { error: milestoneError }] = await Promise.all([
+                portalClient
+                    .from('graduation_plan_entries')
+                    .upsert(entryRows, { onConflict: 'student_id,requirement_key,grade_level' }),
+                portalClient
+                    .from('graduation_milestones')
+                    .upsert(milestoneRows, { onConflict: 'student_id,milestone_key' })
+            ]);
 
-        if (saveButton) saveButton.disabled = false;
+            if (select.value !== studentId) return;
+            if (saveButton) saveButton.disabled = container.dataset.studentId !== studentId;
 
-        if (entryError || milestoneError) {
-            console.error('Unable to save planner:', entryError || milestoneError);
-            setPortalMessage(status, 'Planner could not be saved. Check Supabase policies and try again.', 'error');
-            return;
-        }
+            if (entryError || milestoneError) {
+                console.error('Unable to save planner:', entryError || milestoneError);
+                setPortalMessage(status, 'Planner could not be saved. Check Supabase policies and try again.', 'error');
+                return;
+            }
 
-        setPortalMessage(status, 'Planner saved.', 'success');
+            setPortalMessage(status, 'Planner saved.', 'success');
         });
     }
 

@@ -8251,6 +8251,108 @@ header {
     padding: 1.2rem;
 }
 
+.editorial-page.portal-page.graduation-planner-page .planner-controls {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.planner-transcript-help {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+.planner-transcript {
+    display: none;
+}
+
+.planner-gradebook-course {
+    margin-top: .55rem;
+    padding: .45rem;
+    background: #eef3f8;
+    border-left: 2px solid #516c86;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 740px) {
+    .editorial-page.portal-page.graduation-planner-page .planner-controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media print {
+    @page graduation-transcript {
+        size: letter;
+        margin: 0.65in;
+    }
+
+    body.graduation-planner-page:has(> .planner-transcript) {
+        background: white;
+        color: #152234;
+    }
+
+    body.graduation-planner-page:has(> .planner-transcript) > :not(.planner-transcript) {
+        display: none !important;
+    }
+
+    .planner-transcript {
+        display: block;
+        font: 10pt/1.4 Arial, sans-serif;
+        page: graduation-transcript;
+    }
+
+    .planner-transcript h1 {
+        color: inherit;
+        font: bold 24pt/1.15 Arial, sans-serif;
+        margin: 0.12in 0 0.18in;
+    }
+
+    .planner-transcript p {
+        margin: 0 0 0.05in;
+    }
+
+    .planner-transcript .transcript-school,
+    .planner-transcript .transcript-student,
+    .planner-transcript .transcript-total {
+        font-weight: bold;
+    }
+
+    .planner-transcript .transcript-student {
+        font-size: 13pt;
+    }
+
+    .planner-transcript table {
+        border-collapse: collapse;
+        margin: 0.22in 0 0.13in;
+        width: 100%;
+    }
+
+    .planner-transcript tr {
+        break-inside: avoid;
+    }
+
+    .planner-transcript th,
+    .planner-transcript td {
+        border-bottom: 1px solid #aab4c0;
+        overflow-wrap: anywhere;
+        padding: 0.06in 0.08in;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .planner-transcript th:first-child {
+        width: 32%;
+    }
+
+    .planner-transcript th:nth-last-child(-n+2):not([colspan]),
+    .planner-transcript td:nth-last-child(-n+2) {
+        text-align: right;
+        width: 15%;
+    }
+
+    .planner-transcript .transcript-grade {
+        break-after: avoid;
+    }
+}
+
 .editorial-page.portal-page .student-file-panel {
     margin-bottom: 2rem;
 }

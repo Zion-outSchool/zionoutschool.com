@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Activate Portal Account | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=portal-admin-20261124">
+</head>
+<body>
+    <header class="gradebook-header"><a href="family-portal.html">ZION outSchool</a></header>
+    <main class="portal-account-main">
+        <h1>Activate your portal account</h1>
+        <p id="portal-activate-status" role="status" aria-live="polite">Checking your invitation…</p>
+        <form id="portal-activate-form" class="gradebook-panel" hidden>
+            <p id="portal-activate-email"></p>
+            <label>New password <input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+            <label>Confirm password <input name="confirm" type="password" autocomplete="new-password" minlength="8" required></label>
+            <button type="submit">Set password and open portal</button>
+        </form>
+        <p><a href="family-portal.html">Go to the Family Portal</a></p>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="portal-activate.js?v=20261124"></script>
+    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
+</body>
+</html>
