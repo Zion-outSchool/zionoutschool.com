@@ -7993,6 +7993,12 @@ header {
     gap: 0.45rem;
 }
 
+.editorial-page.portal-page .portal-password-reset-link {
+    justify-self: start;
+    color: var(--gold-light);
+    text-decoration: underline;
+}
+
 .editorial-page.portal-page .portal-login-form label span {
     color: rgba(255,255,255,0.78);
     font-family: var(--sans);
