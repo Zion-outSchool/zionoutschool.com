@@ -112,6 +112,12 @@ async function initStudentRecords() {
             return;
         }
         renderRegistrationDetails(detail, data);
+        if (data.student_id) {
+            const link = document.createElement('a');
+            link.href = 'portal-communications.html?student=' + encodeURIComponent(data.student_id) + '#student-messages';
+            link.textContent = 'Open student conversations';
+            detail.append(link);
+        }
         detail.hidden = false;
         linkForm.hidden = !admin || Boolean(data.student_id);
         setPortalMessage(status, '');

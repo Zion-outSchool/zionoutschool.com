@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex">
+    <title>Communications | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=20261124">
+    <link rel="stylesheet" href="portal-communications.css?v=1">
+</head>
+<body data-requires-auth="true">
+    <header class="gradebook-header">
+        <a href="family-portal.html">ZION outSchool</a>
+        <nav aria-label="Portal navigation">
+            <a href="family-portal.html">Family Portal</a>
+            <a href="#school-updates">School Updates</a>
+            <button type="button" data-portal-sign-out hidden>Sign out</button>
+        </nav>
+    </header>
+    <main class="portal-communication-main">
+        <h1>Communications</h1>
+        <p id="communication-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <div id="communication-content" hidden>
+            <section id="student-messages" class="gradebook-panel" hidden aria-labelledby="student-messages-title">
+                <h2 id="student-messages-title">Student Messages</h2>
+                <label>Student <select id="communication-student"></select></label>
+                <details id="communication-compose" hidden>
+                    <summary>New message</summary>
+                    <form id="communication-message-form">
+                        <label>Delivery
+                            <select name="channel">
+                                <option value="portal">Portal only</option>
+                                <option value="email">Email only</option>
+                                <option value="both">Portal and email</option>
+                            </select>
+                        </label>
+                        <label>Subject <input name="subject" maxlength="120" required></label>
+                        <label>Message <textarea name="body" rows="5" maxlength="10000" required></textarea></label>
+                        <button type="submit">Send message</button>
+                    </form>
+                </details>
+                <div class="communication-message-layout">
+                    <div>
+                        <h3>Conversations</h3>
+                        <ul id="communication-threads" class="communication-threads"></ul>
+                        <button id="communication-more-threads" type="button" hidden>More conversations</button>
+                    </div>
+                    <article id="communication-thread" hidden>
+                        <h3 id="communication-thread-title"></h3>
+                        <button id="communication-older" type="button" hidden>Show older messages</button>
+                        <ol id="communication-history" class="communication-history"></ol>
+                        <form id="communication-reply">
+                            <label>Reply <textarea name="body" rows="4" maxlength="10000" required></textarea></label>
+                            <button type="submit">Send reply</button>
+                        </form>
+                    </article>
+                </div>
+            </section>
+            <section id="school-updates" class="gradebook-panel" aria-labelledby="school-updates-title">
+                <h2 id="school-updates-title">School Updates</h2>
+                <details id="communication-publish" hidden>
+                    <summary>Publish an update</summary>
+                    <form id="communication-post-form">
+                        <label>Type
+                            <select name="kind">
+                                <option value="news">News</option>
+                                <option value="announcement">Announcement</option>
+                                <option value="document">Document</option>
+                            </select>
+                        </label>
+                        <label>Title <input name="title" maxlength="120" required></label>
+                        <label>Details <textarea name="body" rows="5" maxlength="10000" required></textarea></label>
+                        <label id="communication-document-label" hidden>PDF, up to 10 MB
+                            <input type="file" name="document" accept="application/pdf,.pdf">
+                        </label>
+                        <label class="communication-checkbox"><input type="checkbox" name="email"> Also email all active families with confirmed addresses</label>
+                        <button type="submit">Publish update</button>
+                    </form>
+                </details>
+                <div id="communication-posts"></div>
+                <button id="communication-more-posts" type="button" hidden>Older updates</button>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=communications-1"></script>
+    <script src="portal-communications.js?v=1"></script>
+</body>
+</html>
