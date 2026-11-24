@@ -62,6 +62,10 @@
                 <details id="communication-publish" hidden>
                     <summary>Publish an update</summary>
                     <form id="communication-post-form">
+                        <label>Audience
+                            <select name="course" required></select>
+                        </label>
+                        <p id="communication-audience" role="status" aria-live="polite"></p>
                         <label>Type
                             <select name="kind">
                                 <option value="news">News</option>
@@ -74,7 +78,7 @@
                         <label id="communication-document-label" hidden>PDF, up to 10 MB
                             <input type="file" name="document" accept="application/pdf,.pdf">
                         </label>
-                        <label class="communication-checkbox"><input type="checkbox" name="email"> Also email all active families with confirmed addresses</label>
+                        <label class="communication-checkbox"><input type="checkbox" name="email"> Also email families in this audience</label>
                         <button type="submit">Publish update</button>
                     </form>
                 </details>
@@ -85,6 +89,6 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=communications-1"></script>
-    <script src="portal-communications.js?v=1"></script>
+    <script src="portal-communications.js?v=classroom-updates-1"></script>
 </body>
 </html>

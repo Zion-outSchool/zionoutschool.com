@@ -39,6 +39,10 @@ create table if not exists public.communication_reply_keys (
         check (token ~ '^[0-9a-f]{32}$')
 );
 
+alter table public.communication_posts
+    add column if not exists course_id uuid references public.gradebook_courses(id),
+    add column if not exists author_id uuid references public.portal_users(id) on delete set null;
+
 create table if not exists public.communication_delivery (
     id uuid primary key default gen_random_uuid(),
     message_id uuid references public.communication_messages(id) on delete cascade,
@@ -104,8 +108,33 @@ create policy communication_messages_read on public.communication_messages for s
 );
 
 drop policy if exists communication_posts_read on public.communication_posts;
+create or replace function public.communication_class_has_family(target_course uuid, target_family uuid)
+returns boolean language sql stable security definer set search_path = ''
+as $$
+    select exists (
+        select 1 from public.gradebook_enrollments e
+        join public.students s on s.id = e.student_id
+        where e.course_id = target_course and s.family_id = target_family
+    );
+$$;
+revoke all on function public.communication_class_has_family(uuid, uuid) from public, anon, authenticated;
+
+create or replace function public.communication_can_read_class_post(target_course uuid)
+returns boolean language sql stable security definer set search_path = ''
+as $$
+    select coalesce(public.gradebook_can_manage(target_course) or (
+        public.current_portal_role() = 'family'
+        and public.communication_class_has_family(target_course, auth.uid())
+    ), false);
+$$;
+revoke all on function public.communication_can_read_class_post(uuid) from public, anon;
+grant execute on function public.communication_can_read_class_post(uuid) to authenticated;
+
 create policy communication_posts_read on public.communication_posts for select to authenticated using (
-    archived_at is null and public.current_portal_role() in ('family', 'teacher', 'staff', 'admin')
+    archived_at is null and (
+        (course_id is null and public.current_portal_role() in ('family', 'teacher', 'staff', 'admin'))
+        or (course_id is not null and public.communication_can_read_class_post(course_id))
+    )
 );
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -231,7 +260,7 @@ begin
     values (post_id, post_kind, btrim(post_title), btrim(post_body), nullif(btrim(file_name), ''))
     on conflict (id) do nothing;
     if not found then
-        if not exists (select 1 from public.communication_posts p where p.id = post_id and p.kind = post_kind
+        if not exists (select 1 from public.communication_posts p where p.id = post_id and p.course_id is null and p.kind = post_kind
             and p.title = btrim(post_title) and p.body = btrim(post_body)
             and p.document_name is not distinct from nullif(btrim(file_name), '')) then
             raise exception 'This post could not be saved.' using errcode = '22023';
@@ -249,12 +278,84 @@ begin
 end;
 $$;
 
+create or replace function public.communication_class_recipients(target_course uuid)
+returns table (family_id uuid, email_available boolean)
+language sql stable security definer set search_path = ''
+as $$
+    select distinct f.id, u.email_confirmed_at is not null and nullif(u.email, '') is not null
+    from public.gradebook_enrollments e
+    join public.students s on s.id = e.student_id
+    join public.portal_users f on f.id = s.family_id and f.active and f.role = 'family'
+    join auth.users u on u.id = f.id
+    where e.course_id = target_course;
+$$;
+revoke all on function public.communication_class_recipients(uuid) from public, anon, authenticated;
+
+create or replace function public.communication_class_audience(target_course uuid)
+returns table (family_count integer, email_count integer)
+language plpgsql stable security definer set search_path = ''
+as $$
+begin
+    if public.gradebook_can_manage(target_course) is not true then
+        raise exception 'Choose a classroom you are assigned to.' using errcode = '42501';
+    end if;
+    return query select count(*)::integer, count(*) filter (where r.email_available)::integer
+    from public.communication_class_recipients(target_course) r;
+end;
+$$;
+
+create or replace function public.communication_publish_class(
+    post_id uuid, target_course uuid, post_kind text, post_title text, post_body text, email_families boolean
+) returns integer language plpgsql security definer set search_path = ''
+as $$
+declare
+    actor uuid := auth.uid();
+    queued integer := 0;
+begin
+    -- Lock the course against reassignment while authorizing the publication.
+    perform 1 from public.gradebook_courses c where c.id = target_course for share;
+    if not found or public.gradebook_can_manage(target_course) is not true then
+        raise exception 'Choose a classroom you are assigned to.' using errcode = '42501';
+    end if;
+    if post_kind is null or post_kind not in ('news', 'announcement') then
+        raise exception 'Choose news or announcement.' using errcode = '22023';
+    end if;
+    insert into public.communication_posts (id, course_id, author_id, kind, title, body)
+    values (post_id, target_course, actor, post_kind, btrim(post_title), btrim(post_body))
+    on conflict (id) do nothing;
+    if not found then
+        if not exists (select 1 from public.communication_posts p where p.id = post_id
+            and p.course_id = target_course and p.author_id = actor and p.kind = post_kind
+            and p.title = btrim(post_title) and p.body = btrim(post_body)) then
+            raise exception 'This post could not be saved.' using errcode = '22023';
+        end if;
+        return (select count(*)::integer from public.communication_delivery d where d.post_id = communication_publish_class.post_id);
+    end if;
+    if email_families then
+        insert into public.communication_delivery (post_id, family_id)
+        select communication_publish_class.post_id, r.family_id
+        from public.communication_class_recipients(target_course) r where r.email_available;
+        get diagnostics queued = row_count;
+    end if;
+    return queued;
+end;
+$$;
+
+revoke all on function public.communication_class_audience(uuid),
+    public.communication_publish_class(uuid, uuid, text, text, text, boolean) from public, anon;
+grant execute on function public.communication_class_audience(uuid),
+    public.communication_publish_class(uuid, uuid, text, text, text, boolean) to authenticated;
+
 create or replace function public.communication_archive(target_post uuid)
 returns void language plpgsql security definer set search_path = ''
 as $$
 begin
-    if public.current_portal_role() is distinct from 'admin' then
-        raise exception 'Administrator access required.' using errcode = '42501';
+    if public.current_portal_role() is distinct from 'admin' and not exists (
+        select 1 from public.communication_posts p
+        where p.id = target_post and p.author_id = auth.uid()
+            and p.course_id is not null and public.gradebook_can_manage(p.course_id)
+    ) then
+        raise exception 'You can only archive your own classroom updates.' using errcode = '42501';
     end if;
     update public.communication_posts set archived_at = clock_timestamp()
     where id = target_post and archived_at is null;
@@ -285,7 +386,8 @@ begin
     update public.communication_delivery d set state = 'cancelled' where d.state = 'pending' and not exists (
         select 1 from public.portal_users f join auth.users u on u.id = f.id
         where f.id = d.family_id and f.active and f.role = 'family' and u.email_confirmed_at is not null and nullif(u.email,'') is not null
-        and (exists (select 1 from public.communication_posts p where p.id = d.post_id and p.archived_at is null)
+        and (exists (select 1 from public.communication_posts p where p.id = d.post_id and p.archived_at is null
+                and (p.course_id is null or public.communication_class_has_family(p.course_id, d.family_id)))
              or exists (select 1 from public.communication_messages m
                 join public.communication_threads t on t.id = m.thread_id
                 join public.students s on s.id = t.student_id

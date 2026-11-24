@@ -62,6 +62,7 @@ async function initPortalCommunications() {
     let postCount = 0;
     let active = true;
     let postDraft = null;
+    let audienceVersion = 0;
     const forms = [compose, reply, publish];
 
     portalClient.auth.onAuthStateChange((_event, next) => {
@@ -77,7 +78,7 @@ async function initPortalCommunications() {
     document.querySelector('[data-portal-sign-out]').hidden = false;
     document.getElementById('student-messages').hidden = !staff && profile.role !== 'family';
     get('compose').hidden = !staff;
-    get('publish').hidden = !admin;
+    get('publish').hidden = !staff;
 
     function showError(error) {
         if (!active) return;
@@ -236,7 +237,7 @@ async function initPortalCommunications() {
         const start = more ? postCount : 0;
         get('more-posts').hidden = true;
         const rows = await communicationResult(portalClient.from('communication_posts')
-            .select('id,kind,title,body,document_name,created_at')
+            .select('id,kind,title,body,document_name,created_at,course_id,author_id')
             .order('created_at', { ascending: false }).order('id', { ascending: false })
             .range(start, start + COMMUNICATION_PAGE_SIZE - 1));
         if (!active) return;
@@ -244,7 +245,8 @@ async function initPortalCommunications() {
         for (const post of rows) {
             const article = communicationElement(postList, 'article');
             article.className = 'communication-post';
-            communicationElement(article, 'small', COMMUNICATION_POST_LABELS[post.kind] + ' · ' + communicationTime(post.created_at));
+            communicationElement(article, 'small', (post.course_id ? 'Classroom · ' : '') +
+                COMMUNICATION_POST_LABELS[post.kind] + ' · ' + communicationTime(post.created_at));
             communicationElement(article, 'h3', post.title);
             communicationElement(article, 'p', post.body);
             if (post.document_name) {
@@ -256,7 +258,7 @@ async function initPortalCommunications() {
                     if (active) location.assign(file.signedUrl);
                 });
             }
-            if (admin) {
+            if (admin || (staff && post.course_id && post.author_id === session.user.id)) {
                 const archive = communicationElement(article, 'button', 'Archive');
                 archive.type = 'button';
                 handle(archive, 'click', async () => {
@@ -273,21 +275,48 @@ async function initPortalCommunications() {
     }
 
     const fileInput = publish.elements.document;
+    const courseField = publish.elements.course;
+    const kindField = publish.elements.kind;
+    const documentOption = kindField.querySelector('[value="document"]');
+    const audienceStatus = get('audience');
+
     function updateDocumentField() {
-        const hasDocument = publish.elements.kind.value === 'document';
+        documentOption.disabled = !admin || courseField.value !== 'school';
+        documentOption.hidden = documentOption.disabled;
+        if (documentOption.disabled && kindField.value === 'document') kindField.value = 'news';
+        const hasDocument = kindField.value === 'document';
         get('document-label').hidden = !hasDocument;
         fileInput.required = hasDocument;
     }
 
+    async function loadAudience() {
+        updateDocumentField();
+        const version = ++audienceVersion;
+        const course = courseField.value;
+        const button = publish.querySelector('button[type="submit"]');
+        button.disabled = !course;
+        audienceStatus.textContent = '';
+        if (course === 'school') {
+            audienceStatus.textContent = 'Visible to all active portal accounts.';
+        } else if (course) {
+            const audience = await communicationResult(portalClient.rpc('communication_class_audience', { target_course: course }).single());
+            if (!active || version !== audienceVersion) return;
+            audienceStatus.textContent = `${audience.family_count} linked family accounts can see this update. ${audience.email_count} can receive email.`;
+        }
+    }
+
     handle(publish, 'input', () => delete publish.dataset.requestId);
-    handle(publish.elements.kind, 'change', updateDocumentField);
+    handle(courseField, 'change', loadAudience);
+    handle(kindField, 'change', updateDocumentField);
     handle(get('more-posts'), 'click', () => loadPosts(true));
     handle(publish, 'submit', async () => {
         const { input, id } = messageRequest(publish);
+        const course = input.get('course');
         const kind = input.get('kind');
         const email = input.has('email');
         const file = fileInput.files[0];
-        if (email && !window.confirm('Publish this update and queue an email to all active families with confirmed addresses?')) return;
+        const audience = course === 'school' ? 'all active families with confirmed addresses' : 'families in the selected classroom with confirmed addresses';
+        if (email && !window.confirm('Publish this update and queue an email to ' + audience + '?')) return;
         if (kind === 'document') {
             if (!file || !file.name.toLowerCase().endsWith('.pdf') || file.size > 10485760) {
                 alert('Choose a PDF no larger than 10 MB.', 'error');
@@ -305,22 +334,34 @@ async function initPortalCommunications() {
                 postDraft.uploaded = true;
             }
         }
-        const queued = await communicationResult(portalClient.rpc('communication_publish', {
+        const fields = {
             post_id: kind === 'document' ? postDraft.pathId : id,
             post_kind: kind, post_title: input.get('title'), post_body: input.get('body'),
-            file_name: kind === 'document' ? file.name.slice(0, 200) : null, email_families: email
-        }));
+            email_families: email
+        };
+        const queued = await communicationResult(course === 'school'
+            ? portalClient.rpc('communication_publish', { ...fields, file_name: kind === 'document' ? file.name.slice(0, 200) : null })
+            : portalClient.rpc('communication_publish_class', { ...fields, target_course: course }));
         if (!active) return;
         publish.reset();
         delete publish.dataset.requestId;
         postDraft = null;
-        updateDocumentField();
+        courseField.value = course;
+        await loadAudience();
         get('publish').open = false;
         await loadPosts();
         alert(email ? 'Published. Emails queued: ' + queued + '.' : 'Update published.', 'success');
     });
 
     try {
+        if (staff) {
+            const courses = await communicationResult(portalClient.from('gradebook_courses')
+                .select('id,name,term').order('name').order('term'));
+            if (!active) return;
+            communicationOption(courseField, admin ? 'School-wide' : courses.length ? 'Choose a classroom' : 'No classrooms are assigned', admin ? 'school' : '');
+            for (const course of courses) communicationOption(courseField, `${course.name} · ${course.term}`, course.id);
+            await loadAudience();
+        }
         if (staff || profile.role === 'family') {
             students = await communicationResult(portalClient.rpc('communication_students'));
             if (!active) return;
