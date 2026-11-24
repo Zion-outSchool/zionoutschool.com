@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Teacher Gradebook | ZION outSchool</title>
     <link rel="stylesheet" href="gradebook.css?v=portal-admin-20261124">
+    <link rel="stylesheet" href="portal-theme.css?v=1">
 </head>
-<body>
-    <header class="gradebook-header">
-        <a href="family-portal.html">ZION outSchool</a>
-        <nav aria-label="Staff navigation">
-            <a href="graduation-planner.html">Graduation Planner</a>
-            <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
-            <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
-            <button type="button" data-portal-sign-out hidden>Sign out</button>
-        </nav>
+<body class="zion-portal" data-portal-page-role="gradebook">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html">
+                <span>Family Portal</span>
+                <small>Zion outSchool</small>
+            </a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
     </header>
 
-    <main>
+    <main data-portal-page-content hidden>
         <h1>Teacher Gradebook</h1>
         <p id="gradebook-status" role="status" aria-live="polite">Checking your sign-in…</p>
         <p id="gradebook-login" hidden><a href="family-portal.html">Sign in through the Family Portal</a></p>
@@ -138,7 +142,7 @@
         </dialog>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
+    <script src="supabase-portal.js?v=portal-ux-1"></script>
     <script src="gradebook.js?v=classroom-access-1"></script>
 </body>
 </html>

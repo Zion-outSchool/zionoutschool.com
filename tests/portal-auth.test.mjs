@@ -52,6 +52,12 @@ export async function runPortalTests() {
     assert.equal(evaluate("isAdminPortalProfile({ role: 'teacher', active: true })"), false);
     assert.equal(evaluate("isStaffPortalProfile({ role: 'family', active: true })"), false);
     assert.equal(evaluate('isStaffPortalProfile(null)'), false);
+    assert.equal(evaluate("canOpenPortalPage('staff', { role: 'family', active: true })"), false);
+    assert.equal(evaluate("canOpenPortalPage('gradebook', { role: 'staff', active: true })"), false);
+    assert.equal(evaluate("canOpenPortalPage('admin', { role: 'teacher', active: true })"), false);
+    assert.equal(evaluate("canOpenPortalPage('gradebook', { role: 'teacher', active: true })"), true);
+    assert.equal(evaluate("canOpenPortalPage('active', { role: 'family', active: true })"), true);
+    assert.equal(evaluate("canOpenPortalPage('admin', { role: 'admin', active: false })"), false);
     await evaluate('initPortalAuth()');
     assert.equal(typeof listener, 'function');
     const session = { user: { id: 'test-admin', email: 'admin@example.test' } };

@@ -8,17 +8,22 @@
     <title>Communications | ZION outSchool</title>
     <link rel="stylesheet" href="gradebook.css?v=20261124">
     <link rel="stylesheet" href="portal-communications.css?v=1">
+    <link rel="stylesheet" href="portal-theme.css?v=1">
 </head>
-<body data-requires-auth="true">
-    <header class="gradebook-header">
-        <a href="family-portal.html">ZION outSchool</a>
-        <nav aria-label="Portal navigation">
-            <a href="family-portal.html">Family Portal</a>
-            <a href="#school-updates">School Updates</a>
-            <button type="button" data-portal-sign-out hidden>Sign out</button>
-        </nav>
+<body class="zion-portal" data-portal-page-role="active">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html">
+                <span>Family Portal</span>
+                <small>Zion outSchool</small>
+            </a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
     </header>
-    <main class="portal-communication-main">
+    <main class="portal-communication-main" data-portal-page-content hidden>
         <h1>Communications</h1>
         <p id="communication-status" role="status" aria-live="polite">Checking your sign-in…</p>
         <div id="communication-content" hidden>
@@ -88,7 +93,7 @@
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-portal.js?v=communications-1"></script>
-    <script src="portal-communications.js?v=classroom-updates-1"></script>
+    <script src="supabase-portal.js?v=portal-ux-1"></script>
+    <script src="portal-communications.js?v=portal-ux-1"></script>
 </body>
 </html>
