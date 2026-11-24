@@ -22,6 +22,9 @@ Apply these files in order after the core portal and planner tables exist.
 6. [School communications](supabase_communications.sql)
 7. [Classroom access](supabase_classroom_access.sql)
 8. [Administrator account repair tools](supabase_portal_account_management.sql)
+9. [Registration review workflow](supabase_registration_review.sql)
+
+After changing the registration records schema, apply the registration review script again so the read function includes approved corrections. Deploy the updated `communication-email` function after applying the review migration. The existing email job sends review links to active administrators with confirmed emails.
 
 After the database update, follow the [invitation setup](#deploying-in-app-invitations) and the [registration sync setup](apps-script/registration/README.md). Use fictional records to verify account activation, grade finalization, registration delivery, and family access before releasing the website.
 

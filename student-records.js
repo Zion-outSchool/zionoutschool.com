@@ -250,6 +250,17 @@ async function initStudentRecords() {
         detail.hidden = true;
         detail.replaceChildren();
         linkForm.hidden = true;
+        const changeLink = get('student-registration-edit');
+        changeLink.hidden = true;
+        const selectedStudent = roster.value;
+        if (selectedStudent && !registrationError && (id || !registrations.some(record => record.student_id === selectedStudent))) {
+            const params = new URLSearchParams({ student: selectedStudent });
+            if (id) params.set('record', id);
+            changeLink.href = 'registration-review.html?' + params;
+            changeLink.textContent = id ? (admin ? 'Edit registration' : 'Suggest a correction')
+                : (admin ? 'Add a registration' : 'Flag a missing registration');
+            changeLink.hidden = false;
+        }
         if (!id) return;
         try {
             const { data, error } = await portalClient.rpc('read_registration_record', { target_record: id }).maybeSingle();

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex">
+    <title>Registration Requests | Zion outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=student-records-20261124">
+    <link rel="stylesheet" href="portal-theme.css?v=1">
+    <link rel="stylesheet" href="registration-review.css?v=1">
+</head>
+<body class="zion-portal" data-portal-page-role="gradebook" data-portal-registration-review="true">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html"><span>Family Portal</span><small>Zion outSchool</small></a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
+    </header>
+    <main class="portal-account-main" data-portal-page-content hidden>
+        <p><a id="registration-review-back" href="student-records.html">Back to Student Records</a></p>
+        <h1 id="registration-review-title">Registration requests</h1>
+        <p id="registration-review-status" role="status" aria-live="polite"></p>
+        <section id="registration-edit" class="gradebook-panel" hidden>
+            <h2 id="registration-edit-title"></h2>
+            <p>Use this form for routine information. Contact the school office for medical authorizations, custody records, and signed documents.</p>
+            <p>Guardian email changes here update registration contact details. Family Portal sign-in emails are managed in Portal Administration.</p>
+            <form id="registration-edit-form">
+                <div id="registration-fields" class="gradebook-form-grid"></div>
+                <label>Reason <textarea name="reason" maxlength="1000" rows="3" required></textarea></label>
+                <button type="submit">Submit request</button>
+            </form>
+        </section>
+        <section aria-labelledby="registration-history-title">
+            <h2 id="registration-history-title">Requests and history</h2>
+            <p id="registration-history-status" role="status" aria-live="polite"></p>
+            <div id="registration-review-list"></div>
+            <button id="registration-review-more" type="button" hidden>Show more</button>
+            <p id="registration-review-all" hidden><a href="registration-review.html">View all requests</a></p>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=registration-review-1"></script>
+    <script src="registration-review.js?v=1"></script>
+</body>
+</html>
