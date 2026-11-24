@@ -279,7 +279,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
    | `COMMUNICATION_REPLY_URL` | The deployed Edge Function URL ending in `/communication-email/reply` |
    | `COMMUNICATION_INBOUND_KEY` | The same inbound secret used by the Edge Function |
 
-   The script watches Gmail for new messages and retrieves a body only when the recipient matches the portal's tagged conversation address. Replies are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
+   The script watches Gmail for new messages and retrieves a body only when the recipient matches the portal's tagged conversation address. Replies are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed and run `retryPortalReplyReview` to retry up to 40 at a time. The portal imports text replies. Original emails and attachments remain in the mailbox.
 4. In Supabase, enable the `http` extension and schedule a once-per-minute POST to `/functions/v1/communication-email/deliver` using Supabase Cron. Create Vault entries named `portal_communication_delivery_key` and `portal_communication_delivery_url`, then use this SQL for the job. [Supabase HTTP extension](https://supabase.com/docs/guides/database/extensions/http)
 
    ```sql

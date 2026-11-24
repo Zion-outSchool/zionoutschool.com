@@ -39,6 +39,14 @@ function listPortalReplyCandidates(checkpoint, profile) {
 }
 
 function syncPortalEmailReplies() {
+  processPortalEmailReplies(false);
+}
+
+function retryPortalReplyReview() {
+  processPortalEmailReplies(true);
+}
+
+function processPortalEmailReplies(retryReview) {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return;
   try {
@@ -72,8 +80,11 @@ function syncPortalEmailReplies() {
     const escape = value => value.replaceAll('.', '\\.');
     const exactAddress = new RegExp('(?:^|[\\s<,;])' + escape(local) +
         '\\+' + prefix + '[a-f0-9]{32}@' + escape(domain) + '(?=$|[\\s>,;])', 'i');
-    const batch = listPortalReplyCandidates(properties.getProperty('COMMUNICATION_GMAIL_HISTORY_ID'), profile);
-    const ignoredLabels = ['SENT', 'DRAFT', 'SPAM', 'TRASH', filedId, reviewId];
+    const batch = retryReview
+      ? {ids: new Set((Gmail.Users.Messages.list('me', {labelIds: [reviewId], maxResults: 40}).messages || []).map(message => message.id))}
+      : listPortalReplyCandidates(properties.getProperty('COMMUNICATION_GMAIL_HISTORY_ID'), profile);
+    const ignoredLabels = ['SENT', 'DRAFT', 'SPAM', 'TRASH', filedId];
+    if (!retryReview) ignoredLabels.push(reviewId);
     let imported = 0;
     let needsReview = 0;
 
@@ -90,7 +101,7 @@ function syncPortalEmailReplies() {
       if (!recipients.some(header => exactAddress.test(header.value))) continue;
       const message = Gmail.Users.Messages.get('me', id, {format: 'raw'});
       let label = reviewId;
-      if (message.raw && (message.sizeEstimate || 0) <= 1048576 && message.raw.length <= 1398104) {
+      if (typeof message.raw === 'string' && message.raw.length > 0 && message.raw.length <= 1398104) {
         const response = UrlFetchApp.fetch(endpoint, {
           method: 'post',
           contentType: 'application/json',
@@ -101,9 +112,18 @@ function syncPortalEmailReplies() {
         });
         const status = response.getResponseCode();
         if (status === 200) label = filedId;
-        else if (![400, 403, 413].includes(status)) throw new Error('Portal reply service returned HTTP ' + status + '.');
+        else if ([400, 403, 413].includes(status)) {
+          let reason;
+          try { reason = JSON.parse(response.getContentText()).error; } catch {}
+          const known = ['Invalid reply.', 'Unreadable email.', 'Reply is not addressed to a student conversation.',
+            'No reply text was found.', 'Reply text is too long.', 'Reply is not authorized.', 'Reply too large.'];
+          console.log('Reply needs review (HTTP ' + status + '). ' + (known.includes(reason) ? reason : ''));
+        } else throw new Error('Portal reply service returned HTTP ' + status + '.');
+      } else {
+        console.log('Reply needs review. Gmail returned no raw message or it exceeds the size limit.');
       }
-      Gmail.Users.Messages.modify({addLabelIds: [label]}, 'me', id);
+      const update = label === filedId ? {addLabelIds: [filedId], removeLabelIds: [reviewId]} : {addLabelIds: [reviewId]};
+      Gmail.Users.Messages.modify(update, 'me', id);
       if (label === filedId) imported++;
       else needsReview++;
     }

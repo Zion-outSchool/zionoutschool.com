@@ -128,7 +128,7 @@ async function inbound(request: Request) {
   if (envelope.length > 1400000) return json({ error: "Reply too large." }, 413);
   let input;
   try { input = JSON.parse(envelope); } catch { return json({ error: "Invalid reply." }, 400); }
-  if (typeof input?.raw !== "string" || !/^[A-Za-z0-9_-]+={0,2}$/.test(input.raw) ||
+  if (typeof input?.raw !== "string" || !/^[A-Za-z0-9_+\/-]+={0,2}$/.test(input.raw) ||
     typeof input?.id !== "string" || !/^[a-f0-9]{8,64}$/.test(input.id)) {
     return json({ error: "Invalid reply." }, 400);
   }
