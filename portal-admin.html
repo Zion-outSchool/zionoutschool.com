@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portal Administration | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=portal-admin-20261124">
+</head>
+<body data-requires-auth="true">
+    <header class="gradebook-header">
+        <a href="family-portal.html">ZION outSchool</a>
+        <nav aria-label="Administrator navigation">
+            <a href="graduation-planner.html">Graduation Planner</a>
+            <a href="student-records.html">Student Records</a>
+            <button type="button" data-portal-sign-out hidden>Sign out</button>
+        </nav>
+    </header>
+    <main class="portal-account-main">
+        <h1>Portal Administration</h1>
+        <p id="portal-admin-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <p id="portal-admin-login" hidden><a href="family-portal.html">Sign in through the Family Portal</a></p>
+
+        <div id="portal-admin-panel" hidden>
+            <section class="gradebook-panel">
+                <h2>Create a student record</h2>
+                <p>A student can join a classroom before their family is invited.</p>
+                <form id="portal-admin-student" class="gradebook-form-grid">
+                    <label>First name <input name="first_name" maxlength="120" required></label>
+                    <label>Last name <input name="last_name" maxlength="120" required></label>
+                    <label>Preferred name <input name="preferred_name" maxlength="120"></label>
+                    <label>Grade level <input name="grade_level" maxlength="24"></label>
+                    <button type="submit">Create student</button>
+                </form>
+                <p id="portal-admin-student-result" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="gradebook-panel">
+                <h2>Invite a family or teacher</h2>
+                <p>Select all siblings for a family login. Use the same email to link another student to an existing family account.</p>
+                <form id="portal-admin-invite">
+                    <div class="gradebook-form-grid">
+                        <label>Display name <input name="display_name" maxlength="120" autocomplete="off" required></label>
+                        <label>Email <input name="email" type="email" maxlength="254" autocomplete="off" required></label>
+                        <label>Account role
+                            <select name="role">
+                                <option value="family">Family</option>
+                                <option value="teacher">Teacher</option>
+                            </select>
+                        </label>
+                    </div>
+                    <fieldset id="portal-admin-student-picker">
+                        <legend>Students to link</legend>
+                        <label>Find a student <input id="portal-admin-filter" type="search" autocomplete="off"></label>
+                        <p id="portal-admin-selection" aria-live="polite">No students selected.</p>
+                        <div id="portal-admin-students"></div>
+                    </fieldset>
+                    <label class="portal-account-checkbox">
+                        <input type="checkbox" name="resend"> Resend a pending invitation
+                    </label>
+                    <button type="submit">Invite or link account</button>
+                </form>
+                <p id="portal-admin-result" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="gradebook-panel">
+                <h2>Classroom rosters</h2>
+                <p>Open a classroom in the gradebook to assign a teacher and add students to its roster.</p>
+                <a href="gradebook.html">Manage classrooms</a>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
+    <script src="portal-admin.js?v=20261124"></script>
+</body>
+</html>

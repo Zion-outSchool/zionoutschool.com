@@ -6,7 +6,7 @@
     <title>Graduation Planner | Zion outSchool</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=no-announcement-20261009">
+    <link rel="stylesheet" href="style.css?v=planner-transcript-20261124">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
 </head>
@@ -52,7 +52,7 @@
         <span class="eyebrow">Staff Portal</span>
         <h1>Arkansas graduation<br><em>planning worksheet.</em></h1>
         <p class="hero-subtext">
-            Update course planning, completed credits, and non-course graduation requirements for each high school student.
+            Update course plans, final grades, completed credits, and graduation milestones for each high school student.
         </p>
     </div>
 </section>
@@ -64,24 +64,27 @@
                 <span class="section-label">Staff Access</span>
                 <h2>Graduation planner</h2>
                 <p>Signed in as <strong data-portal-user-email></strong>.</p>
+                <a href="gradebook.html" data-portal-gradebook hidden>Open Teacher Gradebook</a>
+                <a href="student-records.html" data-portal-gradebook hidden>Student Records</a>
+                <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
             </div>
             <button type="button" class="portal-sign-out" data-portal-sign-out>Sign Out</button>
         </div>
 
         <p class="portal-inline-status" data-graduation-planner-status></p>
 
-        <section class="student-file-panel">
+        <section class="student-file-panel" data-portal-admin hidden>
             <div class="portal-dashboard-heading portal-dashboard-heading--compact">
                 <div>
                     <span class="section-label">Student Files</span>
                     <h2>Create a student file</h2>
-                    <p>Admin logins can add a student and link them to an existing family login.</p>
+                    <p>Administrators can create student records and link them to a family when ready.</p>
                 </div>
             </div>
 
             <form class="student-file-form" data-student-file-form>
                 <label>
-                    <span>Family Login</span>
+                    <span>Family Login (optional)</span>
                     <select name="family_id" data-student-family-select>
                         <option value="">Loading family logins...</option>
                     </select>
@@ -118,7 +121,9 @@
                     <option value="">Loading students...</option>
                 </select>
             </label>
-            <button type="button" data-save-graduation-plan>Save Planner</button>
+            <button type="button" data-save-graduation-plan disabled>Save Planner</button>
+            <button type="button" data-export-graduation-transcript disabled>Save Transcript as PDF</button>
+            <p class="planner-transcript-help">The transcript includes finalized gradebook courses and saved planner courses marked Completed. Choose Save as PDF in the print dialog.</p>
         </div>
 
         <div data-graduation-planner-editable></div>
@@ -179,7 +184,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=portal-auth-20261017"></script>
+<script src="supabase-portal.js?v=portal-admin-20261124"></script>
 <script src="script.js?v=family-portal-20260823"></script>
 </body>
 </html>

@@ -27,7 +27,7 @@ create table if not exists public.portal_users (
 
 create table if not exists public.students (
     id uuid primary key default gen_random_uuid(),
-    family_id uuid not null references public.portal_users(id) on delete cascade,
+    family_id uuid references public.portal_users(id) on delete set null,
     first_name text not null,
     preferred_name text,
     last_name text not null,
@@ -62,6 +62,7 @@ create table if not exists public.graduation_plan_entries (
     grade_level text not null,
     course_name text,
     credits numeric(4, 2),
+    final_grade text,
     status text not null default 'not_started',
     notes text,
     updated_by uuid references auth.users(id),
@@ -258,6 +259,19 @@ using (
 ```
 
 ## Creating Portal Logins
+
+Once the in-app workflow is deployed, sign in as an administrator and open **Portal Administration**. Create student records, select a family or teacher role, and enter the recipient's email. For a family, select all of their children before sending the invitation. An existing family can use the same email when a sibling joins. **Manage classrooms** opens the gradebook, where administrators can assign a teacher and enroll students in each course.
+
+Classroom rosters support K–12. Use a graduation requirement for an eligible course when it should appear on the high school transcript. A student may appear on multiple rosters with different teachers.
+
+### Deploying in-app invitations
+
+1. Run [supabase_portal_accounts.sql](supabase_portal_accounts.sql) after the portal tables exist.
+2. Deploy [portal-invite](supabase/functions/portal-invite/index.ts) as a Supabase Edge Function. It uses the project URL and service role key supplied by the Edge Function runtime. Keep the service role key on the server.
+3. Add `https://zionoutschool.com/portal-activate.html` to the [Auth redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls). Keep the standard confirmation link in the invite email template. For a separate test site, set `PORTAL_SITE_URL` on that project's Edge Function and allow its activation path.
+4. Confirm [custom SMTP or an Auth email hook](https://supabase.com/docs/guides/auth/auth-smtp) is set up to send to families outside the Supabase project team.
+
+### Creating an administrator or using the dashboard
 
 In Supabase Dashboard:
 

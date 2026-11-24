@@ -37,6 +37,7 @@ create table if not exists public.graduation_plan_entries (
     grade_level text not null,
     course_name text,
     credits numeric(4, 2),
+    final_grade text,
     status text not null default 'not_started',
     notes text,
     updated_by uuid references auth.users(id),

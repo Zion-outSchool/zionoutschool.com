@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Student Records | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=student-records-20261124">
+</head>
+<body data-requires-auth="true">
+    <header class="gradebook-header">
+        <a href="family-portal.html">ZION outSchool</a>
+        <nav aria-label="Staff navigation">
+            <a href="gradebook.html">Teacher Gradebook</a>
+            <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
+            <button type="button" data-portal-sign-out hidden>Sign out</button>
+        </nav>
+    </header>
+    <main class="portal-account-main">
+        <h1>Student Records</h1>
+        <p id="student-records-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <section id="student-records" hidden>
+            <div class="gradebook-panel">
+                <label>Registration record <select id="student-records-select"></select></label>
+            </div>
+            <article id="student-record-detail" class="gradebook-panel" hidden></article>
+            <form id="student-record-link" class="gradebook-panel" hidden>
+                <h2>Link to the school roster</h2>
+                <p>Choose an existing student, or create a new student using this registration.</p>
+                <label>Student <select name="student_id"></select></label>
+                <button type="submit">Link registration</button>
+            </form>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
+    <script src="student-records.js?v=20261124"></script>
+</body>
+</html>
