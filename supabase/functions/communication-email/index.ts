@@ -30,6 +30,7 @@ type Delivery = {
   token: string | null;
   post_kind: string | null;
   attempts: number;
+  review_id?: string;
 };
 type DeliveryState = "pending" | "accepted" | "failed" | "uncertain";
 
@@ -61,7 +62,11 @@ function replyMailboxIsConfigured() {
 
 async function send(delivery: Delivery): Promise<{ state: DeliveryState; reference?: string }> {
   const inbox = new URL(settings.portalUrl);
-  if (delivery.post_kind) inbox.hash = "school-updates";
+  if (delivery.review_id) {
+    inbox.pathname = "/registration-review.html";
+    inbox.search = new URLSearchParams({ request: delivery.review_id }).toString();
+    inbox.hash = "";
+  } else if (delivery.post_kind) inbox.hash = "school-updates";
   else inbox.hash = "student-messages";
   const text = [delivery.body, "ZION outSchool Family Portal: " + inbox.href];
   if (delivery.token) text.push("Reply to this email to add your response to the student conversation.");
@@ -76,6 +81,11 @@ async function send(delivery: Delivery): Promise<{ state: DeliveryState; referen
       body: JSON.stringify({
         from: settings.from, to: [delivery.recipient], subject: delivery.subject,
         text: text.join("\n\n"), reply_to: replyTo(delivery.token),
+        ...(delivery.review_id ? {
+          html: '<p>A registration correction is waiting for administrator review.</p>' +
+            '<p><a style="display:inline-block;padding:12px 18px;background:#24483D;color:#F9F6F0;text-decoration:none;border-radius:5px" href="' +
+            inbox.href.replaceAll("&", "&amp;").replaceAll('"', "&quot;") + '">Review and approve</a></p>',
+        } : {}),
       }),
     });
     if (response.status === 429) return { state: "pending" };
@@ -117,7 +127,22 @@ async function deliver() {
     });
     if (!completion.error) recorded++;
   }
-  return json({ processed: recorded }, recorded === data?.length ? 200 : 503);
+  const reviews = await server.rpc("registration_claim_notifications");
+  if (reviews.error) return json({ error: "Unable to load registration review notices." }, 503);
+  let reviewCount = 0;
+  for (const row of reviews.data ?? []) {
+    const result = await send({
+      ...row, review_id: row.request_id, token: null, post_kind: null,
+      subject: "A registration change needs review",
+      body: "A registration correction is waiting for administrator review.",
+    });
+    const completion = await server.rpc("registration_finish_notification", {
+      delivery_id: row.id, claim_attempt: row.attempts, result_state: result.state,
+    });
+    if (!completion.error) reviewCount++;
+  }
+  return json({ processed: recorded + reviewCount },
+    recorded === data?.length && reviewCount === reviews.data?.length ? 200 : 503);
 }
 
 async function inbound(request: Request) {

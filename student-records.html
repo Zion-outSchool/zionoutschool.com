@@ -23,6 +23,7 @@
     </header>
     <main class="portal-account-main" data-portal-page-content hidden>
         <h1>Student Records</h1>
+        <p><a href="registration-review.html">Registration requests and history</a></p>
         <p id="student-records-status" role="status" aria-live="polite">Checking your sign-in…</p>
         <section id="student-records" hidden>
             <div class="gradebook-panel">
@@ -52,6 +53,7 @@
                     <select id="student-records-select"></select>
                 </label>
                 <p id="student-registration-note"></p>
+                <p><a id="student-registration-edit" hidden></a></p>
             </div>
             <article id="student-record-detail" class="gradebook-panel" hidden></article>
             <form id="student-record-link" class="gradebook-panel" hidden>
@@ -64,6 +66,6 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
-    <script src="student-records.js?v=staff-actions-1"></script>
+    <script src="student-records.js?v=registration-review-1"></script>
 </body>
 </html>

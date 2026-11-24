@@ -1090,11 +1090,20 @@ async function initPortalAuth() {
         togglePortalState(session);
         togglePortalProfileState(profile);
         if (unavailable) unavailable.hidden = !session || profile?.active === true;
-        if (!requiredRole) return;
+        const review = window.location.search && new URLSearchParams(window.location.search).get(requiredRole ? 'request' : 'registration-review');
+        const validReview = review && /^[a-f0-9-]{36}$/i.test(review);
+        if (!requiredRole) {
+            if (unavailable && validReview && isAdminPortalProfile(profile)) {
+                window.location.replace('registration-review.html?request=' + encodeURIComponent(review));
+            }
+            return;
+        }
         if (!canOpenPortalPage(requiredRole, profile)) {
             if (page) page.hidden = true;
             if (pageSignOut) pageSignOut.hidden = true;
-            window.location.replace('family-portal.html');
+            const next = !session && document.body.dataset.portalRegistrationReview && validReview
+                ? 'family-portal.html?registration-review=' + encodeURIComponent(review) : 'family-portal.html';
+            window.location.replace(next);
             return;
         }
         if (page) page.hidden = false;

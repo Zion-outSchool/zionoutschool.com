@@ -1,0 +1,7 @@
+#registration-edit-form, .registration-decision { display: grid; gap: .85rem; }
+#registration-edit-form > button, .registration-decision > button { justify-self: start; }
+#registration-review-list .gradebook-panel { overflow-wrap: anywhere; }
+.registration-values { width: 100%; border-collapse: collapse; text-align: left; }
+.registration-values :is(th,td) { vertical-align: top; border-bottom: 1px solid var(--portal-line); padding: .45rem .6rem .45rem 0; }
+.registration-values td > span { display: block; }
+.registration-decision { margin-top: 1rem; }
