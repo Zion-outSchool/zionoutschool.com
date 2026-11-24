@@ -269,29 +269,35 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
 
 1. Apply [supabase_communications.sql](supabase_communications.sql) after the family access, portal account, and gradebook SQL. The migration creates the communication tables and the private `portal-documents` bucket.
 2. Deploy [communication-email](supabase/functions/communication-email/index.ts) with the per-function configuration in [supabase/config.toml](supabase/config.toml). Provide the Edge Function secrets listed below. These are separate from Supabase Auth's SMTP configuration.
-3. Create a dedicated Google Workspace mailbox, such as `portal-replies@zionoutschool.com`. In a separate Apps Script project owned by that mailbox, install [PortalReplies.gs](apps-script/communications/PortalReplies.gs) and its [manifest](apps-script/communications/appsscript.json). Set these Script Properties and install a one-minute time-driven trigger for `syncPortalEmailReplies`.
+3. Use a dedicated Google Workspace mailbox or an alias that receives replies, such as `portal-replies@zionoutschool.com`. In a separate Apps Script project owned by the account that receives replies, install [PortalReplies.gs](apps-script/communications/PortalReplies.gs) and its [manifest](apps-script/communications/appsscript.json). Set these Script Properties and install a one-minute time-driven trigger for `syncPortalEmailReplies`.
 
    | Script property | Value |
    | --- | --- |
    | `COMMUNICATION_REPLY_ADDRESS` | The dedicated mailbox address used in the Edge Function configuration |
+   | `COMMUNICATION_MAILBOX_OWNER` | The account's primary Gmail address when the reply address is an alias |
    | `COMMUNICATION_REPLY_URL` | The deployed Edge Function URL ending in `/communication-email/reply` |
    | `COMMUNICATION_INBOUND_KEY` | The same inbound secret used by the Edge Function |
 
-   Messages in that mailbox are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
-4. In Supabase, schedule a once-per-minute POST to `/functions/v1/communication-email/deliver`. Store the scheduler key and endpoint in Vault. For example, create Vault entries named `portal_communication_delivery_key` and `portal_communication_delivery_url`, then schedule this SQL. [Supabase scheduling guide](https://supabase.com/docs/guides/functions/schedule-functions)
+   The script checks the conversation recipient before retrieving a message body. In alias mode it also narrows the search to the reply alias. Replies are labeled individually after processing. Check `Zion-Portal-Review` for replies that could not be filed. The portal imports text replies. Original emails and attachments remain in the mailbox.
+4. In Supabase, enable the `http` extension and schedule a once-per-minute POST to `/functions/v1/communication-email/deliver` using Supabase Cron. Create Vault entries named `portal_communication_delivery_key` and `portal_communication_delivery_url`, then use this SQL for the job. [Supabase HTTP extension](https://supabase.com/docs/guides/database/extensions/http)
 
    ```sql
-   select net.http_post(
-       url := (select decrypted_secret from vault.decrypted_secrets
-               where name = 'portal_communication_delivery_url'),
-       headers := jsonb_build_object(
-           'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets
-                                          where name = 'portal_communication_delivery_key'),
-           'Content-Type', 'application/json'
-       ),
-       body := '{}'::jsonb,
-       timeout_milliseconds := 140000
-   );
+   do $job$
+   declare response_status integer;
+   begin
+       perform set_config('http.curlopt_timeout_msec', '140000', true);
+       select status into response_status from extensions.http((
+           'POST',
+           (select decrypted_secret from vault.decrypted_secrets where name = 'portal_communication_delivery_url'),
+           array[extensions.http_header('Authorization', 'Bearer ' ||
+               (select decrypted_secret from vault.decrypted_secrets where name = 'portal_communication_delivery_key'))],
+           'application/json', '{}'
+       )::extensions.http_request);
+       if response_status is distinct from 200 then
+           raise exception 'Portal email worker returned HTTP %', response_status;
+       end if;
+   end;
+   $job$;
    ```
 
 5. Before enabling school-wide sends, verify with fictional records that a teacher can send to an assigned student's test family, a reply to the email appears in the same conversation as a portal reply, and a different family cannot open the conversation. Verify bulletin delivery and PDF access separately.
@@ -301,7 +307,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
 | `COMMUNICATION_CLOUDFLARE_ACCOUNT` | Cloudflare account ID |
 | `COMMUNICATION_CLOUDFLARE_TOKEN` | A token scoped to Email Sending for that account |
 | `COMMUNICATION_FROM` | A sender address on a Cloudflare-enabled domain |
-| `COMMUNICATION_REPLY_ADDRESS` | The dedicated Google Workspace mailbox |
+| `COMMUNICATION_REPLY_ADDRESS` | The Google Workspace reply address |
 | `COMMUNICATION_PORTAL_URL` | The HTTPS URL of `portal-communications.html` |
 | `COMMUNICATION_DELIVERY_KEY` | A random scheduler secret of at least 32 characters |
 | `COMMUNICATION_INBOUND_KEY` | A separate random inbox secret of at least 32 characters |
