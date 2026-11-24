@@ -21,6 +21,7 @@ Apply these files in order after the core portal and planner tables exist.
 5. [Registration records](supabase_registration_records.sql)
 6. [School communications](supabase_communications.sql)
 7. [Classroom access](supabase_classroom_access.sql)
+8. [Administrator account repair tools](supabase_portal_account_management.sql)
 
 After the database update, follow the [invitation setup](#deploying-in-app-invitations) and the [registration sync setup](apps-script/registration/README.md). Use fictional records to verify account activation, grade finalization, registration delivery, and family access before releasing the website.
 

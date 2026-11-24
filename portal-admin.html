@@ -27,6 +27,11 @@
 
         <div id="portal-admin-panel" hidden>
             <section class="gradebook-panel">
+                <h2>Student Records</h2>
+                <p>Search the school roster, review registration details and files, and fix family or registration links.</p>
+                <a href="student-records.html">Open the student directory</a>
+            </section>
+            <section class="gradebook-panel">
                 <h2>Create a student record</h2>
                 <p>A student can join a classroom before their family is invited.</p>
                 <form id="portal-admin-student" class="gradebook-form-grid">
@@ -63,8 +68,22 @@
                         <input type="checkbox" name="resend"> Resend a pending invitation
                     </label>
                     <button type="submit">Invite or link account</button>
+                    <button id="portal-admin-check-account" type="button">Check this email</button>
+                    <section id="portal-admin-account-details" class="gradebook-panel" aria-labelledby="portal-admin-account-heading" hidden>
+                        <h3 id="portal-admin-account-heading">Existing portal login</h3>
+                        <p id="portal-admin-account-summary"></p>
+                        <p id="portal-admin-account-guidance"></p>
+                        <div class="gradebook-toolbar">
+                            <button id="portal-admin-different-email" type="button">Use a different email</button>
+                            <button id="portal-admin-use-role" type="button" hidden>Use existing role</button>
+                            <button id="portal-admin-reactivate" type="button" hidden>Reactivate this login</button>
+                            <button id="portal-admin-change-role" type="button" hidden>Change role and apply selection</button>
+                        </div>
+                        <p><a href="student-records.html">Review student and family links</a> · <a href="gradebook.html">Review classroom assignments</a></p>
+                    </section>
                 </form>
                 <p id="portal-admin-result" role="status" aria-live="polite"></p>
+                <ul id="portal-admin-link-repairs" hidden></ul>
             </section>
 
             <section class="gradebook-panel">
@@ -75,7 +94,7 @@
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-portal.js?v=portal-ux-1"></script>
-    <script src="portal-admin.js?v=20261124"></script>
+    <script src="supabase-portal.js?v=staff-actions-1"></script>
+    <script src="portal-admin.js?v=staff-actions-1"></script>
 </body>
 </html>

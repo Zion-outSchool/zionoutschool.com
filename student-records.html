@@ -26,19 +26,44 @@
         <p id="student-records-status" role="status" aria-live="polite">Checking your sign-in…</p>
         <section id="student-records" hidden>
             <div class="gradebook-panel">
-                <label>Registration record <select id="student-records-select"></select></label>
+                <label>Search students <input type="search" id="student-records-search" autocomplete="off"></label>
+                <label>Student <select id="student-directory-select"></select></label>
+                <p id="student-directory-count" role="status"></p>
+                <a href="portal-admin.html#portal-admin-student" data-portal-admin hidden>Create a student in Portal Administration</a>
+            </div>
+            <div id="student-directory-detail" class="gradebook-panel" hidden>
+                <h2 id="student-directory-name"></h2>
+                <p id="student-directory-summary"></p>
+                <p><a id="student-directory-messages">Open student messages</a></p>
+                <form id="student-directory-edit" class="gradebook-form-grid" hidden>
+                    <label>First name <input name="first_name" maxlength="120" required></label>
+                    <label>Last name <input name="last_name" maxlength="120" required></label>
+                    <label>Preferred name <input name="preferred_name" maxlength="120"></label>
+                    <label>Grade <input name="grade_level" maxlength="24"></label>
+                    <label>Family login <select name="family_id"></select></label>
+                    <button type="submit">Save student record</button>
+                </form>
+                <p id="student-directory-save-status" role="status" aria-live="polite"></p>
+                <h3>Published reports and transcripts</h3>
+                <ul id="student-directory-reports"></ul>
+            </div>
+            <div class="gradebook-panel">
+                <label>Registration
+                    <select id="student-records-select"></select>
+                </label>
+                <p id="student-registration-note"></p>
             </div>
             <article id="student-record-detail" class="gradebook-panel" hidden></article>
             <form id="student-record-link" class="gradebook-panel" hidden>
-                <h2>Link to the school roster</h2>
-                <p>Choose an existing student, or create a new student using this registration.</p>
-                <label>Student <select name="student_id"></select></label>
+                <h2 id="student-record-link-title">Link to the school roster</h2>
+                <p id="student-record-link-description">Choose an existing student, or create a new student using this registration.</p>
+                <label>Student <select name="student_id" required></select></label>
                 <button type="submit">Link registration</button>
             </form>
         </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-portal.js?v=portal-ux-1"></script>
-    <script src="student-records.js?v=communications-1"></script>
+    <script src="supabase-portal.js?v=staff-actions-1"></script>
+    <script src="student-records.js?v=staff-actions-1"></script>
 </body>
 </html>

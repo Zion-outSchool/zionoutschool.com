@@ -36,16 +36,39 @@ function queuePortalRegistration_(payload, result) {
     const name = 'portal-registration-' + studentFolderId + '.json';
     const lock = LockService.getScriptLock();
     lock.waitLock(5000);
+    let queued;
     try {
       const existing = folder.getFilesByName(name);
-      if (!existing.hasNext()) folder.createFile(name, JSON.stringify(record), 'application/json');
+        if (!existing.hasNext()) queued = folder.createFile(name, JSON.stringify(record), 'application/json');
     } finally {
       lock.releaseLock();
     }
+    if (queued) deliverPortalRegistration_(queued, properties);
   } catch (_error) {
     // Keep the existing registration response intact. Leave queued files available for retry.
     console.error('Portal registration sync did not finish. Check the retry queue and deployment settings.');
   }
+}
+
+function installPortalRegistrationSync() {
+  const properties = PropertiesService.getScriptProperties();
+  const queue = properties.getProperty('REGISTRATION_SYNC_QUEUE_FOLDER_ID');
+  const settings = portalRegistrationDeliverySettings_(properties);
+  if (!queue || !settings) throw new Error('Set the registration sync queue, URL and key in Script Properties before installing.');
+  DriveApp.getFolderById(queue).getName();
+  const response = UrlFetchApp.fetch(settings.url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'x-registration-sync-key': settings.key },
+    payload: '{}',
+    muteHttpExceptions: true,
+    followRedirects: false
+  });
+  if (response.getResponseCode() !== 422) throw new Error('Supabase did not verify the registration sync connection. Check the URL and key.');
+  if (!ScriptApp.getProjectTriggers().some(trigger => trigger.getHandlerFunction() === 'retryPortalRegistrations')) {
+    ScriptApp.newTrigger('retryPortalRegistrations').timeBased().everyMinutes(5).create();
+  }
+  console.log('Registration sync verified. Automatic retries are enabled.');
 }
 
 function retryPortalRegistrations() {
@@ -62,20 +85,25 @@ function retryPortalRegistrations() {
   }
 }
 
-function deliverPortalRegistration_(file, properties) {
+function portalRegistrationDeliverySettings_(properties) {
   const url = properties.getProperty('REGISTRATION_SYNC_URL');
   const key = properties.getProperty('REGISTRATION_SYNC_KEY');
-  if (!url || !/^https:\/\/[^/]+\.supabase\.co\/functions\/v1\/registration-sync$/.test(url)
-      || !key || key.length < 32) {
+  return url && /^https:\/\/[a-z0-9]+\.supabase\.co\/functions\/v1\/registration-sync$/.test(url)
+      && key && key.length >= 32 ? {url, key} : null;
+}
+
+function deliverPortalRegistration_(file, properties) {
+  const settings = portalRegistrationDeliverySettings_(properties);
+  if (!settings) {
     console.error('Portal registration sync URL or key is not configured.');
     return;
   }
 
   try {
-    const response = UrlFetchApp.fetch(url, {
+    const response = UrlFetchApp.fetch(settings.url, {
       method: 'post',
       contentType: 'application/json',
-      headers: { 'x-registration-sync-key': key },
+      headers: { 'x-registration-sync-key': settings.key },
       payload: file.getBlob().getDataAsString(),
       muteHttpExceptions: true,
       followRedirects: false

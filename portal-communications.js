@@ -82,8 +82,9 @@ async function initPortalCommunications() {
 
     function showError(error) {
         if (!active) return;
-        const exposed = ['22023', '42501'].includes(error?.code);
-        alert(exposed ? error.message : 'That action could not be completed. Please try again.', 'error');
+        alert(staff ? portalActionMessage(error, 'complete the communications action',
+            'Check the selected student or classroom. If an assignment or family link changed, reload before trying again.')
+            : 'We couldn’t complete that action. Reopen the conversation or update and try again.', 'error');
     }
 
     function handle(element, event, run) {

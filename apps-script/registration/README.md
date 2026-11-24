@@ -14,7 +14,7 @@ The registration page still sends Step 1 and the final submission to the existin
    | `REGISTRATION_SYNC_KEY` | The same dedicated secret used by the Edge Function, with at least 32 characters |
 
 5. In the final-submission handler, immediately before returning its existing success response, call `queuePortalRegistration_(payload, result)` with the parsed request and the existing response object, before JSON serialization. The code expects `payload.step` to be `2` and `result.result` to be `success`.
-6. Add a time-driven trigger for `retryPortalRegistrations` in the same Apps Script project and redeploy the existing web app. Test a completed submission with fictional student data before releasing the updated site.
+6. Run `installPortalRegistrationSync` in the registration editor as the project owner. The function checks the queue and Supabase endpoint before enabling five-minute retries. Redeploy the existing web app, then test a completed submission with fictional student data.
 
 A sync failure leaves the queued item for retry. Validation failures are labeled `needs-review-` in the same restricted folder. The worker trashes successfully synced queue files, and retries with the same student folder preserve the record and its roster link.
 
