@@ -4,9 +4,12 @@
 
 const ZION_SUPABASE_URL = 'https://zwoivkqmnriwtokpbmdo.supabase.co';
 const ZION_SUPABASE_KEY = 'sb_publishable_Phy4E8oKXWHcIfJZnDhxAA_DXEAyZ5g';
+const isPortalPasswordResetPage = document.body.dataset.portalPasswordReset === 'true';
 
 const portalClient = window.supabase
-    ? window.supabase.createClient(ZION_SUPABASE_URL, ZION_SUPABASE_KEY)
+    ? window.supabase.createClient(ZION_SUPABASE_URL, ZION_SUPABASE_KEY, isPortalPasswordResetPage
+        ? { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'zion-portal-recovery' } }
+        : undefined)
     : null;
 
 const STAFF_PORTAL_ROLES = ['admin', 'teacher', 'staff'];
@@ -1114,4 +1117,4 @@ async function initPortalAuth() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initPortalAuth);
+if (!isPortalPasswordResetPage) document.addEventListener('DOMContentLoaded', initPortalAuth);
