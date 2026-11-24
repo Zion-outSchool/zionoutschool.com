@@ -88,6 +88,7 @@ async function initTeacherGradebook() {
     let finalContext;
     let editingEnrollment;
     let busy = false;
+    let managesRoster = false;
 
     function message(text, tone) {
         setPortalMessage(status, text, tone);
@@ -332,7 +333,9 @@ async function initTeacherGradebook() {
             : 'Total points.';
         byId('gradebook-rules').textContent = `${ruleText} Missing work ${course.missing_is_zero ? 'counts as zero' : 'is excluded'}. Excused work is excluded.`;
         if (!enrollments.length) {
-            appendTextElement(grid, 'p', 'Add students to start scoring this course.');
+            appendTextElement(grid, 'p', managesRoster
+                ? 'Add students to start scoring this course.'
+                : 'No students are enrolled. Ask a portal administrator to update your roster.');
             return;
         }
         const table = document.createElement('table');
@@ -355,7 +358,7 @@ async function initTeacherGradebook() {
             review.type = 'button';
             review.setAttribute('aria-label', `${review.textContent} for ${studentName(enrollment)}`);
             review.onclick = () => reviewGrade(enrollment);
-            if (!finals.has(enrollment.id)) {
+            if (managesRoster && !finals.has(enrollment.id)) {
                 const edit = appendTextElement(gradeCell, 'button', 'Edit enrollment');
                 edit.type = 'button';
                 edit.setAttribute('aria-label', `Edit enrollment for ${studentName(enrollment)}`);
@@ -464,7 +467,9 @@ async function initTeacherGradebook() {
             location.replace('family-portal.html');
         });
         students = await loadPlannerStudents();
-        if (profile.role === 'admin') {
+        managesRoster = profile.role === 'admin';
+        if (managesRoster) {
+            byId('gradebook-roster-management').hidden = false;
             const teachers = data(await portalClient.from('portal_users').select('id, display_name').in('role', ['admin', 'teacher']).eq('active', true).order('display_name'));
             const field = settings.elements.teacher_id;
             option(field, 'My account', '');
@@ -527,7 +532,7 @@ async function initTeacherGradebook() {
         byId('gradebook-enrollment-cancel').onclick = () => renderEnrollmentForm();
         enrollmentForm.onsubmit = event => {
             event.preventDefault();
-            if (!requireSavedScores()) return;
+            if (!managesRoster || !requireSavedScores()) return;
             run(async () => {
                 const { student_id, ...values } = Object.fromEntries(new FormData(enrollmentForm));
                 values.requirement_key = values.requirement_key || null;

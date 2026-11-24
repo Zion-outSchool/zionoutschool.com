@@ -19,6 +19,8 @@ Apply these files in order after the core portal and planner tables exist.
 3. [Graduation final grades](supabase_graduation_final_grade.sql)
 4. [Teacher gradebook](supabase_gradebook.sql)
 5. [Registration records](supabase_registration_records.sql)
+6. [School communications](supabase_communications.sql)
+7. [Classroom access](supabase_classroom_access.sql)
 
 After the database update, follow the [invitation setup](#deploying-in-app-invitations) and the [registration sync setup](apps-script/registration/README.md). Use fictional records to verify account activation, grade finalization, registration delivery, and family access before releasing the website.
 
@@ -225,6 +227,8 @@ Store each file path on `grade_reports.storage_path`. The website creates a shor
 
 Run [supabase_family_visibility_repair.sql](supabase_family_visibility_repair.sql) after the core portal tables and planner tables exist. It creates or updates the private bucket and ensures the database applies the same active-family and published-report rules to PDF downloads.
 
+After the gradebook, graduation planner, family visibility, and communications scripts, apply [supabase_classroom_access.sql](supabase_classroom_access.sql). Apply it again if you rerun an earlier script that defines these policies. Administrators manage rosters. Teachers can use student records and graduation tools for students in their assigned classes.
+
 ## Creating Portal Logins
 
 Once the in-app workflow is deployed, sign in as an administrator and open **Portal Administration**. Create student records, select a family or teacher role, and enter the recipient's email. For a family, select all of their children before sending the invitation. An existing family can use the same email when a sibling joins. **Manage classrooms** opens the gradebook, where administrators can assign a teacher and enroll students in each course.
@@ -264,6 +268,8 @@ The planner structure is based on `Arkansas_Graduation_Planning_Worksheet.xlsx`.
 The Communications page opens from the signed-in Family Portal and from Student Records. An administrator can contact any linked family. A teacher can contact families for current classroom rosters. A family can reply to a conversation in the portal or use the reply address on an email. Each conversation is filed by student. Email-only conversations are visible to authorized school users in the student file.
 
 Administrators can publish news, announcements, and PDFs up to 10 MB to active portal accounts. An update can also be emailed individually to each active family with a confirmed address. PDF emails contain a portal link. Families download the PDF after signing in.
+
+Teachers can publish news and announcements for their assigned classes. The audience preview counts linked family accounts and confirmed email addresses. Families see class updates while they have a student enrolled in the class. Administrators can also publish to any class.
 
 ### Set up communications in a test environment
 
