@@ -46,6 +46,21 @@ function retryPortalReplyReview() {
   processPortalEmailReplies(true);
 }
 
+function getPortalReplyRaw(id) {
+  // The REST response preserves raw as a base64url string.
+  const url = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/' +
+      encodeURIComponent(id) + '?format=raw&fields=raw';
+  const response = UrlFetchApp.fetch(url, {
+    headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()},
+    muteHttpExceptions: true,
+    followRedirects: false
+  });
+  const status = response.getResponseCode();
+  if (status === 404) return null;
+  if (status !== 200) throw new Error('Gmail message download returned HTTP ' + status + '.');
+  return JSON.parse(response.getContentText()).raw;
+}
+
 function processPortalEmailReplies(retryReview) {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return;
@@ -99,14 +114,15 @@ function processPortalEmailReplies(retryReview) {
       if ((metadata.labelIds || []).some(label => ignoredLabels.includes(label))) continue;
       const recipients = (metadata.payload?.headers || []).filter(header => header.name.toLowerCase() === 'to');
       if (!recipients.some(header => exactAddress.test(header.value))) continue;
-      const message = Gmail.Users.Messages.get('me', id, {format: 'raw'});
+      const raw = getPortalReplyRaw(id);
+      if (raw === null) continue;
       let label = reviewId;
-      if (typeof message.raw === 'string' && message.raw.length > 0 && message.raw.length <= 1398104) {
+      if (typeof raw === 'string' && raw.length > 0 && raw.length <= 1398104) {
         const response = UrlFetchApp.fetch(endpoint, {
           method: 'post',
           contentType: 'application/json',
           headers: {Authorization: 'Bearer ' + key},
-          payload: JSON.stringify({id, raw: message.raw}),
+          payload: JSON.stringify({id, raw}),
           muteHttpExceptions: true,
           followRedirects: false
         });
