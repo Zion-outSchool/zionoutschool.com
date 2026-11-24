@@ -55,19 +55,22 @@ begin
     from auth.users u where lower(u.email) = lower(btrim(invite_email));
     if account is not null then
         select p.* into existing_profile from public.portal_users p where p.id = account;
-        if found and (existing_profile.role <> invite_role or not existing_profile.active) then
-            raise exception 'This email belongs to an account with a different role or inactive status.' using errcode = '22023';
+        if found and not existing_profile.active then
+            raise exception 'This portal login is inactive. Review the account below to reactivate it.' using errcode = 'PA002';
+        end if;
+        if found and existing_profile.role <> invite_role then
+            raise exception 'This email already has a different portal role. Review the account below to choose how to proceed.' using errcode = 'PA001';
         end if;
     end if;
     select count(*) into student_count from public.students s where s.id = any(student_ids);
     if student_count <> cardinality(student_ids) then
-        raise exception 'One or more selected student records are missing.' using errcode = '22023';
+        raise exception 'A selected student is no longer on this roster. Refresh the page and select the student again.' using errcode = '22023';
     end if;
     if exists (
         select from public.students s
         where s.id = any(student_ids) and s.family_id is not null and s.family_id is distinct from account
     ) then
-        raise exception 'A selected student already belongs to a different family login.' using errcode = '22023';
+        raise exception 'A selected student is linked to a different family login. Open that student in Student Records to review or change the link.' using errcode = 'PA003';
     end if;
     return query select account, coalesce(email_confirmed, false);
 end;
@@ -102,7 +105,7 @@ begin
     perform from public.portal_users p
     where p.id = target_account and p.role = invite_role and p.active for update;
     if not found then
-        raise exception 'This email belongs to an account with a different role or inactive status.' using errcode = '22023';
+        raise exception 'The account changed while this request was running. Review its current role and status below.' using errcode = 'PA001';
     end if;
 
     update public.students s set family_id = target_account

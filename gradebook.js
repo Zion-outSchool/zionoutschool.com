@@ -1,6 +1,6 @@
 /* global portalClient, getPortalSession, getPortalProfile,
     appendTextElement, setPortalMessage, normalizeStudentName, loadPlannerStudents,
-    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate */
+    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate, portalActionMessage */
 
 const GRADEBOOK_GRADE_LEVELS = ['K', ...Array.from({ length: 12 }, (_, index) => String(index + 1))];
 
@@ -100,14 +100,15 @@ async function initTeacherGradebook() {
         return false;
     }
 
-    async function run(work) {
+    async function run(work, action = 'open this course', next = 'Check that the course still appears in your gradebook. Ask an administrator to verify your classroom assignment if it is missing.') {
         if (busy) return;
         busy = true;
         panel.inert = true;
         try {
             await work();
         } catch (error) {
-            message(error.message || 'The gradebook request failed.', 'error');
+            message(error.code || error.status ? portalActionMessage(error, action, next)
+                : error.message || `We couldn’t ${action}. ${next}`, 'error');
         } finally {
             busy = false;
             panel.inert = false;
@@ -511,7 +512,7 @@ async function initTeacherGradebook() {
                 const saved = data(await request.select('id').single());
                 await refreshCourses(saved.id);
                 message('Course settings saved.', 'success');
-            });
+            }, 'save course settings', 'Review the course name, grading scale and categories. Leave the entered settings in place while you correct them.');
         };
 
         option(enrollmentForm.elements.requirement_key, 'No graduation requirement', '');
@@ -542,7 +543,7 @@ async function initTeacherGradebook() {
                     : table.insert({ ...values, student_id, course_id: course.id })));
                 await loadCourse(course.id);
                 message(editing ? 'Enrollment updated.' : 'Student added to roster.', 'success');
-            });
+            }, 'save the enrollment', 'Check the chosen student and course. If the student is already on this roster, edit the existing enrollment.');
         };
 
         assignmentForm.elements.assignment_id.onchange = loadAssignmentForm;
@@ -590,7 +591,7 @@ async function initTeacherGradebook() {
                 data(await (assignment_id ? table.update(updates).eq('id', assignment_id) : table.insert(record)));
                 await loadCourse(course.id);
                 message('Assignment saved.', 'success');
-            });
+            }, 'save the assignment', 'Check the assignment name, category, points and rubric. Confirm that the course is still assigned to you.');
         };
 
         grid.onpaste = event => {
@@ -648,7 +649,7 @@ async function initTeacherGradebook() {
             if (changed.length) data(await portalClient.rpc('gradebook_save_marks', { target_course: course.id, changes: changed }));
             await loadCourse(course.id);
             message('Scores saved.', 'success');
-        });
+        }, 'save the scores', 'Check the score ranges and roster. A finalized grade must be reopened before you edit its scores.');
 
         byId('gradebook-discard').onclick = () => run(async () => {
             await loadCourse(course.id);
@@ -670,13 +671,13 @@ async function initTeacherGradebook() {
                 await loadCourse(course.id);
                 message(finalized ? 'Grade reopened. Finalize it again to restore it to the planner.'
                     : 'Grade finalized and added to the planner and transcript.', 'success');
-            });
+            }, 'update the final grade', 'Review the enrollment, earned credits and reason before submitting again.');
         };
 
         panel.hidden = false;
         await run(() => refreshCourses());
     } catch (error) {
-        message(error.message || 'The gradebook could not load.', 'error');
+        message(portalActionMessage(error, 'load the gradebook', 'Confirm that you have an active administrator or teacher login and that an administrator assigned your classroom.'), 'error');
     }
 }
 

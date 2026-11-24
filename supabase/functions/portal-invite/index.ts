@@ -51,8 +51,10 @@ Deno.serve(async (request) => {
     student_ids: [...new Set(students.map((id: string) => id.toLowerCase()))],
   };
   const handleDatabaseError = (error: { code: string; message: string }, fallback: string) => {
-    if (error.code === "42501") return json({ message: "Administrator access is required." }, 403);
-    if (error.code === "22023") return json({ message: error.message }, 409);
+    if (error.code === "42501") return json({ message: "Sign in with an active administrator account to send invitations." }, 403);
+    if (["22023", "PA001", "PA002", "PA003"].includes(error.code)) {
+      return json({ code: error.code, message: error.message }, 409);
+    }
     return json({ message: fallback }, 503);
   };
 
@@ -69,7 +71,10 @@ Deno.serve(async (request) => {
       redirectTo: new URL("/portal-activate.html", site).href,
     });
     if (error || !data.user) {
-      return json({ message: "Supabase could not send the invitation. Check the email and try again." }, 502);
+      if (error?.status === 429) {
+        return json({ message: "The email service reached its invitation limit. Keep this form open and try again later." }, 429);
+      }
+      return json({ message: "The invitation email did not send. Verify the address and check the account below before retrying." }, 502);
     }
     accountId = data.user.id;
     sent = true;
@@ -80,8 +85,10 @@ Deno.serve(async (request) => {
   });
   if (completeError) {
     if (sent) {
-      const conflict = completeError.code === "22023" ? ` ${completeError.message}` : "";
-      return json({ message: `The email was sent, but account setup could not finish.${conflict} Review the student selection and try again.` }, 409);
+      const actionable = ["22023", "PA001", "PA002", "PA003"].includes(completeError.code);
+      return json({ code: actionable ? completeError.code : "SETUP_PENDING",
+        message: "The invitation was sent. Portal setup is still pending. " +
+          (actionable ? completeError.message : "Check the account or student link below and submit again with Resend unchecked.") }, 409);
     }
     return handleDatabaseError(completeError, "Account setup could not finish. Try again.");
   }

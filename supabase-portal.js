@@ -56,6 +56,24 @@ function setPortalMessage(element, message, tone = 'neutral') {
     element.dataset.tone = tone;
 }
 
+function portalActionMessage(error, action, nextStep) {
+    const code = String(error?.code || '');
+    const status = Number(error?.status || error?.statusCode);
+    if (status === 401 || code === 'PGRST301' || code === 'PGRST303') {
+        return 'Your sign-in expired. Copy any unsaved work, sign in again, and reopen this page.';
+    }
+    if (['22023', '42501', 'PA001', 'PA002', 'PA003', 'P0001'].includes(code) && error.message
+        && !/permission denied|row-level security/i.test(error.message)) return `${error.message} ${nextStep}`;
+    if (code === '42501' || status === 403) {
+        return `Your account doesn’t have access to ${action}. ${nextStep}`;
+    }
+    if (code === '23505') return `A matching record already exists. ${nextStep}`;
+    if (code === '23503' || code === 'PGRST116') return `A linked record is missing or has changed. ${nextStep}`;
+    if (code === '23514' || code === '23502' || code === '22P02') return `Check the required fields before you ${action}. ${nextStep}`;
+    if (status === 429) return `The service reached its request limit. Keep this page open and wait before trying to ${action} again.`;
+    return `We couldn’t ${action}. ${nextStep}`;
+}
+
 function togglePortalState(session) {
     document.querySelectorAll('[data-portal-guest]').forEach(el => {
         el.hidden = Boolean(session);
@@ -739,7 +757,7 @@ async function initStudentFileForm(profile, onStudentCreated) {
         option.value = '';
         option.textContent = 'Use manual UID field';
         familySelect.appendChild(option);
-        setPortalMessage(status, 'Family logins could not be loaded. You can paste the family Auth UID manually.', 'error');
+        setPortalMessage(status, portalActionMessage(error, 'load family logins', 'Check the family account in Portal Administration, then reload the planner.'), 'error');
     }
 
     if (form.dataset.bound === 'true') return;
@@ -779,7 +797,7 @@ async function initStudentFileForm(profile, onStudentCreated) {
 
         if (error) {
             console.error('Unable to create student:', error);
-            setPortalMessage(status, 'Student file could not be created. Check Supabase insert policies.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'create the student file', 'Check the required names and the selected family login in Portal Administration.'), 'error');
             return;
         }
 
@@ -931,7 +949,7 @@ async function initGraduationPlanner(profile) {
             if (select.value !== studentId) return;
             console.error('Unable to load planner records:', error);
             container.innerHTML = '';
-            setPortalMessage(status, 'Planner records could not be loaded. Run the graduation planner SQL setup first.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'open this student’s plan', 'Confirm the student is still on your classroom roster, then select them again.'), 'error');
         }
     }
 
@@ -949,7 +967,7 @@ async function initGraduationPlanner(profile) {
             await loadSelectedStudent();
         } catch (error) {
             console.error('Unable to load planner students:', error);
-            setPortalMessage(status, 'Students could not be loaded. Check Supabase policies and try again.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'load the planner roster', 'Check your classroom assignment in the gradebook or ask an administrator to review it.'), 'error');
         }
     }
 
@@ -982,7 +1000,7 @@ async function initGraduationPlanner(profile) {
                 printGraduationTranscript(student, courses);
             } catch (error) {
                 console.error('Unable to export transcript:', error);
-                setPortalMessage(status, 'The transcript could not be exported. Try again.', 'error');
+                setPortalMessage(status, portalActionMessage(error, 'export the transcript', 'Select the student again and check that their grades and planner entries load before exporting.'), 'error');
             } finally {
                 exportButton.disabled = false;
             }
@@ -1040,7 +1058,7 @@ async function initGraduationPlanner(profile) {
 
             if (entryError || milestoneError) {
                 console.error('Unable to save planner:', entryError || milestoneError);
-                setPortalMessage(status, 'Planner could not be saved. Check Supabase policies and try again.', 'error');
+                setPortalMessage(status, portalActionMessage(entryError || milestoneError, 'save the planner', 'Check credit values and dates, and confirm the student is still assigned to you.'), 'error');
                 return;
             }
 
