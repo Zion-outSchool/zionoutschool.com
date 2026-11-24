@@ -275,6 +275,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
    | --- | --- |
    | `COMMUNICATION_REPLY_ADDRESS` | The dedicated mailbox address used in the Edge Function configuration |
    | `COMMUNICATION_MAILBOX_OWNER` | The account's primary Gmail address when the reply address is an alias |
+   | `COMMUNICATION_REPLY_TAG_PREFIX` | Optional tag prefix, such as `zion-portal-`, matching the Edge Function setting |
    | `COMMUNICATION_REPLY_URL` | The deployed Edge Function URL ending in `/communication-email/reply` |
    | `COMMUNICATION_INBOUND_KEY` | The same inbound secret used by the Edge Function |
 
@@ -308,6 +309,7 @@ Administrators can publish news, announcements, and PDFs up to 10 MB to active p
 | `COMMUNICATION_CLOUDFLARE_TOKEN` | A token scoped to Email Sending for that account |
 | `COMMUNICATION_FROM` | A sender address on a Cloudflare-enabled domain |
 | `COMMUNICATION_REPLY_ADDRESS` | The Google Workspace reply address |
+| `COMMUNICATION_REPLY_TAG_PREFIX` | Optional prefix between the plus sign and the conversation token |
 | `COMMUNICATION_PORTAL_URL` | The HTTPS URL of `portal-communications.html` |
 | `COMMUNICATION_DELIVERY_KEY` | A random scheduler secret of at least 32 characters |
 | `COMMUNICATION_INBOUND_KEY` | A separate random inbox secret of at least 32 characters |

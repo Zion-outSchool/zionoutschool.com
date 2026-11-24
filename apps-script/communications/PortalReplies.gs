@@ -6,10 +6,11 @@ function syncPortalEmailReplies() {
     const properties = PropertiesService.getScriptProperties();
     const mailbox = (properties.getProperty('COMMUNICATION_REPLY_ADDRESS') || '').toLowerCase();
     const owner = (properties.getProperty('COMMUNICATION_MAILBOX_OWNER') || mailbox).toLowerCase();
+    const prefix = properties.getProperty('COMMUNICATION_REPLY_TAG_PREFIX') || '';
     const endpoint = properties.getProperty('COMMUNICATION_REPLY_URL');
     const key = properties.getProperty('COMMUNICATION_INBOUND_KEY');
     const baseAddress = /^[a-z0-9][a-z0-9._-]*@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!baseAddress.test(mailbox) || !baseAddress.test(owner) ||
+    if (!baseAddress.test(mailbox) || !baseAddress.test(owner) || !/^[a-z0-9-]{0,20}$/.test(prefix) ||
         !/^https:\/\/[a-z0-9]+\.supabase\.co\/functions\/v1\/communication-email\/reply$/.test(endpoint || '') ||
         !key || key.length < 32) {
       throw new Error('The portal reply mailbox is not configured.');
@@ -30,8 +31,9 @@ function syncPortalEmailReplies() {
     const [local, domain] = mailbox.split('@');
     const escape = value => value.replaceAll('.', '\\.');
     const exactAddress = new RegExp('(?:^|[\\s<,;])' + escape(local) +
-        '\\+[a-f0-9]{32}@' + escape(domain) + '(?=$|[\\s>,;])', 'i');
-    const recipientQuery = owner === mailbox ? '' : ' to:"' + local + '"';
+        '\\+' + prefix + '[a-f0-9]{32}@' + escape(domain) + '(?=$|[\\s>,;])', 'i');
+    const recipientTerm = prefix.replace(/-+$/, '') || (owner === mailbox ? '' : local);
+    const recipientQuery = recipientTerm ? ' to:"' + recipientTerm + '"' : '';
     const list = Gmail.Users.Messages.list('me', {
       q: 'in:inbox -label:' + filed + ' -label:' + review + recipientQuery, maxResults: 40
     });

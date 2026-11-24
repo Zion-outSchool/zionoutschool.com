@@ -9,6 +9,7 @@ const settings = {
   cloudflareToken: Deno.env.get("COMMUNICATION_CLOUDFLARE_TOKEN") ?? "",
   from: Deno.env.get("COMMUNICATION_FROM") ?? "",
   replyAddress: Deno.env.get("COMMUNICATION_REPLY_ADDRESS") ?? "",
+  replyTagPrefix: Deno.env.get("COMMUNICATION_REPLY_TAG_PREFIX") ?? "",
   portalUrl: Deno.env.get("COMMUNICATION_PORTAL_URL") ?? "https://zionoutschool.com/portal-communications.html",
   deliveryKey: Deno.env.get("COMMUNICATION_DELIVERY_KEY") ?? "",
   inboundKey: Deno.env.get("COMMUNICATION_INBOUND_KEY") ?? "",
@@ -50,7 +51,12 @@ async function authorized(request: Request, secret: string) {
 function replyTo(token: string | null) {
   if (!token) return undefined;
   const [name, domain] = settings.replyAddress.split("@");
-  return name + "+" + token + "@" + domain;
+  return name + "+" + settings.replyTagPrefix + token + "@" + domain;
+}
+
+function replyMailboxIsConfigured() {
+  return mailbox.test(settings.replyAddress) && !settings.replyAddress.includes("+") &&
+    /^[a-z0-9-]{0,20}$/.test(settings.replyTagPrefix);
 }
 
 async function send(delivery: Delivery): Promise<{ state: DeliveryState; reference?: string }> {
@@ -91,7 +97,7 @@ async function send(delivery: Delivery): Promise<{ state: DeliveryState; referen
 
 async function deliver() {
   if (!/^[0-9a-f]{32}$/.test(settings.cloudflareAccount) || !settings.cloudflareToken ||
-    !mailbox.test(settings.from) || !mailbox.test(settings.replyAddress) || settings.replyAddress.includes("+")) {
+    !mailbox.test(settings.from) || !replyMailboxIsConfigured()) {
     return json({ error: "Email delivery is not configured." }, 503);
   }
   try {
@@ -115,7 +121,7 @@ async function deliver() {
 }
 
 async function inbound(request: Request) {
-  if (!mailbox.test(settings.replyAddress) || settings.replyAddress.includes("+")) {
+  if (!replyMailboxIsConfigured()) {
     return json({ error: "Reply mailbox is not configured." }, 503);
   }
   const envelope = await request.text();
@@ -136,12 +142,13 @@ async function inbound(request: Request) {
   if (autoSubmitted && autoSubmitted.toLowerCase() !== "no") return json({ ignored: true });
   const sender = message.from?.address?.toLowerCase();
   const [local, domain] = settings.replyAddress.toLowerCase().split("@");
+  const localPrefix = local + "+" + settings.replyTagPrefix;
   const tokens = new Set<string>();
   for (const address of message.to ?? []) {
     if (!("address" in address) || !address.address) continue;
     const parts = address.address.toLowerCase().split("@");
-    if (parts.length !== 2 || parts[1] !== domain || !parts[0].startsWith(local + "+")) continue;
-    const candidate = parts[0].slice(local.length + 1);
+    if (parts.length !== 2 || parts[1] !== domain || !parts[0].startsWith(localPrefix)) continue;
+    const candidate = parts[0].slice(localPrefix.length);
     if (/^[a-f0-9]{32}$/.test(candidate)) tokens.add(candidate);
   }
   if (tokens.size !== 1 || !sender || sender.length > 254 || !mailbox.test(sender)) {
