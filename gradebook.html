@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Teacher Gradebook | ZION outSchool</title>
-    <link rel="stylesheet" href="gradebook.css?v=google-import-1">
+    <link rel="stylesheet" href="gradebook.css?v=course-deletion-1">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
 </head>
 <body class="zion-portal teacher-gradebook" data-portal-page-role="gradebook">
@@ -172,9 +172,26 @@
                         </div>
                     </details>
                     <button type="submit">Save course settings</button>
+                    <button id="gradebook-delete-course" class="portal-delete-button" type="button" hidden>Delete class</button>
                 </form>
             </details>
         </div>
+
+        <dialog id="gradebook-delete-course-dialog" aria-labelledby="gradebook-delete-course-title">
+            <form method="dialog" class="gradebook-dialog">
+                <h2 id="gradebook-delete-course-title">Delete class?</h2>
+                <p><strong id="gradebook-delete-course-name"></strong></p>
+                <p>This permanently removes the class roster, assignments, grades, and class announcements from the portal. Finalized grades and credits for this class will disappear from student planners and transcripts. Student records and any linked Google Classroom stay in place.</p>
+                <label>Type DELETE to confirm
+                    <input name="confirmation" autocomplete="off" required pattern="DELETE">
+                </label>
+                <p id="gradebook-delete-course-status" class="portal-form-status" role="status" hidden></p>
+                <div class="gradebook-toolbar">
+                    <button type="button" name="cancel" autofocus>Cancel</button>
+                    <button type="submit" name="confirm" class="portal-delete-button">Permanently delete class</button>
+                </div>
+            </form>
+        </dialog>
 
         <dialog id="gradebook-score-dialog">
             <form method="dialog" class="gradebook-dialog">
@@ -225,6 +242,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
     <script src="gradebook-google.js?v=refresh-1"></script>
-    <script src="gradebook.js?v=roster-settings-1"></script>
+    <script src="gradebook.js?v=course-deletion-1"></script>
 </body>
 </html>

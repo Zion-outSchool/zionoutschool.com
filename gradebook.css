@@ -317,15 +317,15 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
 .teacher-gradebook .gradebook-google-work-item li { padding-block: .15rem; }
 .teacher-gradebook #gradebook-google-preview > button { margin-top: .8rem; }
 
-.zion-portal .portal-account-main button.portal-delete-button {
+:is(.zion-portal .portal-account-main, .zion-portal.teacher-gradebook main) button.portal-delete-button {
     border-color: #9a3a2c;
     color: #8b3024;
     background: var(--portal-paper);
 }
-.zion-portal .portal-account-main button.portal-delete-button[type="submit"] {
+:is(.zion-portal .portal-account-main, .zion-portal.teacher-gradebook main) button.portal-delete-button[type="submit"] {
     color: white;
     background: #9a3a2c;
 }
-.zion-portal .portal-account-main button.portal-delete-button:hover:not(:disabled) { background: #f7e3de; }
-.zion-portal .portal-account-main button.portal-delete-button[type="submit"]:hover:not(:disabled) { background: #782b20; }
+:is(.zion-portal .portal-account-main, .zion-portal.teacher-gradebook main) button.portal-delete-button:hover:not(:disabled) { background: #f7e3de; }
+:is(.zion-portal .portal-account-main, .zion-portal.teacher-gradebook main) button.portal-delete-button[type="submit"]:hover:not(:disabled) { background: #782b20; }
 #student-delete-dialog #student-delete-status:empty { display: none; }

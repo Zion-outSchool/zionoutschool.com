@@ -75,6 +75,10 @@ async function initTeacherGradebook() {
     const courseSelect = byId('gradebook-course');
     const settings = byId('course-settings');
     const settingsPanel = byId('course-settings-panel');
+    const deleteCourse = byId('gradebook-delete-course');
+    const deleteDialog = byId('gradebook-delete-course-dialog');
+    const deleteForm = deleteDialog.querySelector('form');
+    const deleteStatus = byId('gradebook-delete-course-status');
     const enrollmentForm = byId('gradebook-enroll');
     const assignmentForm = byId('gradebook-assignment');
     const scoreDialog = byId('gradebook-score-dialog');
@@ -158,6 +162,7 @@ async function initTeacherGradebook() {
         settings.reset();
         settingsPanel.hidden = false;
         settingsPanel.open = !record;
+        deleteCourse.hidden = !managesRoster || !record;
         settings.elements.name.value = record?.name || '';
         settings.elements.term.value = record?.term || '';
         settings.elements.teacher_id.value = record?.teacher_id || '';
@@ -770,6 +775,7 @@ async function initTeacherGradebook() {
             googleImport?.configure(null, []);
             scoreDialog.close();
             finalDialog.close();
+            deleteDialog.close();
             location.replace('family-portal.html');
         });
         students = await loadPlannerStudents();
@@ -836,6 +842,59 @@ async function initTeacherGradebook() {
                 await refreshCourses(saved.id);
                 message('Course settings saved.', 'success');
             }, 'save course settings', 'Review the course name, grading scale and categories. Leave the entered settings in place while you correct them.');
+        };
+
+        deleteCourse.onclick = () => {
+            if (!managesRoster || !course || !requireSavedScores()) return;
+            deleteForm.reset();
+            deleteStatus.hidden = true;
+            byId('gradebook-delete-course-name').textContent = `${course.name} · ${course.term}`;
+            deleteDialog.showModal();
+        };
+        deleteForm.elements.cancel.onclick = () => deleteDialog.close();
+        deleteDialog.addEventListener('cancel', event => {
+            if (busy) event.preventDefault();
+        });
+        deleteForm.onsubmit = event => {
+            event.preventDefault();
+            if (!managesRoster || !course || deleteForm.elements.confirmation.value !== 'DELETE') return;
+            const courseId = course.id;
+            run(async () => {
+                const { cancel, confirmation, confirm } = deleteForm.elements;
+                cancel.disabled = confirm.disabled = true;
+                confirmation.readOnly = true;
+                deleteStatus.hidden = false;
+                setPortalMessage(deleteStatus, 'Deleting class…');
+                try {
+                    data(await portalClient.rpc('portal_delete_course', { target_course: courseId }));
+                } catch (error) {
+                    const text = ['PGRST202', '42883'].includes(error.code)
+                        ? 'Class deletion requires the Supabase course deletion migration.'
+                        : portalActionMessage(error, 'delete this class', 'Reload the gradebook to check whether the class still appears.');
+                    setPortalMessage(deleteStatus, text, 'error');
+                    return confirmation;
+                } finally {
+                    cancel.disabled = confirm.disabled = false;
+                    confirmation.readOnly = false;
+                }
+                deleteDialog.close();
+                courses = courses.filter(item => item.id !== courseId);
+                for (const item of courseSelect.options) {
+                    if (item.value === courseId) {
+                        item.remove();
+                        break;
+                    }
+                }
+                courseSelect.value = '';
+                await loadCourse('');
+                try {
+                    await refreshCourses();
+                    message('Class deleted.', 'success');
+                } catch {
+                    message('Class deleted. Reload the gradebook if the remaining classes do not appear.', 'success');
+                }
+                return courseSelect;
+            });
         };
 
         option(enrollmentForm.elements.requirement_key, 'No graduation requirement', '');

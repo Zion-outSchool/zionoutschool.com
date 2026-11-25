@@ -26,6 +26,7 @@ Apply these files in order after the core portal and planner tables exist.
 10. [Student News and weekly newsletters](supabase_newsletter.sql)
 11. [Google Classroom grade imports](supabase_classroom_import.sql)
 12. [Administrator student deletion](supabase_student_deletion.sql)
+13. [Administrator class deletion](supabase_course_deletion.sql)
 
 After changing the registration records schema, apply the registration review script again so the read function includes approved corrections. Deploy the updated `communication-email` function after applying the review migration. The existing email job sends review links to active administrators with confirmed emails.
 
