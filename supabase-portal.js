@@ -127,6 +127,13 @@ function togglePortalProfileState(profile) {
     const isStaff = isStaffPortalProfile(profile);
     const isAdmin = isAdminPortalProfile(profile);
 
+    const welcome = document.querySelector('[data-portal-welcome]');
+    if (welcome) {
+        const name = profile?.active ? profile.display_name?.trim() : '';
+        welcome.textContent = name ? `Welcome, ${name}!`
+            : profile?.active ? 'Welcome back!' : 'Welcome to the Family Portal';
+    }
+
     document.querySelectorAll('[data-portal-staff]').forEach(el => {
         el.hidden = !isStaff;
     });
