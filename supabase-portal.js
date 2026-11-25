@@ -4,9 +4,12 @@
 
 const ZION_SUPABASE_URL = 'https://zwoivkqmnriwtokpbmdo.supabase.co';
 const ZION_SUPABASE_KEY = 'sb_publishable_Phy4E8oKXWHcIfJZnDhxAA_DXEAyZ5g';
+const isPortalPasswordResetPage = document.body.dataset.portalPasswordReset === 'true';
 
 const portalClient = window.supabase
-    ? window.supabase.createClient(ZION_SUPABASE_URL, ZION_SUPABASE_KEY)
+    ? window.supabase.createClient(ZION_SUPABASE_URL, ZION_SUPABASE_KEY, isPortalPasswordResetPage
+        ? { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'zion-portal-recovery' } }
+        : undefined)
     : null;
 
 const STAFF_PORTAL_ROLES = ['admin', 'teacher', 'staff'];
@@ -53,6 +56,24 @@ function setPortalMessage(element, message, tone = 'neutral') {
     element.dataset.tone = tone;
 }
 
+function portalActionMessage(error, action, nextStep) {
+    const code = String(error?.code || '');
+    const status = Number(error?.status || error?.statusCode);
+    if (status === 401 || code === 'PGRST301' || code === 'PGRST303') {
+        return 'Your sign-in expired. Copy any unsaved work, sign in again, and reopen this page.';
+    }
+    if (['22023', '42501', 'PA001', 'PA002', 'PA003', 'P0001'].includes(code) && error.message
+        && !/permission denied|row-level security/i.test(error.message)) return `${error.message} ${nextStep}`;
+    if (code === '42501' || status === 403) {
+        return `Your account doesn’t have access to ${action}. ${nextStep}`;
+    }
+    if (code === '23505') return `A matching record already exists. ${nextStep}`;
+    if (code === '23503' || code === 'PGRST116') return `A linked record is missing or has changed. ${nextStep}`;
+    if (code === '23514' || code === '23502' || code === '22P02') return `Check the required fields before you ${action}. ${nextStep}`;
+    if (status === 429) return `The service reached its request limit. Keep this page open and wait before trying to ${action} again.`;
+    return `We couldn’t ${action}. ${nextStep}`;
+}
+
 function togglePortalState(session) {
     document.querySelectorAll('[data-portal-guest]').forEach(el => {
         el.hidden = Boolean(session);
@@ -73,6 +94,33 @@ function isStaffPortalProfile(profile) {
 
 function isAdminPortalProfile(profile) {
     return profile?.active === true && ADMIN_PORTAL_ROLES.includes(profile?.role);
+}
+
+let schoolUpdatesVersion = 0;
+
+async function refreshPortalSchoolUpdates(profile) {
+    const section = document.querySelector('[data-portal-school-updates]');
+    if (!section || !portalClient) return;
+    const list = section.querySelector('[data-portal-school-update-list]');
+    const version = ++schoolUpdatesVersion;
+    section.hidden = true;
+    list.replaceChildren();
+    if (!profile?.active) return;
+
+    const { data, error } = await portalClient.from('communication_posts').select('id, kind, title')
+        .order('created_at', { ascending: false }).order('id', { ascending: false }).limit(3);
+    if (version !== schoolUpdatesVersion || error || !data?.length) return;
+    for (const { id, kind, title } of data) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = kind === 'newsletter'
+            ? 'portal-communications.html?newsletter=' + encodeURIComponent(id) + '#newsletters'
+            : 'portal-communications.html#update-' + encodeURIComponent(id);
+        link.textContent = title;
+        item.append(link);
+        list.append(item);
+    }
+    section.hidden = false;
 }
 
 function togglePortalProfileState(profile) {
@@ -97,6 +145,18 @@ function togglePortalProfileState(profile) {
     document.querySelectorAll('[data-portal-role]').forEach(el => {
         el.textContent = profile?.role || '';
     });
+
+    document.querySelectorAll('[data-portal-active]').forEach(el => {
+        el.hidden = profile?.active !== true;
+    });
+    document.querySelectorAll('[data-portal-messages]').forEach(el => {
+        el.hidden = !profile?.active || !['family', 'teacher', 'admin'].includes(profile.role);
+    });
+
+    const calendar = document.querySelector('[data-portal-calendar]');
+    if (profile?.active && calendar && !calendar.hasAttribute('src')) calendar.src = calendar.dataset.portalCalendar;
+    if (!profile?.active) calendar?.removeAttribute('src');
+    void refreshPortalSchoolUpdates(profile).catch(() => {});
 }
 
 async function getPortalProfile(session) {
@@ -154,21 +214,21 @@ function bindPortalLogin() {
         if (submit) submit.disabled = true;
         setPortalMessage(status, 'Signing in...', 'neutral');
 
-        const { data, error } = await portalClient.auth.signInWithPassword({ email, password });
+        try {
+            const { data, error } = await portalClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                setPortalMessage(status, 'The email or password was not accepted.', 'error');
+                return;
+            }
 
-        if (submit) submit.disabled = false;
-
-        if (error) {
-            setPortalMessage(status, 'The email or password was not accepted.', 'error');
-            return;
-        }
-
-        loginForm.reset();
-        togglePortalState(data.session);
-        setPortalMessage(status, 'You are signed in.', 'success');
-
-        if (loginForm.dataset.redirectAfterLogin) {
-            window.location.href = loginForm.dataset.redirectAfterLogin;
+            loginForm.reset();
+            togglePortalState(data.session);
+            setPortalMessage(status, 'You are signed in.', 'success');
+            if (loginForm.dataset.redirectAfterLogin) window.location.href = loginForm.dataset.redirectAfterLogin;
+        } catch {
+            setPortalMessage(status, 'We couldn’t sign you in. Please try again.', 'error');
+        } finally {
+            if (submit) submit.disabled = false;
         }
     });
 }
@@ -181,8 +241,8 @@ function bindPortalSignOut() {
             togglePortalState(null);
             togglePortalProfileState(null);
 
-            if (document.body.dataset.requiresAuth === 'true') {
-                window.location.href = 'family-portal.html';
+            if (document.body.dataset.portalPageRole) {
+                window.location.replace('family-portal.html');
             }
         });
     });
@@ -234,16 +294,14 @@ function formatPortalDate(value) {
     });
 }
 
-async function renderGradeReports(session) {
+async function renderGradeReports(session, profile, isCurrent) {
     const reportList = document.querySelector('[data-grade-reports-list]');
     const emptyState = document.querySelector('[data-grade-reports-empty]');
     const status = document.querySelector('[data-grade-reports-status]');
 
     if (!reportList || !portalClient || !session) return;
 
-    setPortalMessage(status, 'Loading grade reports...', 'neutral');
-
-    const profile = await getPortalProfile(session);
+    setPortalMessage(status, 'Loading published reports…');
     let studentQuery = portalClient
         .from('students')
         .select('id, family_id, first_name, preferred_name, last_name, grade_level')
@@ -262,12 +320,13 @@ async function renderGradeReports(session) {
             .order('published_at', { ascending: false })
     ]);
 
+    if (!isCurrent()) return;
     if (studentError || reportError) {
         console.error('Unable to load grade report data:', studentError || reportError);
         reportList.innerHTML = '';
         if (emptyState) emptyState.hidden = true;
         setPortalMessage(status, 'Grade reports could not be loaded. Please try again or contact the school.', 'error');
-        return false;
+        return;
     }
 
     const reportsByStudent = new Map();
@@ -283,8 +342,8 @@ async function renderGradeReports(session) {
 
     if (!visibleStudents.length) {
         if (emptyState) emptyState.hidden = false;
-        setPortalMessage(status, 'No grade reports have been published for this login yet.', 'neutral');
-        return false;
+        setPortalMessage(status, '');
+        return;
     }
 
     if (emptyState) emptyState.hidden = true;
@@ -297,8 +356,7 @@ async function renderGradeReports(session) {
         heading.className = 'grade-report-student-heading';
 
         const headingText = document.createElement('div');
-        appendTextElement(headingText, 'span', 'Student', 'portal-tool-status');
-        appendTextElement(headingText, 'h2', normalizeStudentName(student));
+        appendTextElement(headingText, 'h3', normalizeStudentName(student));
         appendTextElement(heading, 'span', student.grade_level ? `Grade ${student.grade_level}` : 'Grade level pending');
         heading.prepend(headingText);
 
@@ -307,6 +365,7 @@ async function renderGradeReports(session) {
 
         for (const report of reportsByStudent.get(student.id)) {
             const url = await createSignedReportUrl(report);
+            if (!isCurrent()) return;
             const item = document.createElement('div');
             item.className = 'grade-report-item';
 
@@ -316,7 +375,7 @@ async function renderGradeReports(session) {
 
             const reportText = document.createElement('div');
             appendTextElement(reportText, 'span', reportType, 'grade-report-type');
-            appendTextElement(reportText, 'h3', report.title || reportType);
+            appendTextElement(reportText, 'h4', report.title || reportType);
             appendTextElement(reportText, 'p', meta || 'Published report');
 
             const academicMeta = [
@@ -348,8 +407,7 @@ async function renderGradeReports(session) {
         reportList.appendChild(card);
     }
 
-    setPortalMessage(status, 'Grade reports loaded.', 'success');
-    return true;
+    setPortalMessage(status, '');
 }
 
 function graduationCellKey(requirementKey, gradeLevel) {
@@ -528,7 +586,7 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
     container.appendChild(milestoneSection);
 }
 
-async function loadGraduationRecords(studentId) {
+async function loadGraduationRecords(studentId, { allowPartial = false } = {}) {
     const [{ data: entries, error: entryError }, { data: milestones, error: milestoneError }, finals] = await Promise.all([
         portalClient
             .from('graduation_plan_entries')
@@ -541,15 +599,13 @@ async function loadGraduationRecords(studentId) {
         portalClient
             .from('gradebook_final_courses')
             .select('course_name, term, requirement_key, grade_level, credits, final_grade')
-            .eq('student_id', studentId)
+            .eq('student_id', studentId).order('finalized_at', { ascending: false })
     ]);
 
-    if (entryError || milestoneError) {
-        throw entryError || milestoneError;
-    }
-    if (finals.error && !['42P01', 'PGRST205'].includes(finals.error.code)) throw finals.error;
-
-    return { entries: entries || [], milestones: milestones || [], finalCourses: finals.data || [] };
+    const finalError = finals.error && !['42P01', 'PGRST205'].includes(finals.error.code) ? finals.error : null;
+    const plannerError = entryError || milestoneError;
+    if (!allowPartial && (plannerError || finalError)) throw plannerError || finalError;
+    return { entries: entries || [], milestones: milestones || [], finalCourses: finals.data || [], plannerError, finalError };
 }
 
 function completedTranscriptCourses(entries, finalCourses) {
@@ -681,7 +737,7 @@ async function populateStudentFamilySelect(select) {
     data.forEach(family => {
         const option = document.createElement('option');
         option.value = family.id;
-        option.textContent = family.family_name || family.display_name || family.id;
+        option.textContent = [...new Set([family.family_name, family.display_name].filter(Boolean))].join(' · ') || 'Family account';
         select.appendChild(option);
     });
 }
@@ -700,9 +756,9 @@ async function initStudentFileForm(profile, onStudentCreated) {
         familySelect.innerHTML = '';
         const option = document.createElement('option');
         option.value = '';
-        option.textContent = 'Use manual UID field';
+        option.textContent = 'Link a family login later';
         familySelect.appendChild(option);
-        setPortalMessage(status, 'Family logins could not be loaded. You can paste the family Auth UID manually.', 'error');
+        setPortalMessage(status, portalActionMessage(error, 'load family logins', 'Check the family account in Portal Administration, then reload the planner.'), 'error');
     }
 
     if (form.dataset.bound === 'true') return;
@@ -712,7 +768,7 @@ async function initStudentFileForm(profile, onStudentCreated) {
         event.preventDefault();
 
         const submit = form.querySelector('[type="submit"]');
-        const familyId = form.elements.family_id?.value || form.elements.family_id_manual?.value.trim();
+        const familyId = form.elements.family_id.value;
         const firstName = form.elements.first_name?.value.trim();
         const preferredName = form.elements.preferred_name?.value.trim();
         const lastName = form.elements.last_name?.value.trim();
@@ -742,7 +798,7 @@ async function initStudentFileForm(profile, onStudentCreated) {
 
         if (error) {
             console.error('Unable to create student:', error);
-            setPortalMessage(status, 'Student file could not be created. Check Supabase insert policies.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'create the student file', 'Check the required names and the selected family login in Portal Administration.'), 'error');
             return;
         }
 
@@ -757,106 +813,119 @@ async function initStudentFileForm(profile, onStudentCreated) {
     });
 }
 
-async function renderFamilyGraduationProgress(session) {
-    const container = document.querySelector('[data-graduation-planner-readonly]');
-    const status = document.querySelector('[data-graduation-progress-status]');
-    const progressView = document.querySelector('[data-graduation-progress-view]');
-    if (!container || !portalClient || !session) return;
+function renderFamilyCourseCard(student, records, feedbackResult) {
+    const section = document.createElement('section');
+    section.className = 'family-grade-card';
+    const header = appendTextElement(section, 'div', '', 'family-grade-student-heading');
+    appendTextElement(header, 'h3', normalizeStudentName(student));
+    if (student.grade_level) appendTextElement(header, 'p', student.grade_level === 'K' ? 'Kindergarten' : `Grade ${student.grade_level}`);
 
-    if (progressView) progressView.hidden = true;
-    setPortalMessage(status, 'Loading graduation progress...', 'neutral');
-
-    const { data: students, error } = await portalClient
-        .from('students')
-        .select('id, family_id, first_name, preferred_name, last_name, grade_level')
-        .eq('family_id', session.user.id)
-        .order('last_name', { ascending: true });
-
-    if (error || !students?.length) {
-        console.error('Unable to load students for graduation progress:', error);
-        container.innerHTML = '';
-        setPortalMessage(status, 'No graduation progress records are available for this login yet.', 'neutral');
-        return;
-    }
-
-    container.innerHTML = '';
-    let renderedStudents = 0;
-
-    for (const student of students) {
-        try {
-            const records = await loadGraduationRecords(student.id);
-            const meaningfulEntries = records.entries.filter(entry => (
-                entry.course_name ||
-                entry.credits ||
-                entry.final_grade ||
-                entry.notes ||
-                (entry.status && entry.status !== 'not_started')
-            ));
-            const meaningfulMilestones = records.milestones.filter(milestone => (
-                milestone.completed_on ||
-                milestone.notes ||
-                (milestone.status && milestone.status !== 'not_started')
-            ));
-
-            if (!meaningfulEntries.length && !meaningfulMilestones.length && !records.finalCourses.length) continue;
-
-            const section = document.createElement('section');
-            section.className = 'graduation-student-section';
-            appendTextElement(section, 'h3', normalizeStudentName(student));
-
-            const studentContainer = document.createElement('div');
-            section.appendChild(studentContainer);
-            container.appendChild(section);
-
-            renderGraduationPlannerTable(studentContainer, meaningfulEntries, meaningfulMilestones, { finalCourses: records.finalCourses });
-            if (records.finalCourses.length) {
-                const otherCourses = records.finalCourses.filter(course => !course.requirement_key);
-                if (otherCourses.length) {
-                    appendTextElement(section, 'h4', 'Classroom grades');
-                    const courses = document.createElement('ul');
-                    for (const course of otherCourses) {
-                        appendTextElement(courses, 'li', `${course.course_name} · ${course.term} · Final grade: ${course.final_grade}`);
-                    }
-                    section.appendChild(courses);
-                }
-                const { data: feedback } = await portalClient.rpc('gradebook_family_feedback', { target_student: student.id });
-                if (feedback?.length) {
-                    const list = document.createElement('ul');
-                    appendTextElement(section, 'h4', 'Teacher feedback');
-                    for (const item of feedback) {
-                        appendTextElement(list, 'li', `${item.course_name} · ${item.term} · ${item.assignment_title}: ${item.feedback}`);
-                    }
-                    section.appendChild(list);
-                }
-            }
-            renderedStudents += 1;
-        } catch (error) {
-            console.error('Unable to load graduation records:', error);
+    if (records.finalCourses.length) {
+        const courses = appendTextElement(section, 'ul', '', 'family-final-courses');
+        for (const course of records.finalCourses) {
+            const item = appendTextElement(courses, 'li', '');
+            const title = appendTextElement(item, 'div', '');
+            appendTextElement(title, 'h4', course.course_name);
+            const credits = Number(course.credits);
+            const detail = [course.term, course.requirement_key && `${credits} ${credits === 1 ? 'credit' : 'credits'}`].filter(Boolean);
+            if (detail.length) appendTextElement(title, 'p', detail.join(' · '));
+            const grade = appendTextElement(item, 'span', '', 'family-final-grade');
+            appendTextElement(grade, 'span', 'Final grade ', 'family-grade-sr-only');
+            grade.append(course.final_grade);
         }
+    } else {
+        appendTextElement(section, 'p', records.finalError ? 'Course grades couldn’t load. Try refreshing the page.'
+            : 'No course grades have been finalized yet.');
     }
 
-    if (!renderedStudents) {
-        setPortalMessage(status, 'No graduation progress records are available for this login yet.', 'neutral');
-        return;
+    if (feedbackResult.data?.length) {
+        const details = appendTextElement(section, 'details', '', 'family-grade-details');
+        appendTextElement(details, 'summary', 'Teacher feedback');
+        const list = appendTextElement(details, 'ul', '', 'family-grade-feedback');
+        for (const item of feedbackResult.data) {
+            const entry = appendTextElement(list, 'li', '');
+            appendTextElement(entry, 'h4', item.assignment_title);
+            appendTextElement(entry, 'small', [item.course_name, item.term].filter(Boolean).join(' · '));
+            appendTextElement(entry, 'p', item.feedback);
+        }
+    } else if (feedbackResult.error) {
+        appendTextElement(section, 'p', 'Teacher feedback couldn’t load. Try refreshing the page.');
     }
 
-    if (progressView) progressView.hidden = false;
-    setPortalMessage(status, 'Graduation progress loaded.', 'success');
+    const entries = records.entries.filter(entry => (
+        entry.course_name || entry.credits || entry.final_grade || entry.notes || (entry.status && entry.status !== 'not_started')
+    ));
+    const milestones = records.milestones.filter(milestone => (
+        milestone.completed_on || milestone.notes || (milestone.status && milestone.status !== 'not_started')
+    ));
+    if (!records.plannerError && (entries.length || milestones.length || records.finalCourses.some(course => course.requirement_key))) {
+        const details = appendTextElement(section, 'details', '', 'family-grade-details');
+        appendTextElement(details, 'summary', 'Graduation planning worksheet');
+        const planner = appendTextElement(details, 'div', '');
+        renderGraduationPlannerTable(planner, entries, milestones, { finalCourses: records.finalCourses });
+    }
+    return section;
 }
 
-async function renderFamilyGradeReportPage(session) {
+async function renderFamilyGraduationProgress(session, isCurrent) {
     const progressView = document.querySelector('[data-graduation-progress-view]');
-    const progressContainer = document.querySelector('[data-graduation-planner-readonly]');
-    const progressStatus = document.querySelector('[data-graduation-progress-status]');
+    const container = document.querySelector('[data-graduation-planner-readonly]');
+    const status = document.querySelector('[data-graduation-progress-status]');
+    if (!progressView || !container) return;
 
+    progressView.hidden = false;
+    setPortalMessage(status, 'Loading course grades…');
+    try {
+        const { data: students, error } = await portalClient
+            .from('students')
+            .select('id, first_name, preferred_name, last_name, grade_level')
+            .eq('family_id', session.user.id)
+            .order('last_name', { ascending: true });
+        if (!isCurrent()) return;
+        if (error) throw error;
+        if (!students?.length) {
+            setPortalMessage(status, 'Course grades will appear here after a student is linked to this family login.');
+            return;
+        }
+
+        const cards = await Promise.all(students.map(async student => {
+            const records = await loadGraduationRecords(student.id, { allowPartial: true });
+            if (!isCurrent()) return null;
+            const feedback = records.finalCourses.length
+                ? await portalClient.rpc('gradebook_family_feedback', { target_student: student.id }) : {};
+            if (!isCurrent()) return null;
+            return renderFamilyCourseCard(student, records, feedback);
+        }));
+        if (!isCurrent()) return;
+        container.replaceChildren(...cards.filter(Boolean));
+        setPortalMessage(status, '');
+    } catch (error) {
+        if (!isCurrent()) return;
+        console.error('Unable to load course grades:', error);
+        setPortalMessage(status, 'Course grades couldn’t load. Try refreshing the page.', 'error');
+    }
+}
+
+let gradeReportVersion = 0;
+
+async function renderFamilyGradeReportPage(session, profile) {
+    const version = ++gradeReportVersion;
+    const isCurrent = () => version === gradeReportVersion;
+    const reports = document.querySelector('[data-grade-reports-list]');
+    const empty = document.querySelector('[data-grade-reports-empty]');
+    const progressView = document.querySelector('[data-graduation-progress-view]');
+
+    reports?.replaceChildren();
+    if (empty) empty.hidden = true;
     if (progressView) progressView.hidden = true;
-    if (progressContainer) progressContainer.innerHTML = '';
-    setPortalMessage(progressStatus, '', 'neutral');
-
-    const hasPublishedReports = await renderGradeReports(session);
-    if (!hasPublishedReports) return;
-
-    await renderFamilyGraduationProgress(session);
+    document.querySelector('[data-graduation-planner-readonly]')?.replaceChildren();
+    const jobs = [renderGradeReports(session, profile, isCurrent).catch(error => {
+        if (!isCurrent()) return;
+        console.error('Unable to load published reports:', error);
+        setPortalMessage(document.querySelector('[data-grade-reports-status]'), 'Published reports couldn’t load. Try refreshing the page.', 'error');
+    })];
+    if (profile.role === 'family') jobs.push(renderFamilyGraduationProgress(session, isCurrent));
+    await Promise.all(jobs);
 }
 
 async function initGraduationPlanner(profile) {
@@ -866,17 +935,12 @@ async function initGraduationPlanner(profile) {
     const saveButton = document.querySelector('[data-save-graduation-plan]');
     const exportButton = document.querySelector('[data-export-graduation-transcript]');
     let students = [];
+    let exporting = false;
 
     if (!select || !container || !portalClient) return;
 
     if (!isStaffPortalProfile(profile)) {
         if (exportButton) exportButton.disabled = true;
-        document.querySelectorAll('[data-portal-denied]').forEach(el => {
-            el.hidden = false;
-        });
-        document.querySelectorAll('.graduation-planner-panel').forEach(el => {
-            el.hidden = true;
-        });
         setPortalMessage(status, 'Staff access is required for this page.', 'error');
         return;
     }
@@ -885,6 +949,7 @@ async function initGraduationPlanner(profile) {
         const studentId = select.value;
         delete container.dataset.studentId;
         if (saveButton) saveButton.disabled = true;
+        if (exportButton) exportButton.disabled = true;
         container.replaceChildren();
         if (!studentId) return;
         setPortalMessage(status, 'Loading planner...', 'neutral');
@@ -895,12 +960,13 @@ async function initGraduationPlanner(profile) {
             renderGraduationPlannerTable(container, records.entries, records.milestones, { editable: true, finalCourses: records.finalCourses });
             container.dataset.studentId = studentId;
             if (saveButton) saveButton.disabled = false;
+            if (exportButton) exportButton.disabled = exporting;
             setPortalMessage(status, 'Planner loaded.', 'success');
         } catch (error) {
             if (select.value !== studentId) return;
             console.error('Unable to load planner records:', error);
             container.innerHTML = '';
-            setPortalMessage(status, 'Planner records could not be loaded. Run the graduation planner SQL setup first.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'open this student’s plan', 'Confirm the student is still on your classroom roster, then select them again.'), 'error');
         }
     }
 
@@ -909,7 +975,6 @@ async function initGraduationPlanner(profile) {
 
         try {
             students = await populatePlannerStudentSelect(select, selectedStudentId);
-            if (exportButton) exportButton.disabled = !students.length;
             if (!students.length) {
                 container.innerHTML = '';
                 setPortalMessage(status, 'No students are available yet. Create a student file above.', 'neutral');
@@ -918,19 +983,20 @@ async function initGraduationPlanner(profile) {
             await loadSelectedStudent();
         } catch (error) {
             console.error('Unable to load planner students:', error);
-            setPortalMessage(status, 'Students could not be loaded. Check Supabase policies and try again.', 'error');
+            setPortalMessage(status, portalActionMessage(error, 'load the planner roster', 'Check your classroom assignment in the gradebook or ask an administrator to review it.'), 'error');
         }
     }
 
     if (exportButton) {
         exportButton.onclick = async () => {
             const student = students.find(record => record.id === select.value);
-            if (!student) return;
+            if (!student || exporting || container.dataset.studentId !== student.id) return;
             if (saveButton?.disabled && container.dataset.studentId === student.id) {
                 setPortalMessage(status, 'Wait for the planner to finish saving before exporting.', 'neutral');
                 return;
             }
 
+            exporting = true;
             exportButton.disabled = true;
             setPortalMessage(status, 'Preparing transcript…', 'neutral');
             try {
@@ -951,9 +1017,10 @@ async function initGraduationPlanner(profile) {
                 printGraduationTranscript(student, courses);
             } catch (error) {
                 console.error('Unable to export transcript:', error);
-                setPortalMessage(status, 'The transcript could not be exported. Try again.', 'error');
+                setPortalMessage(status, portalActionMessage(error, 'export the transcript', 'Select the student again and check that their grades and planner entries load before exporting.'), 'error');
             } finally {
-                exportButton.disabled = false;
+                exporting = false;
+                exportButton.disabled = !select.value || select.value !== container.dataset.studentId;
             }
         };
     }
@@ -1009,7 +1076,7 @@ async function initGraduationPlanner(profile) {
 
             if (entryError || milestoneError) {
                 console.error('Unable to save planner:', entryError || milestoneError);
-                setPortalMessage(status, 'Planner could not be saved. Check Supabase policies and try again.', 'error');
+                setPortalMessage(status, portalActionMessage(entryError || milestoneError, 'save the planner', 'Check credit values and dates, and confirm the student is still assigned to you.'), 'error');
                 return;
             }
 
@@ -1020,58 +1087,88 @@ async function initGraduationPlanner(profile) {
     await refreshStudents();
 }
 
+function canOpenPortalPage(requiredRole, profile) {
+    if (!profile?.active) return false;
+    if (requiredRole === 'active') return true;
+    if (requiredRole === 'staff') return isStaffPortalProfile(profile);
+    if (requiredRole === 'admin') return isAdminPortalProfile(profile);
+    if (requiredRole === 'gradebook') return ['admin', 'teacher'].includes(profile.role);
+    return false;
+}
+
 async function initPortalAuth() {
-    const session = await getPortalSession();
-    togglePortalState(session);
-    const profile = await getPortalProfile(session);
-    togglePortalProfileState(profile);
+    const requiredRole = document.body.dataset.portalPageRole;
+    const page = document.querySelector('[data-portal-page-content]');
+    const unavailable = document.querySelector('[data-portal-unavailable]');
+    const gradeReportPage = document.body.classList.contains('grade-reports-page');
+    const pageSignOut = requiredRole && document.querySelector('[data-portal-sign-out]');
+    let displayedUser;
+    let displayedRole;
+
+    function showPortal(session, profile) {
+        togglePortalState(session);
+        togglePortalProfileState(profile);
+        if (unavailable) unavailable.hidden = !session || profile?.active === true;
+        const review = window.location.search && new URLSearchParams(window.location.search).get(requiredRole ? 'request' : 'registration-review');
+        const validReview = review && /^[a-f0-9-]{36}$/i.test(review);
+        const newsletter = window.location.search && new URLSearchParams(window.location.search).get('newsletter');
+        const validNewsletter = newsletter && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(newsletter);
+        if (!requiredRole) {
+            if (unavailable && validNewsletter && profile?.active) {
+                window.location.replace('portal-communications.html?newsletter=' + encodeURIComponent(newsletter) + '#newsletters');
+                return;
+            }
+            if (unavailable && validReview && isAdminPortalProfile(profile)) {
+                window.location.replace('registration-review.html?request=' + encodeURIComponent(review));
+            }
+            return;
+        }
+        if (!canOpenPortalPage(requiredRole, profile)) {
+            if (gradeReportPage) gradeReportVersion++;
+            if (page) page.hidden = true;
+            if (pageSignOut) pageSignOut.hidden = true;
+            const next = !session && document.body.dataset.portalRegistrationReview && validReview
+                ? 'family-portal.html?registration-review=' + encodeURIComponent(review)
+                : !session && document.body.dataset.portalNewsletter && validNewsletter
+                    ? 'family-portal.html?newsletter=' + encodeURIComponent(newsletter) : 'family-portal.html';
+            window.location.replace(next);
+            return;
+        }
+        if (page) page.hidden = false;
+        if (pageSignOut) pageSignOut.hidden = false;
+        if (displayedUser === session.user.id && displayedRole === profile.role) return;
+        displayedUser = session.user.id;
+        displayedRole = profile.role;
+        if (gradeReportPage) void renderFamilyGradeReportPage(session, profile);
+        if (document.body.classList.contains('graduation-planner-page')) void initGraduationPlanner(profile);
+    }
 
     bindPortalLogin();
     bindPortalSignOut();
+    const session = await getPortalSession();
+    const profile = await getPortalProfile(session);
+    showPortal(session, profile);
 
-    if (document.body.dataset.requiresAuth === 'true' && !session) {
-        window.location.href = 'family-portal.html';
-        return;
-    }
-
-    if (document.body.classList.contains('grade-reports-page')) {
-        renderFamilyGradeReportPage(session);
-    }
-
-    if (document.body.classList.contains('graduation-planner-page')) {
-        initGraduationPlanner(profile);
-    }
-
+    let currentUser = session?.user?.id;
     let authChangeVersion = 0;
     if (portalClient) {
         portalClient.auth.onAuthStateChange((_event, nextSession) => {
             const changeVersion = ++authChangeVersion;
-            // Release Supabase's auth lock before making further client calls.
-            // Hide staff controls immediately when a session ends.
-            togglePortalState(nextSession);
-            togglePortalProfileState(null);
+            if (currentUser !== nextSession?.user?.id) {
+                currentUser = nextSession?.user?.id;
+                if (gradeReportPage) gradeReportVersion++;
+                togglePortalState(nextSession);
+                togglePortalProfileState(null);
+                if (unavailable) unavailable.hidden = true;
+                if (page) page.hidden = true;
+                if (pageSignOut) pageSignOut.hidden = true;
+            }
+            // Supabase callbacks must release the auth lock before further requests.
             setTimeout(async () => {
                 try {
                     const nextProfile = await getPortalProfile(nextSession);
                     if (changeVersion !== authChangeVersion) return;
-                    togglePortalState(nextSession);
-                    togglePortalProfileState(nextProfile);
-
-                    if (document.body.classList.contains('grade-reports-page')) {
-                        if (nextSession) {
-                            renderFamilyGradeReportPage(nextSession);
-                        } else {
-                            window.location.href = 'family-portal.html';
-                        }
-                    }
-
-                    if (document.body.classList.contains('graduation-planner-page')) {
-                        if (nextSession) {
-                            initGraduationPlanner(nextProfile);
-                        } else {
-                            window.location.href = 'family-portal.html';
-                        }
-                    }
+                    showPortal(nextSession, nextProfile);
                 } catch (error) {
                     console.error('Unable to refresh portal access:', error);
                 }
@@ -1080,4 +1177,4 @@ async function initPortalAuth() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initPortalAuth);
+if (!isPortalPasswordResetPage) document.addEventListener('DOMContentLoaded', initPortalAuth);

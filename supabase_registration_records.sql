@@ -101,10 +101,31 @@ begin
 end;
 $$;
 
+create or replace function public.move_registration_record(
+    target_record uuid, previous_student uuid, next_student uuid
+) returns void
+language plpgsql security definer set search_path = ''
+as $$
+begin
+    if public.current_portal_role() is distinct from 'admin' then
+        raise exception 'Use an administrator account to correct a registration link.' using errcode = '42501';
+    end if;
+    if next_student is null or next_student = previous_student
+        or not exists (select 1 from public.students where id = next_student) then
+        raise exception 'Choose a different student who is still on the roster.' using errcode = '22023';
+    end if;
+    update public.registration_records set student_id = next_student
+    where id = target_record and student_id = previous_student;
+    if not found then
+        raise exception 'The registration link changed. Open the student record again before moving it.' using errcode = '22023';
+    end if;
+end;
+$$;
+
 revoke all on function public.can_read_registration_record(uuid),
     public.list_registration_records(), public.read_registration_record(uuid),
-    public.link_registration_record(uuid, uuid) from public, anon, authenticated;
+    public.link_registration_record(uuid, uuid), public.move_registration_record(uuid, uuid, uuid) from public, anon, authenticated;
 grant execute on function public.list_registration_records(), public.read_registration_record(uuid),
-    public.link_registration_record(uuid, uuid) to authenticated;
+    public.link_registration_record(uuid, uuid), public.move_registration_record(uuid, uuid, uuid) to authenticated;
 
 commit;

@@ -6,34 +6,67 @@
     <meta name="referrer" content="no-referrer">
     <title>Student Records | ZION outSchool</title>
     <link rel="stylesheet" href="gradebook.css?v=student-records-20261124">
+    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
 </head>
-<body data-requires-auth="true">
-    <header class="gradebook-header">
-        <a href="family-portal.html">ZION outSchool</a>
-        <nav aria-label="Staff navigation">
-            <a href="gradebook.html">Teacher Gradebook</a>
-            <a href="portal-admin.html" data-portal-admin hidden>Portal Administration</a>
-            <button type="button" data-portal-sign-out hidden>Sign out</button>
-        </nav>
+<body class="zion-portal" data-portal-page-role="gradebook">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html">
+                <span>Family Portal</span>
+                <small>Zion outSchool</small>
+            </a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
     </header>
-    <main class="portal-account-main">
+    <main class="portal-account-main" data-portal-page-content hidden>
         <h1>Student Records</h1>
+        <p><a href="registration-review.html">Registration requests and history</a></p>
         <p id="student-records-status" role="status" aria-live="polite">Checking your sign-in…</p>
         <section id="student-records" hidden>
             <div class="gradebook-panel">
-                <label>Registration record <select id="student-records-select"></select></label>
+                <label>Search students <input type="search" id="student-records-search" autocomplete="off"></label>
+                <label>Student <select id="student-directory-select"></select></label>
+                <p id="student-directory-count" role="status"></p>
+                <a href="portal-admin.html#portal-admin-student" data-portal-admin hidden>Create a student in Portal Administration</a>
+            </div>
+            <div id="student-directory-detail" class="gradebook-panel" hidden>
+                <h2 id="student-directory-name"></h2>
+                <p id="student-directory-summary"></p>
+                <p><a id="student-directory-messages">Open student messages</a></p>
+                <p><a id="student-directory-news">Open Student News</a></p>
+                <form id="student-directory-edit" class="gradebook-form-grid" hidden>
+                    <label>First name <input name="first_name" maxlength="120" required></label>
+                    <label>Last name <input name="last_name" maxlength="120" required></label>
+                    <label>Preferred name <input name="preferred_name" maxlength="120"></label>
+                    <label>Grade <input name="grade_level" maxlength="24"></label>
+                    <label>Family login <select name="family_id"></select></label>
+                    <button type="submit">Save student record</button>
+                </form>
+                <p id="student-directory-save-status" role="status" aria-live="polite"></p>
+                <h3>Published reports and transcripts</h3>
+                <ul id="student-directory-reports"></ul>
+            </div>
+            <div class="gradebook-panel">
+                <label>Registration
+                    <select id="student-records-select"></select>
+                </label>
+                <p id="student-registration-note"></p>
+                <p><a id="student-registration-edit" hidden></a></p>
             </div>
             <article id="student-record-detail" class="gradebook-panel" hidden></article>
             <form id="student-record-link" class="gradebook-panel" hidden>
-                <h2>Link to the school roster</h2>
-                <p>Choose an existing student, or create a new student using this registration.</p>
-                <label>Student <select name="student_id"></select></label>
+                <h2 id="student-record-link-title">Link to the school roster</h2>
+                <p id="student-record-link-description">Choose an existing student, or create a new student using this registration.</p>
+                <label>Student <select name="student_id" required></select></label>
                 <button type="submit">Link registration</button>
             </form>
         </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-portal.js?v=portal-admin-20261124"></script>
-    <script src="student-records.js?v=20261124"></script>
+    <script src="supabase-portal.js?v=staff-actions-1"></script>
+    <script src="student-records.js?v=registration-fields-1"></script>
 </body>
 </html>

@@ -7993,6 +7993,12 @@ header {
     gap: 0.45rem;
 }
 
+.editorial-page.portal-page .portal-password-reset-link {
+    justify-self: start;
+    color: var(--gold-light);
+    text-decoration: underline;
+}
+
 .editorial-page.portal-page .portal-login-form label span {
     color: rgba(255,255,255,0.78);
     font-family: var(--sans);
@@ -8364,7 +8370,7 @@ header {
     border-radius: 6px;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(6, minmax(130px, 1fr)) auto;
+    grid-template-columns: repeat(5, minmax(130px, 1fr)) auto;
     padding: 1.2rem;
 }
 

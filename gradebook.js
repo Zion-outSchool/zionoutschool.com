@@ -1,7 +1,8 @@
 /* global portalClient, getPortalSession, getPortalProfile,
     appendTextElement, setPortalMessage, normalizeStudentName, loadPlannerStudents,
-    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate */
+    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate, portalActionMessage */
 
+const GRADEBOOK_DEFAULT_SCALE = { A: 90, B: 80, C: 70, D: 60, F: 0 };
 const GRADEBOOK_GRADE_LEVELS = ['K', ...Array.from({ length: 12 }, (_, index) => String(index + 1))];
 
 function parseGradebookLines(value, { requiredNumbers = true } = {}) {
@@ -23,13 +24,18 @@ function formatGradebookLines(values, showNumbers = true) {
     return Object.entries(values).map(([name, value]) => showNumbers ? `${name}=${value}` : name).join('\n');
 }
 
+function validGradebookScore(score, max) {
+    return Number.isFinite(score) && score >= 0 && score <= Number(max)
+        && Math.abs(score * 100 - Math.round(score * 100)) <= 1e-6;
+}
+
 function calculateGradebookPreview(course, assignments, scoreFor) {
     const totals = new Map();
     let unresolved = 0;
     for (const assignment of assignments) {
         const mark = scoreFor(assignment.id);
         if (!mark || mark.state === 'ungraded' ||
-            (mark.state === 'scored' && (mark.score === null || mark.score > Number(assignment.points)))) {
+            (mark.state === 'scored' && !validGradebookScore(mark.score, assignment.points))) {
             unresolved++;
             continue;
         }
@@ -75,9 +81,18 @@ async function initTeacherGradebook() {
     const finalDialog = byId('gradebook-final-dialog');
     const grid = byId('gradebook-grid');
     const save = byId('gradebook-save');
+    const view = byId('gradebook-view');
+    const scoringAssignment = byId('gradebook-scoring-assignment');
+    const assignmentPanel = byId('gradebook-assignment-management');
+    const studentFilter = byId('gradebook-student-filter');
+    const assignmentList = byId('gradebook-assignment-list');
+    const assignmentButtons = new Map();
+    const scoreForm = scoreDialog.querySelector('form');
     const marks = new Map();
     const dirty = new Set();
     const gradeDisplays = new Map();
+    const scoresBeforeWaiver = new Map();
+    let studentsAscending = true;
     let courses = [];
     let students = [];
     let course = null;
@@ -88,6 +103,7 @@ async function initTeacherGradebook() {
     let finalContext;
     let editingEnrollment;
     let busy = false;
+    let managesRoster = false;
 
     function message(text, tone) {
         setPortalMessage(status, text, tone);
@@ -99,18 +115,21 @@ async function initTeacherGradebook() {
         return false;
     }
 
-    async function run(work) {
+    async function run(work, action = 'open this course', next = 'Check that the course still appears in your gradebook. Ask an administrator to verify your classroom assignment if it is missing.') {
         if (busy) return;
         busy = true;
         panel.inert = true;
+        let focusAfter;
         try {
-            await work();
+            focusAfter = await work();
         } catch (error) {
-            message(error.message || 'The gradebook request failed.', 'error');
+            message(error.code || error.status ? portalActionMessage(error, action, next)
+                : error.message || `We couldn’t ${action}. ${next}`, 'error');
         } finally {
             busy = false;
             panel.inert = false;
         }
+        focusAfter?.focus();
     }
 
     function data(result) {
@@ -134,8 +153,19 @@ async function initTeacherGradebook() {
         settings.elements.weighting.value = record?.weighting || 'points';
         settings.elements.missing_is_zero.value = String(record?.missing_is_zero ?? true);
         settings.elements.categories.value = record ? formatGradebookLines(record.categories, record.weighting === 'weighted') : 'General';
-        settings.elements.scale.value = record ? formatGradebookLines(record.scale) : '';
-        settings.elements.scale.placeholder = 'A=90\nB=80\nC=70\nD=60\nF=0';
+        settings.elements.scale.value = formatGradebookLines(record?.scale || GRADEBOOK_DEFAULT_SCALE);
+        byId('gradebook-grading-options').open = false;
+        updateRuleSummary();
+    }
+
+    function updateRuleSummary() {
+        const { weighting, missing_is_zero, scale } = settings.elements;
+        const thresholds = scale.value.trim().split('\n').filter(Boolean).map(line => line.trim()).join(', ');
+        byId('course-settings-summary').textContent = [
+            weighting.value === 'points' ? 'Total points' : 'Weighted categories',
+            missing_is_zero.value === 'true' ? 'Missing work counts as zero' : 'Missing work is excluded',
+            thresholds
+        ].filter(Boolean).join(' · ');
     }
 
     function loadAssignmentForm() {
@@ -146,6 +176,8 @@ async function initTeacherGradebook() {
         fields.due_on.value = assignment?.due_on || '';
         fields.points.value = assignment?.points ?? '';
         fields.rubric.value = assignment ? formatGradebookLines(assignment.rubric) : '';
+        byId('gradebook-duplicate-assignment').disabled = !assignment;
+        byId('gradebook-assignment-options').open = false;
     }
 
     async function loadSavedMarks(courseId) {
@@ -168,11 +200,14 @@ async function initTeacherGradebook() {
         await loadCourse(courseSelect.value);
     }
 
-    async function loadCourse(id) {
-        workspace.hidden = true;
-        settingsPanel.hidden = true;
-        course = courses.find(item => item.id === id);
-        if (!course) {
+    async function loadCourse(id, assignmentId) {
+        const nextCourse = courses.find(item => item.id === id);
+        const sameCourse = course?.id === id;
+        const priorAssignment = assignmentId || (sameCourse ? scoringAssignment.value : '');
+        if (!nextCourse) {
+            course = null;
+            workspace.hidden = true;
+            settingsPanel.hidden = true;
             message('Create a course to start a gradebook.');
             return;
         }
@@ -184,10 +219,26 @@ async function initTeacherGradebook() {
             portalClient.from('gradebook_final_courses').select('*').eq('course_id', id)
         ]);
 
-        enrollments = data(roster).sort((first, second) => studentName(first).localeCompare(studentName(second)));
-        assignments = data(tasks);
-        finals = new Map(data(finalized).map(item => [item.enrollment_id, item]));
+        const nextRoster = data(roster);
+        const nextAssignments = data(tasks);
+        const nextFinals = data(finalized);
+        course = nextCourse;
+        enrollments = nextRoster.sort(compareEnrollments);
+        assignments = nextAssignments;
+        finals = new Map(nextFinals.map(item => [item.enrollment_id, item]));
+        if (!sameCourse) {
+            view.value = 'assignment';
+            studentFilter.value = '';
+        }
+        assignmentPanel.open = false;
+        scoringAssignment.replaceChildren();
+        for (const assignment of assignments) option(scoringAssignment, assignment.title, assignment.id);
+        const latestDated = assignments.filter(assignment => assignment.due_on).at(-1);
+        scoringAssignment.value = assignments.some(assignment => assignment.id === priorAssignment)
+            ? priorAssignment : latestDated?.id || assignments[0]?.id || '';
+        scoringAssignment.disabled = !assignments.length;
         marks.clear();
+        scoresBeforeWaiver.clear();
         dirty.clear();
         for (const mark of savedMarks) marks.set(markKey(mark.enrollment_id, mark.assignment_id), mark);
         renderEnrollmentForm();
@@ -207,12 +258,32 @@ async function initTeacherGradebook() {
         loadAssignmentForm();
         renderSettings(course);
         workspace.hidden = false;
+        renderAssignmentList();
         renderGrid();
         message(`${course.name} · ${course.term}`);
     }
 
     function studentName(enrollment) {
         return normalizeStudentName(students.find(student => student.id === enrollment.student_id) || {});
+    }
+
+    function compareEnrollments(first, second) {
+        const firstStudent = students.find(student => student.id === first.student_id);
+        const secondStudent = students.find(student => student.id === second.student_id);
+        return (firstStudent?.last_name || '').localeCompare(secondStudent?.last_name || '', undefined, { sensitivity: 'base' })
+            || studentName(first).localeCompare(studentName(second), undefined, { sensitivity: 'base' })
+            || first.id.localeCompare(second.id);
+    }
+
+    function visibleEnrollments(fullGradebook) {
+        const query = fullGradebook ? studentFilter.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean) : [];
+        const selected = enrollments.filter(enrollment => {
+            if (!query.length) return true;
+            const student = students.find(item => item.id === enrollment.student_id);
+            const names = [student?.first_name, student?.preferred_name, student?.last_name].filter(Boolean).join(' ').toLocaleLowerCase();
+            return query.every(term => names.includes(term));
+        });
+        return studentsAscending ? selected : selected.reverse();
     }
 
     function renderEnrollmentForm(enrollment) {
@@ -264,9 +335,10 @@ async function initTeacherGradebook() {
         marks.set(key, { ...(marks.get(key) || emptyMark(enrollment, assignment)), ...changes });
         dirty.add(key);
         cell.dataset.dirty = '';
-        save.disabled = false;
-        byId('gradebook-discard').disabled = false;
+        updateSaveBar();
         updateRunningGrade(enrollment);
+        updateAssignmentProgress(assignment);
+        updateAssignmentSummary();
     }
 
     function updateRunningGrade(enrollment) {
@@ -280,88 +352,260 @@ async function initTeacherGradebook() {
         display.title = [...result.totals].map(([category, score]) => `${category}: ${score.earned}/${score.possible}`).join('\n');
     }
 
-    function renderScoreCell(row, enrollment, assignment, column) {
+    function updateSaveBar() {
+        byId('gradebook-save-bar').hidden = !dirty.size;
+        save.disabled = !dirty.size;
+        byId('gradebook-discard').disabled = !dirty.size;
+        byId('gradebook-unsaved').textContent = dirty.size ? `${dirty.size} unsaved ${dirty.size === 1 ? 'change' : 'changes'}` : '';
+    }
+
+    function countRecorded(assignment) {
+        return enrollments.filter(enrollment => {
+            const mark = marks.get(markKey(enrollment.id, assignment.id));
+            return mark?.state === 'missing' || mark?.state === 'excused'
+                || (mark?.state === 'scored' && validGradebookScore(mark.score, assignment.points));
+        }).length;
+    }
+
+    function updateAssignmentProgress(assignment) {
+        const button = assignmentButtons.get(assignment.id);
+        if (!button) return;
+        const recorded = countRecorded(assignment);
+        button.querySelector('.gradebook-assignment-count').textContent = `${recorded}/${enrollments.length} recorded`;
+    }
+
+    function assignmentDueDate(assignment) {
+        return assignment.due_on ? formatPortalDate(assignment.due_on + 'T12:00:00') : '';
+    }
+
+    function renderAssignmentList() {
+        assignmentList.replaceChildren();
+        assignmentButtons.clear();
+        assignmentList.closest('aside').hidden = !assignments.length;
+        for (const assignment of assignments) {
+            const row = appendTextElement(assignmentList, 'li', '');
+            const button = appendTextElement(row, 'button', '', 'gradebook-assignment-choice');
+            button.type = 'button';
+            appendTextElement(button, 'span', assignment.title, 'gradebook-assignment-title');
+            const meta = appendTextElement(button, 'span', '', 'gradebook-assignment-meta');
+            const date = assignmentDueDate(assignment);
+            if (date) appendTextElement(meta, 'span', date);
+            appendTextElement(meta, 'span', '', 'gradebook-assignment-count');
+            assignmentButtons.set(assignment.id, button);
+            updateAssignmentProgress(assignment);
+            button.onclick = () => openAssignment(assignment.id);
+        }
+    }
+
+    function assignmentFocusTarget() {
+        if (view.value !== 'assignment' || !assignments.length) return view;
+        const button = assignmentButtons.get(scoringAssignment.value);
+        return button?.getClientRects().length ? button : scoringAssignment;
+    }
+
+    function openAssignment(id) {
+        view.value = 'assignment';
+        scoringAssignment.value = id;
+        renderGrid();
+        assignmentFocusTarget().focus();
+    }
+
+    function updateAssignmentSummary() {
+        const selected = view.value === 'assignment' && assignments.find(item => item.id === scoringAssignment.value);
+        const summary = byId('gradebook-assignment-summary');
+        const meter = byId('gradebook-completion-meter');
+        meter.parentElement.hidden = !selected || !enrollments.length;
+        if (!selected) {
+            summary.textContent = view.value === 'grid' ? 'Select an assignment heading to enter or edit its scores.' : '';
+            return;
+        }
+        const completed = countRecorded(selected);
+        const date = assignmentDueDate(selected);
+        meter.max = enrollments.length || 1;
+        meter.value = completed;
+        summary.textContent = [
+            `Out of ${selected.points} points`, date && `Due ${date}`,
+            `${completed} of ${enrollments.length} recorded`
+        ].filter(Boolean).join(' · ');
+    }
+
+    function renderScoreCell(row, enrollment, assignment) {
         const cell = row.insertCell();
-        const mark = marks.get(markKey(enrollment.id, assignment.id)) || emptyMark(enrollment, assignment);
+        const key = markKey(enrollment.id, assignment.id);
+        const mark = marks.get(key) || emptyMark(enrollment, assignment);
         const locked = finals.has(enrollment.id);
         const context = `${studentName(enrollment)}, ${assignment.title}`;
-        const stateInput = document.createElement('select');
-        stateInput.setAttribute('aria-label', `Status for ${context}`);
-        for (const [state, label] of [['ungraded', 'Ungraded'], ['scored', 'Scored'], ['missing', 'Missing'], ['excused', 'Excused']]) {
-            option(stateInput, label, state);
-        }
-        stateInput.value = mark.state;
-        stateInput.disabled = locked;
         const scoreInput = document.createElement('input');
         scoreInput.type = 'number';
+        scoreInput.inputMode = 'decimal';
         scoreInput.min = '0';
         scoreInput.max = assignment.points;
         scoreInput.step = '.01';
-        scoreInput.value = mark.score ?? '';
+        scoreInput.placeholder = '—';
         scoreInput.setAttribute('aria-label', `Points for ${context}`);
-        scoreInput.dataset.scoreColumn = String(column);
-        scoreInput.disabled = locked;
-        scoreInput.addEventListener('input', () => {
-            stateInput.value = scoreInput.value === '' ? 'ungraded' : 'scored';
-            updateMark(enrollment, assignment, {
-                state: stateInput.value, score: scoreInput.value === '' ? null : Number(scoreInput.value), rubric_scores: {}
-            }, cell);
-        });
-        stateInput.addEventListener('change', () => {
-            if (stateInput.value !== 'scored') scoreInput.value = '';
-            updateMark(enrollment, assignment, {
-                state: stateInput.value, score: scoreInput.value === '' ? null : Number(scoreInput.value), rubric_scores: {}
-            }, cell);
-        });
+        scoreInput.dataset.scoreColumn = assignment.id;
+        const waiverLabel = document.createElement('label');
+        waiverLabel.className = 'gradebook-waiver';
+        const waiver = document.createElement('input');
+        waiver.type = 'checkbox';
+        waiver.disabled = locked;
+        waiver.setAttribute('aria-label', `Waive assignment for ${context}`);
+        waiverLabel.append(waiver);
+        const waiverText = appendTextElement(waiverLabel, 'span', 'Waive');
+
         const details = document.createElement('button');
         details.type = 'button';
-        details.textContent = 'Details';
-        details.setAttribute('aria-label', `Details for ${context}`);
+        details.className = 'gradebook-secondary';
+        details.dataset.mark = key;
+        function labelDetails(value) {
+            const tag = value.state === 'missing' ? 'Missing' : '';
+            const hasDetails = value.family_feedback || value.private_note || Object.keys(value.rubric_scores).length;
+            details.textContent = tag ? `${tag} · Details` : hasDetails ? 'View details' : 'Details';
+            details.setAttribute('aria-label', `${details.textContent} for ${context}`);
+        }
+        function showMark(value) {
+            waiver.checked = value.state === 'excused';
+            waiverLabel.classList.toggle('gradebook-waived', waiver.checked);
+            waiverText.textContent = waiver.checked ? 'Waived' : 'Waive';
+            scoreInput.disabled = locked || waiver.checked;
+            scoreInput.value = value.score ?? '';
+            labelDetails(value);
+        }
+        showMark(mark);
+        waiver.onchange = () => {
+            const current = marks.get(key) || emptyMark(enrollment, assignment);
+            const { state, score, rubric_scores } = current;
+            let next = { state: 'excused', score: null, rubric_scores: {} };
+            if (waiver.checked) {
+                scoresBeforeWaiver.set(key, { state, score, rubric_scores });
+            } else {
+                next = scoresBeforeWaiver.get(key) || { state: 'ungraded', score: null, rubric_scores: {} };
+                scoresBeforeWaiver.delete(key);
+            }
+            updateMark(enrollment, assignment, next, cell);
+            showMark(marks.get(key));
+        };
         details.onclick = () => openScoreDetails(enrollment, assignment, cell);
-        cell.append(stateInput, scoreInput, details);
-        if (dirty.has(markKey(enrollment.id, assignment.id))) cell.dataset.dirty = '';
+        scoreInput.addEventListener('input', () => {
+            const filled = scoreInput.value !== '' || scoreInput.validity.badInput;
+            const next = { state: filled ? 'scored' : 'ungraded',
+                score: Number.isFinite(scoreInput.valueAsNumber) ? scoreInput.valueAsNumber : null, rubric_scores: {} };
+            updateMark(enrollment, assignment, next, cell);
+            labelDetails(marks.get(key));
+        });
+        const controls = document.createElement('div');
+        controls.className = 'gradebook-score-controls';
+        controls.append(scoreInput, waiverLabel, details);
+        cell.append(controls);
+        if (dirty.has(key)) cell.dataset.dirty = '';
     }
 
     function renderGrid() {
         grid.replaceChildren();
         gradeDisplays.clear();
-        save.disabled = !dirty.size;
-        byId('gradebook-discard').disabled = !dirty.size;
+        updateSaveBar();
+        updateAssignmentSummary();
+        const isAssignmentView = view.value === 'assignment';
+        const showGrades = !isAssignmentView;
+        const fullGradebook = view.value === 'grid';
+        const visible = isAssignmentView ? assignments.filter(item => item.id === scoringAssignment.value)
+            : fullGradebook ? assignments : [];
+        const rosterTitle = byId('roster-title');
+        rosterTitle.textContent = isAssignmentView ? (visible[0]?.title || 'Enter scores')
+            : view.value === 'grades' ? 'Review course grades' : 'Full gradebook';
+        for (const [id, button] of assignmentButtons) {
+            if (isAssignmentView && id === scoringAssignment.value) button.setAttribute('aria-current', 'true');
+            else button.removeAttribute('aria-current');
+        }
+        byId('gradebook-scoring-assignment-label').hidden = !isAssignmentView || !assignments.length;
+        byId('gradebook-student-filter-label').hidden = !fullGradebook;
+        byId('gradebook-add-assignment').hidden = !isAssignmentView;
+        grid.classList.toggle('gradebook-overview', fullGradebook);
+        const rules = byId('gradebook-rules');
+        rules.hidden = isAssignmentView && !visible.length;
         const ruleText = course.weighting === 'weighted'
-            ? `Weighted categories · ${Object.entries(course.categories).map(([name, weight]) => `${name} ${weight}%`).join(', ')}. Categories with no countable work are omitted from the running grade.`
+            ? `Weighted categories · ${Object.entries(course.categories).map(([name, weight]) => `${name} ${weight}%`).join(', ')}.`
             : 'Total points.';
-        byId('gradebook-rules').textContent = `${ruleText} Missing work ${course.missing_is_zero ? 'counts as zero' : 'is excluded'}. Excused work is excluded.`;
+        rules.textContent = isAssignmentView ? 'Waived work is excluded from the course grade.'
+            : `${ruleText} Missing work ${course.missing_is_zero ? 'counts as zero' : 'is excluded'}. Waived work is excluded.`;
         if (!enrollments.length) {
-            appendTextElement(grid, 'p', 'Add students to start scoring this course.');
+            appendTextElement(grid, 'p', managesRoster
+                ? 'Add students in Manage roster to start scoring.'
+                : 'No students are enrolled. Ask a portal administrator to update your roster.');
+            return;
+        }
+        if (isAssignmentView && !visible.length) {
+            appendTextElement(grid, 'p', 'Add your first assignment to start entering scores.');
+            return;
+        }
+        const roster = visibleEnrollments(fullGradebook);
+        if (!roster.length) {
+            appendTextElement(grid, 'p', 'No students match your search.');
             return;
         }
         const table = document.createElement('table');
         const head = table.createTHead().insertRow();
-        appendTextElement(head, 'th', 'Student').scope = 'col';
-        appendTextElement(head, 'th', 'Course grade').scope = 'col';
-        for (const assignment of assignments) {
-            const heading = appendTextElement(head, 'th', assignment.title);
+        const studentHeading = appendTextElement(head, 'th', '');
+        studentHeading.scope = 'col';
+        studentHeading.setAttribute('aria-sort', studentsAscending ? 'ascending' : 'descending');
+        const sort = appendTextElement(studentHeading, 'button', studentsAscending ? 'Student · A–Z' : 'Student · Z–A', 'gradebook-table-action');
+        sort.type = 'button';
+        sort.setAttribute('aria-label', studentsAscending ? 'Student, sort last name Z to A' : 'Student, sort last name A to Z');
+        sort.onclick = () => {
+            studentsAscending = !studentsAscending;
+            renderGrid();
+            grid.querySelector('thead th:first-child button')?.focus();
+        };
+        if (showGrades) appendTextElement(head, 'th', 'Course grade').scope = 'col';
+        for (const assignment of visible) {
+            const title = isAssignmentView ? 'Points' : assignment.title;
+            const heading = appendTextElement(head, 'th', fullGradebook ? '' : title);
             heading.scope = 'col';
-            appendTextElement(heading, 'small', ` · ${assignment.points} pts`);
+            if (fullGradebook) {
+                const edit = appendTextElement(heading, 'button', title, 'gradebook-table-action');
+                edit.type = 'button';
+                edit.setAttribute('aria-label', `Enter scores for ${title}`);
+                edit.onclick = () => openAssignment(assignment.id);
+                appendTextElement(heading, 'small', `${assignment.points} pts`);
+            }
         }
         const body = table.createTBody();
-        for (const enrollment of enrollments) {
+        for (const enrollment of roster) {
             const row = body.insertRow();
             appendTextElement(row, 'th', studentName(enrollment)).scope = 'row';
-            const gradeCell = row.insertCell();
-            gradeDisplays.set(enrollment.id, appendTextElement(gradeCell, 'p', ''));
-            updateRunningGrade(enrollment);
-            const review = appendTextElement(gradeCell, 'button', finals.has(enrollment.id) ? 'View final grade' : 'Review grade');
-            review.type = 'button';
-            review.setAttribute('aria-label', `${review.textContent} for ${studentName(enrollment)}`);
-            review.onclick = () => reviewGrade(enrollment);
-            if (!finals.has(enrollment.id)) {
-                const edit = appendTextElement(gradeCell, 'button', 'Edit enrollment');
-                edit.type = 'button';
-                edit.setAttribute('aria-label', `Edit enrollment for ${studentName(enrollment)}`);
-                edit.onclick = () => { if (requireSavedScores()) renderEnrollmentForm(enrollment); };
+            if (showGrades) {
+                const gradeCell = row.insertCell();
+                gradeDisplays.set(enrollment.id, appendTextElement(gradeCell, 'p', ''));
+                updateRunningGrade(enrollment);
+                if (!fullGradebook) {
+                    const review = appendTextElement(gradeCell, 'button', finals.has(enrollment.id) ? 'View final grade' : 'Review grade');
+                    review.type = 'button';
+                    review.className = 'gradebook-secondary';
+                    review.setAttribute('aria-label', `${review.textContent} for ${studentName(enrollment)}`);
+                    review.onclick = () => reviewGrade(enrollment);
+                    if (managesRoster && !finals.has(enrollment.id)) {
+                        const edit = appendTextElement(gradeCell, 'button', 'Edit enrollment');
+                        edit.type = 'button';
+                        edit.className = 'gradebook-secondary';
+                        edit.setAttribute('aria-label', `Edit enrollment for ${studentName(enrollment)}`);
+                        edit.onclick = () => { if (requireSavedScores()) renderEnrollmentForm(enrollment); };
+                    }
+                }
             }
-            assignments.forEach((assignment, column) => renderScoreCell(row, enrollment, assignment, column));
+            for (const assignment of visible) {
+                if (!fullGradebook) {
+                    renderScoreCell(row, enrollment, assignment);
+                    continue;
+                }
+                const key = markKey(enrollment.id, assignment.id);
+                const mark = marks.get(key);
+                const text = mark?.state === 'scored' ? (mark.score ?? 'Invalid score')
+                    : { missing: 'Missing', excused: 'Waived' }[mark?.state] || '—';
+                const cell = row.insertCell();
+                cell.textContent = text;
+                if (mark?.state === 'excused') cell.classList.add('gradebook-waived');
+                if (dirty.has(key)) cell.dataset.dirty = '';
+            }
         }
         grid.appendChild(table);
     }
@@ -369,10 +613,17 @@ async function initTeacherGradebook() {
     function openScoreDetails(enrollment, assignment, cell) {
         const mark = marks.get(markKey(enrollment.id, assignment.id)) || emptyMark(enrollment, assignment);
         const locked = finals.has(enrollment.id);
-        const form = scoreDialog.querySelector('form');
+        const form = scoreForm;
+        form.reset();
         const rubric = byId('gradebook-rubric');
         rubric.replaceChildren();
-        byId('gradebook-score-heading').textContent = `${studentName(enrollment)} · ${assignment.title}`;
+        byId('gradebook-score-heading').textContent = `${studentName(enrollment)} · ${assignment.title} · ${assignment.points} points`;
+        byId('gradebook-score-status').textContent = '';
+        form.elements.state.value = mark.state;
+        form.elements.state.disabled = locked;
+        form.elements.score.value = mark.score ?? '';
+        form.elements.score.max = assignment.points;
+        form.elements.score.readOnly = locked;
         for (const [criterion, max] of Object.entries(assignment.rubric)) {
             const label = appendTextElement(rubric, 'label', `${criterion} (out of ${max})`);
             const input = document.createElement('input');
@@ -390,9 +641,27 @@ async function initTeacherGradebook() {
         form.elements.family_feedback.readOnly = locked;
         form.elements.private_note.readOnly = locked;
         form.querySelector('[value="apply"]').hidden = locked;
-        scoreContext = { enrollment, assignment, cell, mark };
+        scoreContext = { enrollment, assignment, cell, locked, manualScore: mark.score ?? '' };
+        updateDialogScoring();
         scoreDialog.returnValue = '';
         scoreDialog.showModal();
+    }
+
+    function updateDialogScoring() {
+        const scoring = scoreForm.elements.state.value === 'scored';
+        const rubricInputs = [...scoreDialog.querySelectorAll('[data-criterion]')];
+        const filled = rubricInputs.filter(input => input.value !== '');
+        for (const input of rubricInputs) input.disabled = !scoring || scoreContext.locked;
+        const points = scoreForm.elements.score;
+        points.disabled = !scoring;
+        points.readOnly = scoreContext.locked || filled.length > 0;
+        if (!scoring) return;
+        if (!filled.length) points.value = scoreContext.manualScore;
+        else if (filled.length === rubricInputs.length) {
+            points.value = (filled.reduce((total, input) => total + Number(input.value), 0)).toFixed(2);
+        } else {
+            points.value = '';
+        }
     }
 
     async function reviewGrade(enrollment) {
@@ -414,7 +683,8 @@ async function initTeacherGradebook() {
                 studentName(enrollment),
                 finalized ? `Finalized as ${finalized.final_grade}` :
                     result.percent == null ? 'No countable score' : `${result.percent}% · ${result.letter}`,
-                finalized ? `${finalized.credits} credits earned` : `${enrollment.credits} maximum credits`,
+                finalized && Number(finalized.credits) ? `${finalized.credits} credits earned` :
+                    !finalized && Number(enrollment.credits) ? `${enrollment.credits} maximum credits` : '',
                 !finalized && Number(result.unresolved) ? `${result.unresolved} ungraded assignments` : ''
             ].filter(Boolean).join(' · ');
             const breakdown = byId('gradebook-grade-breakdown');
@@ -425,9 +695,13 @@ async function initTeacherGradebook() {
             }
             breakdown.hidden = !breakdown.childElementCount;
             byId('gradebook-override-label').hidden = Boolean(finalized);
-            byId('gradebook-earned-label').hidden = Boolean(finalized);
-            form.elements.earned_credits.disabled = Boolean(finalized);
-            form.elements.earned_credits.max = enrollment.credits;
+            const availableCredits = Number(enrollment.credits);
+            byId('gradebook-earned-label').hidden = Boolean(finalized) || !availableCredits;
+            form.elements.earned_credits.disabled = Boolean(finalized) || !availableCredits;
+            form.elements.earned_credits.max = availableCredits;
+            form.elements.earned_credits.value = availableCredits ? '' : '0';
+            byId('gradebook-final-options').open = Boolean(finalized);
+            byId('gradebook-final-options-title').textContent = finalized ? 'Reason for reopening' : 'Override grade';
             const confirm = byId('gradebook-confirm');
             confirm.textContent = finalized ? 'Reopen grade' : 'Finalize grade';
             confirm.disabled = !finalized && (result.percent == null || Number(result.unresolved) !== 0);
@@ -459,12 +733,17 @@ async function initTeacherGradebook() {
         portalClient.auth.onAuthStateChange((_event, nextSession) => {
             if (nextSession?.user?.id === session.user.id) return;
             panel.hidden = true;
+            dirty.clear();
+            scoresBeforeWaiver.clear();
+            marks.clear();
             scoreDialog.close();
             finalDialog.close();
             location.replace('family-portal.html');
         });
         students = await loadPlannerStudents();
-        if (profile.role === 'admin') {
+        managesRoster = profile.role === 'admin';
+        if (managesRoster) {
+            byId('gradebook-roster-management').hidden = false;
             const teachers = data(await portalClient.from('portal_users').select('id, display_name').in('role', ['admin', 'teacher']).eq('active', true).order('display_name'));
             const field = settings.elements.teacher_id;
             option(field, 'My account', '');
@@ -477,7 +756,11 @@ async function initTeacherGradebook() {
                 courseSelect.value = course?.id || '';
                 return;
             }
-            run(() => loadCourse(courseSelect.value));
+            const requested = courseSelect.value;
+            run(async () => {
+                try { await loadCourse(requested); }
+                finally { courseSelect.value = course?.id || ''; }
+            });
         };
         byId('gradebook-new-course').onclick = () => {
             if (!requireSavedScores()) return;
@@ -486,19 +769,32 @@ async function initTeacherGradebook() {
             workspace.hidden = true;
             renderSettings(null);
             settings.elements.name.focus();
-            message('Enter the course grading rules.');
+            message('Enter the course name and term. Review the grading rules before saving.');
         };
 
+        settings.addEventListener('input', updateRuleSummary);
+        settings.addEventListener('invalid', event => {
+            if (event.target.closest('#gradebook-grading-options')) byId('gradebook-grading-options').open = true;
+        }, true);
         settings.onsubmit = event => {
             event.preventDefault();
             if (!requireSavedScores()) return;
             run(async () => {
                 const values = Object.fromEntries(new FormData(settings));
+                let gradingRules;
+                try {
+                    gradingRules = {
+                        categories: parseGradebookLines(values.categories, { requiredNumbers: values.weighting === 'weighted' }),
+                        scale: parseGradebookLines(values.scale)
+                    };
+                } catch (error) {
+                    byId('gradebook-grading-options').open = true;
+                    throw error;
+                }
                 const record = {
                     name: values.name.trim(), term: values.term.trim(), weighting: values.weighting,
                     missing_is_zero: values.missing_is_zero === 'true',
-                    categories: parseGradebookLines(values.categories, { requiredNumbers: values.weighting === 'weighted' }),
-                    scale: parseGradebookLines(values.scale)
+                    ...gradingRules
                 };
                 if (profile.role === 'admin') record.teacher_id = values.teacher_id || profile.id;
                 const table = portalClient.from('gradebook_courses');
@@ -506,7 +802,7 @@ async function initTeacherGradebook() {
                 const saved = data(await request.select('id').single());
                 await refreshCourses(saved.id);
                 message('Course settings saved.', 'success');
-            });
+            }, 'save course settings', 'Review the course name, grading scale and categories. Leave the entered settings in place while you correct them.');
         };
 
         option(enrollmentForm.elements.requirement_key, 'No graduation requirement', '');
@@ -527,7 +823,7 @@ async function initTeacherGradebook() {
         byId('gradebook-enrollment-cancel').onclick = () => renderEnrollmentForm();
         enrollmentForm.onsubmit = event => {
             event.preventDefault();
-            if (!requireSavedScores()) return;
+            if (!managesRoster || !requireSavedScores()) return;
             run(async () => {
                 const { student_id, ...values } = Object.fromEntries(new FormData(enrollmentForm));
                 values.requirement_key = values.requirement_key || null;
@@ -537,9 +833,19 @@ async function initTeacherGradebook() {
                     : table.insert({ ...values, student_id, course_id: course.id })));
                 await loadCourse(course.id);
                 message(editing ? 'Enrollment updated.' : 'Student added to roster.', 'success');
-            });
+            }, 'save the enrollment', 'Check the chosen student and course. If the student is already on this roster, edit the existing enrollment.');
         };
 
+        view.onchange = renderGrid;
+        studentFilter.oninput = renderGrid;
+        scoringAssignment.onchange = renderGrid;
+        byId('gradebook-add-assignment').onclick = () => {
+            if (!requireSavedScores()) return;
+            assignmentPanel.open = true;
+            assignmentForm.elements.assignment_id.value = '';
+            loadAssignmentForm();
+            assignmentForm.elements.title.focus();
+        };
         assignmentForm.elements.assignment_id.onchange = loadAssignmentForm;
         let sourceAssignments = [];
         byId('gradebook-copy-course').onchange = event => run(async () => {
@@ -562,6 +868,7 @@ async function initTeacherGradebook() {
             fields.due_on.value = '';
             fields.points.value = source.points;
             fields.rubric.value = formatGradebookLines(source.rubric);
+            byId('gradebook-duplicate-assignment').disabled = true;
             fields.title.focus();
         };
         byId('gradebook-duplicate-assignment').onclick = () => {
@@ -569,6 +876,7 @@ async function initTeacherGradebook() {
             assignmentForm.elements.assignment_id.value = '';
             assignmentForm.elements.title.value = `${assignmentForm.elements.title.value} copy`.slice(0, 120);
             assignmentForm.elements.due_on.value = '';
+            byId('gradebook-duplicate-assignment').disabled = true;
             assignmentForm.elements.title.focus();
         };
         assignmentForm.onsubmit = event => {
@@ -582,12 +890,26 @@ async function initTeacherGradebook() {
                 };
                 const table = portalClient.from('gradebook_assignments');
                 const { course_id, ...updates } = record;
-                data(await (assignment_id ? table.update(updates).eq('id', assignment_id) : table.insert(record)));
-                await loadCourse(course.id);
-                message('Assignment saved.', 'success');
-            });
+                const saved = data(await (assignment_id ? table.update(updates).eq('id', assignment_id) : table.insert(record))
+                    .select('id').single());
+                view.value = 'assignment';
+                await loadCourse(course.id, saved.id);
+                message('Assignment saved. Select a student’s score to start grading.', 'success');
+                return assignmentFocusTarget();
+            }, 'save the assignment', 'Check the assignment name, category, points and rubric. Confirm that the course is still assigned to you.');
         };
 
+        const scoreColumn = target => [...grid.querySelectorAll('input[data-score-column]')]
+            .filter(input => input.dataset.scoreColumn === target.dataset.scoreColumn);
+        grid.onkeydown = event => {
+            const target = event.target.closest('input[data-score-column]');
+            if (!target || event.key !== 'Enter') return;
+            event.preventDefault();
+            const column = scoreColumn(target);
+            const next = column.slice(column.indexOf(target) + 1).find(input => !input.disabled);
+            next?.focus();
+            next?.select();
+        };
         grid.onpaste = event => {
             const target = event.target.closest('input[data-score-column]');
             if (!target) return;
@@ -595,7 +917,7 @@ async function initTeacherGradebook() {
             if (!raw.includes('\n')) return;
             event.preventDefault();
             const scores = raw.split(/\r?\n/).map(score => score.trim());
-            const column = [...grid.querySelectorAll('input[data-score-column]')].filter(input => input.dataset.scoreColumn === target.dataset.scoreColumn);
+            const column = scoreColumn(target);
             const destination = column.slice(column.indexOf(target), column.indexOf(target) + scores.length);
             if (destination.length !== scores.length || destination.some((input, index) => input.disabled ||
                 !/^\d+(\.\d{1,2})?$/.test(scores[index]) || Number(scores[index]) > Number(input.max))) {
@@ -608,46 +930,79 @@ async function initTeacherGradebook() {
             });
         };
 
-        scoreDialog.querySelector('form').addEventListener('submit', event => {
+        scoreForm.addEventListener('input', event => {
+            if (event.target.name === 'score') scoreContext.manualScore = event.target.value;
+            else if (event.target.name === 'state' || event.target.hasAttribute('data-criterion')) updateDialogScoring();
+        });
+        scoreForm.addEventListener('submit', event => {
             if (event.submitter?.value !== 'apply') return;
-            const rubricInputs = [...scoreDialog.querySelectorAll('[data-criterion]')];
+            event.preventDefault();
+            const { enrollment, assignment, cell } = scoreContext;
+            const fields = scoreForm.elements;
+            const state = fields.state.value;
+            const rubricInputs = [...scoreDialog.querySelectorAll('[data-criterion]:enabled')];
             const completed = rubricInputs.filter(input => input.value !== '');
             if (completed.length && completed.length !== rubricInputs.length) {
-                event.preventDefault();
+                byId('gradebook-score-status').textContent = 'Enter every rubric score or clear them all.';
                 rubricInputs.find(input => input.value === '')?.focus();
-                byId('gradebook-score-heading').textContent = 'Enter every rubric score or clear them all.';
+                return;
             }
-        });
-        scoreDialog.onclose = () => {
-            if (scoreDialog.returnValue !== 'apply') return;
-            const fields = scoreDialog.querySelector('form').elements;
-            const rubricInputs = Array.from(scoreDialog.querySelectorAll('[data-criterion]')).filter(input => input.value !== '');
-            const rubricScores = Object.fromEntries(rubricInputs.map(input => [input.dataset.criterion, Number(input.value)]));
-            const { enrollment, assignment, cell, mark } = scoreContext;
-            updateMark(enrollment, assignment, {
-                state: rubricInputs.length ? 'scored' : mark.state,
-                score: rubricInputs.length ? rubricInputs.reduce((sum, input) => sum + Number(input.value), 0) : mark.score,
-                rubric_scores: rubricScores,
-                family_feedback: fields.family_feedback.value.trim(), private_note: fields.private_note.value.trim()
-            }, cell);
+            if (state === 'scored' && !Number.isFinite(fields.score.valueAsNumber)) {
+                byId('gradebook-score-status').textContent = 'Enter points or choose a different work status.';
+                fields.score.focus();
+                return;
+            }
+            const changes = {
+                state,
+                score: state === 'scored' ? fields.score.valueAsNumber : null,
+                rubric_scores: Object.fromEntries(completed.map(input => [input.dataset.criterion, Number(input.value)])),
+                family_feedback: fields.family_feedback.value.trim(),
+                private_note: fields.private_note.value.trim()
+            };
+            const previous = marks.get(markKey(enrollment.id, assignment.id)) || emptyMark(enrollment, assignment);
+            scoreDialog.close();
+            if (Object.keys(changes).every(key => JSON.stringify(changes[key]) === JSON.stringify(previous[key]))) return;
+            const key = markKey(enrollment.id, assignment.id);
+            if (changes.state !== previous.state) {
+                if (changes.state === 'excused') {
+                    scoresBeforeWaiver.set(key, { state: previous.state, score: previous.score, rubric_scores: previous.rubric_scores });
+                } else {
+                    scoresBeforeWaiver.delete(key);
+                }
+            }
+            updateMark(enrollment, assignment, changes, cell);
             renderGrid();
-        };
+            [...grid.querySelectorAll('[data-mark]')].find(button => button.dataset.mark === key)?.focus();
+        });
 
         save.onclick = () => run(async () => {
             const changed = [...dirty].map(key => marks.get(key));
-            if (changed.some(mark => mark.state === 'scored' && (mark.score == null ||
-                mark.score < 0 || Math.abs(mark.score * 100 - Math.round(mark.score * 100)) > 1e-6 ||
-                mark.score > Number(assignments.find(item => item.id === mark.assignment_id).points)))) {
-                throw new Error('Each score needs to be in range and have at most two decimal places.');
+            const invalid = changed.find(mark => mark.state === 'scored'
+                && !validGradebookScore(mark.score, assignments.find(item => item.id === mark.assignment_id).points));
+            if (invalid) {
+                const assignment = assignments.find(item => item.id === invalid.assignment_id);
+                const enrollment = enrollments.find(item => item.id === invalid.enrollment_id);
+                scoringAssignment.value = assignment.id;
+                view.value = 'assignment';
+                renderGrid();
+                message(`${studentName(enrollment)} · ${assignment.title}. Enter a score from 0 to ${assignment.points}, with up to two decimal places.`, 'error');
+                return [...grid.querySelectorAll('[data-mark]')]
+                    .find(button => button.dataset.mark === markKey(enrollment.id, assignment.id))
+                    ?.parentElement.querySelector('input');
             }
             if (changed.length) data(await portalClient.rpc('gradebook_save_marks', { target_course: course.id, changes: changed }));
-            await loadCourse(course.id);
-            message('Scores saved.', 'success');
-        });
+            dirty.clear();
+            scoresBeforeWaiver.clear();
+            renderGrid();
+            message('Changes saved.', 'success');
+            return assignmentFocusTarget();
+        }, 'save the scores', 'Check the score ranges and roster. A finalized grade must be reopened before you edit its scores.');
 
         byId('gradebook-discard').onclick = () => run(async () => {
+            if (!window.confirm('Discard all unsaved changes in this course?')) return;
             await loadCourse(course.id);
-            message('Unsaved score changes discarded.');
+            message('Unsaved changes discarded.');
+            return assignmentFocusTarget();
         });
 
         finalDialog.onclose = () => {
@@ -663,15 +1018,23 @@ async function initTeacherGradebook() {
                 }
                 data(await portalClient.rpc(finalized ? 'gradebook_reopen' : 'gradebook_finalize', payload));
                 await loadCourse(course.id);
-                message(finalized ? 'Grade reopened. Finalize it again to restore it to the planner.'
-                    : 'Grade finalized and added to the planner and transcript.', 'success');
-            });
+                const transcriptCourse = enrollment.requirement_key && GRADUATION_GRADES.includes(enrollment.grade_level);
+                const result = finalized
+                    ? (transcriptCourse ? 'Grade reopened. Finalize it again to restore it to the planner.' : 'Grade reopened.')
+                    : (transcriptCourse ? 'Grade finalized and added to the planner and transcript.' : 'Grade finalized.');
+                message(result, 'success');
+            }, 'update the final grade', 'Review the enrollment, earned credits and reason before submitting again.');
         };
 
+        window.addEventListener('beforeunload', event => {
+            if (!dirty.size) return;
+            event.preventDefault();
+            event.returnValue = '';
+        });
         panel.hidden = false;
         await run(() => refreshCourses());
     } catch (error) {
-        message(error.message || 'The gradebook could not load.', 'error');
+        message(portalActionMessage(error, 'load the gradebook', 'Confirm that you have an active administrator or teacher login and that an administrator assigned your classroom.'), 'error');
     }
 }
 

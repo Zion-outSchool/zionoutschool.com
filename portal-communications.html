@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex">
+    <title>Communications | ZION outSchool</title>
+    <link rel="stylesheet" href="gradebook.css?v=20261124">
+    <link rel="stylesheet" href="portal-communications.css?v=news-1">
+    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+</head>
+<body class="zion-portal" data-portal-page-role="active" data-portal-newsletter="true">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html">
+                <span>Family Portal</span>
+                <small>Zion outSchool</small>
+            </a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="index.html">Back to Zion outSchool</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
+    </header>
+    <main class="portal-communication-main" data-portal-page-content hidden>
+        <h1>Communications</h1>
+        <p id="communication-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <div id="communication-content" hidden>
+            <nav class="communication-nav" aria-label="Communications">
+                <a href="#student-news" data-portal-messages hidden>Student News</a>
+                <a href="#student-messages" data-portal-messages hidden>Student Messages</a>
+                <a href="#school-updates">School Updates</a>
+                <a href="#newsletters">Weekly Newsletters</a>
+                <a href="#news-submissions" data-portal-gradebook hidden>Submit an Update</a>
+            </nav>
+            <section id="news-submissions" class="gradebook-panel" hidden aria-labelledby="news-submissions-title">
+                <h2 id="news-submissions-title">Submit an Update</h2>
+                <p id="news-deadline"></p>
+                <details id="news-editor">
+                    <summary id="news-editor-title">New submission</summary>
+                    <form id="news-form">
+                        <label>Title <input name="headline" maxlength="120" required></label>
+                        <label>Update <textarea name="body" rows="5" maxlength="1600" required></textarea></label>
+                        <fieldset>
+                            <legend>Student News recipients</legend>
+                            <label>Find a student <input id="news-student-search" type="search" autocomplete="off"></label>
+                            <div id="news-recipients" class="news-recipients"></div>
+                            <p id="news-recipient-count" role="status"></p>
+                        </fieldset>
+                        <label class="communication-checkbox">
+                            <input name="newsletter" type="checkbox" aria-describedby="news-newsletter-note">
+                            Include in the school-wide newsletter
+                        </label>
+                        <p id="news-newsletter-note">Every family can see newsletter content. For a private student update, select students and leave this box unchecked.</p>
+                        <fieldset>
+                            <legend>Links</legend>
+                            <div id="news-link-fields"></div>
+                            <button id="news-add-link" type="button">Add a link</button>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Photos</legend>
+                            <p>Upload up to three JPG, PNG, or WebP photos, up to 5 MB each.</p>
+                            <div id="news-photo-fields"></div>
+                            <button id="news-add-photo" type="button">Add a photo</button>
+                        </fieldset>
+                        <div class="news-actions">
+                            <button type="submit">Save submission</button>
+                            <button id="news-cancel" type="button" hidden>Cancel edit</button>
+                            <button id="news-withdraw" type="button" hidden>Withdraw submission</button>
+                        </div>
+                    </form>
+                </details>
+                <p id="news-submission-status" role="status" aria-live="polite"></p>
+                <h3>Recent submissions</h3>
+                <ul id="news-submission-list" class="news-list"></ul>
+                <button id="news-more-submissions" type="button" hidden>Older submissions</button>
+            </section>
+            <section id="student-news" class="gradebook-panel" hidden aria-labelledby="student-news-title">
+                <h2 id="student-news-title">Student News</h2>
+                <label>Student <select id="news-student"></select></label>
+                <div id="news-feed" aria-live="polite"></div>
+                <button id="news-more-student" type="button" hidden>Older student updates</button>
+            </section>
+            <section id="student-messages" class="gradebook-panel" hidden aria-labelledby="student-messages-title">
+                <h2 id="student-messages-title">Student Messages</h2>
+                <label>Student <select id="communication-student"></select></label>
+                <details id="communication-compose" hidden>
+                    <summary>New message</summary>
+                    <form id="communication-message-form">
+                        <label>Delivery
+                            <select name="channel">
+                                <option value="portal">Portal only</option>
+                                <option value="email">Email only</option>
+                                <option value="both">Portal and email</option>
+                            </select>
+                        </label>
+                        <label>Subject <input name="subject" maxlength="120" required></label>
+                        <label>Message <textarea name="body" rows="5" maxlength="10000" required></textarea></label>
+                        <button type="submit">Send message</button>
+                    </form>
+                </details>
+                <div class="communication-message-layout">
+                    <div>
+                        <h3>Conversations</h3>
+                        <ul id="communication-threads" class="communication-threads"></ul>
+                        <button id="communication-more-threads" type="button" hidden>More conversations</button>
+                    </div>
+                    <article id="communication-thread" hidden>
+                        <h3 id="communication-thread-title"></h3>
+                        <button id="communication-older" type="button" hidden>Show older messages</button>
+                        <ol id="communication-history" class="communication-history"></ol>
+                        <form id="communication-reply">
+                            <label>Reply <textarea name="body" rows="4" maxlength="10000" required></textarea></label>
+                            <button type="submit">Send reply</button>
+                        </form>
+                    </article>
+                </div>
+            </section>
+            <section id="school-updates" class="gradebook-panel" aria-labelledby="school-updates-title">
+                <h2 id="school-updates-title">School Updates</h2>
+                <details id="communication-publish" hidden>
+                    <summary>Publish an update</summary>
+                    <form id="communication-post-form">
+                        <label>Audience
+                            <select name="course" required></select>
+                        </label>
+                        <p id="communication-audience" role="status" aria-live="polite"></p>
+                        <label>Type
+                            <select name="kind">
+                                <option value="news">News</option>
+                                <option value="announcement">Announcement</option>
+                                <option value="document">Document</option>
+                            </select>
+                        </label>
+                        <label>Title <input name="title" maxlength="120" required></label>
+                        <label>Details <textarea name="body" rows="5" maxlength="10000" required></textarea></label>
+                        <label id="communication-document-label" hidden>PDF, up to 10 MB
+                            <input type="file" name="document" accept="application/pdf,.pdf">
+                        </label>
+                        <label class="communication-checkbox"><input type="checkbox" name="email"> Also email families in this audience</label>
+                        <button type="submit">Publish update</button>
+                    </form>
+                </details>
+                <div id="communication-posts"></div>
+                <button id="communication-more-posts" type="button" hidden>Older updates</button>
+            </section>
+            <section id="newsletters" class="gradebook-panel" aria-labelledby="newsletters-title">
+                <h2 id="newsletters-title">Weekly Newsletters</h2>
+                <div id="news-issue" hidden></div>
+                <ul id="news-archive" class="news-list"></ul>
+                <button id="news-more-issues" type="button" hidden>Older newsletters</button>
+                <p id="news-archive-status" role="status"></p>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=news-1"></script>
+    <script src="portal-communications.js?v=news-1"></script>
+    <script src="portal-news.js?v=1"></script>
+</body>
+</html>

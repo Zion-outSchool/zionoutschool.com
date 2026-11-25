@@ -164,3 +164,141 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
     #student-record-detail dl { grid-template-columns: 1fr; }
     #student-record-detail dd { margin-bottom: .4rem; }
 }
+
+.teacher-gradebook main { max-width: 78rem; }
+
+.teacher-gradebook #course-settings-panel { margin-block: .7rem; }
+.teacher-gradebook #gradebook-grading-options { margin-top: 1rem; }
+.teacher-gradebook #course-settings-summary { display: inline-block; margin-left: .35rem; font-weight: 400; }
+.teacher-gradebook .gradebook-work-header h2 { margin: 0 0 .8rem; }
+.teacher-gradebook .gradebook-work-header select { min-width: min(11rem, 100%); }
+.teacher-gradebook .gradebook-work-header label { max-width: 100%; }
+.teacher-gradebook .gradebook-work-header + p,
+.teacher-gradebook #gradebook-assignment-summary { color: var(--portal-muted); margin-block: .75rem; }
+.teacher-gradebook #gradebook-assignment-summary:empty { display: none; }
+.teacher-gradebook .gradebook-grid th,
+.teacher-gradebook .gradebook-grid td { vertical-align: middle; }
+.teacher-gradebook .gradebook-grid td > p { margin-top: 0; }
+.teacher-gradebook .gradebook-score-controls { display: flex; align-items: center; gap: .45rem .65rem; flex-wrap: wrap; margin: 0; }
+.teacher-gradebook .gradebook-score-controls input[type="number"] { width: 6rem; }
+.teacher-gradebook .gradebook-waiver { display: inline-flex; align-items: center; gap: .35rem; padding-block: .55rem; }
+.teacher-gradebook .gradebook-waiver input { width: 1.15rem; height: 1.15rem; margin: 0; }
+.teacher-gradebook .gradebook-waived { color: var(--portal-action-hover); font-weight: 650; }
+.teacher-gradebook .gradebook-overview th small { display: block; color: var(--portal-muted); }
+.teacher-gradebook .gradebook-overview td { font-variant-numeric: tabular-nums; }
+.teacher-gradebook .gradebook-overview td p { margin: 0; }
+.zion-portal.teacher-gradebook main button.gradebook-table-action {
+    min-height: 42px;
+    padding: .25rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--portal-action-hover);
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: .2em;
+    overflow-wrap: anywhere;
+}
+.zion-portal.teacher-gradebook main button.gradebook-table-action:hover:not(:disabled) {
+    background: transparent;
+    text-decoration-thickness: 2px;
+}
+.teacher-gradebook .gradebook-form-wide { grid-column: 1 / -1; }
+.teacher-gradebook #gradebook-assignment-options > label { margin-top: .75rem; }
+.teacher-gradebook #gradebook-score-status:empty { display: none; }
+.teacher-gradebook #gradebook-score-status { color: #922b23; margin: 0; }
+.teacher-gradebook .gradebook-save-bar {
+    position: sticky;
+    z-index: 2;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem .75rem;
+    padding: .65rem .8rem;
+    border: 1px solid var(--portal-line);
+    border-radius: .45rem;
+    background: var(--portal-sage);
+}
+.teacher-gradebook .gradebook-save-bar > span { margin-right: auto; font-weight: 650; }
+.zion-portal.teacher-gradebook main button.gradebook-secondary {
+    border-color: #bc8d74;
+    color: var(--portal-action-hover);
+    background: var(--portal-paper);
+}
+.zion-portal.teacher-gradebook main button.gradebook-secondary:hover:not(:disabled) { background: var(--portal-sage); }
+@media (max-width: 550px) {
+    .teacher-gradebook .gradebook-work-header .gradebook-toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .55rem .7rem;
+    }
+    .teacher-gradebook .gradebook-work-header select { min-width: 0; }
+    .teacher-gradebook #gradebook-add-assignment { grid-column: 1 / -1; justify-self: start; }
+    .teacher-gradebook .gradebook-grid th, .teacher-gradebook .gradebook-grid td { min-width: 7.5rem; padding: .5rem; }
+}
+
+.teacher-gradebook .gradebook-layout { display: grid; min-width: 0; }
+.teacher-gradebook .gradebook-assignment-list {
+    min-width: 0;
+    align-self: start;
+    margin-top: 1rem;
+    border: 1px solid var(--portal-line);
+    border-radius: .65rem;
+    background: var(--portal-paper);
+}
+.teacher-gradebook .gradebook-assignment-list h2 {
+    margin: 0;
+    padding: .85rem 1rem;
+    font-size: 1.05rem;
+    border-bottom: 1px solid var(--portal-line);
+}
+.teacher-gradebook .gradebook-assignment-list ul {
+    margin: 0;
+    padding: .4rem;
+    max-height: min(34rem, 65vh);
+    overflow-y: auto;
+    list-style: none;
+}
+.zion-portal.teacher-gradebook main button.gradebook-assignment-choice {
+    display: grid;
+    gap: .2rem;
+    width: 100%;
+    padding: .68rem .7rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--portal-ink);
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+.zion-portal.teacher-gradebook main button.gradebook-assignment-choice:hover,
+.zion-portal.teacher-gradebook main button.gradebook-assignment-choice[aria-current="true"] {
+    background: var(--portal-sage);
+    color: var(--portal-action-hover);
+}
+.zion-portal.teacher-gradebook main button.gradebook-assignment-choice[aria-current="true"] {
+    border-left: 3px solid var(--portal-action);
+}
+.teacher-gradebook .gradebook-assignment-meta {
+    display: flex;
+    gap: .25rem .55rem;
+    flex-wrap: wrap;
+    font-weight: 400;
+    font-size: .875rem;
+    color: var(--portal-muted);
+}
+.teacher-gradebook .gradebook-assignment-progress { margin: -.45rem 0 .75rem; }
+.teacher-gradebook .gradebook-assignment-progress progress {
+    width: min(100%, 14rem);
+    height: .65rem;
+    accent-color: var(--portal-action);
+}
+@media (min-width: 850px) {
+    .teacher-gradebook .gradebook-layout:has(.gradebook-assignment-list:not([hidden])) {
+        grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+        gap: 1rem;
+    }
+    .teacher-gradebook #gradebook-scoring-assignment-label { display: none; }
+}
+@media (max-width: 849px) {
+    .teacher-gradebook .gradebook-assignment-list { display: none; }
+}

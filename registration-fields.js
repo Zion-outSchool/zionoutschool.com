@@ -1,0 +1,88 @@
+/* Registration field keys match the portal API. Choice values match registration.html. */
+const registrationFieldGroups = [
+    ["Student information", [
+        ["firstName", "First name", "text", 120],
+        ["lastName", "Last name", "text", 120],
+        ["preferredName", "Preferred name", "text", 120, true],
+        ["dateOfBirth", "Date of birth", "date", 10],
+        ["gradeLevel", "Current grade level", "select", [["K", "Kindergarten"], ["1", "1st"], ["2", "2nd"], ["3", "3rd"], ["4", "4th"], ["5", "5th"], ["6", "6th"], ["7", "7th"], ["8", "8th"], ["9", "9th"], ["10", "10th"], ["11", "11th"], ["12", "12th"]]],
+        ["previousSchool", "Previous school and phone number", "text", 250],
+        ["iepStatus", "Individualized Education Program (IEP)", "select", ["No", "Yes"]],
+    ]],
+    ["Parent or guardian 1", [
+        ["guardian1Name", "Full name", "text", 120, true],
+        ["guardian1Phone", "Phone number", "tel", 60, true],
+        ["guardian1Email", "Email address", "email", 254, true],
+        ["guardian1Address", "Street, city, state and ZIP", "text", 500],
+    ]],
+    ["Parent or guardian 2", [
+        ["guardian2Name", "Full name", "text", 120, true],
+        ["guardian2Phone", "Phone number", "tel", 60, true],
+        ["guardian2Email", "Email address", "email", 254, true],
+        ["guardian2Address", "Street, city, state and ZIP", "text", 500],
+    ]],
+    ["Emergency contact 1", [
+        ["ec1Name", "Full name", "text", 120],
+        ["ec1Relationship", "Relationship to student", "text", 120],
+        ["ec1Phone", "Phone number", "tel", 60],
+        ["ec1Medical", "May make routine medical decisions", "select", ["Yes", "No"]],
+    ]],
+    ["Emergency contact 2", [
+        ["ec2Name", "Full name", "text", 120],
+        ["ec2Relationship", "Relationship to student", "text", 120],
+        ["ec2Phone", "Phone number", "tel", 60],
+        ["ec2Medical", "May make routine medical decisions", "select", ["Yes", "No"]],
+    ]],
+    ["Emergency contact 3", [
+        ["ec3Name", "Full name", "text", 120],
+        ["ec3Relationship", "Relationship to student", "text", 120],
+        ["ec3Phone", "Phone number", "tel", 60],
+        ["ec3Medical", "May make routine medical decisions", "select", ["Yes", "No"]],
+    ]],
+    ["Authorized pickup 1", [
+        ["pickup1Name", "Full name", "text", 120],
+        ["pickup1Relationship", "Relationship to student", "text", 120],
+        ["pickup1Phone", "Phone number", "tel", 60],
+    ]],
+    ["Authorized pickup 2", [
+        ["pickup2Name", "Full name", "text", 120],
+        ["pickup2Relationship", "Relationship to student", "text", 120],
+        ["pickup2Phone", "Phone number", "tel", 60],
+    ]],
+    ["Authorized pickup 3", [
+        ["pickup3Name", "Full name", "text", 120],
+        ["pickup3Relationship", "Relationship to student", "text", 120],
+        ["pickup3Phone", "Phone number", "tel", 60],
+    ]],
+    ["Custody and immunization", [
+        ["pickupRestriction", "Court order or custody agreement restricts pickup", "select", ["No", ["Yes - I will provide documentation", "Yes — I will provide documentation"]]],
+        ["immunizationStatus", "Immunization status", "select", [["No — student is fully immunized", "No exemption — student is fully immunized"], "Yes — religious exemption", "Yes — medical exemption", "In progress — records being obtained"]],
+    ]],
+    ["Health and medication", [
+        ["allergyStatus", "Life-threatening allergy or condition", "select", ["No", "Yes"]],
+        ["allergyInstructions", "Allergy details and emergency instructions", "textarea", 2000],
+        ["prescribedMedication", "Currently takes prescribed medication", "select", ["No", "Yes"]],
+        ["medicationDuringSchool", "Medication needed during school hours", "select", ["No", "Yes"]],
+        ["medicationDetails", "Medication name, dosage and schedule", "textarea", 2000],
+        ["medicationAdmin", "Who administers medication", "select", ["My student self-administers", "A staff member must administer it", ["Parent will come to school to administer", "Parent will come to administer"]]],
+        ["medicationStorage", "Medication storage instructions", "text", 120],
+        ["medicationBehavior", "Medication affects behavior, attention or learning", "select", ["No", "Yes", "Prefer not to say"]],
+        ["medicationBehaviorInfo", "Effects on behavior, attention or learning", "textarea", 2000],
+        ["medicationDisruption", "What to watch for if medication is disrupted", "textarea", 2000],
+        ["emergencyMedication", "Carries or requires emergency medication", "select", ["No", "Yes — EpiPen", "Yes — Inhaler", "Yes — other emergency medication"]],
+        ["emergencyInstructions", "Emergency medication and instructions", "textarea", 2000],
+        ["staffTraining", "Staff training needed", "select", [["Student self-administers — no staff training needed", "Student self-administers — no training needed"], ["Staff training would be helpful — please contact me", "Staff training would be helpful — contact me"], ["Staff training is required — please contact me before the first day", "Staff training required — contact me before first day"]]],
+    ]],
+    ["Siblings and tuition funding", [
+        ["siblings", "Siblings enrolled at Zion", "select", ["No", "Yes"]],
+        ["siblingNames", "Sibling names and ages", "textarea", 2000],
+        ["efaStatus", "Arkansas EFA tuition funding", "select", ["Yes — I have an active EFA account", "Yes — I am in the process of applying", "No — I will pay tuition directly", "Not sure yet — I need more information"]],
+        ["classWallet", "ClassWallet account and school link", "select", [["Yes, my ClassWallet account is active and linked", "Yes — active and linked"], "Not yet — still setting up"]],
+    ]],
+    ["Permissions and acknowledgments", [
+        ["mediaConsent", "Photo and media permission", "select", [["Yes, I give permission", "Yes — I give permission"], ["No, I do not give permission", "No — I do not give permission"]]],
+        ["treatmentConsent", "Emergency medical treatment consent", "select", [["Yes, I consent to Emergency Medical Treatment as described above.", "Yes — I consent"], ["No, I do not consent — see explanation below.", "No — I do not consent"]]],
+        ["treatmentInstructions", "Instructions if emergency medical treatment consent is declined", "textarea", 2000],
+        ["liabilityAck", "Liability waiver acknowledgment response", "select", [["Yes, I have read and agree to the Liability Waiver.", "Yes — I have read and agree"]]],
+    ]],
+];

@@ -1,0 +1,349 @@
+.zion-portal {
+    --portal-evergreen: #24483D;
+    --portal-evergreen-dark: #17372E;
+    --portal-sage: #F7EDE2;
+    --portal-paper: #FFFDF9;
+    --portal-action: #A64D2B;
+    --portal-action-hover: #83391F;
+    --portal-cream: #F9F6F0;
+    --portal-clay: var(--portal-action);
+    --portal-blue: #1E3F66;
+    --portal-ink: #233A31;
+    --portal-muted: #506359;
+    --portal-line: #DECEC0;
+    --portal-serif: "Cormorant Garamond", Georgia, serif;
+    --portal-sans: Inter, system-ui, sans-serif;
+    --portal-gutter: clamp(1rem, 4vw, 3rem);
+    min-height: 100vh;
+    margin: 0;
+    background: var(--portal-cream);
+    color: var(--portal-ink);
+}
+
+.zion-portal.editorial-page {
+    --navy: var(--portal-evergreen);
+    --navy-mid: var(--portal-evergreen-dark);
+    --navy-dark: var(--portal-evergreen-dark);
+    --gold: var(--portal-clay);
+    --gold-light: var(--portal-sage);
+    --cream: var(--portal-cream);
+    --cream-dark: var(--portal-sage);
+    --border: var(--portal-line);
+    --text: var(--portal-ink);
+    --text-mid: var(--portal-muted);
+}
+
+.zion-portal [hidden] { display: none !important; }
+.zion-portal :focus-visible { outline: 3px solid var(--portal-clay); outline-offset: 3px; }
+.zion-portal a { text-underline-offset: .18em; }
+
+.zion-portal .portal-topbar {
+    position: static;
+    display: block;
+    padding: 0;
+    height: auto !important; /* The public stylesheet fixes mobile header height. */
+    min-height: 0;
+    background: var(--portal-evergreen);
+    border: 0;
+    border-bottom: 3px solid var(--portal-action);
+    box-shadow: none;
+    color: var(--portal-cream);
+}
+
+.portal-topbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem 1.25rem;
+    max-width: 77rem;
+    box-sizing: border-box;
+    margin-inline: auto;
+    padding: .95rem var(--portal-gutter);
+}
+
+.zion-portal .portal-brand {
+    display: grid;
+    color: var(--portal-cream);
+    text-decoration: none;
+}
+
+.portal-brand span { font: 600 clamp(1.45rem, 3vw, 1.9rem)/1.05 var(--portal-serif); }
+.portal-brand small { margin-top: .23rem; color: var(--portal-sage); font: 500 .77rem/1.3 var(--portal-sans); }
+.portal-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem .8rem; }
+.zion-portal .portal-topbar :focus-visible { outline-color: var(--portal-cream); }
+
+.zion-portal .portal-public-link,
+.zion-portal .portal-session-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: .35rem .72rem;
+    border: 1px solid transparent;
+    border-radius: .4rem;
+    font: 600 .83rem/1.35 var(--portal-sans);
+    text-decoration: none;
+}
+
+.zion-portal .portal-public-link { background: var(--portal-cream); color: var(--portal-blue); }
+.zion-portal .portal-public-link:hover { background: var(--portal-sage); text-decoration: underline; }
+.zion-portal .portal-session-button {
+    background: transparent;
+    border-color: #A9C0B0;
+    color: var(--portal-cream);
+    cursor: pointer;
+}
+.zion-portal .portal-session-button:hover { background: var(--portal-evergreen-dark); }
+
+.portal-home { font: 400 1rem/1.55 var(--portal-sans); }
+.portal-home *, .portal-home *::before, .portal-home *::after { box-sizing: border-box; }
+.portal-home-main { max-width: 77rem; margin-inline: auto; padding: clamp(1.25rem, 4vw, 2.75rem) var(--portal-gutter) 4rem; }
+.portal-home h1, .portal-home h2 { margin: 0; color: var(--portal-evergreen); }
+.portal-home h2 { font: 700 clamp(1.8rem, 3vw, 2.25rem)/1.1 var(--portal-serif); }
+
+.portal-welcome {
+    padding: clamp(1.6rem, 5vw, 3.2rem) clamp(1.1rem, 6vw, 4.5rem);
+    background: var(--portal-sage);
+    border: 1px solid var(--portal-line);
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.portal-welcome::before {
+    content: "";
+    display: block;
+    width: 2.6rem;
+    height: 3px;
+    margin: 0 auto .95rem;
+    background: var(--portal-clay);
+}
+
+.portal-welcome h1 { font: 700 clamp(2.55rem, 5.5vw, 4.35rem)/.98 var(--portal-serif); }
+.portal-welcome p { max-width: 36rem; margin: 1rem auto 0; font-size: clamp(.98rem, 2vw, 1.13rem); color: var(--portal-ink); }
+.portal-welcome strong { color: var(--portal-evergreen); }
+
+.portal-sign-in, .portal-access-note {
+    max-width: 28rem;
+    margin: clamp(1.3rem, 4vw, 2.7rem) auto 0;
+    padding: clamp(1.2rem, 4vw, 2rem);
+    border: 1px solid var(--portal-line);
+    border-radius: .8rem;
+    background: #FFFDF9;
+}
+
+.portal-sign-in h2 { margin-bottom: 1.1rem; }
+.portal-sign-in-form { display: grid; gap: .9rem; }
+.portal-sign-in-form label { display: grid; gap: .3rem; font-size: .9rem; font-weight: 650; }
+.portal-sign-in-form input {
+    min-width: 0;
+    min-height: 46px;
+    padding: .6rem .75rem;
+    border: 1px solid #82968A;
+    border-radius: .38rem;
+    background: #FFF;
+    color: var(--portal-ink);
+    font: inherit;
+    font-size: 1rem;
+}
+.portal-sign-in-form a { justify-self: center; color: var(--portal-action-hover); font-size: .9rem; font-weight: 600; text-align: center; }
+.portal-sign-in-form .portal-form-status { margin: 0; font-size: .89rem; }
+.portal-sign-in-form .portal-form-status:empty { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.portal-form-status[data-tone="error"] { color: #8B352B; }
+
+.zion-portal .portal-primary-button,
+.zion-portal:not(.editorial-page) main button {
+    min-height: 42px;
+    padding: .58rem .9rem;
+    background: var(--portal-paper);
+    border: 1px solid #BC8D74;
+    border-radius: .4rem;
+    color: var(--portal-action-hover);
+    font: 650 .93rem/1.35 var(--portal-sans);
+    cursor: pointer;
+}
+.zion-portal:not(.editorial-page) main button:hover:not(:disabled) { background: var(--portal-sage); }
+.zion-portal .portal-primary-button,
+.zion-portal:not(.editorial-page) main button:is([type="submit"], .portal-action),
+.zion-portal.editorial-page.portal-page :is(.planner-controls button, .student-file-form button) {
+    background: var(--portal-action);
+    border-color: var(--portal-action);
+    color: white;
+}
+.zion-portal .portal-primary-button { min-height: 46px; }
+.zion-portal:not(.editorial-page) main button:is([type="submit"], .portal-action):hover:not(:disabled),
+.zion-portal.editorial-page.portal-page :is(.planner-controls button, .student-file-form button):hover:not(:disabled) {
+    background: var(--portal-action-hover);
+    border-color: var(--portal-action-hover);
+}
+.zion-portal button:disabled { opacity: .55; cursor: default; }
+
+.portal-home-dashboard { display: grid; grid-template-columns: minmax(16rem, 20rem) minmax(0, 1fr); align-items: start; gap: clamp(1.6rem, 4vw, 2.7rem); margin-top: clamp(1.5rem, 4vw, 2.4rem); }
+.portal-home-tools { display: grid; gap: clamp(1.6rem, 4vw, 2.7rem); }
+.portal-home-dashboard h2 { margin-bottom: .8rem; }
+.portal-link-grid, .portal-latest ul {
+    display: grid;
+    gap: .75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.portal-link-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.portal-link-grid a {
+    height: 100%;
+    min-height: 6.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-content: center;
+    gap: .2rem .75rem;
+    padding: .85rem 1rem;
+    border: 1px solid var(--portal-line);
+    border-radius: .65rem;
+    background: #FFFDF9;
+    color: var(--portal-evergreen);
+    text-decoration: none;
+}
+.portal-link-grid a::after { content: "→" / ""; grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--portal-action-hover); }
+.portal-link-grid a:hover { border-color: var(--portal-action); background: var(--portal-sage); }
+.portal-link-grid a:hover strong { text-decoration: underline; }
+.portal-link-grid strong { grid-column: 1; font-size: 1rem; }
+.portal-link-grid span { grid-column: 1; font-size: .87rem; color: var(--portal-muted); }
+.portal-resource-grid a { background: var(--portal-paper); }
+
+.portal-latest { padding: 1.2rem; border: 1px solid var(--portal-line); border-left: 3px solid var(--portal-clay); border-radius: .65rem; background: var(--portal-sage); }
+.portal-latest .portal-news-links { gap: .5rem; }
+.portal-latest section + .portal-news-links,
+.portal-upcoming { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--portal-line); }
+.portal-upcoming h3 { margin: 0 0 .65rem; font: 700 1.35rem/1.2 var(--portal-serif); }
+.portal-upcoming iframe { display: block; width: 100%; height: 16rem; margin-bottom: .55rem; border: 1px solid var(--portal-line); border-radius: .35rem; background: #fff; }
+
+@media (max-width: 48rem) {
+    .portal-home-dashboard { grid-template-columns: minmax(0, 1fr); }
+}
+.portal-latest a { color: var(--portal-action-hover); font-weight: 600; overflow-wrap: anywhere; }
+.portal-access-note a { color: var(--portal-evergreen); font-weight: 600; }
+
+.portal-council-banner { margin-block: 1.5rem; }
+.portal-council-announcement { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); background: var(--portal-sage); border-radius: .75rem; overflow: hidden; }
+.portal-council-art img { width: 100%; height: 100%; object-fit: contain; }
+.portal-council-panel { padding: 1.5rem; }
+.portal-council-primary { color: var(--portal-evergreen); font-weight: 650; }
+
+.zion-portal:not(.editorial-page) .gradebook-panel { background: var(--portal-paper); border-color: var(--portal-line); }
+.zion-portal:not(.editorial-page) .gradebook-grid tr > :first-child,
+.zion-portal:not(.editorial-page) .gradebook-grid thead th { background: var(--portal-sage); }
+.zion-portal:not(.editorial-page) .gradebook-grid :is(th, td) { border-bottom-color: var(--portal-line); }
+.zion-portal :is(input, select, textarea) { accent-color: var(--portal-action); }
+.zion-portal .portal-communication-main .communication-threads button[aria-pressed="true"] {
+    background: var(--portal-sage);
+    border-left: 3px solid var(--portal-action);
+    color: var(--portal-action-hover);
+}
+.zion-portal .portal-communication-main .communication-threads button[aria-pressed="true"]:hover {
+    background: var(--portal-sage);
+}
+.zion-portal .communication-nav a { color: var(--portal-action-hover); }
+.zion-portal .portal-communication-main .gradebook-panel { border-top: 3px solid var(--portal-action); }
+
+.zion-portal.editorial-page.portal-page :is(.grade-reports-panel, .graduation-planner-panel, .portal-testing) { padding-block: clamp(1.5rem, 5vw, 3.5rem); }
+.zion-portal .portal-page-intro { margin-bottom: 1.2rem; }
+.zion-portal .portal-page-intro h1 { font: 650 clamp(2.3rem, 5vw, 3.4rem)/1.05 var(--portal-serif); color: var(--portal-evergreen); }
+.zion-portal .portal-page-intro p { margin-top: .5rem; font: 400 1rem/1.55 var(--portal-sans); }
+.zion-portal.editorial-page.portal-page :is(.planner-controls, .student-file-panel, .portal-empty-state, .portal-guidance-card, .portal-testing-links a) { background: var(--portal-sage); border-color: var(--portal-line); }
+.zion-portal.editorial-page.portal-page main .portal-hero {
+    min-height: 0;
+    margin-top: 0 !important; /* The portal header is in the normal page flow. */
+    padding-block: clamp(2rem, 6vw, 4rem);
+    background: var(--portal-sage);
+}
+.zion-portal.editorial-page.portal-page main .portal-hero :is(h1, h1 em, .eyebrow) { color: var(--portal-evergreen); }
+.zion-portal.editorial-page.portal-page main .portal-hero .hero-subtext { color: var(--portal-ink); }
+.zion-portal.editorial-page.payment-page :is(.payment-date-card, .payment-schedule-note, .payment-schedule-table-wrap) { background: var(--portal-sage); border-color: var(--portal-line); }
+.zion-portal.editorial-page.payment-page .payment-date-card--due { border-top-color: var(--portal-evergreen); }
+.zion-portal.editorial-page.payment-page .payment-date-card--late { border-top-color: var(--portal-clay); }
+
+@media (max-width: 420px) {
+    .portal-topbar-inner { gap: .65rem; }
+    .portal-topbar-actions { gap: .45rem; }
+    .zion-portal .portal-public-link, .zion-portal .portal-session-button { padding-inline: .5rem; font-size: .76rem; }
+}
+
+
+.zion-portal.teacher-gradebook .gradebook-grid [data-dirty] { background: #FBE7D5; }
+.zion-portal.teacher-gradebook .gradebook-work { border-top: 3px solid var(--portal-action); }
+
+.zion-portal.grade-reports-page .family-grade-section { padding: 0; margin-block: 1.5rem 2rem; }
+.zion-portal.grade-reports-page .family-grade-section > [role="status"]:empty { display: none; }
+.zion-portal.grade-reports-page .family-grade-section > h2 {
+    margin-bottom: .65rem;
+    font: 700 clamp(1.55rem, 3vw, 2rem)/1.15 var(--portal-serif);
+}
+.zion-portal.grade-reports-page .family-grade-cards { display: grid; gap: 1rem; }
+.zion-portal.grade-reports-page .family-grade-card,
+.zion-portal.grade-reports-page .grade-report-student {
+    min-width: 0;
+    border: 1px solid var(--portal-line);
+    border-radius: .65rem;
+    background: var(--portal-paper);
+    box-shadow: none;
+}
+.zion-portal.grade-reports-page .family-grade-card {
+    padding: clamp(.9rem, 3vw, 1.4rem);
+    font: 400 1rem/1.5 var(--portal-sans);
+}
+.zion-portal.grade-reports-page .family-grade-student-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .25rem .75rem;
+    padding-bottom: .6rem;
+}
+.zion-portal.grade-reports-page .family-grade-student-heading h3,
+.zion-portal.grade-reports-page .grade-report-student-heading h3 {
+    margin: 0;
+    color: var(--portal-ink);
+    font: 700 1.25rem/1.25 var(--portal-sans);
+}
+.zion-portal.grade-reports-page :is(.family-final-courses, .family-grade-feedback) { margin: 0; padding: 0; list-style: none; }
+.zion-portal.grade-reports-page .family-final-courses > li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    padding-block: .8rem;
+    border-top: 1px solid var(--portal-line);
+    overflow-wrap: anywhere;
+}
+.zion-portal.grade-reports-page :is(.family-final-courses, .family-grade-feedback, .grade-report-item) h4 {
+    margin: 0;
+    font: 650 1rem/1.35 var(--portal-sans);
+}
+.zion-portal.grade-reports-page .family-grade-card p {
+    margin: .2rem 0 0;
+    color: var(--portal-muted);
+}
+.zion-portal.grade-reports-page .family-final-grade {
+    flex: none;
+    min-width: 2.6rem;
+    max-width: 40%;
+    padding: .4rem .55rem;
+    border-radius: .35rem;
+    color: var(--portal-action-hover);
+    background: var(--portal-sage);
+    font-weight: 750;
+    text-align: center;
+}
+.zion-portal.grade-reports-page .family-grade-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+.zion-portal.grade-reports-page .family-grade-details { margin-top: .75rem; }
+.zion-portal.grade-reports-page .family-grade-details summary { cursor: pointer; color: var(--portal-action-hover); font-weight: 650; }
+.zion-portal.grade-reports-page .family-grade-feedback li { margin: .5rem 0; padding: .6rem 0; border-top: 1px solid var(--portal-line); }
+.zion-portal.grade-reports-page .family-grade-feedback p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.zion-portal.grade-reports-page .grade-report-student-heading { background: var(--portal-sage); }
+.zion-portal.grade-reports-page .grade-report-student-heading > span { color: var(--portal-muted); }
+.zion-portal.grade-reports-page .grade-report-item a { color: var(--portal-action-hover); }

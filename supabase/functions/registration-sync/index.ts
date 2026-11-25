@@ -28,7 +28,7 @@ Deno.serve(async (request) => {
     return json({ error: "Registration sync access required." }, 401);
   }
   const raw = await request.text();
-  if (raw.length > 40000) return json({ error: "Record is too large." }, 413);
+  if (raw.length > 150000) return json({ error: "Record is too large." }, 413);
   let fields;
   try {
     fields = JSON.parse(raw);
@@ -45,21 +45,21 @@ Deno.serve(async (request) => {
   }
 
   const guardians = [1, 2].map((index) => ({
-    name: text(fields[`parent${index}Name`]),
+    name: text(fields[`parent${index}Name`], 120),
     phone: text(fields[`parent${index}Phone`], 60),
-    email: text(fields[`parent${index}Email`]),
-  })).filter(({ name, phone, email }) => name || phone || email);
+    email: text(fields[`parent${index}Email`], 254),
+  }));
   const emergencyContacts = [1, 2, 3].map((index) => ({
-    name: text(fields[`ec${index}Name`]),
-    relationship: text(fields[`ec${index}Relationship`]),
+    name: text(fields[`ec${index}Name`], 120),
+    relationship: text(fields[`ec${index}Relationship`], 120),
     phone: text(fields[`ec${index}Phone`], 60),
     medicalPermission: text(fields[`ec${index}Medical`]),
-  })).filter(({ name, phone }) => name || phone);
+  }));
   const authorizedPickup = [1, 2, 3].map((index) => ({
-    name: text(fields[`pickup${index}Name`]),
-    relationship: text(fields[`pickup${index}Relationship`]),
+    name: text(fields[`pickup${index}Name`], 120),
+    relationship: text(fields[`pickup${index}Relationship`], 120),
     phone: text(fields[`pickup${index}Phone`], 60),
-  })).filter(({ name, phone }) => name || phone);
+  }));
 
   const classroomRecord = {
     firstName, lastName, preferredName: text(fields.studentPreferred, 120), gradeLevel,
@@ -73,12 +73,28 @@ Deno.serve(async (request) => {
     treatmentInstructions: text(fields.medicalConsent).startsWith("No") ? text(fields.noEmergencyExplanation, 2000) : "",
     mediaConsent: text(fields.photoConsent),
   };
+  const takesMedication = fields.prescribedMedication === "Yes";
   const administratorRecord = {
     dateOfBirth: text(fields.studentDOB, 20),
     previousSchool: text(fields.previousSchool),
     iepStatus: text(fields.studentIEP),
     immunizationStatus: text(fields.immunizationStatus),
     guardianAddresses: [1, 2].map((index) => text(fields[`parent${index}Address`], 500)),
+    prescribedMedication: text(fields.prescribedMedication),
+    medicationDuringSchool: takesMedication ? text(fields.medicationDuringSchool) : "",
+    medicationDetails: takesMedication ? text(fields.medicationDetails, 2000) : "",
+    medicationAdmin: takesMedication ? text(fields.medicationAdmin) : "",
+    medicationStorage: takesMedication ? text(fields.medicationStorage, 120) : "",
+    medicationBehavior: takesMedication ? text(fields.medicationBehavior) : "",
+    medicationBehaviorInfo: takesMedication && fields.medicationBehavior === "Yes"
+      ? text(fields.medicationBehaviorInfo, 2000) : "",
+    medicationDisruption: takesMedication ? text(fields.medicationDisruption, 2000) : "",
+    staffTraining: text(fields.emergencyMedication).startsWith("Yes") ? text(fields.staffTraining) : "",
+    siblings: text(fields.siblings),
+    siblingNames: fields.siblings === "Yes" ? text(fields.siblingNames, 2000) : "",
+    efaStatus: text(fields.efaStatus),
+    classWallet: text(fields.efaStatus).startsWith("Yes") ? text(fields.classWallet) : "",
+    liabilityAck: text(fields.liabilityAck),
   };
 
   // Retrying a completed registration must never reset its school roster link.

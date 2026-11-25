@@ -1,0 +1,10 @@
+project_id = "zionoutschool-portal"
+
+[functions.portal-invite]
+verify_jwt = false
+
+[functions.registration-sync]
+verify_jwt = false
+
+[functions.communication-email]
+verify_jwt = false
