@@ -96,6 +96,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
     const preview = byId('preview');
     const selectAll = byId('select-all');
     const rosterButton = byId('open-roster');
+    const rosterHelp = byId('roster-help');
     const importButton = preview.querySelector('button[type="submit"]');
     const readiness = byId('import-readiness');
     const report = (message, tone) => setPortalMessage(status, message, tone);
@@ -279,7 +280,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         const saved = context.matches?.[id];
         const hasSavedMatch = roster.some(enrollment => enrollment.id === saved);
         select.replaceChildren();
-        addOption(select, 'Skip this student', '');
+        addOption(select, roster.length ? 'Skip this student' : 'No students enrolled in this Zion course', '');
         for (const enrollment of roster) addOption(select, enrollment.name, enrollment.id);
         select.value = hasSavedMatch ? saved : roster.some(enrollment => enrollment.id === previous) ? previous : '';
         select.disabled = hasSavedMatch || !roster.length;
@@ -289,10 +290,11 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         if (!snapshot) return;
         const matches = [...snapshot.inputs.values()].map(input => input.value).filter(Boolean);
         const hasSelection = Boolean(preview.querySelector('[name="assignment"]:checked'));
+        const managesRoster = canManageRoster();
         let reason = '';
         if (!roster.length) {
-            reason = canManageRoster()
-                ? 'This Zion course has no students. Open its roster and add students before importing.'
+            reason = managesRoster
+                ? 'This Zion course has no students. Add existing Zion student records to the course before importing grades.'
                 : 'This Zion course has no students. Ask a portal administrator to add them before importing.';
         } else if (!snapshot.inputs.size) reason = 'Google did not return any students for this class.';
         else if (!snapshot.workItems.length) reason = 'Google did not return any eligible assignments for this class.';
@@ -300,7 +302,10 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         else if (new Set(matches).size !== matches.length) reason = 'Choose a different Zion student for each match.';
         else if (!hasSelection) reason = 'Select at least one assignment.';
         else if (!preview.elements.category.value) reason = 'Choose a gradebook category.';
-        rosterButton.hidden = Boolean(roster.length) || !canManageRoster();
+        rosterHelp.textContent = roster.length
+            ? 'Match each Google student to their existing record in this Zion course.'
+            : reason;
+        rosterButton.hidden = Boolean(roster.length) || !managesRoster;
         importButton.disabled = Boolean(reason);
         readiness.textContent = reason;
     }

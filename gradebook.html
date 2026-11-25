@@ -83,8 +83,8 @@
                         <form id="gradebook-google-preview" hidden>
                             <fieldset>
                                 <legend>Match students</legend>
-                                <p>Choose a Zion student for each Google student you want to import.</p>
-                                <button id="gradebook-google-open-roster" type="button" hidden>Open Zion roster</button>
+                                <p id="gradebook-google-roster-help">Match each Google student to their existing record in this Zion course.</p>
+                                <button id="gradebook-google-open-roster" type="button" hidden>Add students to this Zion course</button>
                                 <div id="gradebook-google-roster"></div>
                             </fieldset>
                             <fieldset>
@@ -221,7 +221,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
-    <script src="gradebook-google.js?v=import-readiness-1"></script>
+    <script src="gradebook-google.js?v=roster-guidance-1"></script>
     <script src="gradebook.js?v=import-readiness-1"></script>
 </body>
 </html>
