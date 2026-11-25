@@ -11,7 +11,7 @@
     const lockButton = byId('lock');
     const views = [...dashboard.querySelectorAll('[data-view]')];
     const dateTime = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-    const labels = { queued: 'Queued', running: 'In progress', failed: 'Needs attention', review: 'Ready for review', approved: 'Approved' };
+    const labels = { queued: 'Queued', running: 'In progress', failed: 'Needs attention', review: 'Ready for review', approved: 'Approved', canceled: 'Canceled' };
     let unlock;
     let activeUser;
     let generation = 0;
@@ -293,13 +293,43 @@
             [labels[job.status], admins[job.created_by] || job.created_by, dateTime.format(new Date(job.created_at))].join(' · '),
             'workroom-meta'));
         if (job.failure) detail.append(element('p', job.failure));
+        if (job.status === 'queued' && Date.parse(job.available_at) > Date.now()) {
+            detail.append(element('p', 'Next retry after ' + dateTime.format(new Date(job.available_at)), 'workroom-meta'));
+        }
+        const actions = element('div', '', 'workroom-actions');
         if (job.status === 'failed') {
-            detail.append(button('Retry assignment', async () => {
+            actions.append(button('Retry assignment', async () => {
                 await api('retry', { id });
                 await openJob(id, true);
                 await refreshHistory();
             }));
         }
+        if (['queued', 'running'].includes(job.status)) {
+            actions.append(button('Cancel assignment', async () => {
+                await api('cancel-job', { id });
+                if (selectedJob === id) await openJob(id, true, true);
+                await refreshHistory();
+                setPortalMessage(status, 'Assignment canceled.', 'success');
+            }));
+        }
+        actions.append(button('Delete assignment', async () => {
+            if (!window.confirm(`Permanently delete “${job.title}”, including its attachment, drafts, and approvals?`)) return;
+            await api('delete-job', { id, confirm: true });
+            if (selectedJob === id) {
+                ++jobVersion;
+                selectedJob = null;
+                clearTimeout(pollTimer);
+                detail.replaceChildren();
+                detail.hidden = true;
+            }
+            await refreshHistory();
+            if (historyStart > 0 && byId('history').querySelectorAll('button').length === 0) {
+                await refreshHistory(historyStart - 20);
+            }
+            if (!selectedJob) byId('refresh').focus();
+            setPortalMessage(status, 'Assignment permanently deleted.', 'success');
+        }, 'workroom-secondary workroom-danger'));
+        detail.append(actions);
         appendVersions(job, versions, admins);
         const original = element('div');
         original.append(element('p', job.assignment, 'workroom-copy'));

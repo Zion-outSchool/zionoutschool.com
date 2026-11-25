@@ -98,3 +98,8 @@
     border-color: var(--portal-evergreen);
     color: #fff;
 }
+
+.zion-portal .workroom-actions .workroom-danger {
+    color: #902d25;
+    border-color: #ac6459;
+}
