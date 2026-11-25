@@ -1,9 +1,9 @@
 'use strict';
 
-const CLASSROOM_READ_PERMISSIONS = [
+const CLASSROOM_COURSEWORK_SCOPE = 'https://www.googleapis.com/auth/classroom.coursework.students.readonly';
+const CLASSROOM_ROSTER_PERMISSIONS = [
     ['classroom.courses.readonly', 'classes'],
-    ['classroom.rosters.readonly', 'rosters'],
-    ['classroom.coursework.students.readonly', 'coursework and grades']
+    ['classroom.rosters.readonly', 'rosters']
 ].map(([scope, label]) => ({ scope: 'https://www.googleapis.com/auth/' + scope, label }));
 
 let classroomIdentityLoad;
@@ -40,7 +40,18 @@ async function classroomRows(path, key, query, token) {
             signal: AbortSignal.timeout(20000)
         });
         if (response.status === 401) throw new Error('Your Google session expired. Connect Google Classroom again.');
-        if (response.status === 403) throw new Error('Google denied access. Choose the account that teaches this class or check with your Google Workspace administrator.');
+        if (response.status === 403) {
+            const { error } = await response.json().catch(() => ({}));
+            const scopeDenied = error?.details?.some(detail => detail.reason === 'ACCESS_TOKEN_SCOPE_INSUFFICIENT')
+                || error?.errors?.some(detail => detail.reason === 'insufficientPermissions')
+                || /insufficient authentication scopes/i.test(error?.message || '');
+            if (scopeDenied && path.includes('/courseWork')) {
+                const failure = new Error('Google Classroom rejected access to coursework and grades. Choose Grant coursework and grades access to request it on its own.');
+                failure.code = 'COURSEWORK_SCOPE';
+                throw failure;
+            }
+            throw new Error('Google denied access. Choose the account that teaches this class or check with your Google Workspace administrator.');
+        }
         if (!response.ok) throw new Error('Google Classroom couldn’t load. Try again in a moment.');
         const page = await response.json();
         rows.push(...(page[key] || []));
@@ -93,6 +104,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
     let snapshot;
     let version = 0;
     let classVersion = 0;
+    let courseworkOnly = false;
 
     function addOption(select, title, value) {
         const option = appendTextElement(select, 'option', title);
@@ -145,6 +157,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
         classVersion++;
         context = null;
         sessionToken = null;
+        courseworkOnly = false;
         googleClasses.clear();
         classInput.replaceChildren();
         picker.hidden = true;
@@ -156,7 +169,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
         else if (panel.open) void prepare();
     }
 
-    async function loadClasses(token, turn) {
+    async function loadClasses(token, turn, previousClass) {
         const rows = await classroomRows('courses', 'courses', {
             teacherId: 'me', fields: 'nextPageToken,courses(id,name,section)'
         }, token);
@@ -175,8 +188,9 @@ function initGradebookGoogleImport({ runImport, reload }) {
                 : 'Google found no classes you teach.');
             return;
         }
-        if (context.source_course) {
-            classInput.value = context.source_course;
+        const selected = context.source_course || (googleClasses.has(previousClass) ? previousClass : '');
+        if (selected) {
+            classInput.value = selected;
             await loadClass();
         } else {
             report('Choose the Google class that matches this Zion gradebook.');
@@ -185,6 +199,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
 
     connect.onclick = () => {
         if (!context?.client_id) return;
+        const previousClass = courseworkOnly ? classInput.value : '';
         const turn = ++version;
         classVersion++;
         sessionToken = null;
@@ -202,10 +217,12 @@ function initGradebookGoogleImport({ runImport, reload }) {
         }
         try {
             const oauth = window.google.accounts.oauth2;
+            const scope = courseworkOnly ? CLASSROOM_COURSEWORK_SCOPE
+                : [...CLASSROOM_ROSTER_PERMISSIONS.map(permission => permission.scope), CLASSROOM_COURSEWORK_SCOPE].join(' ');
             const client = oauth.initTokenClient({
                 client_id: context.client_id,
-                scope: CLASSROOM_READ_PERMISSIONS.map(permission => permission.scope).join(' '),
-                include_granted_scopes: false,
+                scope,
+                include_granted_scopes: courseworkOnly,
                 error_callback: error => {
                     if (turn !== version) return;
                     requestPermissionReview();
@@ -225,17 +242,20 @@ function initGradebookGoogleImport({ runImport, reload }) {
                         failed(new Error('Google sign-in did not finish' + code + '. Try again or share this message with your portal administrator.'));
                         return;
                     }
-                    const missing = CLASSROOM_READ_PERMISSIONS.filter(permission =>
+                    const missing = CLASSROOM_ROSTER_PERMISSIONS.filter(permission =>
                         !oauth.hasGrantedAllScopes(response, permission.scope)).map(permission => permission.label);
                     if (missing.length) {
+                        courseworkOnly = false;
                         requestPermissionReview();
                         failed(new Error('Google did not grant access to ' + missing.join(', ') + '. Choose Review Google permissions to try again.'));
                         return;
                     }
+                    // Google's consent receipt can use a differently reported scope. The coursework API checks access.
+                    courseworkOnly = false;
                     connect.textContent = 'Connect Google Classroom';
                     sessionToken = response.access_token;
                     report('Loading classes from Google…');
-                    try { await loadClasses(sessionToken, turn); }
+                    try { await loadClasses(sessionToken, turn, previousClass); }
                     catch (error) { failed(error); }
                     finally { if (turn === version) connect.disabled = false; }
                 }
@@ -331,7 +351,12 @@ function initGradebookGoogleImport({ runImport, reload }) {
             renderPreview(students, work, submissions);
             report('Match the roster and preview the returned grades before importing.');
         } catch (error) {
-            if (turn === version && selection === classVersion) report(error.message || 'Couldn’t load this Google class.', 'error');
+            if (turn !== version || selection !== classVersion) return;
+            if (error.code === 'COURSEWORK_SCOPE') {
+                courseworkOnly = true;
+                connect.textContent = 'Grant coursework and grades access';
+            }
+            report(error.message || 'Couldn’t load this Google class.', 'error');
         }
     }
 
