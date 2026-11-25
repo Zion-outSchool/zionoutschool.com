@@ -100,6 +100,8 @@
                     </details>
                     <details id="gradebook-roster-management" class="gradebook-panel" hidden>
                         <summary>Manage roster</summary>
+                        <p>Select a student already on this roster to edit their settings, or select a student to add.</p>
+                        <p id="gradebook-enrollment-finalized" hidden>Reopen a final grade in Course grades before changing that student’s settings.</p>
                         <form id="gradebook-enroll" class="gradebook-form-grid">
                             <label>Student <select name="student_id" required></select></label>
                             <label>Graduation requirement <select name="requirement_key"></select></label>
@@ -222,6 +224,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
     <script src="gradebook-google.js?v=roster-guidance-1"></script>
-    <script src="gradebook.js?v=import-readiness-1"></script>
+    <script src="gradebook.js?v=roster-settings-1"></script>
 </body>
 </html>

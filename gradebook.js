@@ -301,27 +301,44 @@ async function initTeacherGradebook() {
     }
 
     function renderEnrollmentForm(enrollment) {
-        editingEnrollment = enrollment;
         enrollmentForm.reset();
-        const fields = enrollmentForm.elements;
-        fields.student_id.replaceChildren();
-        option(fields.student_id, 'Select a student', '');
-        for (const student of students.filter(student => student.id === enrollment?.student_id
-            || !enrollments.some(item => item.student_id === student.id))) {
-            option(fields.student_id, normalizeStudentName(student), student.id);
+        const studentField = enrollmentForm.elements.student_id;
+        studentField.replaceChildren();
+        option(studentField, 'Select a student', '');
+        if (enrollments.length) {
+            const group = appendTextElement(studentField, 'optgroup', '');
+            group.label = 'Enrolled students · edit settings';
+            for (const item of enrollments) {
+                const finalized = finals.has(item.id);
+                option(group, studentName(item) + (finalized ? ' · Finalized' : ''), item.student_id).disabled = finalized;
+            }
         }
-        fields.student_id.value = enrollment?.student_id || '';
-        fields.student_id.disabled = Boolean(enrollment);
-        fields.requirement_key.value = enrollment?.requirement_key || '';
-        fields.grade_level.value = enrollment?.grade_level || '';
-        fields.credits.value = enrollment?.credits ?? '';
-        updateEnrollmentCredits();
-        byId('gradebook-enrollment-submit').textContent = enrollment ? 'Save enrollment' : 'Add to roster';
-        byId('gradebook-enrollment-cancel').hidden = !enrollment;
+        const enrolled = new Set(enrollments.map(item => item.student_id));
+        const available = students.filter(student => !enrolled.has(student.id));
+        if (available.length) {
+            const group = appendTextElement(studentField, 'optgroup', '');
+            group.label = 'Add to roster';
+            for (const student of available) option(group, normalizeStudentName(student), student.id);
+        }
+        byId('gradebook-enrollment-finalized').hidden = !finals.size;
+        studentField.value = enrollment?.student_id || '';
+        fillEnrollmentSettings(enrollment);
         if (enrollment) {
             enrollmentForm.closest('details').open = true;
-            fields.requirement_key.focus();
+            enrollmentForm.elements.requirement_key.focus();
         }
+    }
+
+    function fillEnrollmentSettings(enrollment, student) {
+        editingEnrollment = enrollment;
+        const fields = enrollmentForm.elements;
+        const grade = enrollment?.grade_level || student?.grade_level;
+        fields.requirement_key.value = enrollment?.requirement_key || '';
+        fields.grade_level.value = GRADEBOOK_GRADE_LEVELS.includes(grade) ? grade : '';
+        fields.credits.value = enrollment?.credits ?? '';
+        updateEnrollmentCredits();
+        byId('gradebook-enrollment-submit').textContent = enrollment ? 'Save student settings' : 'Add to roster';
+        byId('gradebook-enrollment-cancel').hidden = !enrollment;
     }
 
     function updateEnrollmentCredits() {
@@ -832,9 +849,10 @@ async function initTeacherGradebook() {
         enrollmentForm.elements.grade_level.onchange = updateEnrollmentCredits;
         enrollmentForm.elements.requirement_key.onchange = updateEnrollmentCredits;
         enrollmentForm.elements.student_id.onchange = () => {
-            const student = students.find(record => record.id === enrollmentForm.elements.student_id.value);
-            enrollmentForm.elements.grade_level.value = GRADEBOOK_GRADE_LEVELS.includes(student?.grade_level) ? student.grade_level : '';
-            updateEnrollmentCredits();
+            const id = enrollmentForm.elements.student_id.value;
+            const enrollment = enrollments.find(item => item.student_id === id);
+            const student = students.find(record => record.id === id);
+            fillEnrollmentSettings(enrollment, student);
         };
         byId('gradebook-enrollment-cancel').onclick = () => renderEnrollmentForm();
         enrollmentForm.onsubmit = event => {
@@ -848,7 +866,13 @@ async function initTeacherGradebook() {
                 data(await (editing ? table.update(values).eq('id', editingEnrollment.id)
                     : table.insert({ ...values, student_id, course_id: course.id })));
                 await loadCourse(course.id);
-                message(editing ? 'Enrollment updated.' : 'Student added to roster.', 'success');
+                const saved = enrollments.find(item => item.student_id === student_id && !finals.has(item.id));
+                if (saved) {
+                    enrollmentForm.elements.student_id.value = saved.student_id;
+                    fillEnrollmentSettings(saved);
+                }
+                message(editing ? 'Student settings saved.' : 'Student added to roster.', 'success');
+                return enrollmentForm.elements.student_id;
             }, 'save the enrollment', 'Check the chosen student and course. If the student is already on this roster, edit the existing enrollment.');
         };
 
