@@ -1,0 +1,33 @@
+name: Verify production website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-website-verification
+  cancel-in-progress: true
+
+jobs:
+  netlify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compare the live website with the GitHub revision
+        env:
+          RELEASE_REVISION: ${{ github.sha }}
+          PREVIOUS_REVISION: ${{ github.event.before }}
+        run: |
+          if [ -n "$PREVIOUS_REVISION" ]; then
+            node scripts/verify-production.mjs --revision "$RELEASE_REVISION" --before "$PREVIOUS_REVISION" --wait 240
+          else
+            node scripts/verify-production.mjs --revision "$RELEASE_REVISION" --wait 240
+          fi
