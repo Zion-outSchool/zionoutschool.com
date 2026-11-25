@@ -39,7 +39,11 @@ async function classroomRows(path, key, query, token) {
             redirect: 'error',
             signal: AbortSignal.timeout(20000)
         });
-        if (response.status === 401) throw new Error('Your Google session expired. Connect Google Classroom again.');
+        if (response.status === 401) {
+            const failure = new Error('Your Google session expired. Connect Google Classroom again.');
+            failure.code = 'GOOGLE_SESSION_EXPIRED';
+            throw failure;
+        }
         if (response.status === 403) {
             const { error } = await response.json().catch(() => ({}));
             const scopeDenied = error?.details?.some(detail => detail.reason === 'ACCESS_TOKEN_SCOPE_INSUFFICIENT')
@@ -91,6 +95,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
     const connect = byId('connect');
     const picker = byId('class-picker');
     const classInput = byId('class');
+    const refresh = byId('refresh');
     const rosterView = byId('roster');
     const workView = byId('work');
     const preview = byId('preview');
@@ -172,6 +177,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         googleClasses.clear();
         classInput.replaceChildren();
         picker.hidden = true;
+        refresh.hidden = true;
         clearPreview();
         connect.disabled = true;
         connect.textContent = 'Connect Google Classroom';
@@ -215,6 +221,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         classVersion++;
         sessionToken = null;
         picker.hidden = true;
+        refresh.hidden = true;
         clearPreview();
         connect.disabled = true;
         report('Complete Google’s permission screen, then return to the gradebook.');
@@ -286,6 +293,14 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         select.disabled = hasSavedMatch || !roster.length;
     }
 
+    function readImportSelection() {
+        return {
+            assignments: new Set(new FormData(preview).getAll('assignment')),
+            matches: Object.fromEntries([...snapshot.inputs].filter(([, input]) => input.value).map(([id, input]) => [id, input.value])),
+            category: preview.elements.category.value
+        };
+    }
+
     function updateImportAvailability() {
         if (!snapshot) return;
         const matches = [...snapshot.inputs.values()].map(input => input.value).filter(Boolean);
@@ -310,7 +325,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         readiness.textContent = reason;
     }
 
-    function renderPreview(googleStudents, work, submissions) {
+    function renderPreview(googleStudents, work, submissions, previous) {
         const workItems = work.map(classroomWorkItem).filter(Boolean);
         const workIds = new Set(workItems.map(item => item.source_id));
         const scoresByWork = new Map();
@@ -327,6 +342,9 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
             const label = appendTextElement(rosterView, 'label', name);
             const select = appendTextElement(label, 'select', '');
             refreshStudentOptions(id, select);
+            if (!select.disabled && roster.some(enrollment => enrollment.id === previous?.matches[id])) {
+                select.value = previous.matches[id];
+            }
             inputs.set(id, select);
         }
 
@@ -335,6 +353,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         const categories = Object.keys(course.categories);
         if (categories.length > 1) addOption(category, 'Choose a category', '');
         for (const name of categories) addOption(category, name, name);
+        if (categories.includes(previous?.category)) category.value = previous.category;
 
         for (const item of workItems) {
             const block = appendTextElement(workView, 'div', '', 'gradebook-google-work-item');
@@ -343,6 +362,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
             checkbox.type = 'checkbox';
             checkbox.name = 'assignment';
             checkbox.value = item.source_id;
+            checkbox.checked = previous?.assignments.has(item.source_id) ?? false;
             label.append([item.title, item.points + ' points', item.due_on && formatPortalDate(item.due_on + 'T12:00:00')].filter(Boolean).join(' · '));
             const scores = scoresByWork.get(item.source_id) || [];
             const details = appendTextElement(block, 'details', '');
@@ -362,6 +382,9 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         const excluded = work.length - workItems.length;
         byId('exclusions').textContent = excluded ? excluded + ' assignments were excluded because they are ungraded, individually assigned, or outside Zion’s point limits.' : '';
         selectAll.disabled = !workItems.length;
+        if (workItems.length && workItems.every(item => previous?.assignments.has(item.source_id))) {
+            selectAll.textContent = 'Clear assignment selection';
+        }
         if (!students.size) appendTextElement(rosterView, 'p', 'Google did not return a student roster.');
         if (!workItems.length) appendTextElement(workView, 'p', 'No eligible assignments were found.');
         snapshot = { inputs, workItems, scoresByWork, source: googleClasses.get(classInput.value) };
@@ -369,11 +392,14 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         preview.hidden = false;
     }
 
-    async function loadClass() {
+    async function loadClass({ refreshing = false } = {}) {
         const turn = version;
         const selection = ++classVersion;
+        const previous = refreshing && snapshot?.source.id === classInput.value ? readImportSelection() : null;
         clearPreview();
+        refresh.hidden = !classInput.value || !sessionToken;
         if (!classInput.value || !sessionToken) return;
+        refresh.disabled = true;
         const path = 'courses/' + encodeURIComponent(classInput.value) + '/';
         report('Loading the Google roster, assignments and returned grades…');
         try {
@@ -387,20 +413,28 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
                 }, sessionToken)
             ]);
             if (turn !== version || selection !== classVersion) return;
-            renderPreview(students, work, submissions);
-            report('Match the roster and preview the returned grades before importing.');
+            renderPreview(students, work, submissions, previous);
+            report(refreshing ? 'Refreshed from Google. Review the grades and click Import selected grades to save them in Zion.'
+                : 'Match the roster and preview the returned grades before importing.');
         } catch (error) {
             if (turn !== version || selection !== classVersion) return;
             if (error.code === 'COURSEWORK_SCOPE') {
                 courseworkOnly = true;
                 connect.textContent = 'Grant coursework and grades access';
             }
+            if (error.code === 'GOOGLE_SESSION_EXPIRED') {
+                sessionToken = null;
+                refresh.hidden = true;
+            }
             report(error.message || 'Couldn’t load this Google class.', 'error');
+        } finally {
+            if (turn === version && selection === classVersion) refresh.disabled = false;
         }
     }
 
     panel.addEventListener('toggle', prepare);
-    classInput.onchange = loadClass;
+    classInput.onchange = () => loadClass();
+    refresh.onclick = () => loadClass({ refreshing: true });
     preview.addEventListener('change', updateImportAvailability);
     rosterButton.onclick = openRoster;
     selectAll.onclick = () => {
@@ -413,8 +447,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
     preview.onsubmit = event => {
         event.preventDefault();
         if (!snapshot) return;
-        const selected = new Set(new FormData(preview).getAll('assignment'));
-        const matches = Object.fromEntries([...snapshot.inputs].filter(([, input]) => input.value).map(([id, input]) => [id, input.value]));
+        const { assignments: selected, matches, category } = readImportSelection();
         if (!selected.size || !Object.keys(matches).length) {
             report('Match at least one student and select at least one assignment.', 'error');
             return;
@@ -434,7 +467,7 @@ function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRos
         const turn = version;
         const payload = {
             target_course: courseId, google_course: source.id, google_name: source.name.slice(0, 250),
-            matched_students: matches, target_category: preview.elements.category.value,
+            matched_students: matches, target_category: category,
             selected_assignments: selectedWork, returned_scores: scores
         };
         void runImport(async () => {
