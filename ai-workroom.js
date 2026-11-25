@@ -111,6 +111,12 @@
         }
     }
 
+    function updateFamilyRecordsChoice() {
+        const familyWorkflow = submitForm.elements.workflow.value === 'family';
+        byId('family-records').hidden = !familyWorkflow;
+        submitForm.elements.includeRecords.disabled = !familyWorkflow;
+    }
+
     function renderSetup(data) {
         workflows = data.workflows;
         roles = data.roles;
@@ -120,6 +126,7 @@
             return option;
         });
         submitForm.elements.workflow.replaceChildren(...choices);
+        updateFamilyRecordsChoice();
         scheduleForm.elements.workflow.replaceChildren(...choices.map(option => option.cloneNode(true)));
         byId('roles').replaceChildren(...Object.values(roles).map(([name, instructions]) => {
             const item = element('li');
@@ -454,6 +461,7 @@
             byId('unlock').elements.password.focus();
         }
     });
+    submitForm.elements.workflow.onchange = updateFamilyRecordsChoice;
     submitForm.oninput = () => { assignmentId = null; };
     submitForm.onsubmit = event => {
         event.preventDefault();
@@ -463,9 +471,11 @@
             fields.file = await readFile(fields.file);
             if (requestGeneration !== generation) return;
             assignmentId ||= crypto.randomUUID();
-            const { id } = await api('submit', { ...fields, id: assignmentId, consent: fields.consent === 'on' });
+            const { id } = await api('submit', { ...fields, id: assignmentId, consent: fields.consent === 'on',
+                includeRecords: fields.includeRecords === 'on' });
             assignmentId = null;
             submitForm.reset();
+            updateFamilyRecordsChoice();
             await refreshHistory(0);
             await openJob(id, true, true);
         });

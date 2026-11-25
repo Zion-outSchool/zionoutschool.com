@@ -47,6 +47,12 @@
                         <form id="workroom-submit">
                             <label>Title <input name="title" maxlength="160" required></label>
                             <label>Workflow <select name="workflow" required></select></label>
+                            <div id="workroom-family-records" hidden>
+                                <label class="workroom-check">
+                                    <input type="checkbox" name="includeRecords" disabled>
+                                    Ask Records and Policy for approved visit guidance or a template
+                                </label>
+                            </div>
                             <label>Assignment <textarea name="assignment" rows="7" maxlength="12000" required></textarea></label>
                             <label>Attachment <input type="file" name="file" accept=".pdf,.docx,.txt,.md,.html,.css,.js" aria-describedby="workroom-file-help"></label>
                             <small id="workroom-file-help">PDF, DOCX or text up to 3 MB. PDFs need selectable text. To prepare a website file change, attach the current HTML, CSS or JS file.</small>
@@ -140,6 +146,6 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
-    <script src="ai-workroom.js?v=queue-1"></script>
+    <script src="ai-workroom.js?v=family-review-1"></script>
 </body>
 </html>
