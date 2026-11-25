@@ -29,12 +29,15 @@ Apply these files in order after the core portal and planner tables exist.
 13. [Administrator class deletion](supabase_course_deletion.sql)
 14. [Family grade updates and grade email preferences](supabase_family_grade_updates.sql)
 15. [Class dates and finalization](supabase_gradebook_course_dates.sql)
+16. [PDF attachments for portal updates](supabase_news_pdf_attachments.sql)
 
 After changing the registration records schema, apply the registration review script again so the read function includes approved corrections. Deploy the updated `communication-email` function after applying the review migration. The existing email job sends review links to active administrators with confirmed emails.
 
 For family grade updates, apply the family grade updates SQL and deploy the updated `communication-email` function. Its existing scheduled `/deliver` job also processes grade alerts. Families opt in from Grade Reports. The daily summary runs at 6 p.m. Eastern when there are changes to report. Saving scores and importing returned Classroom grades posts them to Grade Reports. The migration does not send an email for previously saved grades.
 
 Add class dates in Course settings before finalizing a grade. Finalization is available starting the day after the end date in Eastern time. Existing finalized grades retain their status.
+
+Apply the PDF attachment SQL after the newsletter setup. Update submissions can include up to three PDFs of 10 MB each. The PDFs are stored in a private bucket and follow the update's Student News or newsletter audience. Deploy the updated `communication-email` function so newsletter emails link to PDFs through the Family Portal.
 
 After the database update, follow the [invitation setup](#deploying-in-app-invitations) and the [registration sync setup](apps-script/registration/README.md). Use fictional records to verify account activation, grade finalization, registration delivery, and family access before releasing the website.
 

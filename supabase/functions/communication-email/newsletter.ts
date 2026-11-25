@@ -4,6 +4,7 @@ export type NewsletterEntry = {
   author_name: string;
   links: { label: string; url: string }[];
   photos: { path: string; alt: string }[];
+  documents?: { path: string; label: string }[];
 };
 
 type NewsletterContent = { html: string; text: string };
@@ -42,6 +43,9 @@ export function renderNewsletter(
 
   for (const entry of entries) {
     const links = entry.links.map(link => ({ ...link, url: httpsUrl(link.url) })).filter(link => link.url);
+    for (const document of entry.documents ?? []) {
+      links.push({ label: document.label + " (PDF in the Family Portal)", url });
+    }
     const images = entry.photos.flatMap(photo => {
       const source = httpsUrl(photos.get(photo.path) ?? "");
       if (!source) return [];

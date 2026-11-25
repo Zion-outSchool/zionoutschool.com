@@ -1,6 +1,7 @@
 'use strict';
 
 const NEWS_PHOTO_BUCKET = 'portal-news-photos';
+const NEWS_PDF_BUCKET = 'portal-news-pdfs';
 const NEWS_BATCH = 15;
 const NEWS_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const NEWS_ISSUE_ID = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
@@ -27,7 +28,7 @@ function newsIssueLink(id) {
     return 'portal-communications.html?newsletter=' + encodeURIComponent(id) + '#newsletters';
 }
 
-function newsRenderEntry(parent, entry, signed, timestamp) {
+function newsRenderEntry(parent, entry, media, timestamp) {
     const article = communicationElement(parent, 'article');
     article.className = 'communication-post news-update';
     communicationElement(article, 'h3', entry.title);
@@ -48,7 +49,7 @@ function newsRenderEntry(parent, entry, signed, timestamp) {
         const gallery = communicationElement(article, 'div');
         gallery.className = 'news-photo-list';
         for (const photo of entry.photos) {
-            const url = signed.get(photo.path);
+            const url = media.photos.get(photo.path);
             if (!url) {
                 communicationElement(gallery, 'p', 'Photo unavailable: ' + photo.alt);
                 continue;
@@ -59,19 +60,43 @@ function newsRenderEntry(parent, entry, signed, timestamp) {
             image.src = url;
         }
     }
+    if (entry.documents?.length) {
+        const list = communicationElement(article, 'ul');
+        list.className = 'news-link-list';
+        for (const document of entry.documents) {
+            const item = communicationElement(list, 'li');
+            const url = media.documents.get(document.path);
+            if (url) {
+                const link = communicationElement(item, 'a', document.label + ' (PDF)');
+                link.href = url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            } else {
+                communicationElement(item, 'span', document.label + ' (PDF unavailable)');
+            }
+        }
+    }
 }
 
-async function newsSignPhotos(entries) {
-    const paths = [...new Set(entries.flatMap(entry => entry.photos.map(photo => photo.path)))];
+async function newsSignAssets(entries, field, bucket) {
+    const paths = [...new Set(entries.flatMap(entry => (entry[field] || []).map(asset => asset.path)))];
     const signed = new Map();
     for (let start = 0; start < paths.length; start += 50) {
-        const { data } = await portalClient.storage.from(NEWS_PHOTO_BUCKET)
+        const { data } = await portalClient.storage.from(bucket)
             .createSignedUrls(paths.slice(start, start + 50), 3600);
         for (const item of data || []) {
             if (item.signedUrl) signed.set(item.path, item.signedUrl);
         }
     }
     return signed;
+}
+
+async function newsSignMedia(entries) {
+    const [photos, documents] = await Promise.all([
+        newsSignAssets(entries, 'photos', NEWS_PHOTO_BUCKET),
+        newsSignAssets(entries, 'documents', NEWS_PDF_BUCKET)
+    ]);
+    return { photos, documents };
 }
 
 async function initPortalNews(profile, session, students, selectedStudent, active) {
@@ -125,7 +150,7 @@ async function initPortalNews(profile, session, students, selectedStudent, activ
             return;
         }
         communicationElement(panel, 'h3', newsIssueDate(issue.issue_on));
-        const signed = await newsSignPhotos(issue.entries);
+        const signed = await newsSignMedia(issue.entries);
         if (!active()) return;
         for (const entry of issue.entries) newsRenderEntry(panel, entry, signed);
         communicationElement(panel, 'h3', 'Newsletter archive');
@@ -146,7 +171,7 @@ async function initPortalNews(profile, session, students, selectedStudent, activ
             target_student: select.value, start_at: start
         }));
         if (!active() || version !== studentVersion) return;
-        const signed = await newsSignPhotos(rows);
+        const signed = await newsSignMedia(rows);
         if (!active() || version !== studentVersion) return;
         for (const row of rows) newsRenderEntry(feed, row, signed, row.updated_at);
         if (!start && !rows.length) communicationElement(feed, 'p', 'No updates for this student yet.');
@@ -191,12 +216,14 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
     const recipients = get('recipients');
     const linkFields = get('link-fields');
     const photoFields = get('photo-fields');
+    const documentFields = get('document-fields');
     const uploads = new WeakMap();
     let draft = null;
     let newId = null;
     let windowInfo;
     let checkedAt;
     let count = 0;
+    let supportsDocuments = false;
 
     const report = (message, tone) => setPortalMessage(status, message, tone);
     const onError = error => report(portalActionMessage(error, 'save or load the submission',
@@ -235,24 +262,35 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
     }
 
     function addField(kind, item = {}) {
-        const photo = kind === 'photo';
-        const parent = photo ? photoFields : linkFields;
+        const names = { link: 'link', photo: 'photo', document: 'PDF' };
+        const parent = get(kind + '-fields');
         const add = get('add-' + kind);
-        const limit = photo ? 3 : 4;
+        const limit = kind === 'link' ? 4 : 3;
         if (parent.children.length >= limit) return;
         const row = communicationElement(parent, 'div');
         row.className = 'news-field';
-        if (photo) {
-            field(row, 'Photo description', 'text', 'photo_alt', { value: item.alt || '', maxLength: 150, required: true });
-            field(row, item.path ? 'Replace saved photo' : 'Photo file', 'file', 'upload', {
-                accept: NEWS_PHOTO_TYPES.join(','), required: !item.path
-            });
-            if (item.path) row.dataset.path = item.path;
-        } else {
+        if (kind === 'link') {
             field(row, 'Link label', 'text', 'link_label', { value: item.label || '', maxLength: 80, required: true });
             field(row, 'HTTPS address', 'url', 'link_url', { value: item.url || '', maxLength: 1000, required: true });
+        } else {
+            const photo = kind === 'photo';
+            const name = photo ? 'Photo' : 'PDF';
+            const label = field(row, photo ? 'Photo description' : 'PDF title', 'text', 'asset_label', {
+                value: (photo ? item.alt : item.label) || '', maxLength: photo ? 150 : 120, required: true
+            });
+            const upload = field(row, item.path ? 'Replace saved ' + names[kind] : name + ' file', 'file', 'upload', {
+                accept: photo ? NEWS_PHOTO_TYPES.join(',') : 'application/pdf,.pdf', required: !item.path
+            });
+            if (item.path) row.dataset.path = item.path;
+            if (!photo) {
+                upload.addEventListener('change', () => {
+                    if (!label.value.trim() && upload.files[0]) {
+                        label.value = upload.files[0].name.replace(/\.pdf$/i, '').trim().slice(0, label.maxLength);
+                    }
+                });
+            }
         }
-        const remove = communicationElement(row, 'button', photo ? 'Remove photo' : 'Remove link');
+        const remove = communicationElement(row, 'button', 'Remove ' + names[kind]);
         remove.type = 'button';
         remove.addEventListener('click', () => {
             row.remove();
@@ -265,6 +303,7 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
 
     get('add-link').addEventListener('click', () => addField('link')?.querySelector('input').focus());
     get('add-photo').addEventListener('click', () => addField('photo')?.querySelector('input').focus());
+    get('add-document').addEventListener('click', () => addField('document')?.querySelector('[type="file"]').focus());
 
     function showDraft(row = null) {
         form.reset();
@@ -278,18 +317,21 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
         newsletter.checked = Boolean(row?.issue_on);
         linkFields.replaceChildren();
         photoFields.replaceChildren();
+        documentFields.replaceChildren();
         get('add-link').disabled = false;
         get('add-photo').disabled = false;
+        get('add-document').disabled = false;
         for (const link of row?.links || []) addField('link', link);
         for (const photo of row?.photos || []) addField('photo', photo);
+        for (const document of row?.documents || []) addField('document', document);
         const action = row ? (closed(row) ? 'View submission' : 'Edit submission') : 'New submission';
         get('editor-title').textContent = action + (row?.issue_on ? ' · Newsletter for ' + newsIssueDate(row.issue_on) : '');
         get('cancel').hidden = !row;
         get('withdraw').hidden = !row || Boolean(closed(row) && !targets.length);
         get('withdraw').textContent = closed(row || {}) ? 'Remove from Student News' : 'Withdraw submission';
-        for (const input of form.querySelectorAll('input,textarea,#news-add-link,#news-add-photo,.news-field button')) {
+        for (const input of form.querySelectorAll('input,textarea,#news-add-link,#news-add-photo,#news-add-document,.news-field button')) {
             if (closed(row || {})) input.disabled = true;
-            else if (!['newsletter', 'news-add-link', 'news-add-photo'].includes(input.name || input.id)) input.disabled = false;
+            else if (!['newsletter', 'news-add-link', 'news-add-photo', 'news-add-document'].includes(input.name || input.id)) input.disabled = false;
         }
         submit.hidden = Boolean(closed(row || {}));
         if (row) {
@@ -302,11 +344,17 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
 
     async function loadDrafts(more = false) {
         const start = more ? count : 0;
-        const rows = await communicationResult(portalClient.from('news_submissions')
-            .select('id,title,body,links,photos,issue_on,cutoff:newsletter_cutoff,updated_at,author_name,news_student_targets(student_id)')
+        const fields = 'id,title,body,links,photos,issue_on,cutoff:newsletter_cutoff,updated_at,author_name,news_student_targets(student_id)';
+        const query = select => portalClient.from('news_submissions').select(select)
             .order('updated_at', { ascending: false }).order('id', { ascending: false })
-            .range(start, start + NEWS_BATCH - 1));
+            .range(start, start + NEWS_BATCH - 1);
+        let result = await query(fields + ',documents');
+        const available = !result.error;
+        if (['42703', 'PGRST204'].includes(result.error?.code)) result = await query(fields);
+        const rows = await communicationResult(result);
         if (!active()) return;
+        supportsDocuments = available;
+        get('document-section').hidden = !supportsDocuments;
         if (!more) list.replaceChildren();
         for (const row of rows) {
             const line = communicationElement(list, 'li');
@@ -328,26 +376,38 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
         get('more-submissions').hidden = rows.length < NEWS_BATCH;
     }
 
-    async function uploadPhotos() {
+    async function uploadMedia(fields, bucket, labelKey, validate) {
         const result = [];
-        for (const row of photoFields.children) {
+        for (const row of fields.children) {
             const file = row.querySelector('[name="upload"]').files[0];
             let path = row.dataset.path;
             if (file) {
-                if (!NEWS_PHOTO_TYPES.includes(file.type) || file.size > 5242880 || !file.size) {
-                    throw { code: '22023', message: 'Choose a JPG, PNG, or WebP photo up to 5 MB.' };
-                }
+                const contentType = await validate(file);
                 path = uploads.get(file);
                 if (!path) {
                     path = session.user.id + '/' + crypto.randomUUID();
-                    await communicationResult(portalClient.storage.from(NEWS_PHOTO_BUCKET)
-                        .upload(path, file, { contentType: file.type, cacheControl: '3600' }));
+                    await communicationResult(portalClient.storage.from(bucket)
+                        .upload(path, file, { contentType, cacheControl: '3600' }));
                     uploads.set(file, path);
                 }
             }
-            result.push({ path, alt: row.querySelector('[name="photo_alt"]').value.trim() });
+            result.push({ path, [labelKey]: row.querySelector('[name="asset_label"]').value.trim() });
         }
         return result;
+    }
+
+    function validatePhoto(file) {
+        if (!NEWS_PHOTO_TYPES.includes(file.type) || file.size > 5242880 || !file.size) {
+            throw { code: '22023', message: 'Choose a JPG, PNG, or WebP photo up to 5 MB.' };
+        }
+        return file.type;
+    }
+
+    async function validatePdf(file) {
+        if (file.size > 10485760 || await file.slice(0, 5).text() !== '%PDF-') {
+            throw { code: '22023', message: 'Choose a valid PDF up to 10 MB.' };
+        }
+        return 'application/pdf';
     }
 
     async function save() {
@@ -366,17 +426,23 @@ async function initNewsEditor(get, bind, session, students, active, refreshFeed)
             report('Enter a label and an HTTPS address for each link.', 'error');
             return;
         }
-        if (issue && !window.confirm('Include this update, its links, and its photos in the newsletter for all families?')) return;
+        if (issue && !window.confirm('Include this update and its links, photos, and PDFs in the newsletter for all families?')) return;
         newId ||= crypto.randomUUID();
         form.inert = true;
         try {
-            const photos = await uploadPhotos();
+            const photos = await uploadMedia(photoFields, NEWS_PHOTO_BUCKET, 'alt', validatePhoto);
+            const documents = supportsDocuments
+                ? await uploadMedia(documentFields, NEWS_PDF_BUCKET, 'label', validatePdf) : [];
             if (!active()) return;
-            await communicationResult(portalClient.rpc('news_save_submission', {
+            const payload = {
                 submission_id: draft?.id || newId, expected_update: draft?.updated_at || null, expected_issue: issue,
                 student_ids: studentIds, headline: fields.get('headline'), details: fields.get('body'),
                 submitted_links: links, submitted_photos: photos
-            }));
+            };
+            if (supportsDocuments) payload.submitted_documents = documents;
+            await communicationResult(portalClient.rpc(
+                supportsDocuments ? 'news_save_submission_with_documents' : 'news_save_submission', payload
+            ));
             if (!active()) return;
             const destinations = [];
             if (studentIds.length) destinations.push('Published to Student News');
