@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="graduation-planner.css?v=plan-1">
 </head>
 <body class="zion-portal editorial-page portal-page graduation-planner-page" data-portal-page-role="staff">
 <header class="portal-topbar">
@@ -32,16 +33,8 @@
 
         </div>
 
-        <p class="portal-inline-status" data-graduation-planner-status></p>
-
-        <section class="student-file-panel" data-portal-admin hidden>
-            <div class="portal-dashboard-heading portal-dashboard-heading--compact">
-                <div>
-                    <span class="section-label">Student Files</span>
-                    <h2>Create a student file</h2>
-                    <p>Choose an existing family login or link it later in Student Records.</p>
-                </div>
-            </div>
+        <details class="student-file-panel" data-portal-admin hidden>
+            <summary>Create a student file</summary>
 
             <form class="student-file-form" data-student-file-form>
                 <label>
@@ -69,7 +62,7 @@
                 <button type="submit">Create Student</button>
                 <p class="portal-inline-status" data-student-file-status></p>
             </form>
-        </section>
+        </details>
 
         <div class="planner-controls">
             <label>
@@ -78,9 +71,13 @@
                     <option value="">Loading students...</option>
                 </select>
             </label>
-            <button type="button" data-save-graduation-plan disabled>Save Planner</button>
-            <button type="button" data-export-graduation-transcript disabled>Save Transcript as PDF</button>
-            <p class="planner-transcript-help">The transcript includes finalized gradebook courses and saved planner courses marked Completed. Choose Save as PDF in the print dialog.</p>
+            <div class="planner-actions">
+                <button type="button" data-save-graduation-plan disabled>Save plan</button>
+                <button type="button" class="planner-secondary" data-export-graduation-plan disabled>Save plan as PDF</button>
+                <button type="button" class="planner-secondary" data-export-graduation-transcript disabled>Save transcript as PDF</button>
+            </div>
+            <p class="planner-transcript-help">The plan PDF includes every saved status and note. The transcript lists completed courses.</p>
+            <p class="portal-inline-status" data-graduation-planner-status role="status" aria-live="polite"></p>
         </div>
 
         <div data-graduation-planner-editable></div>
@@ -88,6 +85,6 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=planner-family-link-1"></script>
+<script src="supabase-portal.js?v=graduation-plan-1"></script>
 </body>
 </html>

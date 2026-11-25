@@ -440,31 +440,80 @@ function buildMilestoneMap(milestones) {
 function createPlannerInput(name, value, label = '') {
     const input = document.createElement('input');
     input.name = name;
-    input.value = value || '';
+    input.value = value ?? '';
     input.placeholder = label;
     input.setAttribute('aria-label', label);
     return input;
 }
 
-function createPlannerStatusSelect(value) {
+const PLANNER_STATUSES = {
+    not_started: 'Not started', planned: 'Planned', in_progress: 'In progress', completed: 'Completed', waived: 'Waived'
+};
+
+function createPlannerStatusSelect(value, statuses = Object.keys(PLANNER_STATUSES)) {
     const select = document.createElement('select');
     select.name = 'status';
-
-    [
-        ['not_started', 'Not started'],
-        ['planned', 'Planned'],
-        ['in_progress', 'In progress'],
-        ['completed', 'Completed'],
-        ['waived', 'Waived']
-    ].forEach(([optionValue, label]) => {
+    statuses.forEach(optionValue => {
         const option = document.createElement('option');
         option.value = optionValue;
-        option.textContent = label;
+        option.textContent = PLANNER_STATUSES[optionValue];
         option.selected = (value || 'not_started') === optionValue;
         select.appendChild(option);
     });
 
     return select;
+}
+
+function hasPlannerEntry(entry) {
+    return Boolean(entry && (entry.course_name || entry.notes || entry.final_grade || entry.credits != null
+        || (entry.status && entry.status !== 'not_started')));
+}
+
+function addPlannerField(fields, text, control) {
+    const label = appendTextElement(fields, 'label', '');
+    appendTextElement(label, 'span', text);
+    label.appendChild(control);
+}
+
+function plannerNotes(value) {
+    const notes = document.createElement('textarea');
+    notes.name = 'notes';
+    notes.rows = 3;
+    notes.value = value ?? '';
+    return notes;
+}
+
+function updatePlannerSummary(summary, entry) {
+    summary.replaceChildren();
+    if (!hasPlannerEntry(entry)) {
+        summary.textContent = 'Add course to plan';
+        return;
+    }
+    appendTextElement(summary, 'strong', entry.course_name || (entry.notes ? 'Planning note' : 'Course details'));
+    const credits = entry.credits == null ? '' : `${entry.credits} credit${Number(entry.credits) === 1 ? '' : 's'}`;
+    appendTextElement(summary, 'small', [PLANNER_STATUSES[entry.status], credits].filter(Boolean).join(' · '));
+}
+
+function renderPlannerCourseEditor(cell, requirement, grade, entry) {
+    cell.dataset.requirementKey = requirement.key;
+    cell.dataset.gradeLevel = grade;
+    appendTextElement(cell, 'span', `Grade ${grade}`, 'planner-mobile-grade');
+    const editor = document.createElement('details');
+    editor.className = 'planner-course-editor';
+    const summary = appendTextElement(editor, 'summary', '');
+    summary.setAttribute('aria-description', `${requirement.label}, grade ${grade}`);
+    updatePlannerSummary(summary, entry);
+
+    const fields = appendTextElement(editor, 'div', '', 'planner-course-fields');
+    const course = createPlannerInput('course_name', entry?.course_name, 'Course name');
+    const credits = createPlannerInput('credits', entry?.credits, 'Credits');
+    Object.assign(credits, { type: 'number', inputMode: 'decimal', min: '0', max: '99.99', step: '0.01' });
+    addPlannerField(fields, 'Course name', course);
+    addPlannerField(fields, 'Credits', credits);
+    addPlannerField(fields, 'Final grade', createPlannerInput('final_grade', entry?.final_grade, 'Final grade'));
+    addPlannerField(fields, 'Status', createPlannerStatusSelect(hasPlannerEntry(entry) ? entry.status : 'planned'));
+    addPlannerField(fields, 'Notes', plannerNotes(entry?.notes));
+    cell.appendChild(editor);
 }
 
 function renderGraduationPlannerTable(container, entries, milestones, options = {}) {
@@ -487,22 +536,38 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
 
     const table = document.createElement('table');
     table.className = 'graduation-planner-table';
+    if (editable) table.setAttribute('role', 'table');
 
     const thead = document.createElement('thead');
     const headRow = document.createElement('tr');
-    ['Graduation Requirement', 'Required Credits', ...GRADUATION_GRADES.map(grade => `${grade}th Grade`), 'Notes'].forEach(text => {
-        appendTextElement(headRow, 'th', text);
+    if (editable) {
+        thead.setAttribute('role', 'rowgroup');
+        headRow.setAttribute('role', 'row');
+    }
+    const headings = ['Graduation requirement', 'Required credits', ...GRADUATION_GRADES.map(grade => `Grade ${grade}`)];
+    if (!editable) headings.push('Notes');
+    headings.forEach(text => {
+        appendTextElement(headRow, 'th', text).scope = 'col';
     });
     thead.appendChild(headRow);
 
     const tbody = document.createElement('tbody');
+    if (editable) tbody.setAttribute('role', 'rowgroup');
 
     GRADUATION_REQUIREMENTS.forEach(requirement => {
         const row = document.createElement('tr');
+        if (editable) row.setAttribute('role', 'row');
         if (requirement.category) row.className = 'graduation-category-row';
 
-        appendTextElement(row, 'td', requirement.label);
-        appendTextElement(row, 'td', requirement.credits);
+        const label = appendTextElement(row, editable ? 'th' : 'td', requirement.label);
+        if (editable) label.scope = 'row';
+        const creditsCell = appendTextElement(row, 'td', requirement.credits);
+        if (editable) creditsCell.dataset.creditUnit = Number(requirement.credits) === 1 ? ' credit' : ' credits';
+        if (requirement.category && editable) {
+            appendTextElement(row, 'td', '').colSpan = GRADUATION_GRADES.length;
+            tbody.appendChild(row);
+            return;
+        }
 
         GRADUATION_GRADES.forEach(grade => {
             const cell = document.createElement('td');
@@ -510,17 +575,11 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
             const finalized = syncedCourses.get(graduationCellKey(requirement.key, grade)) || [];
 
             if (!requirement.category && editable) {
-                cell.dataset.requirementKey = requirement.key;
-                cell.dataset.gradeLevel = grade;
-                cell.appendChild(createPlannerInput('course_name', entry?.course_name, 'Course'));
-                cell.appendChild(createPlannerInput('credits', entry?.credits, 'Credits'));
-                cell.appendChild(createPlannerInput('final_grade', entry?.final_grade, 'Final grade'));
-                cell.appendChild(createPlannerStatusSelect(entry?.status));
-                cell.appendChild(createPlannerInput('notes', entry?.notes, 'Notes'));
+                renderPlannerCourseEditor(cell, requirement, grade, entry);
             } else {
                 const parts = [
                     entry?.course_name,
-                    entry?.credits ? `${entry.credits} credit${Number(entry.credits) === 1 ? '' : 's'}` : '',
+                    entry?.credits != null ? `${entry.credits} credit${Number(entry.credits) === 1 ? '' : 's'}` : '',
                     entry?.final_grade ? `Final grade: ${entry.final_grade}` : '',
                     entry?.status && entry.status !== 'not_started' ? entry.status.replace('_', ' ') : '',
                     entry?.notes
@@ -529,18 +588,15 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
             }
             for (const course of finalized) {
                 appendTextElement(cell, 'p', [
-                    course.course_name, course.term, `Final grade: ${course.final_grade}`, `${course.credits} credits`
-                ].join(' · '), 'planner-gradebook-course');
+                    course.course_name, course.term, course.final_grade ? `Final grade: ${course.final_grade}` : '',
+                    course.credits == null ? '' : `${course.credits} credit${Number(course.credits) === 1 ? '' : 's'}`
+                ].filter(Boolean).join(' · '), 'planner-gradebook-course');
             }
 
             row.appendChild(cell);
         });
 
-        const notesCell = document.createElement('td');
-        if (!requirement.category && editable) {
-            notesCell.textContent = 'Use grade cells for course details.';
-        }
-        row.appendChild(notesCell);
+        if (!editable) appendTextElement(row, 'td', '');
 
         tbody.appendChild(row);
     });
@@ -567,22 +623,14 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
         controls.className = 'graduation-milestone-controls';
 
         if (editable) {
-            const select = document.createElement('select');
-            select.name = 'status';
-            ['not_started', 'in_progress', 'completed', 'waived'].forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = value.replace('_', ' ');
-                option.selected = (record?.status || 'not_started') === value;
-                select.appendChild(option);
-            });
-
-            controls.appendChild(select);
-            controls.appendChild(createPlannerInput('completed_on', record?.completed_on, 'Completed date'));
-            controls.appendChild(createPlannerInput('notes', record?.notes, 'Notes'));
+            addPlannerField(controls, 'Status', createPlannerStatusSelect(record?.status, ['not_started', 'in_progress', 'completed', 'waived']));
+            const date = createPlannerInput('completed_on', record?.completed_on, 'Completed date');
+            date.type = 'date';
+            addPlannerField(controls, 'Completed date', date);
+            addPlannerField(controls, 'Notes', plannerNotes(record?.notes));
         } else {
             appendTextElement(controls, 'span', (record?.status || 'not_started').replace('_', ' '));
-            if (record?.completed_on) appendTextElement(controls, 'span', formatPortalDate(record.completed_on));
+            if (record?.completed_on) appendTextElement(controls, 'span', formatPortalDate(`${record.completed_on}T12:00:00`));
             if (record?.notes) appendTextElement(controls, 'span', record.notes);
         }
 
@@ -627,13 +675,7 @@ function completedTranscriptCourses(entries, finalCourses) {
 }
 
 function printGraduationTranscript(student, courses) {
-    const transcript = document.createElement('article');
-    transcript.className = 'planner-transcript';
-
-    appendTextElement(transcript, 'p', 'ZION outSchool', 'transcript-school');
-    appendTextElement(transcript, 'h1', 'Working Transcript');
-    appendTextElement(transcript, 'p', [student.first_name, student.last_name].filter(Boolean).join(' '), 'transcript-student');
-    appendTextElement(transcript, 'p', `Generated ${formatPortalDate(new Date())}`);
+    const transcript = createGraduationPrintDocument(student, 'Working Transcript');
 
     const table = document.createElement('table');
     const headings = table.createTHead().insertRow();
@@ -665,13 +707,82 @@ function printGraduationTranscript(student, courses) {
     }
     transcript.appendChild(table);
     appendTextElement(transcript, 'p', `Total earned credits: ${numberFormat.format(earnedCredits)}`, 'transcript-total');
+    printGraduationDocument(transcript, 'Working Transcript');
+}
 
-    document.body.appendChild(transcript);
+function createGraduationPrintDocument(student, title) {
+    const article = document.createElement('article');
+    article.className = 'planner-transcript';
+    appendTextElement(article, 'p', 'Zion outSchool', 'transcript-school');
+    appendTextElement(article, 'h1', title);
+    appendTextElement(article, 'p', [student.first_name, student.last_name].filter(Boolean).join(' '), 'transcript-student');
+    appendTextElement(article, 'p', `Generated ${formatPortalDate(new Date())}`);
+    return article;
+}
+
+function printGraduationPlan(student, { entries, milestones, finalCourses }) {
+    const plan = createGraduationPrintDocument(student, 'Graduation Plan');
+    plan.classList.add('planner-print-plan');
+    const requirements = new Map(GRADUATION_REQUIREMENTS.map(requirement => [requirement.key, requirement.label]));
+    const requirementOrder = new Map(GRADUATION_REQUIREMENTS.map((requirement, index) => [requirement.key, index]));
+    const order = course => requirementOrder.get(course.requirement_key) ?? requirementOrder.size;
+    const courses = [
+        ...entries.filter(hasPlannerEntry),
+        ...finalCourses.map(course => ({ ...course, status: 'completed', gradebook: true }))
+    ];
+    const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+    for (const grade of GRADUATION_GRADES) {
+        const gradeCourses = courses.filter(course => course.grade_level === grade);
+        if (!gradeCourses.length) continue;
+        const section = document.createElement('section');
+        appendTextElement(section, 'h2', `Grade ${grade}`);
+        const table = document.createElement('table');
+        const heading = table.createTHead().insertRow();
+        ['Requirement', 'Course and notes', 'Status', 'Credits', 'Final grade'].forEach(label => {
+            appendTextElement(heading, 'th', label).scope = 'col';
+        });
+        const rows = table.createTBody();
+        gradeCourses.sort((first, second) => order(first) - order(second));
+        for (const course of gradeCourses) {
+            const row = rows.insertRow();
+            appendTextElement(row, 'td', requirements.get(course.requirement_key) || course.requirement_key || 'Unassigned');
+            const courseCell = appendTextElement(row, 'td', '');
+            appendTextElement(courseCell, 'strong', [course.course_name, course.term].filter(Boolean).join(' · ') || '—');
+            if (course.notes) appendTextElement(courseCell, 'p', course.notes, 'planner-print-note');
+            appendTextElement(row, 'td', course.gradebook ? 'Completed (gradebook)' : PLANNER_STATUSES[course.status] || 'Not started');
+            appendTextElement(row, 'td', course.credits == null ? '—' : numberFormat.format(course.credits));
+            appendTextElement(row, 'td', course.final_grade || '—');
+        }
+        section.appendChild(table);
+        plan.appendChild(section);
+    }
+    if (!plan.querySelector('table')) appendTextElement(plan, 'p', 'No courses are on this plan yet.');
+
+    const milestoneSection = document.createElement('section');
+    appendTextElement(milestoneSection, 'h2', 'Other graduation requirements');
+    const milestoneMap = buildMilestoneMap(milestones);
+    for (const milestone of GRADUATION_MILESTONES) {
+        const record = milestoneMap.get(milestone.key);
+        const card = appendTextElement(milestoneSection, 'div', '', 'planner-print-milestone');
+        appendTextElement(card, 'h3', milestone.label);
+        appendTextElement(card, 'p', milestone.target);
+        appendTextElement(card, 'p', [
+            PLANNER_STATUSES[record?.status] || 'Not started',
+            record?.completed_on ? formatPortalDate(`${record.completed_on}T12:00:00`) : ''
+        ].filter(Boolean).join(' · '));
+        if (record?.notes) appendTextElement(card, 'p', record.notes, 'planner-print-note');
+    }
+    plan.appendChild(milestoneSection);
+    printGraduationDocument(plan, 'Graduation Plan');
+}
+
+function printGraduationDocument(article, title) {
+    document.body.appendChild(article);
     const originalTitle = document.title;
-    document.title = 'ZION outSchool - Working Transcript';
+    document.title = `Zion outSchool - ${title}`;
     const closeTranscript = () => {
         window.removeEventListener('afterprint', closeTranscript);
-        transcript.remove();
+        article.remove();
         document.title = originalTitle;
     };
     window.addEventListener('afterprint', closeTranscript);
@@ -1091,51 +1202,111 @@ async function initGraduationPlanner(profile) {
     const container = document.querySelector('[data-graduation-planner-editable]');
     const status = document.querySelector('[data-graduation-planner-status]');
     const saveButton = document.querySelector('[data-save-graduation-plan]');
-    const exportButton = document.querySelector('[data-export-graduation-transcript]');
+    const planButton = document.querySelector('[data-export-graduation-plan]');
+    const transcriptButton = document.querySelector('[data-export-graduation-transcript]');
+    if (!select || !container || !saveButton || !portalClient || !isStaffPortalProfile(profile)) return;
+
+    const actions = [saveButton, planButton, transcriptButton].filter(Boolean);
+    const savedFields = new WeakMap();
     let students = [];
-    let exporting = false;
+    let busy = false;
+    let loadVersion = 0;
 
-    if (!select || !container || !portalClient) return;
+    function updateControls() {
+        const ready = select.value && select.value === container.dataset.studentId;
+        select.disabled = busy;
+        container.inert = busy;
+        for (const action of actions) action.disabled = busy || !ready;
+    }
 
-    if (!isStaffPortalProfile(profile)) {
-        if (exportButton) exportButton.disabled = true;
-        setPortalMessage(status, 'Staff access is required for this page.', 'error');
-        return;
+    function plannerGroups() {
+        return [
+            { table: 'graduation_plan_entries', key: 'student_id,requirement_key,grade_level',
+                cells: [...container.querySelectorAll('td[data-requirement-key]')] },
+            { table: 'graduation_milestones', key: 'student_id,milestone_key',
+                cells: [...container.querySelectorAll('[data-milestone-key]')] }
+        ];
+    }
+
+    function readFields(cell) {
+        return Object.fromEntries([...cell.querySelectorAll('[name]')].map(field => [field.name, field.value.trim() || null]));
+    }
+
+    function changedFields() {
+        return plannerGroups().map(group => ({
+            ...group,
+            changes: group.cells.map(cell => ({ cell, fields: readFields(cell) }))
+                .filter(({ cell, fields }) => JSON.stringify(fields) !== savedFields.get(cell))
+        }));
+    }
+
+    async function saveChanges(studentId) {
+        const invalid = [...container.querySelectorAll('input, select, textarea')].find(field => !field.validity.valid);
+        if (invalid) {
+            const editor = invalid.closest('details');
+            if (editor) editor.open = true;
+            setPortalMessage(status, 'Check credit values and dates in the highlighted field.', 'error');
+            return invalid;
+        }
+        const timestamp = new Date().toISOString();
+        const groups = changedFields().filter(group => group.changes.length);
+        const results = await Promise.allSettled(groups.map(async group => {
+            const rows = group.changes.map(({ cell, fields }) => ({
+                student_id: studentId,
+                ...(cell.dataset.requirementKey ? { requirement_key: cell.dataset.requirementKey, grade_level: cell.dataset.gradeLevel }
+                    : { milestone_key: cell.dataset.milestoneKey }),
+                ...fields,
+                updated_by: profile.id,
+                updated_at: timestamp
+            }));
+            const { error } = await portalClient.from(group.table).upsert(rows, { onConflict: group.key });
+            if (error) throw error;
+            for (const { cell, fields } of group.changes) {
+                const summary = cell.querySelector('.planner-course-editor > summary');
+                if (summary) updatePlannerSummary(summary, fields);
+                savedFields.set(cell, JSON.stringify(fields));
+            }
+        }));
+        const failed = results.find(result => result.status === 'rejected');
+        if (failed) throw failed.reason;
+        return null;
     }
 
     async function loadSelectedStudent() {
         const studentId = select.value;
+        const version = ++loadVersion;
         delete container.dataset.studentId;
-        if (saveButton) saveButton.disabled = true;
-        if (exportButton) exportButton.disabled = true;
         container.replaceChildren();
+        updateControls();
         if (!studentId) return;
-        setPortalMessage(status, 'Loading planner...', 'neutral');
+        setPortalMessage(status, 'Loading plan…');
 
         try {
             const records = await loadGraduationRecords(studentId);
-            if (select.value !== studentId) return;
+            if (version !== loadVersion || select.value !== studentId) return;
             renderGraduationPlannerTable(container, records.entries, records.milestones, { editable: true, finalCourses: records.finalCourses });
+            for (const { cells } of plannerGroups()) {
+                for (const cell of cells) savedFields.set(cell, JSON.stringify(readFields(cell)));
+            }
             container.dataset.studentId = studentId;
-            if (saveButton) saveButton.disabled = false;
-            if (exportButton) exportButton.disabled = exporting;
-            setPortalMessage(status, 'Planner loaded.', 'success');
+            updateControls();
+            setPortalMessage(status, '');
         } catch (error) {
-            if (select.value !== studentId) return;
+            if (version !== loadVersion) return;
             console.error('Unable to load planner records:', error);
-            container.innerHTML = '';
-            setPortalMessage(status, portalActionMessage(error, 'open this student’s plan', 'Confirm the student is still on your classroom roster, then select them again.'), 'error');
+            setPortalMessage(status, portalActionMessage(error, 'open this student’s plan', 'Confirm the student is on your classroom roster, then select them again.'), 'error');
         }
     }
 
     async function refreshStudents(selectedStudentId = '') {
-        setPortalMessage(status, 'Loading students...', 'neutral');
-
+        setPortalMessage(status, 'Loading students…');
         try {
             students = await populatePlannerStudentSelect(select, selectedStudentId);
             if (!students.length) {
-                container.innerHTML = '';
-                setPortalMessage(status, 'No students are available yet. Create a student file above.', 'neutral');
+                delete container.dataset.studentId;
+                container.replaceChildren();
+                updateControls();
+                setPortalMessage(status, 'No students are available on your roster.');
                 return;
             }
             await loadSelectedStudent();
@@ -1145,103 +1316,63 @@ async function initGraduationPlanner(profile) {
         }
     }
 
-    if (exportButton) {
-        exportButton.onclick = async () => {
-            const student = students.find(record => record.id === select.value);
-            if (!student || exporting || container.dataset.studentId !== student.id) return;
-            if (saveButton?.disabled && container.dataset.studentId === student.id) {
-                setPortalMessage(status, 'Wait for the planner to finish saving before exporting.', 'neutral');
+    async function runPlannerAction(exportKind) {
+        const student = students.find(record => record.id === select.value);
+        if (busy || !student || container.dataset.studentId !== student.id) return;
+        busy = true;
+        updateControls();
+        setPortalMessage(status, exportKind ? 'Preparing PDF…' : 'Saving plan…');
+        let invalid;
+        let saving = true;
+        try {
+            invalid = await saveChanges(student.id);
+            if (invalid) return;
+            saving = false;
+            if (!exportKind) {
+                setPortalMessage(status, 'Plan saved.', 'success');
                 return;
             }
+            const records = await loadGraduationRecords(student.id);
+            const session = await getPortalSession();
+            if (session?.user?.id !== profile.id || select.value !== student.id) return;
 
-            exporting = true;
-            exportButton.disabled = true;
-            setPortalMessage(status, 'Preparing transcript…', 'neutral');
-            try {
-                const { entries, finalCourses } = await loadGraduationRecords(student.id);
-                const session = await getPortalSession();
-                if (session?.user?.id !== profile.id) return;
-                if (select.value !== student.id) {
-                    setPortalMessage(status, 'Select the student again to export their transcript.', 'neutral');
-                    return;
-                }
-
-                const courses = completedTranscriptCourses(entries, finalCourses);
+            if (exportKind === 'transcript') {
+                const courses = completedTranscriptCourses(records.entries, records.finalCourses);
                 if (!courses.length) {
-                    setPortalMessage(status, 'Save at least one completed course before exporting a transcript.', 'neutral');
+                    setPortalMessage(status, 'Use Save plan as PDF to print this student’s plan. A transcript requires a completed course.');
                     return;
                 }
-                setPortalMessage(status, 'Choose Save as PDF in the print dialog.', 'success');
                 printGraduationTranscript(student, courses);
-            } catch (error) {
-                console.error('Unable to export transcript:', error);
-                setPortalMessage(status, portalActionMessage(error, 'export the transcript', 'Select the student again and check that their grades and planner entries load before exporting.'), 'error');
-            } finally {
-                exporting = false;
-                exportButton.disabled = !select.value || select.value !== container.dataset.studentId;
+            } else {
+                printGraduationPlan(student, records);
             }
-        };
+            setPortalMessage(status, 'Choose Save as PDF in the print dialog.', 'success');
+        } catch (error) {
+            console.error('Unable to finish planner action:', error);
+            setPortalMessage(status, saving
+                ? portalActionMessage(error, 'save the plan', 'Check credit values and dates, and confirm the student is still assigned to you.')
+                : portalActionMessage(error, 'export the PDF', 'Check that the student’s courses and plan load, then try again.'), 'error');
+        } finally {
+            busy = false;
+            updateControls();
+            invalid?.reportValidity();
+        }
     }
 
-    if (select.dataset.bound !== 'true') {
-        select.dataset.bound = 'true';
-        select.addEventListener('change', loadSelectedStudent);
-    }
+    select.onchange = () => {
+        const previous = container.dataset.studentId;
+        if (previous && changedFields().some(group => group.changes.length)
+            && !window.confirm('Switch students and discard the unsaved changes to this plan?')) {
+            select.value = previous;
+            return;
+        }
+        void loadSelectedStudent();
+    };
+    saveButton.onclick = () => void runPlannerAction();
+    if (planButton) planButton.onclick = () => void runPlannerAction('plan');
+    if (transcriptButton) transcriptButton.onclick = () => void runPlannerAction('transcript');
 
     await initStudentFileForm(profile, refreshStudents);
-
-    if (saveButton && saveButton.dataset.bound !== 'true') {
-        saveButton.dataset.bound = 'true';
-        saveButton.addEventListener('click', async () => {
-            const studentId = container.dataset.studentId;
-            if (!studentId || select.value !== studentId) return;
-
-            const entryRows = Array.from(container.querySelectorAll('td[data-requirement-key][data-grade-level]')).map(cell => ({
-                student_id: studentId,
-                requirement_key: cell.dataset.requirementKey,
-                grade_level: cell.dataset.gradeLevel,
-                course_name: cell.querySelector('[name="course_name"]')?.value.trim() || null,
-                credits: cell.querySelector('[name="credits"]')?.value.trim() || null,
-                final_grade: cell.querySelector('[name="final_grade"]')?.value.trim() || null,
-                notes: cell.querySelector('[name="notes"]')?.value.trim() || null,
-                status: cell.querySelector('[name="status"]')?.value || 'not_started',
-                updated_by: profile.id
-            }));
-
-            const milestoneRows = Array.from(container.querySelectorAll('.graduation-milestone-card[data-milestone-key]')).map(card => ({
-                student_id: studentId,
-                milestone_key: card.dataset.milestoneKey,
-                status: card.querySelector('[name="status"]')?.value || 'not_started',
-                completed_on: card.querySelector('[name="completed_on"]')?.value.trim() || null,
-                notes: card.querySelector('[name="notes"]')?.value.trim() || null,
-                updated_by: profile.id
-            }));
-
-            setPortalMessage(status, 'Saving planner...', 'neutral');
-            if (saveButton) saveButton.disabled = true;
-
-            const [{ error: entryError }, { error: milestoneError }] = await Promise.all([
-                portalClient
-                    .from('graduation_plan_entries')
-                    .upsert(entryRows, { onConflict: 'student_id,requirement_key,grade_level' }),
-                portalClient
-                    .from('graduation_milestones')
-                    .upsert(milestoneRows, { onConflict: 'student_id,milestone_key' })
-            ]);
-
-            if (select.value !== studentId) return;
-            if (saveButton) saveButton.disabled = container.dataset.studentId !== studentId;
-
-            if (entryError || milestoneError) {
-                console.error('Unable to save planner:', entryError || milestoneError);
-                setPortalMessage(status, portalActionMessage(entryError || milestoneError, 'save the planner', 'Check credit values and dates, and confirm the student is still assigned to you.'), 'error');
-                return;
-            }
-
-            setPortalMessage(status, 'Planner saved.', 'success');
-        });
-    }
-
     await refreshStudents();
 }
 

@@ -1,0 +1,215 @@
+.zion-portal.graduation-planner-page .graduation-planner-panel {
+    padding-block: clamp(1.75rem, 4vw, 3.5rem) 4rem;
+}
+
+.zion-portal.graduation-planner-page .graduation-planner-panel > .container {
+    width: 100%;
+    max-width: 104rem;
+    min-width: 0;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+}
+
+.graduation-planner-page .student-file-panel > summary {
+    color: var(--portal-evergreen);
+    cursor: pointer;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.graduation-planner-page .student-file-panel[open] > summary { margin-bottom: .75rem; }
+.zion-portal.graduation-planner-page .student-file-form {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+
+.zion-portal.graduation-planner-page .planner-controls {
+    grid-template-columns: minmax(12rem, 1fr) auto;
+    gap: .75rem 1.25rem;
+    padding: clamp(.9rem, 2vw, 1.35rem);
+}
+
+.graduation-planner-page .planner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.zion-portal.graduation-planner-page .planner-controls label span,
+.zion-portal.graduation-planner-page .planner-actions button {
+    font-size: .9rem;
+    font-weight: 650;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.zion-portal.editorial-page.graduation-planner-page .planner-controls .planner-secondary {
+    background: var(--portal-paper);
+    border: 1px solid var(--portal-line);
+    color: var(--portal-evergreen);
+}
+
+.zion-portal.editorial-page.graduation-planner-page .planner-controls .planner-secondary:hover:not(:disabled) {
+    background: var(--portal-warm);
+}
+
+.graduation-planner-page .planner-transcript-help {
+    color: var(--portal-muted);
+    font: .9rem/1.5 var(--portal-sans);
+}
+
+.graduation-planner-page [data-graduation-planner-status] { grid-column: 1 / -1; margin: 0; }
+.graduation-planner-page [data-graduation-planner-status]:empty { display: none; }
+
+.zion-portal.graduation-planner-page .graduation-table-wrap {
+    background: var(--portal-paper);
+    border-color: var(--portal-line);
+    box-shadow: none;
+    min-width: 0;
+}
+
+.zion-portal.graduation-planner-page .graduation-planner-table { min-width: 0; }
+.zion-portal.graduation-planner-page .graduation-planner-table :is(th, td) {
+    border-color: var(--portal-line);
+    font-size: .9rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    padding: clamp(.55rem, 1vw, .9rem);
+}
+
+.zion-portal.graduation-planner-page .graduation-planner-table thead th {
+    background: var(--portal-evergreen);
+    color: var(--portal-paper);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.zion-portal.graduation-planner-page .graduation-planner-table :is(th, td):first-child { width: 19%; }
+.zion-portal.graduation-planner-page .graduation-planner-table :is(th, td):nth-child(2) { width: 9%; }
+
+.zion-portal.graduation-planner-page .graduation-planner-table tbody th {
+    background: var(--portal-paper);
+    color: var(--portal-evergreen-dark);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.zion-portal.graduation-planner-page .graduation-planner-table .graduation-category-row :is(th, td) {
+    background: var(--portal-warm);
+    color: var(--portal-evergreen-dark);
+}
+
+.planner-mobile-grade { display: none; }
+.planner-course-editor { min-width: 0; }
+.planner-course-editor > summary {
+    align-content: center;
+    background: var(--portal-paper);
+    border: 1px solid var(--portal-line);
+    border-radius: .35rem;
+    color: var(--portal-evergreen);
+    cursor: pointer;
+    display: grid;
+    gap: .2rem;
+    min-height: 2.75rem;
+    padding: .45rem .6rem;
+}
+.planner-course-editor > summary::-webkit-details-marker { display: none; }
+.planner-course-editor > summary:hover,
+.planner-course-editor[open] > summary { background: var(--portal-warm); }
+.planner-course-editor > summary small { color: var(--portal-muted); font-size: .82rem; }
+.planner-course-fields { display: grid; gap: .6rem; padding-top: .75rem; }
+.graduation-planner-page :is(.planner-course-fields, .graduation-milestone-controls) label {
+    color: var(--portal-evergreen-dark);
+    display: grid;
+    font: 600 .875rem/1.35 var(--portal-sans);
+    gap: .25rem;
+    min-width: 0;
+}
+.zion-portal.graduation-planner-page :is(.planner-course-fields, .graduation-milestone-controls) :is(input, select, textarea) {
+    background: #fff;
+    border: 1px solid #a99d92;
+    border-radius: .35rem;
+    color: var(--portal-ink);
+    font: 1rem/1.4 var(--portal-sans);
+    min-height: 2.65rem;
+    min-width: 0;
+    padding: .45rem .55rem;
+    width: 100%;
+}
+.graduation-planner-page textarea { resize: vertical; }
+.zion-portal.graduation-planner-page .graduation-milestone-card {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+}
+.graduation-planner-page .graduation-milestone-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.graduation-planner-page .graduation-milestone-controls label:last-child { grid-column: 1 / -1; }
+
+@media screen and (max-width: 65rem) {
+    .zion-portal.graduation-planner-page .planner-controls { grid-template-columns: 1fr; }
+}
+
+@media screen and (max-width: 55rem) {
+    .zion-portal.graduation-planner-page .graduation-table-wrap { background: transparent; border: 0; overflow: visible; }
+    .zion-portal.graduation-planner-page .graduation-planner-table,
+    .zion-portal.graduation-planner-page .graduation-planner-table tbody { display: block; }
+
+    .graduation-planner-page .graduation-planner-table thead {
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    .graduation-planner-page .graduation-planner-table tbody tr {
+        background: var(--portal-paper);
+        border: 1px solid var(--portal-line);
+        border-radius: .45rem;
+        display: grid;
+        gap: .65rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-bottom: .65rem;
+        padding: .7rem;
+    }
+
+    .zion-portal.graduation-planner-page .graduation-planner-table tbody tr > :is(th, td):nth-child(n) {
+        border: 0;
+        padding: 0;
+        width: auto;
+    }
+    .zion-portal.graduation-planner-page .graduation-planner-table tbody th { margin: 0; }
+    .zion-portal.graduation-planner-page .graduation-planner-table td:nth-child(2) {
+        justify-self: end;
+        text-align: right;
+    }
+
+    .graduation-planner-page .graduation-planner-table td[data-credit-unit]:not(:empty)::after { content: attr(data-credit-unit); }
+    .graduation-planner-page .graduation-planner-table td[colspan] { display: none; }
+    .graduation-planner-page .graduation-planner-table td:has(details[open]) { grid-column: 1 / -1; }
+    .graduation-planner-page .graduation-planner-table tbody .graduation-category-row { background: var(--portal-warm); }
+    .planner-mobile-grade {
+        color: var(--portal-muted);
+        display: block;
+        font-size: .83rem;
+        margin-bottom: .25rem;
+    }
+    .zion-portal.graduation-planner-page .graduation-milestone-card { grid-template-columns: 1fr; }
+}
+
+@media print {
+    .planner-print-plan > section { margin: 0; padding: 0; }
+    .planner-print-plan h2 {
+        break-after: avoid;
+        color: inherit;
+        font: bold 14pt/1.25 Arial, sans-serif;
+        margin: .22in 0 .06in;
+    }
+    .planner-print-plan h3 { color: inherit; font: bold 11pt/1.4 Arial, sans-serif; margin: 0; }
+    .planner-print-plan table { margin: .08in 0 .15in; table-layout: fixed; }
+    .planner-print-plan table th:first-child { width: 24%; }
+    .planner-print-plan table th:nth-child(2) { width: 37%; }
+    .planner-print-plan table th:nth-child(3) { width: 17%; }
+    .planner-print-plan table :is(th, td):nth-last-child(-n+2) { width: 11%; }
+    .planner-print-plan tr { break-inside: auto; }
+    .planner-print-plan .planner-print-note { margin-top: .04in; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .planner-print-milestone { break-inside: avoid; margin: 0 0 .1in; }
+}
