@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
     <title>Student Records | ZION outSchool</title>
-    <link rel="stylesheet" href="gradebook.css?v=student-records-20261124">
+    <link rel="stylesheet" href="gradebook.css?v=student-delete-1">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
 </head>
 <body class="zion-portal" data-portal-page-role="gradebook">
@@ -48,6 +48,7 @@
                 <p id="student-directory-save-status" role="status" aria-live="polite"></p>
                 <h3>Published reports and transcripts</h3>
                 <ul id="student-directory-reports"></ul>
+                <button id="student-directory-delete" class="portal-delete-button" type="button" hidden>Delete student</button>
             </div>
             <div class="gradebook-panel">
                 <label>Registration
@@ -64,9 +65,23 @@
                 <button type="submit">Link registration</button>
             </form>
         </section>
+        <dialog id="student-delete-dialog" aria-labelledby="student-delete-title" aria-describedby="student-delete-impact">
+            <form id="student-delete-form" class="gradebook-dialog">
+                <h2 id="student-delete-title"></h2>
+                <p id="student-delete-impact">This permanently deletes the student’s portal record, including grades, report listings, planner entries, messages, and Student News access. The family login and original files are kept. Any registration is kept without a student link.</p>
+                <label>Type DELETE to confirm
+                    <input name="confirmation" type="text" autocomplete="off" required pattern="DELETE">
+                </label>
+                <p id="student-delete-status" role="status" aria-live="polite"></p>
+                <div class="gradebook-toolbar">
+                    <button id="student-delete-cancel" type="button" autofocus>Cancel</button>
+                    <button class="portal-delete-button" type="submit">Permanently delete student</button>
+                </div>
+            </form>
+        </dialog>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
-    <script src="student-records.js?v=registration-fields-1"></script>
+    <script src="student-records.js?v=student-delete-1"></script>
 </body>
 </html>

@@ -93,6 +93,11 @@ async function initStudentRecords() {
     const select = get('student-records-select');
     const detail = get('student-record-detail');
     const linkForm = get('student-record-link');
+    const deleteButton = get('student-directory-delete');
+    const deleteDialog = get('student-delete-dialog');
+    const deleteForm = get('student-delete-form');
+    const deleteCancel = get('student-delete-cancel');
+    const deleteStatus = get('student-delete-status');
     const session = await getPortalSession();
     const profile = await getPortalProfile(session);
     const admin = isAdminPortalProfile(profile);
@@ -102,6 +107,7 @@ async function initStudentRecords() {
     let registrations = [];
     let families = [];
     let currentRegistration;
+    let studentToDelete;
     let registrationError;
     let familyError;
     let active = true;
@@ -114,6 +120,7 @@ async function initStudentRecords() {
         if (current?.user?.id === session.user.id) return;
         active = false;
         panel.hidden = true;
+        deleteDialog.close();
         detail.replaceChildren();
     });
 
@@ -222,6 +229,7 @@ async function initStudentRecords() {
         const student = students.find(item => item.id === roster.value);
         studentDetail.hidden = !student;
         editor.hidden = !admin;
+        deleteButton.hidden = !admin || !student;
         reportList.replaceChildren();
         setPortalMessage(get('student-directory-save-status'), '');
         if (student) {
@@ -358,6 +366,51 @@ async function initStudentRecords() {
             showStudent(select.value);
             setPortalMessage(output, 'Student record saved.', 'success');
         }, error => message(error, 'save this student record', 'Make sure the family login is still active. If the link changed, reload the record before saving again.', output));
+    };
+
+    deleteButton.onclick = () => {
+        if (!admin) return;
+        studentToDelete = students.find(item => item.id === roster.value);
+        if (!studentToDelete) return;
+        deleteForm.reset();
+        setPortalMessage(deleteStatus, '');
+        get('student-delete-title').textContent = `Delete ${normalizeStudentName(studentToDelete)}?`;
+        deleteDialog.showModal();
+    };
+
+    deleteCancel.onclick = () => deleteDialog.close();
+    deleteDialog.addEventListener('cancel', event => {
+        if (deleteCancel.disabled) event.preventDefault();
+    });
+    deleteForm.onsubmit = event => {
+        event.preventDefault();
+        if (!admin || !studentToDelete || deleteForm.elements.confirmation.value !== 'DELETE') return;
+        const student = studentToDelete;
+        void runForm(deleteForm, async () => {
+            deleteCancel.disabled = true;
+            setPortalMessage(deleteStatus, 'Deleting student…');
+            try {
+                const { error } = await portalClient.rpc('portal_delete_student', { target_student: student.id });
+                if (error) throw error;
+                if (!active) return;
+                deleteDialog.close();
+                students = students.filter(item => item.id !== student.id);
+                for (const record of registrations) if (record.student_id === student.id) record.student_id = null;
+                setStudentOptions();
+                showStudent();
+                search.focus();
+                const url = new URL(location.href);
+                if (url.searchParams.get('student') === student.id) {
+                    url.searchParams.delete('student');
+                    history.replaceState(null, '', url);
+                }
+                setPortalMessage(status, `${normalizeStudentName(student)}’s student record was deleted.`, 'success');
+            } finally {
+                deleteCancel.disabled = false;
+            }
+        }, error => {
+            if (active) message(error, 'delete the student', 'Refresh Student Records before trying again.', deleteStatus);
+        });
     };
 
     linkForm.onsubmit = event => {

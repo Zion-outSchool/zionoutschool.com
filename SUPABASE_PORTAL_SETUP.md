@@ -24,6 +24,8 @@ Apply these files in order after the core portal and planner tables exist.
 8. [Administrator account repair tools](supabase_portal_account_management.sql)
 9. [Registration review workflow](supabase_registration_review.sql)
 10. [Student News and weekly newsletters](supabase_newsletter.sql)
+11. [Google Classroom grade imports](supabase_classroom_import.sql)
+12. [Administrator student deletion](supabase_student_deletion.sql)
 
 After changing the registration records schema, apply the registration review script again so the read function includes approved corrections. Deploy the updated `communication-email` function after applying the review migration. The existing email job sends review links to active administrators with confirmed emails.
 
@@ -343,3 +345,22 @@ update public.newsletter_settings set first_issue_on = date '2027-01-15' where s
 Set `first_issue_on` to `null` to pause creation of new issues. Existing queued emails continue through the delivery queue. Newsletter photos in email use seven-day links. Archived newsletters remain available through the portal, where the browser requests fresh links after sign-in.
 
 In a test environment, save one student-only update and one newsletter entry with a link and photo. Verify that an unrelated family cannot see the student-only update or its photo. Verify that the issue appears once and sends once per confirmed family after the worker runs, and that an emailed issue link returns the family to the correct issue after sign-in.
+
+
+### Google Classroom grade imports
+
+Apply [supabase_classroom_import.sql](supabase_classroom_import.sql) after the gradebook and classroom-access SQL. In the school's Google Cloud project, enable the Google Classroom API, configure the OAuth consent screen, and create a **Web application** OAuth client. Add the portal's exact HTTPS origin under **Authorized JavaScript origins**. For a pilot in the school's Google Workspace organization, use an internal app when available or add the pilot teachers as test users. Workspace administrators may need to allow access to the app.
+
+Set the public OAuth client ID in Supabase. The browser uses Google's token model. It holds the temporary Google access token in memory and accesses the Classroom API directly. The client ID is the only Google credential stored in Supabase.
+
+```sql
+update public.gradebook_google_settings
+set client_id = '<web-client-id>.apps.googleusercontent.com'
+where singleton;
+```
+
+Redeploy the gradebook and open a course as a teacher. Under **Import from Google Classroom**, connect the teaching account, choose the Google class, match students to the existing Zion roster, review the returned grades, choose a category for new assignments, and select assignments to import. On subsequent imports, the saved class and roster matches appear after connecting to Google. Confirm roster matches carefully before the first import. One Zion course links to one Google class.
+
+The gradebook imports whole-class published assignments with points and returned numeric grades, including zero. Draft, missing and unreturned grades stay out of the import. Individually assigned work is excluded because Zion currently uses one assignment roster per course. Imported grades can be refreshed while grades edited in Zion and finalized grades are preserved. If an unlinked assignment already has the same title in Zion, or the points possible changed after import, the importer skips it for review. It preserves family feedback and private notes and uses the grading rules already set in the Zion course.
+
+Test with a fictional class before enabling the feature for teachers. Import once, re-import to check for duplicates, then return an updated score in Google and verify it updates only its matched Zion row. [Google’s token model](https://developers.google.com/identity/oauth2/web/guides/use-token-model)

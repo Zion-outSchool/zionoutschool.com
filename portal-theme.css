@@ -1,7 +1,7 @@
 .zion-portal {
     --portal-evergreen: #24483D;
     --portal-evergreen-dark: #17372E;
-    --portal-sage: #F7EDE2;
+    --portal-warm: #F7EDE2;
     --portal-paper: #FFFDF9;
     --portal-action: #A64D2B;
     --portal-action-hover: #83391F;
@@ -25,9 +25,9 @@
     --navy-mid: var(--portal-evergreen-dark);
     --navy-dark: var(--portal-evergreen-dark);
     --gold: var(--portal-clay);
-    --gold-light: var(--portal-sage);
+    --gold-light: var(--portal-warm);
     --cream: var(--portal-cream);
-    --cream-dark: var(--portal-sage);
+    --cream-dark: var(--portal-warm);
     --border: var(--portal-line);
     --text: var(--portal-ink);
     --text-mid: var(--portal-muted);
@@ -69,7 +69,7 @@
 }
 
 .portal-brand span { font: 600 clamp(1.45rem, 3vw, 1.9rem)/1.05 var(--portal-serif); }
-.portal-brand small { margin-top: .23rem; color: var(--portal-sage); font: 500 .77rem/1.3 var(--portal-sans); }
+.portal-brand small { margin-top: .23rem; color: var(--portal-warm); font: 500 .77rem/1.3 var(--portal-sans); }
 .portal-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem .8rem; }
 .zion-portal .portal-topbar :focus-visible { outline-color: var(--portal-cream); }
 
@@ -86,7 +86,7 @@
 }
 
 .zion-portal .portal-public-link { background: var(--portal-cream); color: var(--portal-blue); }
-.zion-portal .portal-public-link:hover { background: var(--portal-sage); text-decoration: underline; }
+.zion-portal .portal-public-link:hover { background: var(--portal-warm); text-decoration: underline; }
 .zion-portal .portal-session-button {
     background: transparent;
     border-color: #A9C0B0;
@@ -103,7 +103,7 @@
 
 .portal-welcome {
     padding: clamp(1.6rem, 5vw, 3.2rem) clamp(1.1rem, 6vw, 4.5rem);
-    background: var(--portal-sage);
+    background: var(--portal-warm);
     border: 1px solid var(--portal-line);
     border-radius: 1rem;
     text-align: center;
@@ -161,7 +161,7 @@
     font: 650 .93rem/1.35 var(--portal-sans);
     cursor: pointer;
 }
-.zion-portal:not(.editorial-page) main button:hover:not(:disabled) { background: var(--portal-sage); }
+.zion-portal:not(.editorial-page) main button:hover:not(:disabled) { background: var(--portal-warm); }
 .zion-portal .portal-primary-button,
 .zion-portal:not(.editorial-page) main button:is([type="submit"], .portal-action),
 .zion-portal.editorial-page.portal-page :is(.planner-controls button, .student-file-form button) {
@@ -203,13 +203,13 @@
     text-decoration: none;
 }
 .portal-link-grid a::after { content: "→" / ""; grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--portal-action-hover); }
-.portal-link-grid a:hover { border-color: var(--portal-action); background: var(--portal-sage); }
+.portal-link-grid a:hover { border-color: var(--portal-action); background: var(--portal-warm); }
 .portal-link-grid a:hover strong { text-decoration: underline; }
 .portal-link-grid strong { grid-column: 1; font-size: 1rem; }
 .portal-link-grid span { grid-column: 1; font-size: .87rem; color: var(--portal-muted); }
 .portal-resource-grid a { background: var(--portal-paper); }
 
-.portal-latest { padding: 1.2rem; border: 1px solid var(--portal-line); border-left: 3px solid var(--portal-clay); border-radius: .65rem; background: var(--portal-sage); }
+.portal-latest { padding: 1.2rem; border: 1px solid var(--portal-line); border-left: 3px solid var(--portal-clay); border-radius: .65rem; background: var(--portal-warm); }
 .portal-latest .portal-news-links { gap: .5rem; }
 .portal-latest section + .portal-news-links,
 .portal-upcoming { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--portal-line); }
@@ -223,23 +223,23 @@
 .portal-access-note a { color: var(--portal-evergreen); font-weight: 600; }
 
 .portal-council-banner { margin-block: 1.5rem; }
-.portal-council-announcement { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); background: var(--portal-sage); border-radius: .75rem; overflow: hidden; }
+.portal-council-announcement { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); background: var(--portal-warm); border-radius: .75rem; overflow: hidden; }
 .portal-council-art img { width: 100%; height: 100%; object-fit: contain; }
 .portal-council-panel { padding: 1.5rem; }
 .portal-council-primary { color: var(--portal-evergreen); font-weight: 650; }
 
 .zion-portal:not(.editorial-page) .gradebook-panel { background: var(--portal-paper); border-color: var(--portal-line); }
 .zion-portal:not(.editorial-page) .gradebook-grid tr > :first-child,
-.zion-portal:not(.editorial-page) .gradebook-grid thead th { background: var(--portal-sage); }
+.zion-portal:not(.editorial-page) .gradebook-grid thead th { background: var(--portal-warm); }
 .zion-portal:not(.editorial-page) .gradebook-grid :is(th, td) { border-bottom-color: var(--portal-line); }
 .zion-portal :is(input, select, textarea) { accent-color: var(--portal-action); }
 .zion-portal .portal-communication-main .communication-threads button[aria-pressed="true"] {
-    background: var(--portal-sage);
+    background: var(--portal-warm);
     border-left: 3px solid var(--portal-action);
     color: var(--portal-action-hover);
 }
 .zion-portal .portal-communication-main .communication-threads button[aria-pressed="true"]:hover {
-    background: var(--portal-sage);
+    background: var(--portal-warm);
 }
 .zion-portal .communication-nav a { color: var(--portal-action-hover); }
 .zion-portal .portal-communication-main .gradebook-panel { border-top: 3px solid var(--portal-action); }
@@ -248,16 +248,16 @@
 .zion-portal .portal-page-intro { margin-bottom: 1.2rem; }
 .zion-portal .portal-page-intro h1 { font: 650 clamp(2.3rem, 5vw, 3.4rem)/1.05 var(--portal-serif); color: var(--portal-evergreen); }
 .zion-portal .portal-page-intro p { margin-top: .5rem; font: 400 1rem/1.55 var(--portal-sans); }
-.zion-portal.editorial-page.portal-page :is(.planner-controls, .student-file-panel, .portal-empty-state, .portal-guidance-card, .portal-testing-links a) { background: var(--portal-sage); border-color: var(--portal-line); }
+.zion-portal.editorial-page.portal-page :is(.planner-controls, .student-file-panel, .portal-empty-state, .portal-guidance-card, .portal-testing-links a) { background: var(--portal-warm); border-color: var(--portal-line); }
 .zion-portal.editorial-page.portal-page main .portal-hero {
     min-height: 0;
     margin-top: 0 !important; /* The portal header is in the normal page flow. */
     padding-block: clamp(2rem, 6vw, 4rem);
-    background: var(--portal-sage);
+    background: var(--portal-warm);
 }
 .zion-portal.editorial-page.portal-page main .portal-hero :is(h1, h1 em, .eyebrow) { color: var(--portal-evergreen); }
 .zion-portal.editorial-page.portal-page main .portal-hero .hero-subtext { color: var(--portal-ink); }
-.zion-portal.editorial-page.payment-page :is(.payment-date-card, .payment-schedule-note, .payment-schedule-table-wrap) { background: var(--portal-sage); border-color: var(--portal-line); }
+.zion-portal.editorial-page.payment-page :is(.payment-date-card, .payment-schedule-note, .payment-schedule-table-wrap) { background: var(--portal-warm); border-color: var(--portal-line); }
 .zion-portal.editorial-page.payment-page .payment-date-card--due { border-top-color: var(--portal-evergreen); }
 .zion-portal.editorial-page.payment-page .payment-date-card--late { border-top-color: var(--portal-clay); }
 
@@ -329,7 +329,7 @@
     padding: .4rem .55rem;
     border-radius: .35rem;
     color: var(--portal-action-hover);
-    background: var(--portal-sage);
+    background: var(--portal-warm);
     font-weight: 750;
     text-align: center;
 }
@@ -344,6 +344,6 @@
 .zion-portal.grade-reports-page .family-grade-details summary { cursor: pointer; color: var(--portal-action-hover); font-weight: 650; }
 .zion-portal.grade-reports-page .family-grade-feedback li { margin: .5rem 0; padding: .6rem 0; border-top: 1px solid var(--portal-line); }
 .zion-portal.grade-reports-page .family-grade-feedback p { white-space: pre-wrap; overflow-wrap: anywhere; }
-.zion-portal.grade-reports-page .grade-report-student-heading { background: var(--portal-sage); }
+.zion-portal.grade-reports-page .grade-report-student-heading { background: var(--portal-warm); }
 .zion-portal.grade-reports-page .grade-report-student-heading > span { color: var(--portal-muted); }
 .zion-portal.grade-reports-page .grade-report-item a { color: var(--portal-action-hover); }

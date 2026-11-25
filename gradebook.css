@@ -217,7 +217,7 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
     padding: .65rem .8rem;
     border: 1px solid var(--portal-line);
     border-radius: .45rem;
-    background: var(--portal-sage);
+    background: var(--portal-warm);
 }
 .teacher-gradebook .gradebook-save-bar > span { margin-right: auto; font-weight: 650; }
 .zion-portal.teacher-gradebook main button.gradebook-secondary {
@@ -225,7 +225,7 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
     color: var(--portal-action-hover);
     background: var(--portal-paper);
 }
-.zion-portal.teacher-gradebook main button.gradebook-secondary:hover:not(:disabled) { background: var(--portal-sage); }
+.zion-portal.teacher-gradebook main button.gradebook-secondary:hover:not(:disabled) { background: var(--portal-warm); }
 @media (max-width: 550px) {
     .teacher-gradebook .gradebook-work-header .gradebook-toolbar {
         display: grid;
@@ -272,7 +272,7 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
 }
 .zion-portal.teacher-gradebook main button.gradebook-assignment-choice:hover,
 .zion-portal.teacher-gradebook main button.gradebook-assignment-choice[aria-current="true"] {
-    background: var(--portal-sage);
+    background: var(--portal-warm);
     color: var(--portal-action-hover);
 }
 .zion-portal.teacher-gradebook main button.gradebook-assignment-choice[aria-current="true"] {
@@ -302,3 +302,30 @@ dialog::backdrop { background: rgb(12 29 49 / .6); }
 @media (max-width: 849px) {
     .teacher-gradebook .gradebook-assignment-list { display: none; }
 }
+
+.teacher-gradebook .gradebook-google { grid-column: 1 / -1; }
+.teacher-gradebook .gradebook-google > summary { color: var(--portal-action-hover); }
+.teacher-gradebook .gradebook-google :is(form, fieldset, #gradebook-google-class-picker) { margin-top: .8rem; }
+.teacher-gradebook .gradebook-google fieldset { min-width: 0; border: 1px solid var(--portal-line); border-radius: .45rem; padding: .8rem; }
+.teacher-gradebook .gradebook-google legend { font-weight: 650; padding-inline: .3rem; }
+.teacher-gradebook .gradebook-google select { max-width: 30rem; }
+.teacher-gradebook .gradebook-google-match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: .6rem .9rem; }
+.teacher-gradebook .gradebook-google-work-item { padding-block: .65rem; border-bottom: 1px solid var(--portal-line); }
+.teacher-gradebook .gradebook-google-work-item > label { display: flex; align-items: baseline; gap: .55rem; }
+.teacher-gradebook .gradebook-google-work-item input { width: auto; }
+.teacher-gradebook .gradebook-google-work-item details { margin: .25rem 0 0 1.2rem; }
+.teacher-gradebook .gradebook-google-work-item li { padding-block: .15rem; }
+.teacher-gradebook #gradebook-google-preview > button { margin-top: .8rem; }
+
+.zion-portal .portal-account-main button.portal-delete-button {
+    border-color: #9a3a2c;
+    color: #8b3024;
+    background: var(--portal-paper);
+}
+.zion-portal .portal-account-main button.portal-delete-button[type="submit"] {
+    color: white;
+    background: #9a3a2c;
+}
+.zion-portal .portal-account-main button.portal-delete-button:hover:not(:disabled) { background: #f7e3de; }
+.zion-portal .portal-account-main button.portal-delete-button[type="submit"]:hover:not(:disabled) { background: #782b20; }
+#student-delete-dialog #student-delete-status:empty { display: none; }

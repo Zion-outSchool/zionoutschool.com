@@ -87,6 +87,10 @@ async function initTeacherGradebook() {
     const studentFilter = byId('gradebook-student-filter');
     const assignmentList = byId('gradebook-assignment-list');
     const assignmentButtons = new Map();
+    const googleImport = typeof initGradebookGoogleImport === 'function' ? initGradebookGoogleImport({
+        runImport: work => requireSavedScores() && run(work),
+        reload: id => loadCourse(id)
+    }) : null;
     const scoreForm = scoreDialog.querySelector('form');
     const marks = new Map();
     const dirty = new Set();
@@ -206,6 +210,7 @@ async function initTeacherGradebook() {
         const priorAssignment = assignmentId || (sameCourse ? scoringAssignment.value : '');
         if (!nextCourse) {
             course = null;
+            googleImport?.configure(null, []);
             workspace.hidden = true;
             settingsPanel.hidden = true;
             message('Create a course to start a gradebook.');
@@ -258,8 +263,10 @@ async function initTeacherGradebook() {
         loadAssignmentForm();
         renderSettings(course);
         workspace.hidden = false;
+        grid.inert = false;
         renderAssignmentList();
         renderGrid();
+        googleImport?.configure(course, enrollments.map(enrollment => ({ id: enrollment.id, name: studentName(enrollment) })));
         message(`${course.name} · ${course.term}`);
     }
 
@@ -736,6 +743,7 @@ async function initTeacherGradebook() {
             dirty.clear();
             scoresBeforeWaiver.clear();
             marks.clear();
+            googleImport?.configure(null, []);
             scoreDialog.close();
             finalDialog.close();
             location.replace('family-portal.html');
@@ -765,6 +773,7 @@ async function initTeacherGradebook() {
         byId('gradebook-new-course').onclick = () => {
             if (!requireSavedScores()) return;
             course = null;
+            googleImport?.configure(null, []);
             courseSelect.value = '';
             workspace.hidden = true;
             renderSettings(null);
@@ -993,7 +1002,15 @@ async function initTeacherGradebook() {
             if (changed.length) data(await portalClient.rpc('gradebook_save_marks', { target_course: course.id, changes: changed }));
             dirty.clear();
             scoresBeforeWaiver.clear();
-            renderGrid();
+            try {
+                await loadCourse(course.id);
+            } catch {
+                renderGrid();
+                message('Changes were saved. Reload the course before making more edits.', 'error');
+                grid.inert = true;
+                return;
+            }
+            grid.inert = false;
             message('Changes saved.', 'success');
             return assignmentFocusTarget();
         }, 'save the scores', 'Check the score ranges and roster. A finalized grade must be reopened before you edit its scores.');

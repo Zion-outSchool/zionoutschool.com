@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Teacher Gradebook | ZION outSchool</title>
-    <link rel="stylesheet" href="gradebook.css?v=assignment-list-1">
+    <link rel="stylesheet" href="gradebook.css?v=google-import-1">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
 </head>
 <body class="zion-portal teacher-gradebook" data-portal-page-role="gradebook">
@@ -72,6 +73,29 @@
                     </section>
                 </div>
                 <div class="gradebook-setup">
+                    <details id="gradebook-google" class="gradebook-panel gradebook-google" hidden>
+                        <summary>Import from Google Classroom</summary>
+                        <p id="gradebook-google-status" role="status" aria-live="polite"></p>
+                        <button id="gradebook-google-connect" type="button" class="portal-action" disabled>Connect Google Classroom</button>
+                        <div id="gradebook-google-class-picker" hidden>
+                            <label>Google class <select id="gradebook-google-class"></select></label>
+                        </div>
+                        <form id="gradebook-google-preview" hidden>
+                            <fieldset>
+                                <legend>Match students</legend>
+                                <p>Choose a Zion student for each Google student you want to import.</p>
+                                <div id="gradebook-google-roster"></div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Choose assignments</legend>
+                                <label>Category for new assignments <select name="category" required></select></label>
+                                <p id="gradebook-google-exclusions"></p>
+                                <button id="gradebook-google-select-all" type="button">Select all eligible assignments</button>
+                                <div id="gradebook-google-work"></div>
+                            </fieldset>
+                            <button type="submit">Import selected grades</button>
+                        </form>
+                    </details>
                     <details id="gradebook-roster-management" class="gradebook-panel" hidden>
                         <summary>Manage roster</summary>
                         <form id="gradebook-enroll" class="gradebook-form-grid">
@@ -195,6 +219,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
-    <script src="gradebook.js?v=assignment-list-1"></script>
+    <script src="gradebook-google.js?v=1"></script>
+    <script src="gradebook.js?v=google-import-1"></script>
 </body>
 </html>
