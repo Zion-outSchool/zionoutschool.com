@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>AI Workroom | Zion outSchool</title>
+    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="ai-workroom.css">
+</head>
+<body class="zion-portal workroom-page" data-portal-page-role="admin">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="portal-admin.html"><span>Portal Administration</span><small>Zion outSchool</small></a>
+            <div class="portal-topbar-actions">
+                <button class="portal-session-button" type="button" id="workroom-lock" hidden>Lock Workroom</button>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
+    </header>
+    <main class="workroom-main" data-portal-page-content hidden>
+        <h1>AI Workroom</h1>
+        <p id="workroom-status" role="status" aria-live="polite"></p>
+        <section class="workroom-panel workroom-gate" id="workroom-gate">
+            <h2>Unlock the Workroom</h2>
+            <p>Enter the secondary Workroom password.</p>
+            <form id="workroom-unlock">
+                <label>Workroom password
+                    <input name="password" type="password" autocomplete="off" maxlength="1024" required>
+                </label>
+                <button type="submit">Unlock Workroom</button>
+            </form>
+        </section>
+        <div id="workroom-dashboard" hidden>
+            <nav class="workroom-nav" aria-label="Workroom sections">
+                <button type="button" data-view="assignments" aria-pressed="true">Assignments</button>
+                <button type="button" data-view="references" aria-pressed="false">References</button>
+                <button type="button" data-view="schedules" aria-pressed="false">Schedules</button>
+                <button type="button" data-view="assistants" aria-pressed="false">Assistants</button>
+            </nav>
+
+            <div id="workroom-assignments">
+                <div class="workroom-columns">
+                    <section class="workroom-panel">
+                        <h2>New assignment</h2>
+                        <form id="workroom-submit">
+                            <label>Title <input name="title" maxlength="160" required></label>
+                            <label>Workflow <select name="workflow" required></select></label>
+                            <label>Assignment <textarea name="assignment" rows="7" maxlength="12000" required></textarea></label>
+                            <label>Attachment <input type="file" name="file" accept=".pdf,.docx,.txt,.md,.html,.css,.js" aria-describedby="workroom-file-help"></label>
+                            <small id="workroom-file-help">PDF, DOCX or text up to 3 MB. PDFs need selectable text. To prepare a website file change, attach the current HTML, CSS or JS file.</small>
+                            <label>Public search query (optional)
+                                <input name="searchQuery" maxlength="600" aria-describedby="workroom-search-help">
+                            </label>
+                            <small id="workroom-search-help">Only this query goes to Brave Search. Use public terms.</small>
+                            <label class="workroom-check">
+                                <input type="checkbox" name="consent" required>
+                                I’ve removed sensitive details and approve sending the assignment, attachment text, and eligible reference excerpts to Groq.
+                            </label>
+                            <button type="submit">Queue assignment</button>
+                        </form>
+                    </section>
+                    <section class="workroom-panel">
+                        <div class="workroom-heading">
+                            <h2>Assignment history</h2>
+                            <button type="button" id="workroom-refresh" class="workroom-secondary">Refresh</button>
+                        </div>
+                        <ul class="workroom-list" id="workroom-history"></ul>
+                        <div class="workroom-actions" id="workroom-history-pages" hidden>
+                            <button type="button" class="workroom-secondary" id="workroom-older">Older</button>
+                            <button type="button" class="workroom-secondary" id="workroom-newer">Newer</button>
+                        </div>
+                    </section>
+                </div>
+                <section class="workroom-panel workroom-detail" id="workroom-detail" tabindex="-1" hidden></section>
+            </div>
+
+            <div id="workroom-references" hidden>
+                <div class="workroom-columns">
+                    <section class="workroom-panel">
+                        <h2>New reference</h2>
+                        <form id="workroom-reference">
+                            <label>Title <input name="title" maxlength="160" required></label>
+                            <label>Category <input name="category" maxlength="100" placeholder="Tuition, policy, template…" required></label>
+                            <label>Owner <input name="owner" maxlength="160" required></label>
+                            <label>Effective date <input name="date" type="date" required></label>
+                            <label>Reference text <textarea name="content" rows="8" maxlength="24000" required></textarea></label>
+                            <label class="workroom-check">
+                                <input type="checkbox" name="useForAi"> Allow Groq to receive excerpts after approval
+                            </label>
+                            <button type="submit">Save reference draft</button>
+                        </form>
+                    </section>
+                    <section class="workroom-panel">
+                        <h2>Reference library</h2>
+                        <form id="workroom-search" role="search" class="workroom-search">
+                            <label>Find a reference <input type="search" name="query" maxlength="120"></label>
+                            <button type="submit" class="workroom-secondary">Search</button>
+                        </form>
+                        <ul class="workroom-list" id="workroom-library"></ul>
+                        <div class="workroom-actions" id="workroom-reference-pages" hidden>
+                            <button type="button" class="workroom-secondary" id="workroom-reference-previous">Previous</button>
+                            <button type="button" class="workroom-secondary" id="workroom-reference-next">Next</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div id="workroom-schedules" hidden>
+                <div class="workroom-columns">
+                    <section class="workroom-panel">
+                        <h2>Schedule an assignment</h2>
+                        <form id="workroom-schedule">
+                            <label>Title <input name="title" maxlength="160" required></label>
+                            <label>Workflow <select name="workflow" required></select></label>
+                            <label>Assignment <textarea name="assignment" rows="6" maxlength="12000" required></textarea></label>
+                            <label>Repeats
+                                <select name="intervalDays"><option value="1">Every 24 hours</option><option value="7">Every 7 days</option></select>
+                            </label>
+                            <label>First run (your local time) <input name="firstRun" type="datetime-local" required></label>
+                            <label class="workroom-check">
+                                <input type="checkbox" name="consent" required>
+                                I’ve removed sensitive details and approve sending this assignment and eligible reference excerpts to Groq each time it runs.
+                            </label>
+                            <button type="submit">Create schedule</button>
+                        </form>
+                    </section>
+                    <section class="workroom-panel">
+                        <h2>Active schedules</h2>
+                        <ul class="workroom-list" id="workroom-schedule-list"></ul>
+                    </section>
+                </div>
+            </div>
+
+            <section class="workroom-panel" id="workroom-assistants" hidden>
+                <h2>Assistant team</h2>
+                <ul class="workroom-team" id="workroom-roles"></ul>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-portal.js?v=staff-actions-1"></script>
+    <script src="ai-workroom.js"></script>
+</body>
+</html>
