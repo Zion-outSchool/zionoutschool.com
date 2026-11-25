@@ -155,6 +155,7 @@ as $$
 declare
     item record;
     value_text text;
+    field_error text;
 begin
     if changes is null or jsonb_typeof(changes) <> 'object' then
         raise exception 'Enter registration changes in the form.' using errcode='22023';
@@ -163,25 +164,35 @@ begin
         from jsonb_each(changes) c left join public.registration_field_paths() f on f.key = c.key
     loop
         value_text := item.value #>> '{}';
-        if item.max_length is null or not (coalesce(admin, false) or item.teacher_editable)
-            or jsonb_typeof(item.value) <> 'string' or length(value_text) > item.max_length then
-            raise exception 'One of the fields is too long or can only be changed by the school office.' using errcode='22023';
-        end if;
-        if item.key in ('firstName','lastName') and btrim(value_text)='' then
-            raise exception 'First and last names are required.' using errcode='22023';
+        field_error := null;
+        if item.max_length is null then
+            raise exception 'One of the submitted registration fields is unrecognized. Reopen the registration form.' using errcode='22023';
+        elsif not (coalesce(admin, false) or item.teacher_editable) then
+            field_error := 'An administrator can edit this field.';
+        elsif jsonb_typeof(item.value) <> 'string' then
+            field_error := 'Enter a text value.';
+        elsif length(value_text) > item.max_length then
+            field_error := format('Use %s characters or fewer.', item.max_length);
+        elsif item.key in ('firstName','lastName') and btrim(value_text)='' then
+            field_error := 'Enter a name.';
         elsif item.key='gradeLevel' and value_text !~ '^(K|[1-9]|1[0-2])$' then
-            raise exception 'Choose a grade from kindergarten through 12.' using errcode='22023';
+            field_error := 'Choose a grade from kindergarten through 12.';
         elsif item.key like '%Email' and value_text <> '' and value_text !~ '^[^[:space:]@]+@[^[:space:]@]+[.][^[:space:]@]+$' then
-            raise exception 'Check the contact email address before saving.' using errcode='22023';
+            field_error := 'Enter a valid email address.';
         elsif item.key='dateOfBirth' and value_text <> '' then
             begin
                 if value_text !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then
-                    raise exception 'Enter a valid date of birth.' using errcode='22023';
+                    field_error := 'Enter a valid date of birth.';
+                else
+                    perform value_text::date;
                 end if;
-                perform value_text::date;
             exception when invalid_datetime_format or datetime_field_overflow then
-                raise exception 'Enter a valid date of birth.' using errcode='22023';
+                field_error := 'Enter a valid date of birth.';
             end;
+        end if;
+        if field_error is not null then
+            raise exception using errcode='22023', message=format('%s · %s', item.key, field_error),
+                detail=jsonb_build_object('field', item.key, 'message', field_error)::text;
         end if;
     end loop;
 end;
@@ -267,7 +278,8 @@ begin
         raise exception 'You can only submit or edit registrations for students you can access.' using errcode='42501';
     end if;
     if request_id is null or note is null or length(btrim(note)) not between 1 and 1000 then
-        raise exception 'Add a short reason for the requested change.' using errcode='22023';
+        raise exception 'Enter a reason of 1 to 1,000 characters.' using errcode='22023',
+            detail='{"field":"reason","message":"Enter a reason of 1 to 1,000 characters."}';
     end if;
     perform public.registration_validate_values(changes,admin);
     if not admin and target_record is null and changes <> '{}' then

@@ -4,6 +4,27 @@ const registrationFieldLabels = Object.fromEntries(registrationFieldGroups.flatM
     fields.map(([key, label]) => [key, group + ' · ' + label])
 ));
 
+function registrationInputError(input, value, limit) {
+    if (input.validity.badInput) return 'Enter a complete date.';
+    if (limit > 0 && Array.from(value).length > limit) return `Use ${limit} characters or fewer.`;
+    if (input.name === 'reason' && !value) return 'Enter a reason for saving this registration.';
+    if (['firstName', 'lastName'].includes(input.name) && !value) return 'Enter a name.';
+    if (input.name === 'gradeLevel' && !/^(K|[1-9]|1[0-2])$/.test(value)) return 'Choose a grade from kindergarten through 12.';
+    if (input.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address.';
+    return '';
+}
+
+function registrationServerFieldError(error) {
+    if (error?.code !== '22023' || typeof error.details !== 'string') return null;
+    try {
+        const detail = JSON.parse(error.details);
+        if (typeof detail?.field === 'string' && typeof detail.message === 'string') return detail;
+    } catch {
+        // Unstructured database errors use the standard status message.
+    }
+    return null;
+}
+
 async function initRegistrationReview() {
     const get = id => document.getElementById(id);
     const status = get('registration-review-status');
@@ -159,7 +180,39 @@ async function initRegistrationReview() {
         get('registration-edit-title').textContent = name ? title + ' for ' + name : title;
         get('registration-review-back').href = studentLink(student);
         const fields = get('registration-fields');
-        const editKeys = [];
+        const editors = new Map();
+        const legacyDatabase = admin && !Object.hasOwn(context.values, 'dateOfBirth');
+        get('registration-database-note').hidden = !legacyDatabase;
+
+        function registerInput(input, label, limit) {
+            const caption = document.createElement('span');
+            caption.id = 'registration-label-' + input.name;
+            caption.textContent = label.firstChild.textContent.trim();
+            label.firstChild.replaceWith(caption);
+            const feedback = appendTextElement(label, 'span', '', 'registration-field-error');
+            feedback.id = 'registration-error-' + input.name;
+            feedback.hidden = true;
+            input.setAttribute('aria-labelledby', caption.id);
+            input.setAttribute('aria-describedby', feedback.id);
+            editors.set(input.name, { input, displayed: input.value.trim(), limit, feedback });
+        }
+
+        function markInput(key, text) {
+            const { input, feedback } = editors.get(key);
+            feedback.textContent = text;
+            feedback.hidden = !text;
+            if (text) input.setAttribute('aria-invalid', 'true');
+            else input.removeAttribute('aria-invalid');
+        }
+
+        function showInputErrors(errors) {
+            for (const [key, text] of errors) markInput(key, text);
+            const [firstKey, firstMessage] = errors.entries().next().value;
+            const label = registrationFieldLabels[firstKey] || 'Reason';
+            setPortalMessage(status, errors.size === 1 ? label + '. ' + firstMessage
+                : `Check the ${errors.size} highlighted fields. First, ${label}.`, 'error');
+            editors.get(firstKey).input.focus();
+        }
         if (record || admin) {
             for (const [group, definitions] of registrationFieldGroups) {
                 const visible = definitions.filter(([, , , , teacherEditable]) => admin || teacherEditable);
@@ -184,41 +237,59 @@ async function initRegistrationReview() {
                         }
                     } else if (type === 'textarea') {
                         input.rows = 3;
-                        input.maxLength = settings;
                         label.className = 'registration-long-field';
                     } else {
                         input.type = type;
-                        if (type !== 'date') input.maxLength = settings;
                     }
                     input.value = current;
                     label.append(input);
-                    editKeys.push({ key, displayed: input.value });
+                    registerInput(input, label, typeof settings === 'number' ? settings : 250);
                 }
             }
         }
 
         let requestId = crypto.randomUUID();
         const submit = form.querySelector('button[type="submit"]');
+        const reason = form.elements.reason;
+        registerInput(reason, reason.closest('label'), 1000);
         submit.textContent = admin ? 'Save approved record' : 'Submit for review';
-        form.addEventListener('input', () => { requestId = crypto.randomUUID(); });
+        form.addEventListener('input', event => {
+            requestId = crypto.randomUUID();
+            if (editors.has(event.target.name) && event.target.hasAttribute('aria-invalid')) {
+                markInput(event.target.name, '');
+                if (!form.querySelector('[aria-invalid="true"]')) setPortalMessage(status, '');
+            }
+        });
         form.onsubmit = event => {
             event.preventDefault();
             void withButton(submit, async () => {
                 const changes = {};
-                for (const { key, displayed } of editKeys) {
-                    const value = form.elements[key].value.trim();
-                    if (value !== displayed.trim()) changes[key] = value;
+                const errors = new Map();
+                for (const [key, { input, displayed, limit }] of editors) {
+                    markInput(key, '');
+                    const value = input.value.trim();
+                    if (key !== 'reason' && value === displayed && !input.validity.badInput) continue;
+                    const message = legacyDatabase && key !== 'reason' && !Object.hasOwn(context.values, key)
+                        ? 'This field needs the Supabase registration update before it can be saved.'
+                        : registrationInputError(input, value, limit);
+                    if (message) errors.set(key, message);
+                    else if (key !== 'reason') changes[key] = value;
                 }
+                if (errors.size) return showInputErrors(errors);
                 const { error } = await portalClient.rpc('registration_submit_change', {
                     request_id: requestId, target_student: student, target_record: record,
-                    expected_revision: context.revision, changes, note: form.elements.reason.value.trim()
+                    expected_revision: context.revision, changes, note: reason.value.trim()
                 });
-                if (error) throw error;
                 if (!active) return;
+                if (error) {
+                    const detail = registrationServerFieldError(error);
+                    if (detail && editors.has(detail.field)) return showInputErrors(new Map([[detail.field, detail.message]]));
+                    throw error;
+                }
                 get('registration-edit').hidden = true;
                 setPortalMessage(status, admin ? 'Registration saved and recorded in the history.' : 'Request submitted. An administrator will review it.', 'success');
                 await loadRequests();
-            }, status, admin ? 'save the registration' : 'submit the correction', 'Check the fields and reason. If the record changed, reopen it from Student Records.');
+            }, status, admin ? 'save the registration' : 'submit the correction', 'Your entries are still in the form.');
         };
         get('registration-edit').hidden = false;
     }

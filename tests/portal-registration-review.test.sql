@@ -9,7 +9,8 @@ insert into public.portal_users(id,display_name,role) values
  ('75000000-0000-0000-0000-000000000003','Other Teacher','teacher');
 insert into public.students(id,first_name,last_name,grade_level) values
  ('75100000-0000-0000-0000-000000000001','First','Fixture','5'),
- ('75100000-0000-0000-0000-000000000002','Second','Fixture','5');
+ ('75100000-0000-0000-0000-000000000002','Second','Fixture','5'),
+ ('75100000-0000-0000-0000-000000000003','Third','Fixture','5');
 insert into public.gradebook_courses(id,teacher_id,name,term,weighting,missing_is_zero,categories,scale)
 values ('75200000-0000-0000-0000-000000000001','75000000-0000-0000-0000-000000000002','Class','Fall','points',false,'{"General":0}','{"A":90,"F":0}');
 insert into public.gradebook_enrollments(course_id,student_id,grade_level,credits)
@@ -26,6 +27,8 @@ select public.registration_submit_change('75400000-0000-0000-0000-000000000001',
 select public.registration_submit_change('75400000-0000-0000-0000-000000000002','75100000-0000-0000-0000-000000000002',
  null,null,'{}','Registration is missing');
 do $$
+declare
+ field_details text;
 begin
  if not exists(select 1 from public.read_registration_record('75300000-0000-0000-0000-000000000001')
     where classroom_record->>'preferredName'='Before' and administrator_record is null and drive_folder_id is null) then
@@ -39,7 +42,12 @@ begin
    perform public.registration_submit_change(gen_random_uuid(),'75100000-0000-0000-0000-000000000001',
     '75300000-0000-0000-0000-000000000001',0,'{"pickupRestriction":"Changed"}','Reserved');
    raise exception 'Teacher edited an office field';
- exception when invalid_parameter_value then null; end;
+ exception when invalid_parameter_value then
+   get stacked diagnostics field_details = pg_exception_detail;
+   if field_details::jsonb->>'field' is distinct from 'pickupRestriction' then
+     raise exception 'The rejected office field was not identified';
+   end if;
+ end;
 end $$;
 select set_config('request.jwt.claim.sub','75000000-0000-0000-0000-000000000003',true);
 do $$
@@ -64,7 +72,11 @@ select public.registration_submit_change('75400000-0000-0000-0000-000000000003',
  '{"preferredName":"Current","dateOfBirth":"2014-02-28","guardian2Address":"Second guardian address",
  "ec2Medical":"Yes","pickup3Name":"Third pickup","medicationDetails":"Updated medication instructions",
  "siblingNames":"Sibling on file","classWallet":"Not yet — still setting up"}','Admin correction');
+select public.registration_submit_change('75400000-0000-0000-0000-000000000004','75100000-0000-0000-0000-000000000003',
+ null,null,'{"dateOfBirth":"2014-02-28","guardian1Address":"Sample address","guardian2Email":"guardian@example.com"}','Create registration');
 do $$
+declare
+ field_details text;
 begin
  begin
    perform public.registration_decide_change('75400000-0000-0000-0000-000000000001','approved','',0,false);
@@ -93,7 +105,23 @@ begin
    perform public.registration_submit_change(gen_random_uuid(),'75100000-0000-0000-0000-000000000001',
     '75300000-0000-0000-0000-000000000001',2,'{"dateOfBirth":"2014-02-30"}','Invalid date');
    raise exception 'An impossible birth date was accepted';
- exception when invalid_parameter_value then null; end;
+ exception when invalid_parameter_value then
+   get stacked diagnostics field_details = pg_exception_detail;
+   if field_details::jsonb->>'field' is distinct from 'dateOfBirth' then
+     raise exception 'The invalid date field was not identified';
+   end if;
+ end;
+ begin
+   perform public.registration_submit_change(gen_random_uuid(),'75100000-0000-0000-0000-000000000001',
+    '75300000-0000-0000-0000-000000000001',2,jsonb_build_object('guardian2Address', repeat('x',501)),'Invalid address');
+   raise exception 'An address longer than the allowed limit was accepted';
+ exception when invalid_parameter_value then
+   get stacked diagnostics field_details = pg_exception_detail;
+   if field_details::jsonb->>'field' is distinct from 'guardian2Address'
+       or field_details::jsonb->>'message' is distinct from 'Use 500 characters or fewer.' then
+     raise exception 'The field name and character limit were not reported';
+   end if;
+ end;
 end $$;
 select set_config('request.jwt.claim.sub','75000000-0000-0000-0000-000000000002',true);
 do $$
@@ -112,5 +140,11 @@ begin
     and classroom_record->>'preferredName'='Before' and administrator_record='{"iepStatus":"Reserved"}' and approved_revision=2) then raise exception 'Original registration was modified'; end if;
  if not exists (select 1 from public.registration_records where student_id='75100000-0000-0000-0000-000000000002'
     and drive_folder_id is null) then raise exception 'Approved missing registration was not created'; end if;
+ if not exists (select 1 from public.registration_records where student_id='75100000-0000-0000-0000-000000000003'
+    and approved_administrator_record->>'dateOfBirth'='2014-02-28'
+    and approved_administrator_record->'guardianAddresses'->>0='Sample address'
+    and approved_classroom_record->'guardians'->1->>'email'='guardian@example.com') then
+    raise exception 'An administrator could not save the full new registration';
+ end if;
 end $$;
 rollback;

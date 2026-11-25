@@ -16,3 +16,5 @@
 }
 .registration-field-group legend { padding-inline: .3rem; font-weight: 650; }
 .registration-long-field { grid-column: 1 / -1; }
+.zion-portal #registration-edit-form [aria-invalid="true"] { border-color: #982c22; }
+.registration-field-error { display: block; color: #922b23; font-size: .9rem; }

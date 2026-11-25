@@ -8,7 +8,7 @@
     <title>Registration Requests | Zion outSchool</title>
     <link rel="stylesheet" href="gradebook.css?v=student-records-20261124">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
-    <link rel="stylesheet" href="registration-review.css?v=registration-fields-1">
+    <link rel="stylesheet" href="registration-review.css?v=field-errors-1">
 </head>
 <body class="zion-portal" data-portal-page-role="gradebook" data-portal-registration-review="true">
     <header class="portal-topbar">
@@ -28,10 +28,11 @@
             <h2 id="registration-edit-title"></h2>
             <p data-portal-admin hidden>Changes update the student’s registration record. Open the original Google Drive folder from Student Records for signed agreements and supporting documents.</p>
             <p id="registration-teacher-note" hidden>Suggest corrections to a preferred name or guardian contact details. The school office handles other registration changes.</p>
+            <p id="registration-database-note" hidden>Your administrator access is active. A Supabase update is needed to save the full registration form.</p>
             <p>Guardian email changes here update registration contact details. Family Portal sign-in emails are managed in Portal Administration.</p>
-            <form id="registration-edit-form">
+            <form id="registration-edit-form" novalidate>
                 <div id="registration-fields"></div>
-                <label>Reason <textarea name="reason" maxlength="1000" rows="3" required></textarea></label>
+                <label>Reason <textarea name="reason" rows="3" required></textarea></label>
                 <button type="submit">Submit request</button>
             </form>
         </section>
@@ -46,6 +47,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=registration-review-1"></script>
     <script src="registration-fields.js?v=1"></script>
-    <script src="registration-review.js?v=registration-fields-1"></script>
+    <script src="registration-review.js?v=field-errors-1"></script>
 </body>
 </html>
