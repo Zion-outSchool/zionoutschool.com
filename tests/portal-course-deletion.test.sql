@@ -12,9 +12,9 @@ insert into public.portal_users (id, display_name, role) values
 insert into public.students (id, family_id, first_name, last_name) values
     ('78200000-0000-0000-0000-000000000001', '78100000-0000-0000-0000-000000000003', 'Test', 'Student');
 
-insert into public.gradebook_courses (id, teacher_id, name, term, weighting, missing_is_zero, categories, scale) values
-    ('78300000-0000-0000-0000-000000000001', '78100000-0000-0000-0000-000000000002', 'Studio', 'Fall', 'points', false, '{"General":0}', '{"A":90,"F":0}'),
-    ('78300000-0000-0000-0000-000000000002', '78100000-0000-0000-0000-000000000002', 'Science', 'Fall', 'points', false, '{"General":0}', '{"A":90,"F":0}');
+insert into public.gradebook_courses (id, teacher_id, name, term, weighting, missing_is_zero, categories, scale, starts_on, ends_on) values
+    ('78300000-0000-0000-0000-000000000001', '78100000-0000-0000-0000-000000000002', 'Studio', 'Fall', 'points', false, '{"General":0}', '{"A":90,"F":0}', '2025-09-01', '2025-12-01'),
+    ('78300000-0000-0000-0000-000000000002', '78100000-0000-0000-0000-000000000002', 'Science', 'Fall', 'points', false, '{"General":0}', '{"A":90,"F":0}', '2025-09-01', '2025-12-01');
 insert into public.gradebook_enrollments (id, course_id, student_id, requirement_key, grade_level, credits) values
     ('78400000-0000-0000-0000-000000000001', '78300000-0000-0000-0000-000000000001', '78200000-0000-0000-0000-000000000001', 'fine_arts', '9', 1),
     ('78400000-0000-0000-0000-000000000002', '78300000-0000-0000-0000-000000000002', '78200000-0000-0000-0000-000000000001', 'biology', '9', 1);

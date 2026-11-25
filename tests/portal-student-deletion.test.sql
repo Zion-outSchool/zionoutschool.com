@@ -13,9 +13,9 @@ insert into public.students (id,family_id,first_name,last_name) values
  ('77200000-0000-0000-0000-000000000001','77100000-0000-0000-0000-000000000003','Test','Student'),
  ('77200000-0000-0000-0000-000000000002','77100000-0000-0000-0000-000000000003','Test','Sibling');
 
-insert into public.gradebook_courses (id,teacher_id,name,term,weighting,missing_is_zero,categories,scale)
+insert into public.gradebook_courses (id,teacher_id,name,term,weighting,missing_is_zero,categories,scale,starts_on,ends_on)
 values ('77300000-0000-0000-0000-000000000001','77100000-0000-0000-0000-000000000002',
-    'Studio','Fall','points',false,'{"General":0}','{"A":90,"F":0}');
+    'Studio','Fall','points',false,'{"General":0}','{"A":90,"F":0}','2025-09-01','2025-12-01');
 insert into public.gradebook_enrollments (id,course_id,student_id,grade_level,credits)
 values ('77400000-0000-0000-0000-000000000001','77300000-0000-0000-0000-000000000001','77200000-0000-0000-0000-000000000001','9',0);
 insert into public.gradebook_assignments (id,course_id,title,category,points)

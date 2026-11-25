@@ -147,6 +147,13 @@
                         <label>Course name <input name="name" maxlength="120" required></label>
                         <label>Term and school year <input name="term" maxlength="60" placeholder="Fall 2026" required></label>
                         <label id="gradebook-teacher-label" hidden>Assigned teacher <select name="teacher_id"></select></label>
+                        <label id="gradebook-start-date-label" hidden>Class start date
+                            <input name="starts_on" type="date" min="0001-01-01" max="9999-12-31" disabled>
+                        </label>
+                        <label id="gradebook-end-date-label" hidden>Class end date
+                            <input name="ends_on" type="date" min="0001-01-01" max="9999-12-31" disabled aria-describedby="gradebook-date-help">
+                            <small id="gradebook-date-help">Finalization opens the day after the end date, Eastern time.</small>
+                        </label>
                     </div>
                     <details id="gradebook-grading-options">
                         <summary>Grading rules <span id="course-settings-summary"></span></summary>
@@ -223,6 +230,8 @@
             <form method="dialog" class="gradebook-dialog">
                 <h2>Review final grade</h2>
                 <p id="gradebook-final-summary"></p>
+                <p id="gradebook-final-date-status" hidden></p>
+                <button id="gradebook-open-course-dates" class="gradebook-secondary" type="button" hidden>Set class dates</button>
                 <ul id="gradebook-grade-breakdown"></ul>
                 <label id="gradebook-earned-label">Earned credits <input name="earned_credits" type="number" min="0" step=".01" required></label>
                 <details id="gradebook-final-options">
@@ -244,6 +253,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
     <script src="gradebook-google.js?v=refresh-1"></script>
-    <script src="gradebook.js?v=course-deletion-1"></script>
+    <script src="gradebook.js?v=course-dates-1"></script>
 </body>
 </html>

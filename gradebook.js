@@ -119,6 +119,7 @@ async function initTeacherGradebook() {
     let editingEnrollment;
     let busy = false;
     let managesRoster = false;
+    let courseDatesAvailable = false;
 
     function message(text, tone) {
         setPortalMessage(status, text, tone);
@@ -166,12 +167,25 @@ async function initTeacherGradebook() {
         settings.elements.name.value = record?.name || '';
         settings.elements.term.value = record?.term || '';
         settings.elements.teacher_id.value = record?.teacher_id || '';
+        const { starts_on, ends_on } = settings.elements;
+        byId('gradebook-start-date-label').hidden = starts_on.disabled = !courseDatesAvailable;
+        byId('gradebook-end-date-label').hidden = ends_on.disabled = !courseDatesAvailable;
+        starts_on.value = record?.starts_on || '';
+        ends_on.value = record?.ends_on || '';
+        updateCourseDateConstraints();
         settings.elements.weighting.value = record?.weighting || 'points';
         settings.elements.missing_is_zero.value = String(record?.missing_is_zero ?? true);
         settings.elements.categories.value = record ? formatGradebookLines(record.categories, record.weighting === 'weighted') : 'General';
         settings.elements.scale.value = formatGradebookLines(record?.scale || GRADEBOOK_DEFAULT_SCALE);
         byId('gradebook-grading-options').open = false;
         updateRuleSummary();
+    }
+
+    function updateCourseDateConstraints() {
+        const { starts_on, ends_on } = settings.elements;
+        starts_on.required = !course || Boolean(ends_on.value);
+        ends_on.required = !course || Boolean(starts_on.value);
+        ends_on.min = starts_on.value || starts_on.min;
     }
 
     function updateRuleSummary() {
@@ -208,7 +222,11 @@ async function initTeacherGradebook() {
     }
 
     async function refreshCourses(selectedId) {
-        courses = data(await portalClient.from('gradebook_courses').select('*').order('term', { ascending: false }).order('name'));
+        const query = fields => portalClient.from('gradebook_courses').select(fields).order('term', { ascending: false }).order('name');
+        let result = await query('id, teacher_id, name, term, weighting, missing_is_zero, categories, scale, starts_on, ends_on');
+        courseDatesAvailable = !result.error;
+        if (['42703', 'PGRST204'].includes(result.error?.code)) result = await query('*');
+        courses = data(result);
         courseSelect.replaceChildren();
         option(courseSelect, 'Select a course', '');
         for (const item of courses) option(courseSelect, `${item.name} · ${item.term}`, item.id);
@@ -562,8 +580,10 @@ async function initTeacherGradebook() {
         const ruleText = course.weighting === 'weighted'
             ? `Weighted categories · ${Object.entries(course.categories).map(([name, weight]) => `${name} ${weight}%`).join(', ')}.`
             : 'Total points.';
+        const dateRange = view.value === 'grades' && course.starts_on && course.ends_on
+            ? `${formatPortalDate(course.starts_on + 'T12:00:00')} – ${formatPortalDate(course.ends_on + 'T12:00:00')}. ` : '';
         rules.textContent = isAssignmentView ? 'Waived work is excluded from the course grade.'
-            : `${ruleText} Missing work ${course.missing_is_zero ? 'counts as zero' : 'is excluded'}. Waived work is excluded.`;
+            : `${dateRange}${ruleText} Missing work ${course.missing_is_zero ? 'counts as zero' : 'is excluded'}. Waived work is excluded.`;
         if (!enrollments.length) {
             appendTextElement(grid, 'p', managesRoster
                 ? 'Add students in Manage roster to start scoring.'
@@ -740,7 +760,26 @@ async function initTeacherGradebook() {
             byId('gradebook-final-options-title').textContent = finalized ? 'Reason for reopening' : 'Override grade';
             const confirm = byId('gradebook-confirm');
             confirm.textContent = finalized ? 'Reopen grade' : 'Finalize grade';
-            confirm.disabled = !finalized && (result.percent == null || Number(result.unresolved) !== 0);
+            const dateStatus = byId('gradebook-final-date-status');
+            const classDatesMissing = !finalized && courseDatesAvailable && !course.ends_on;
+            let waitingForEnd = false;
+            let dateMessage = '';
+            if (classDatesMissing) {
+                dateMessage = 'Set the class dates before finalizing grades.';
+            } else if (!finalized && courseDatesAvailable) {
+                const parts = new Intl.DateTimeFormat('en-US', {
+                    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit'
+                }).formatToParts();
+                const today = ['year', 'month', 'day'].map(type => parts.find(part => part.type === type).value).join('-');
+                waitingForEnd = today <= course.ends_on;
+                if (waitingForEnd) {
+                    dateMessage = `Finalization opens the day after ${formatPortalDate(course.ends_on + 'T12:00:00')} (Eastern time).`;
+                }
+            }
+            dateStatus.hidden = !dateMessage;
+            dateStatus.textContent = dateMessage;
+            byId('gradebook-open-course-dates').hidden = !classDatesMissing;
+            confirm.disabled = !finalized && (classDatesMissing || waitingForEnd || result.percent == null || Number(result.unresolved) !== 0);
             form.elements.reason.required = Boolean(finalized);
             form.elements.override.onchange = () => { form.elements.reason.required = Boolean(form.elements.override.value); };
             const historyList = byId('gradebook-history');
@@ -808,9 +847,17 @@ async function initTeacherGradebook() {
             workspace.hidden = true;
             renderSettings(null);
             settings.elements.name.focus();
-            message('Enter the course name and term. Review the grading rules before saving.');
+            message(courseDatesAvailable ? 'Enter the course name, term, and dates. Review the grading rules before saving.'
+                : 'Enter the course name and term. Review the grading rules before saving.');
         };
 
+        byId('gradebook-open-course-dates').onclick = () => {
+            finalDialog.close();
+            settingsPanel.open = true;
+            settings.elements.starts_on.focus();
+        };
+        settings.elements.starts_on.oninput = updateCourseDateConstraints;
+        settings.elements.ends_on.oninput = updateCourseDateConstraints;
         settings.addEventListener('input', updateRuleSummary);
         settings.addEventListener('invalid', event => {
             if (event.target.closest('#gradebook-grading-options')) byId('gradebook-grading-options').open = true;
@@ -835,6 +882,10 @@ async function initTeacherGradebook() {
                     missing_is_zero: values.missing_is_zero === 'true',
                     ...gradingRules
                 };
+                if (courseDatesAvailable) {
+                    record.starts_on = values.starts_on || null;
+                    record.ends_on = values.ends_on || null;
+                }
                 if (profile.role === 'admin') record.teacher_id = values.teacher_id || profile.id;
                 const table = portalClient.from('gradebook_courses');
                 const request = course ? table.update(record).eq('id', course.id) : table.insert(record);
