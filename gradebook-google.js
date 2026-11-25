@@ -84,7 +84,7 @@ function classroomReturnedScore(submission) {
     };
 }
 
-function initGradebookGoogleImport({ runImport, reload }) {
+function initGradebookGoogleImport({ runImport, reload, canManageRoster, openRoster }) {
     const byId = suffix => document.getElementById('gradebook-google-' + suffix);
     const panel = document.getElementById('gradebook-google');
     const status = byId('status');
@@ -95,6 +95,9 @@ function initGradebookGoogleImport({ runImport, reload }) {
     const workView = byId('work');
     const preview = byId('preview');
     const selectAll = byId('select-all');
+    const rosterButton = byId('open-roster');
+    const importButton = preview.querySelector('button[type="submit"]');
+    const readiness = byId('import-readiness');
     const report = (message, tone) => setPortalMessage(status, message, tone);
     let course;
     let roster = [];
@@ -116,6 +119,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
         rosterView.replaceChildren();
         workView.replaceChildren();
         snapshot = null;
+        readiness.textContent = '';
         selectAll.textContent = 'Select all eligible assignments';
     }
 
@@ -152,7 +156,13 @@ function initGradebookGoogleImport({ runImport, reload }) {
         course = nextCourse;
         roster = nextRoster;
         panel.hidden = !course;
-        if (!changed) return;
+        if (!changed) {
+            if (snapshot) {
+                for (const [id, input] of snapshot.inputs) refreshStudentOptions(id, input);
+                updateImportAvailability();
+            }
+            return;
+        }
         version++;
         classVersion++;
         context = null;
@@ -264,6 +274,37 @@ function initGradebookGoogleImport({ runImport, reload }) {
         } catch (error) { failed(error); }
     };
 
+    function refreshStudentOptions(id, select) {
+        const previous = select.value;
+        const saved = context.matches?.[id];
+        const hasSavedMatch = roster.some(enrollment => enrollment.id === saved);
+        select.replaceChildren();
+        addOption(select, 'Skip this student', '');
+        for (const enrollment of roster) addOption(select, enrollment.name, enrollment.id);
+        select.value = hasSavedMatch ? saved : roster.some(enrollment => enrollment.id === previous) ? previous : '';
+        select.disabled = hasSavedMatch || !roster.length;
+    }
+
+    function updateImportAvailability() {
+        if (!snapshot) return;
+        const matches = [...snapshot.inputs.values()].map(input => input.value).filter(Boolean);
+        const hasSelection = Boolean(preview.querySelector('[name="assignment"]:checked'));
+        let reason = '';
+        if (!roster.length) {
+            reason = canManageRoster()
+                ? 'This Zion course has no students. Open its roster and add students before importing.'
+                : 'This Zion course has no students. Ask a portal administrator to add them before importing.';
+        } else if (!snapshot.inputs.size) reason = 'Google did not return any students for this class.';
+        else if (!snapshot.workItems.length) reason = 'Google did not return any eligible assignments for this class.';
+        else if (!matches.length) reason = 'Match at least one Google student to a Zion student.';
+        else if (new Set(matches).size !== matches.length) reason = 'Choose a different Zion student for each match.';
+        else if (!hasSelection) reason = 'Select at least one assignment.';
+        else if (!preview.elements.category.value) reason = 'Choose a gradebook category.';
+        rosterButton.hidden = Boolean(roster.length) || !canManageRoster();
+        importButton.disabled = Boolean(reason);
+        readiness.textContent = reason;
+    }
+
     function renderPreview(googleStudents, work, submissions) {
         const workItems = work.map(classroomWorkItem).filter(Boolean);
         const workIds = new Set(workItems.map(item => item.source_id));
@@ -280,13 +321,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
         for (const [id, name] of students) {
             const label = appendTextElement(rosterView, 'label', name);
             const select = appendTextElement(label, 'select', '');
-            addOption(select, 'Skip this student', '');
-            for (const enrollment of roster) addOption(select, enrollment.name, enrollment.id);
-            const saved = context.matches?.[id];
-            if (saved && roster.some(enrollment => enrollment.id === saved)) {
-                select.value = saved;
-                select.disabled = true;
-            }
+            refreshStudentOptions(id, select);
             inputs.set(id, select);
         }
 
@@ -322,11 +357,10 @@ function initGradebookGoogleImport({ runImport, reload }) {
         const excluded = work.length - workItems.length;
         byId('exclusions').textContent = excluded ? excluded + ' assignments were excluded because they are ungraded, individually assigned, or outside Zion’s point limits.' : '';
         selectAll.disabled = !workItems.length;
-        preview.querySelector('button[type="submit"]').disabled = !workItems.length || !students.size || !roster.length;
         if (!students.size) appendTextElement(rosterView, 'p', 'Google did not return a student roster.');
-        if (!roster.length) appendTextElement(rosterView, 'p', 'Add students to this Zion course before importing.');
         if (!workItems.length) appendTextElement(workView, 'p', 'No eligible assignments were found.');
         snapshot = { inputs, workItems, scoresByWork, source: googleClasses.get(classInput.value) };
+        updateImportAvailability();
         preview.hidden = false;
     }
 
@@ -362,11 +396,14 @@ function initGradebookGoogleImport({ runImport, reload }) {
 
     panel.addEventListener('toggle', prepare);
     classInput.onchange = loadClass;
+    preview.addEventListener('change', updateImportAvailability);
+    rosterButton.onclick = openRoster;
     selectAll.onclick = () => {
         const choices = [...preview.querySelectorAll('[name="assignment"]')];
         const checked = !choices.every(choice => choice.checked);
         for (const choice of choices) choice.checked = checked;
         selectAll.textContent = checked ? 'Clear assignment selection' : 'Select all eligible assignments';
+        updateImportAvailability();
     };
     preview.onsubmit = event => {
         event.preventDefault();

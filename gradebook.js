@@ -89,7 +89,14 @@ async function initTeacherGradebook() {
     const assignmentButtons = new Map();
     const googleImport = typeof initGradebookGoogleImport === 'function' ? initGradebookGoogleImport({
         runImport: work => requireSavedScores() && run(work),
-        reload: id => loadCourse(id)
+        reload: id => loadCourse(id),
+        canManageRoster: () => managesRoster,
+        openRoster: () => {
+            const rosterPanel = byId('gradebook-roster-management');
+            if (rosterPanel.hidden) return;
+            rosterPanel.open = true;
+            enrollmentForm.elements.student_id.focus();
+        }
     }) : null;
     const scoreForm = scoreDialog.querySelector('form');
     const marks = new Map();
