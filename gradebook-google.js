@@ -1,10 +1,10 @@
 'use strict';
 
-const CLASSROOM_READ_SCOPES = [
-    'classroom.courses.readonly',
-    'classroom.rosters.readonly',
-    'classroom.coursework.students.readonly'
-].map(scope => 'https://www.googleapis.com/auth/' + scope);
+const CLASSROOM_READ_PERMISSIONS = [
+    ['classroom.courses.readonly', 'classes'],
+    ['classroom.rosters.readonly', 'rosters'],
+    ['classroom.coursework.students.readonly', 'coursework and grades']
+].map(([scope, label]) => ({ scope: 'https://www.googleapis.com/auth/' + scope, label }));
 
 let classroomIdentityLoad;
 function loadClassroomIdentity() {
@@ -150,6 +150,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
         picker.hidden = true;
         clearPreview();
         connect.disabled = true;
+        connect.textContent = 'Connect Google Classroom';
         report('');
         if (!course) panel.open = false;
         else if (panel.open) void prepare();
@@ -190,6 +191,10 @@ function initGradebookGoogleImport({ runImport, reload }) {
         picker.hidden = true;
         clearPreview();
         connect.disabled = true;
+        report('Complete Google’s permission screen, then return to the gradebook.');
+        function requestPermissionReview() {
+            connect.textContent = 'Review Google permissions';
+        }
         function failed(error) {
             if (turn !== version) return;
             report(error.message || 'The Google connection was interrupted. Try connecting again.', 'error');
@@ -199,15 +204,35 @@ function initGradebookGoogleImport({ runImport, reload }) {
             const oauth = window.google.accounts.oauth2;
             const client = oauth.initTokenClient({
                 client_id: context.client_id,
-                scope: CLASSROOM_READ_SCOPES.join(' '),
+                scope: CLASSROOM_READ_PERMISSIONS.map(permission => permission.scope).join(' '),
                 include_granted_scopes: false,
-                error_callback: () => failed(new Error('The Google sign-in window closed or could not open. Try again.')),
+                error_callback: error => {
+                    if (turn !== version) return;
+                    requestPermissionReview();
+                    failed(new Error(error.type === 'popup_failed_to_open'
+                        ? 'Your browser blocked the Google window. Allow pop-ups for zionoutschool.com and try again.'
+                        : 'The Google window closed before returning permissions. Choose Review Google permissions to open it again.'));
+                },
                 callback: async response => {
                     if (turn !== version) return;
-                    if (response.error || !response.access_token || !oauth.hasGrantedAllScopes(response, ...CLASSROOM_READ_SCOPES)) {
-                        failed(new Error('Grant read access to classes, rosters and coursework to continue.'));
+                    if (response.error === 'access_denied') {
+                        requestPermissionReview();
+                        failed(new Error('Google denied access. Review the permissions with the Google account that teaches the class.'));
                         return;
                     }
+                    if (response.error || !response.access_token) {
+                        const code = /^[a-z0-9_]{1,50}$/.test(response.error ?? '') ? ' (' + response.error + ')' : '';
+                        failed(new Error('Google sign-in did not finish' + code + '. Try again or share this message with your portal administrator.'));
+                        return;
+                    }
+                    const missing = CLASSROOM_READ_PERMISSIONS.filter(permission =>
+                        !oauth.hasGrantedAllScopes(response, permission.scope)).map(permission => permission.label);
+                    if (missing.length) {
+                        requestPermissionReview();
+                        failed(new Error('Google did not grant access to ' + missing.join(', ') + '. Choose Review Google permissions to try again.'));
+                        return;
+                    }
+                    connect.textContent = 'Connect Google Classroom';
                     sessionToken = response.access_token;
                     report('Loading classes from Google…');
                     try { await loadClasses(sessionToken, turn); }
@@ -215,7 +240,7 @@ function initGradebookGoogleImport({ runImport, reload }) {
                     finally { if (turn === version) connect.disabled = false; }
                 }
             });
-            client.requestAccessToken({ prompt: 'select_account' });
+            client.requestAccessToken({ prompt: 'select_account consent' });
         } catch (error) { failed(error); }
     };
 
