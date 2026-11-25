@@ -32,6 +32,7 @@ type Delivery = {
   post_kind: string | null;
   attempts: number;
   review_id?: string;
+  grade_update?: boolean;
 };
 type NewsletterIssue = { id: string; entries: NewsletterEntry[] };
 type NewsletterContent = ReturnType<typeof renderNewsletter>;
@@ -85,9 +86,14 @@ async function send(delivery: Delivery, newsletter?: NewsletterContent): Promise
     inbox.pathname = "/registration-review.html";
     inbox.search = new URLSearchParams({ request: delivery.review_id }).toString();
     inbox.hash = "";
+  } else if (delivery.grade_update) {
+    inbox.pathname = "/grade-reports.html";
+    inbox.search = "";
+    inbox.hash = "";
   } else if (delivery.post_kind) inbox.hash = "school-updates";
   else inbox.hash = "student-messages";
   const text = [delivery.body, "ZION outSchool Family Portal: " + inbox.href];
+  if (delivery.grade_update) text.push("Change grade email preferences: " + inbox.href + "#grade-email-settings");
   if (delivery.token) text.push("Reply to this email to add your response to the student conversation.");
 
   const endpoint = "https://api.cloudflare.com/client/v4/accounts/" +
@@ -124,6 +130,26 @@ async function send(delivery: Delivery, newsletter?: NewsletterContent): Promise
   }
 }
 
+async function deliverGradeAlerts() {
+  const { data, error } = await server.rpc("gradebook_claim_alerts");
+  if (error) return { processed: 0, ok: error.code === "PGRST202" };
+  let processed = 0;
+  for (const row of (data ?? []) as Pick<Delivery, "id" | "attempts">[]) {
+    const claim = { delivery_id: row.id, claim_attempt: row.attempts };
+    const { data: audience, error } = await server.rpc("gradebook_alert_recipient", claim)
+      .maybeSingle<{ recipient: string; course_count: number }>();
+    const scope = audience?.course_count === 1 ? "one class" : `${audience?.course_count} classes`;
+    const result = error ? { state: "pending" } : !audience ? { state: "cancelled" } : await send({
+      ...row, recipient: audience.recipient, grade_update: true, token: null, post_kind: null,
+      subject: "New grade updates in the Zion Family Portal",
+      body: `Grade Reports has updates for ${scope}. Sign in to see the latest assignment results, teacher feedback, and class grades.`,
+    });
+    const completion = await server.rpc("gradebook_finish_alert", { ...claim, result_state: result.state });
+    if (!completion.error) processed++;
+  }
+  return { processed, ok: processed === data?.length };
+}
+
 async function deliver() {
   if (!/^[0-9a-f]{32}$/.test(settings.cloudflareAccount) || !settings.cloudflareToken ||
     !mailbox.test(settings.from) || !replyMailboxIsConfigured()) {
@@ -138,6 +164,7 @@ async function deliver() {
   const publishing = await server.rpc("newsletter_publish_due");
   const { data, error } = await server.rpc("communication_claim_delivery");
   if (error) return json({ error: "Unable to load pending emails." }, 503);
+  const alertJob = deliverGradeAlerts().catch(() => ({ processed: 0, ok: false }));
   let recorded = 0;
   const newsletters = new Map<string, NewsletterContent>();
   for (const row of (data ?? []) as Delivery[]) {
@@ -165,7 +192,10 @@ async function deliver() {
     if (!completion.error) recorded++;
   }
   const reviews = await server.rpc("registration_claim_notifications");
-  if (reviews.error) return json({ error: "Unable to load registration review notices." }, 503);
+  if (reviews.error) {
+    await alertJob;
+    return json({ error: "Unable to load registration review notices." }, 503);
+  }
   let reviewCount = 0;
   for (const row of reviews.data ?? []) {
     const result = await send({
@@ -178,8 +208,11 @@ async function deliver() {
     });
     if (!completion.error) reviewCount++;
   }
-  return json({ processed: recorded + reviewCount, ...(publishing.error ? { error: "Unable to publish the weekly newsletter." } : {}) },
-    !publishing.error && recorded === data?.length && reviewCount === reviews.data?.length ? 200 : 503);
+  const alerts = await alertJob;
+  return json({ processed: recorded + reviewCount + alerts.processed,
+    ...(publishing.error ? { error: "Unable to publish the weekly newsletter." } : {}),
+    ...(!alerts.ok ? { gradeAlertError: "Unable to complete grade email delivery." } : {}) },
+    !publishing.error && recorded === data?.length && reviewCount === reviews.data?.length && alerts.ok ? 200 : 503);
 }
 
 async function inbound(request: Request) {

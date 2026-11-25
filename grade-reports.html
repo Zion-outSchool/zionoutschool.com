@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css?v=no-announcement-20261009">
     <link rel="icon" type="image/png" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://assets.zionoutschool.com/assets/images/favicon.ico">
-    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="portal-theme.css?v=family-grade-updates-1">
 </head>
 <body class="zion-portal editorial-page portal-page grade-reports-page" data-portal-page-role="active">
 <header class="portal-topbar">
@@ -29,13 +29,31 @@
     <div class="container">
         <div class="portal-page-intro">
             <h1>Grade Reports</h1>
-            <p>Published grades, teacher feedback, and graduation progress for your family.</p>
+            <p>Current grades, teacher feedback, and graduation progress for your family.</p>
         </div>
 
         <section class="family-grade-section" data-graduation-progress-view hidden aria-labelledby="family-course-grades-title">
             <h2 id="family-course-grades-title">Course grades</h2>
             <p class="portal-inline-status" data-graduation-progress-status role="status"></p>
             <div class="family-grade-cards" data-graduation-planner-readonly></div>
+        </section>
+
+        <section id="grade-email-settings" class="family-grade-section" data-grade-alerts hidden aria-labelledby="family-grade-alerts-title">
+            <h2 id="family-grade-alerts-title">Grade emails</h2>
+            <form class="family-grade-card" data-grade-alerts-form>
+                <p>Get an email when grades are posted or updated. Sign in here to see the details.</p>
+                <div class="family-grade-alert-controls">
+                    <label>How often
+                        <select name="frequency" disabled>
+                            <option value="off">Off</option>
+                            <option value="as_posted">As grades post</option>
+                            <option value="daily">Daily summary</option>
+                        </select>
+                    </label>
+                    <button type="submit" disabled>Save email preference</button>
+                </div>
+                <p class="portal-form-status" data-grade-alerts-status role="status"></p>
+            </form>
         </section>
 
         <section class="family-grade-section" aria-labelledby="published-reports-title">
@@ -48,6 +66,6 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-portal.js?v=grade-views-1"></script>
+<script src="supabase-portal.js?v=family-grade-updates-1"></script>
 </body>
 </html>

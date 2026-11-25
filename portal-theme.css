@@ -347,3 +347,75 @@
 .zion-portal.grade-reports-page .grade-report-student-heading { background: var(--portal-warm); }
 .zion-portal.grade-reports-page .grade-report-student-heading > span { color: var(--portal-muted); }
 .zion-portal.grade-reports-page .grade-report-item a { color: var(--portal-action-hover); }
+
+.zion-portal.grade-reports-page .family-grade-group-label {
+    margin: .85rem 0 .45rem;
+    color: var(--portal-action-hover);
+    font: 700 .95rem/1.4 var(--portal-sans);
+}
+.zion-portal.grade-reports-page :is(.family-grade-courses, .family-grade-assignments) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.zion-portal.grade-reports-page .family-grade-courses > li {
+    padding-block: .75rem;
+    border-top: 1px solid var(--portal-line);
+    overflow-wrap: anywhere;
+}
+.zion-portal.grade-reports-page :is(.family-grade-course-heading, .family-grade-assignment-row) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .55rem 1rem;
+}
+.zion-portal.grade-reports-page .family-grade-course-heading h5 {
+    margin: 0;
+    color: var(--portal-ink);
+    font: 700 1.08rem/1.35 var(--portal-sans);
+}
+.zion-portal.grade-reports-page .family-grade-recent-label {
+    margin-block: .6rem .2rem;
+    font-size: .9rem;
+    font-weight: 650;
+}
+.zion-portal.grade-reports-page .family-grade-assignments > li {
+    padding-block: .4rem;
+    border-bottom: 1px solid var(--portal-line);
+}
+.zion-portal.grade-reports-page .family-grade-assignments {
+    margin-block: .25rem .5rem;
+    font-size: .92rem;
+}
+.zion-portal.grade-reports-page .family-grade-assignment-row > span {
+    flex-shrink: 0;
+    color: var(--portal-ink);
+    font-variant-numeric: tabular-nums;
+}
+.zion-portal.grade-reports-page .family-grade-assignment-feedback { white-space: pre-wrap; }
+.zion-portal.grade-reports-page .family-grade-alert-controls {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: .65rem 1rem;
+    margin-top: .6rem;
+}
+.zion-portal.grade-reports-page .family-grade-alert-controls select { display: block; }
+.zion-portal.grade-reports-page :is(.family-grade-details > button, .family-grade-alert-controls button) {
+    min-height: 42px;
+    padding: .55rem .85rem;
+    border: 1px solid var(--portal-action);
+    border-radius: .4rem;
+    color: var(--portal-action-hover);
+    background: var(--portal-paper);
+    font: 650 .93rem/1.35 var(--portal-sans);
+    cursor: pointer;
+}
+.zion-portal.grade-reports-page .family-grade-alert-controls button[type="submit"] {
+    color: white;
+    background: var(--portal-action);
+}
+.zion-portal.grade-reports-page .family-grade-alert-controls button[type="submit"]:hover:not(:disabled) {
+    background: var(--portal-action-hover);
+}
+.zion-portal.grade-reports-page [role="status"]:empty { display: none; }

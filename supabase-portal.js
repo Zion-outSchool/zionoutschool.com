@@ -820,14 +820,115 @@ async function initStudentFileForm(profile, onStudentCreated) {
     });
 }
 
-function renderFamilyCourseCard(student, records, feedbackResult) {
+function renderFamilyAssignmentList(parent, assignments, { showFeedback = false } = {}) {
+    const list = appendTextElement(parent, 'ul', '', 'family-grade-assignments');
+    const number = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+    const status = { missing: 'Missing', excused: 'Waived', ungraded: 'Feedback posted' };
+    for (const assignment of assignments) {
+        const item = appendTextElement(list, 'li', '');
+        const row = appendTextElement(item, 'div', '', 'family-grade-assignment-row');
+        const title = appendTextElement(row, 'div', '');
+        appendTextElement(title, 'strong', assignment.title);
+        if (assignment.due_on) appendTextElement(title, 'p', `Due ${formatPortalDate(assignment.due_on + 'T00:00:00')}`);
+        appendTextElement(row, 'span', assignment.state === 'scored'
+            ? `${number.format(assignment.score)} / ${number.format(assignment.points)}`
+            : status[assignment.state]);
+        if (showFeedback && assignment.family_feedback?.trim()) {
+            appendTextElement(item, 'p', assignment.family_feedback, 'family-grade-assignment-feedback');
+        }
+    }
+}
+
+function renderFamilyCourseAssignments(courseItem, course, isCurrent) {
+    const recent = appendTextElement(courseItem, 'div', '');
+    appendTextElement(recent, 'p', 'Recent assignments', 'family-grade-recent-label');
+    renderFamilyAssignmentList(recent, course.recent_assignments);
+    const details = appendTextElement(courseItem, 'details', '', 'family-grade-details');
+    appendTextElement(details, 'summary', 'All posted assignments and feedback');
+    const results = appendTextElement(details, 'div', '');
+    const status = appendTextElement(details, 'p', '');
+    status.setAttribute('role', 'status');
+    const more = appendTextElement(details, 'button', 'Load more assignments');
+    more.type = 'button';
+    more.hidden = true;
+    const pageSize = 50;
+    let offset = 0;
+    let loading = false;
+
+    async function loadAssignments() {
+        if (loading) return;
+        loading = more.disabled = true;
+        setPortalMessage(status, 'Loading assignments…');
+        try {
+            const { data, error } = await portalClient.rpc('gradebook_family_assignments', {
+                target_enrollment: course.enrollment_id, page_offset: offset
+            });
+            if (!isCurrent()) return;
+            if (error) throw error;
+            const page = data.slice(0, pageSize);
+            renderFamilyAssignmentList(results, page, { showFeedback: true });
+            offset += page.length;
+            more.textContent = 'Load more assignments';
+            more.hidden = data.length <= pageSize;
+            setPortalMessage(status, offset ? '' : 'No posted assignments.');
+        } catch {
+            if (!isCurrent()) return;
+            setPortalMessage(status, 'Assignments couldn’t load. Try again.', 'error');
+            more.hidden = false;
+            more.textContent = 'Retry loading assignments';
+        } finally {
+            loading = more.disabled = false;
+        }
+    }
+
+    details.addEventListener('toggle', () => {
+        recent.hidden = details.open;
+        if (details.open && offset === 0 && more.hidden) void loadAssignments();
+    });
+    more.onclick = loadAssignments;
+}
+
+function renderFamilyCourseGroups(section, courses, isCurrent) {
+    if (!courses.length) {
+        appendTextElement(section, 'p', 'No classes have been added for this student.');
+        return;
+    }
+    const number = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+    for (const finalized of [false, true]) {
+        const group = courses.filter(course => course.finalized === finalized);
+        if (!group.length) continue;
+        appendTextElement(section, 'h4', finalized ? 'Final grades' : 'Current classes', 'family-grade-group-label');
+        const list = appendTextElement(section, 'ul', '', 'family-grade-courses');
+        for (const course of group) {
+            const item = appendTextElement(list, 'li', '');
+            const heading = appendTextElement(item, 'div', '', 'family-grade-course-heading');
+            const title = appendTextElement(heading, 'div', '');
+            appendTextElement(title, 'h5', course.course_name);
+            const credits = Number(course.earned_credits);
+            const metadata = [course.term, course.earned_credits != null && `${number.format(credits)} ${credits === 1 ? 'credit' : 'credits'}`].filter(Boolean);
+            if (metadata.length) appendTextElement(title, 'p', metadata.join(' · '));
+            const grade = [course.letter, !finalized && course.percent != null && `${number.format(course.percent)}%`].filter(Boolean).join(' · ');
+            appendTextElement(heading, 'span', grade || 'No grade yet', 'family-final-grade');
+            if (course.recent_assignments.length) renderFamilyCourseAssignments(item, course, isCurrent);
+            else appendTextElement(item, 'p', 'No posted assignments yet.');
+        }
+    }
+}
+
+function renderFamilyCourseCard(student, records, courseResult, feedbackResult, isCurrent) {
     const section = document.createElement('section');
     section.className = 'family-grade-card';
     const header = appendTextElement(section, 'div', '', 'family-grade-student-heading');
     appendTextElement(header, 'h3', normalizeStudentName(student));
     if (student.grade_level) appendTextElement(header, 'p', student.grade_level === 'K' ? 'Kindergarten' : `Grade ${student.grade_level}`);
 
-    if (records.finalCourses.length) {
+    if (!courseResult.error) {
+        renderFamilyCourseGroups(section, courseResult.data ?? [], isCurrent);
+    } else {
+        appendTextElement(section, 'p', 'Current grades are temporarily unavailable.');
+    }
+
+    if (courseResult.error && records.finalCourses.length) {
         const courses = appendTextElement(section, 'ul', '', 'family-final-courses');
         for (const course of records.finalCourses) {
             const item = appendTextElement(courses, 'li', '');
@@ -840,7 +941,7 @@ function renderFamilyCourseCard(student, records, feedbackResult) {
             appendTextElement(grade, 'span', 'Final grade ', 'family-grade-sr-only');
             grade.append(course.final_grade);
         }
-    } else {
+    } else if (courseResult.error) {
         appendTextElement(section, 'p', records.finalError ? 'Course grades couldn’t load. Try refreshing the page.'
             : 'No course grades have been finalized yet.');
     }
@@ -896,12 +997,15 @@ async function renderFamilyGraduationProgress(session, isCurrent) {
         }
 
         const cards = await Promise.all(students.map(async student => {
-            const records = await loadGraduationRecords(student.id, { allowPartial: true });
+            const [records, courses] = await Promise.all([
+                loadGraduationRecords(student.id, { allowPartial: true }),
+                portalClient.rpc('gradebook_family_courses', { target_student: student.id })
+            ]);
             if (!isCurrent()) return null;
-            const feedback = records.finalCourses.length
+            const feedback = courses.error && records.finalCourses.length
                 ? await portalClient.rpc('gradebook_family_feedback', { target_student: student.id }) : {};
             if (!isCurrent()) return null;
-            return renderFamilyCourseCard(student, records, feedback);
+            return renderFamilyCourseCard(student, records, courses, feedback, isCurrent);
         }));
         if (!isCurrent()) return;
         container.replaceChildren(...cards.filter(Boolean));
@@ -913,6 +1017,45 @@ async function renderFamilyGraduationProgress(session, isCurrent) {
     }
 }
 
+async function renderFamilyGradeAlerts(isCurrent) {
+    const section = document.querySelector('[data-grade-alerts]');
+    const form = section.querySelector('form');
+    const frequency = form.elements.frequency;
+    const submit = form.querySelector('button');
+    const status = section.querySelector('[data-grade-alerts-status]');
+    section.hidden = false;
+    frequency.disabled = submit.disabled = true;
+    frequency.value = 'off';
+    setPortalMessage(status, 'Loading email preference…');
+    try {
+        const { data, error } = await portalClient.rpc('gradebook_family_alert_preference');
+        if (!isCurrent()) return;
+        if (error) throw error;
+        frequency.value = data;
+        frequency.disabled = submit.disabled = false;
+        setPortalMessage(status, '');
+    } catch {
+        if (isCurrent()) setPortalMessage(status, 'Grade email settings are temporarily unavailable.', 'error');
+        return;
+    }
+
+    form.onsubmit = async event => {
+        event.preventDefault();
+        if (!isCurrent() || submit.disabled) return;
+        frequency.disabled = submit.disabled = true;
+        setPortalMessage(status, 'Saving email preference…');
+        try {
+            const { error } = await portalClient.rpc('gradebook_family_set_alert_preference', { new_frequency: frequency.value });
+            if (error) throw error;
+            if (isCurrent()) setPortalMessage(status, 'Email preference saved.', 'success');
+        } catch {
+            if (isCurrent()) setPortalMessage(status, 'Email preference couldn’t be saved. Try again.', 'error');
+        } finally {
+            if (isCurrent()) frequency.disabled = submit.disabled = false;
+        }
+    };
+}
+
 let gradeReportVersion = 0;
 
 async function renderFamilyGradeReportPage(session, profile) {
@@ -921,17 +1064,25 @@ async function renderFamilyGradeReportPage(session, profile) {
     const reports = document.querySelector('[data-grade-reports-list]');
     const empty = document.querySelector('[data-grade-reports-empty]');
     const progressView = document.querySelector('[data-graduation-progress-view]');
+    const alerts = document.querySelector('[data-grade-alerts]');
 
     reports?.replaceChildren();
     if (empty) empty.hidden = true;
     if (progressView) progressView.hidden = true;
+    if (alerts) {
+        alerts.hidden = true;
+        alerts.querySelector('form').onsubmit = null;
+    }
     document.querySelector('[data-graduation-planner-readonly]')?.replaceChildren();
     const jobs = [renderGradeReports(session, profile, isCurrent).catch(error => {
         if (!isCurrent()) return;
         console.error('Unable to load published reports:', error);
         setPortalMessage(document.querySelector('[data-grade-reports-status]'), 'Published reports couldn’t load. Try refreshing the page.', 'error');
     })];
-    if (profile.role === 'family') jobs.push(renderFamilyGraduationProgress(session, isCurrent));
+    if (profile.role === 'family') {
+        jobs.push(renderFamilyGraduationProgress(session, isCurrent));
+        if (alerts) jobs.push(renderFamilyGradeAlerts(isCurrent));
+    }
     await Promise.all(jobs);
 }
 
@@ -1120,7 +1271,13 @@ async function initPortalAuth() {
         const validReview = review && /^[a-f0-9-]{36}$/i.test(review);
         const newsletter = window.location.search && new URLSearchParams(window.location.search).get('newsletter');
         const validNewsletter = newsletter && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(newsletter);
+        const gradeLink = window.location.search && new URLSearchParams(window.location.search).get('grade-reports');
+        const returnToGrades = gradeLink === 'view' || gradeLink === 'emails';
         if (!requiredRole) {
+            if (unavailable && returnToGrades && profile?.active && profile.role === 'family') {
+                window.location.replace('grade-reports.html' + (gradeLink === 'emails' ? '#grade-email-settings' : ''));
+                return;
+            }
             if (unavailable && validNewsletter && profile?.active) {
                 window.location.replace('portal-communications.html?newsletter=' + encodeURIComponent(newsletter) + '#newsletters');
                 return;
@@ -1134,10 +1291,13 @@ async function initPortalAuth() {
             if (gradeReportPage) gradeReportVersion++;
             if (page) page.hidden = true;
             if (pageSignOut) pageSignOut.hidden = true;
-            const next = !session && document.body.dataset.portalRegistrationReview && validReview
+            let next = !session && document.body.dataset.portalRegistrationReview && validReview
                 ? 'family-portal.html?registration-review=' + encodeURIComponent(review)
                 : !session && document.body.dataset.portalNewsletter && validNewsletter
                     ? 'family-portal.html?newsletter=' + encodeURIComponent(newsletter) : 'family-portal.html';
+            if (!session && gradeReportPage) {
+                next += '?grade-reports=' + (window.location.hash === '#grade-email-settings' ? 'emails' : 'view');
+            }
             window.location.replace(next);
             return;
         }
@@ -1146,7 +1306,13 @@ async function initPortalAuth() {
         if (displayedUser === session.user.id && displayedRole === profile.role) return;
         displayedUser = session.user.id;
         displayedRole = profile.role;
-        if (gradeReportPage) void renderFamilyGradeReportPage(session, profile);
+        if (gradeReportPage) {
+            void renderFamilyGradeReportPage(session, profile).then(() => {
+                if (window.location.hash === '#grade-email-settings' && !page.hidden) {
+                    document.getElementById('grade-email-settings')?.scrollIntoView();
+                }
+            });
+        }
         if (document.body.classList.contains('graduation-planner-page')) void initGraduationPlanner(profile);
     }
 
