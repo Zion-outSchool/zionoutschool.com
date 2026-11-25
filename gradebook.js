@@ -1,6 +1,7 @@
 /* global portalClient, getPortalSession, getPortalProfile,
     appendTextElement, setPortalMessage, normalizeStudentName, loadPlannerStudents,
-    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate, portalActionMessage */
+    GRADUATION_GRADES, GRADUATION_REQUIREMENTS, formatPortalDate, portalActionMessage,
+    createMathStandardsPicker, loadMathStandardsCatalog */
 
 const GRADEBOOK_DEFAULT_SCALE = { A: 90, B: 80, C: 70, D: 60, F: 0 };
 const GRADEBOOK_GRADE_LEVELS = ['K', ...Array.from({ length: 12 }, (_, index) => String(index + 1))];
@@ -88,6 +89,13 @@ async function initTeacherGradebook() {
     const view = byId('gradebook-view');
     const scoringAssignment = byId('gradebook-scoring-assignment');
     const assignmentPanel = byId('gradebook-assignment-management');
+    const alignment = byId('gradebook-math-alignment');
+    const alignmentPicker = byId('gradebook-math-picker');
+    const alignmentSave = byId('gradebook-math-save');
+    const alignmentStatus = byId('gradebook-math-status');
+    let alignmentAssignment;
+    let alignmentVersion = 0;
+    let standardsPicker;
     const studentFilter = byId('gradebook-student-filter');
     const assignmentList = byId('gradebook-assignment-list');
     const assignmentButtons = new Map();
@@ -208,6 +216,60 @@ async function initTeacherGradebook() {
         fields.rubric.value = assignment ? formatGradebookLines(assignment.rubric) : '';
         byId('gradebook-duplicate-assignment').disabled = !assignment;
         byId('gradebook-assignment-options').open = false;
+        configureMathAlignment(assignment?.id);
+    }
+
+    function configureMathAlignment(id) {
+        if (!alignment) return;
+        ++alignmentVersion;
+        alignmentAssignment = id;
+        standardsPicker = null;
+        alignment.open = false;
+        alignment.hidden = !id;
+        alignmentPicker.replaceChildren();
+        alignmentSave.disabled = true;
+        setPortalMessage(alignmentStatus, '');
+    }
+
+    if (alignment) {
+        alignment.ontoggle = async () => {
+            if (!alignment.open || !alignmentAssignment || standardsPicker) return;
+            const version = ++alignmentVersion;
+            setPortalMessage(alignmentStatus, 'Loading math standards…');
+            try {
+                const [catalog, result] = await Promise.all([
+                    loadMathStandardsCatalog(),
+                    portalClient.rpc('k8_math_assignment', { target_assignment: alignmentAssignment })
+                ]);
+                if (version !== alignmentVersion) return;
+                if (result.error) throw result.error;
+                const grades = new Set(enrollments.map(item => item.grade_level));
+                standardsPicker = createMathStandardsPicker(catalog, result.data, grades.size === 1 ? [...grades][0] : 'K');
+                alignmentPicker.replaceChildren(standardsPicker.element);
+                alignmentSave.disabled = false;
+                setPortalMessage(alignmentStatus, '');
+            } catch (error) {
+                if (version === alignmentVersion) setPortalMessage(alignmentStatus,
+                    portalActionMessage(error, 'load math standards', 'Close and reopen the standards editor to try again.'), 'error');
+            }
+        };
+        alignmentSave.onclick = async () => {
+            if (!standardsPicker || alignmentSave.disabled) return;
+            const version = alignmentVersion;
+            alignmentSave.disabled = true;
+            try {
+                const { error } = await portalClient.rpc('k8_math_assignment', {
+                    target_assignment: alignmentAssignment, p_codes: standardsPicker.selected()
+                });
+                if (error) throw error;
+                if (version === alignmentVersion) setPortalMessage(alignmentStatus, 'Math standards saved.', 'success');
+            } catch (error) {
+                if (version === alignmentVersion) setPortalMessage(alignmentStatus,
+                    portalActionMessage(error, 'save math standards', 'Check the standards and try again.'), 'error');
+            } finally {
+                if (version === alignmentVersion) alignmentSave.disabled = false;
+            }
+        };
     }
 
     async function loadSavedMarks(courseId) {
@@ -281,6 +343,7 @@ async function initTeacherGradebook() {
         fields.assignment_id.replaceChildren();
         option(fields.assignment_id, 'New assignment', '');
         for (const assignment of assignments) option(fields.assignment_id, assignment.title, assignment.id);
+        if (assignments.some(assignment => assignment.id === assignmentId)) fields.assignment_id.value = assignmentId;
         fields.category.replaceChildren();
         for (const category of Object.keys(course.categories)) option(fields.category, category, category);
         const copyCourse = byId('gradebook-copy-course');
@@ -1013,6 +1076,7 @@ async function initTeacherGradebook() {
             if (!source) return;
             const fields = assignmentForm.elements;
             fields.assignment_id.value = '';
+            configureMathAlignment();
             fields.title.value = source.title;
             fields.category.value = Object.hasOwn(course.categories, source.category) ? source.category : Object.keys(course.categories)[0];
             fields.due_on.value = '';
@@ -1024,6 +1088,7 @@ async function initTeacherGradebook() {
         byId('gradebook-duplicate-assignment').onclick = () => {
             if (!assignmentForm.elements.assignment_id.value) return;
             assignmentForm.elements.assignment_id.value = '';
+            configureMathAlignment();
             assignmentForm.elements.title.value = `${assignmentForm.elements.title.value} copy`.slice(0, 120);
             assignmentForm.elements.due_on.value = '';
             byId('gradebook-duplicate-assignment').disabled = true;

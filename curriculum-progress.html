@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>Curriculum Progress | Zion outSchool</title>
+    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="middle-school.css">
+    <link rel="stylesheet" href="curriculum-tracker.css">
+</head>
+<body class="zion-portal ms-page" data-portal-page-role="family" data-curriculum-view="family">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html"><span>Family Portal</span><small>Zion outSchool</small></a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="family-portal.html">Back to Family Portal</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
+    </header>
+    <main class="ms-main ct-main" data-portal-page-content hidden>
+        <header class="ms-page-heading"><h1>Curriculum Progress</h1></header>
+        <nav class="ms-tabs" id="ct-workspace" aria-label="Curriculum workspace" hidden></nav>
+        <div class="ct-selectors" id="ct-selectors"></div>
+        <p id="ct-status" role="status" aria-live="polite">Checking your sign-in…</p>
+        <div id="ct-content"></div>
+    </main>
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="supabase-portal.js?v=curriculum-tracker-1"></script>
+    <script defer src="curriculum-tracker.js"></script>
+</body>
+</html>

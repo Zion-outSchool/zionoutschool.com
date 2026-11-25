@@ -16,6 +16,15 @@ with checks(feature, live) as (
       ('Family current grades and grade alerts',
         to_regprocedure('public.gradebook_family_courses(uuid)') is not null
         and to_regclass('public.gradebook_alert_events') is not null),
+      ('K–8 Learning Record and math standards',
+        to_regprocedure('public.middle_school(text,jsonb)') is not null
+        and to_regprocedure('public.ms_high_school_courses(uuid)') is not null
+        and to_regclass('public.k8_math_standards') is not null),
+      ('Curriculum tracker and yearly proficiency settings',
+        to_regprocedure('public.curriculum_tracker(text,jsonb)') is not null
+        and to_regclass('public.ct_year_settings') is not null
+        and to_regclass('public.ct_marks') is not null
+        and to_regclass('public.ct_reports') is not null),
       ('Class dates and finalization rule', exists (
             select 1 from pg_trigger where tgname='gradebook_check_finalization_date' and tgenabled <> 'D'
         ) and (select count(*)=2 from information_schema.columns where table_schema='public'

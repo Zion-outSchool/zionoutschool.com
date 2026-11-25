@@ -7,6 +7,7 @@
     <title>Teacher Gradebook | ZION outSchool</title>
     <link rel="stylesheet" href="gradebook.css?v=course-deletion-1">
     <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="math-standards.css">
 </head>
 <body class="zion-portal teacher-gradebook" data-portal-page-role="gradebook">
     <header class="portal-topbar">
@@ -28,6 +29,7 @@
         <p id="gradebook-login" hidden><a href="family-portal.html">Sign in through the Family Portal</a></p>
 
         <div id="gradebook" hidden>
+            <p><a href="curriculum-tracker.html">Open Curriculum &amp; Standards</a></p>
             <div class="gradebook-toolbar">
                 <label>Course and term <select id="gradebook-course"></select></label>
                 <button type="button" id="gradebook-new-course" class="gradebook-secondary">New course</button>
@@ -136,6 +138,13 @@
                             </details>
                             <button type="submit">Save assignment</button>
                         </form>
+                        <details id="gradebook-math-alignment" hidden>
+                            <summary>Math standards for this assignment</summary>
+                            <p>Choose the levels this work addresses. Alignment is recorded separately from scores.</p>
+                            <div id="gradebook-math-picker"></div>
+                            <button type="button" id="gradebook-math-save" disabled>Save standards</button>
+                            <p id="gradebook-math-status" role="status"></p>
+                        </details>
                     </details>
                 </div>
             </div>
@@ -252,7 +261,8 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-portal.js?v=staff-actions-1"></script>
+    <script src="math-standards.js"></script>
     <script src="gradebook-google.js?v=refresh-1"></script>
-    <script src="gradebook.js?v=course-dates-1"></script>
+    <script src="gradebook.js?v=k8-standards-1"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+.zion-portal .math-standards-picker {
+    min-width: 0;
+    margin: .65rem 0;
+    font: .9rem/1.5 var(--portal-sans);
+}
+.math-standards-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+    gap: .6rem;
+}
+.zion-portal .math-standards-filters label { display: grid; gap: .25rem; min-width: 0; }
+.zion-portal .math-standards-filters :is(input,select) { width: 100%; min-width: 0; }
+.math-standards-sources { display: flex; flex-wrap: wrap; gap: .35rem 1rem; margin: .6rem 0; }
+.math-standards-selected { color: var(--portal-muted); overflow-wrap: anywhere; }
+.math-standards-list {
+    max-height: 15rem;
+    overflow-y: auto;
+    border: 1px solid var(--portal-line);
+    border-radius: .4rem;
+    padding: .38rem .55rem;
+    background: var(--portal-paper);
+}
+.zion-portal .math-standards-list .math-standards-option {
+    display: grid;
+    grid-template-columns: auto minmax(0,1fr);
+    align-items: start;
+    gap: .45rem;
+    padding: .3rem .15rem;
+    line-height: 1.35;
+    font-size: .88rem;
+    font-weight: 500;
+}
+.zion-portal .math-standards-option input { width: auto; margin: .23rem 0 0; }
+.ms-math-topics { margin: .25rem 0 .65rem; }
+.ms-math-topics > ul { margin: .25rem 0 .35rem; padding-inline-start: 1.2rem; }

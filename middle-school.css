@@ -1,0 +1,57 @@
+.ms-page { font: 1rem/1.52 var(--portal-sans); }
+.ms-page *, .ms-page *::before, .ms-page *::after { box-sizing: border-box; }
+.ms-main { max-width: 78rem; margin: auto; padding: clamp(1.5rem, 4vw, 3rem) var(--portal-gutter) 4rem; }
+.ms-page-heading h1, .ms-main h2 { color: var(--portal-evergreen-dark); font-family: var(--portal-serif); line-height: 1.1; margin: 0 0 .4rem; }
+.ms-page-heading h1 { font-size: clamp(2.5rem, 6vw, 4rem); }
+.ms-main h2 { font-size: clamp(1.6rem, 3vw, 2rem); }
+.ms-main h3, .ms-main h4 { margin: 0 0 .35rem; line-height: 1.35; }
+.ms-main p { margin: .15rem 0 .7rem; }
+.ms-main a { color: var(--portal-blue); }
+.ms-meta, .ms-page-heading p, .ms-muted { color: var(--portal-muted); }
+.ms-tabs, .ms-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.ms-tabs { margin: 1.2rem 0; }
+.ms-selector { display: flex; flex-wrap: wrap; gap: .55rem 1rem; align-items: center; margin-bottom: .8rem; }
+.ms-selector label { font-weight: 650; }
+.ms-selector select { max-width: 25rem; }
+#ms-status:empty, .ms-feedback:empty { display: none; }
+.ms-main [data-tone="error"] { color: #902d25; font-weight: 600; }
+.ms-panel, .ms-course, .ms-result, .ms-editor, .ms-preview { min-width: 0; overflow-wrap: anywhere; }
+.ms-panel { background: var(--portal-paper); border: 1px solid var(--portal-line); border-radius: .6rem; margin: 0 0 1rem; padding: clamp(.9rem, 2vw, 1.45rem); }
+.ms-course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: .7rem; }
+.ms-course { background: var(--portal-paper); border: 1px solid var(--portal-line); border-radius: .45rem; padding: .85rem; }
+.ms-family-result, .ms-result { margin: .65rem 0 0; border-top: 1px solid var(--portal-line); padding-top: .65rem; }
+.ms-credit { color: var(--portal-evergreen); font-weight: 600; }
+.ms-unofficial { color: var(--portal-muted); padding: .55rem .85rem; background: var(--portal-warm); border-radius: .35rem; margin-bottom: 1rem !important; }
+.ms-main details { margin: .7rem 0 0; }
+.ms-main summary { cursor: pointer; color: var(--portal-evergreen); font-weight: 650; overflow-wrap: anywhere; }
+.ms-editor form, .ms-form { display: grid; gap: .7rem; margin: .75rem 0 0; }
+.ms-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .65rem; }
+.ms-main label { display: grid; gap: .25rem; min-width: 0; font-weight: 600; font-size: .9rem; }
+.ms-main label.ms-check { grid-template-columns: auto 1fr; align-items: start; font-weight: 500; }
+.ms-wide, .ms-fields fieldset { grid-column: 1 / -1; }
+.ms-main fieldset { border: 1px solid var(--portal-line); border-radius: .35rem; padding: .65rem; margin: 0; min-width: 0; }
+.ms-main fieldset label + label { margin-top: .35rem; }
+.ms-main :is(input:not([type="checkbox"]), select, textarea) {
+    min-width: 0; min-height: 2.6rem; width: 100%; padding: .4rem .55rem; border-radius: .35rem;
+    border: 1px solid #a99d92; background: #fff; color: var(--portal-ink); font: 1rem/1.4 var(--portal-sans);
+}
+.ms-main textarea { resize: vertical; }
+.zion-portal:not(.editorial-page) main.ms-main button {
+    justify-self: start; min-height: 2.6rem; padding: .4rem .7rem; border: 1px solid var(--portal-line); border-radius: .35rem;
+    color: var(--portal-evergreen); background: var(--portal-paper); font: 600 .9rem/1.35 var(--portal-sans); cursor: pointer;
+}
+.zion-portal:not(.editorial-page) main.ms-main button:is([aria-pressed="true"], [type="submit"]) {
+    color: #fff; background: var(--portal-evergreen); border-color: var(--portal-evergreen);
+}
+.zion-portal:not(.editorial-page) main.ms-main button:is([aria-pressed="true"], [type="submit"]):hover:not(:disabled) {
+    color: #fff; background: var(--portal-evergreen-dark);
+}
+.ms-office-list { list-style: none; padding: 0; margin: .45rem 0 .8rem; }
+.ms-office-list > li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; padding: .55rem 0; border-bottom: 1px solid var(--portal-line); }
+.ms-preview { border: 1px solid var(--portal-line); border-radius: .35rem; padding: .85rem; margin: .8rem 0 0; }
+.ms-preview ul { padding-inline-start: 1.25rem; }
+.ms-text { white-space: pre-wrap; }
+@media (max-width: 37rem) {
+    .ms-selector { display: grid; gap: .3rem; }
+    .ms-selector select { max-width: none; }
+}

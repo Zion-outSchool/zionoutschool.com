@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>K–8 Learning Records | Zion outSchool</title>
+    <link rel="stylesheet" href="portal-theme.css?v=portal-orange-1">
+    <link rel="stylesheet" href="middle-school.css">
+    <link rel="stylesheet" href="math-standards.css">
+</head>
+<body class="zion-portal ms-page" data-portal-page-role="gradebook" data-middle-school-view="staff">
+    <header class="portal-topbar">
+        <div class="portal-topbar-inner">
+            <a class="portal-brand" href="family-portal.html"><span>Family Portal</span><small>Zion outSchool</small></a>
+            <div class="portal-topbar-actions">
+                <a class="portal-public-link" href="family-portal.html">Back to Family Portal</a>
+                <button class="portal-session-button" type="button" data-portal-sign-out hidden>Sign out</button>
+            </div>
+        </div>
+    </header>
+    <main class="ms-main" data-portal-page-content hidden>
+        <header class="ms-page-heading"><h1>K–8 Learning Records</h1><p>Kindergarten through grade 8</p></header>
+        <nav class="ms-tabs" id="ms-tabs" aria-label="Middle school views" hidden></nav>
+        <div class="ms-selector" id="ms-selector" hidden>
+            <label for="ms-student">Student</label>
+            <select id="ms-student"></select>
+        </div>
+        <p id="ms-status" role="status" aria-live="polite"></p>
+        <div id="ms-content"></div>
+    </main>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="supabase-portal.js?v=middle-school-1"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+    integrity="sha384-weMABwrltA6jWR8DDe9Jp5blk+tZQh7ugpCsF3JwSA53WZM9/14PjS5LAJNHNjAI" crossorigin="anonymous"></script>
+<script defer src="middle-school-pdf.js"></script>
+<script defer src="math-standards.js"></script>
+<script defer src="middle-school.js"></script>
+</body>
+</html>

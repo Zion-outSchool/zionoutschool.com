@@ -642,7 +642,7 @@ function renderGraduationPlannerTable(container, entries, milestones, options = 
 }
 
 async function loadGraduationRecords(studentId, { allowPartial = false } = {}) {
-    const [{ data: entries, error: entryError }, { data: milestones, error: milestoneError }, finals] = await Promise.all([
+    const [{ data: entries, error: entryError }, { data: milestones, error: milestoneError }, finals, earlyCredit] = await Promise.all([
         portalClient
             .from('graduation_plan_entries')
             .select('id, student_id, requirement_key, grade_level, course_name, credits, final_grade, status, notes')
@@ -654,17 +654,32 @@ async function loadGraduationRecords(studentId, { allowPartial = false } = {}) {
         portalClient
             .from('gradebook_final_courses')
             .select('course_name, term, requirement_key, grade_level, credits, final_grade')
-            .eq('student_id', studentId).order('finalized_at', { ascending: false })
+            .eq('student_id', studentId).order('finalized_at', { ascending: false }),
+        portalClient.rpc('ms_high_school_courses', { target_student: studentId })
     ]);
 
     const finalError = finals.error && !['42P01', 'PGRST205'].includes(finals.error.code) ? finals.error : null;
+    const earlyCreditError = earlyCredit.error && !['42883', 'PGRST202'].includes(earlyCredit.error.code)
+        ? earlyCredit.error : null;
     const plannerError = entryError || milestoneError;
-    if (!allowPartial && (plannerError || finalError)) throw plannerError || finalError;
-    return { entries: entries || [], milestones: milestones || [], finalCourses: finals.data || [], plannerError, finalError };
+    if (!allowPartial && (plannerError || finalError || earlyCreditError)) throw plannerError || finalError || earlyCreditError;
+    const finalCourses = finals.data || [];
+    const courseKey = course => JSON.stringify([course.grade_level, course.requirement_key, course.course_name.trim().toLowerCase()]);
+    const seen = new Set(finalCourses.map(courseKey));
+    for (const course of earlyCredit.data || []) {
+        const key = courseKey(course);
+        if (!seen.has(key)) {
+            finalCourses.push(course);
+            seen.add(key);
+        }
+    }
+    return { entries: entries || [], milestones: milestones || [], finalCourses, plannerError, finalError: finalError || earlyCreditError };
 }
 
+const TRANSCRIPT_GRADES = ['6', '7', ...GRADUATION_GRADES];
+
 function completedTranscriptCourses(entries, finalCourses) {
-    const creditCourses = finalCourses.filter(course => course.requirement_key && GRADUATION_GRADES.includes(course.grade_level));
+    const creditCourses = finalCourses.filter(course => course.requirement_key && TRANSCRIPT_GRADES.includes(course.grade_level));
     const sameCourse = (entry, final) => entry.grade_level === final.grade_level
         && entry.requirement_key === final.requirement_key
         && entry.course_name?.trim().toLowerCase() === final.course_name.trim().toLowerCase();
@@ -685,7 +700,7 @@ function printGraduationTranscript(student, courses) {
 
     const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
     let earnedCredits = 0;
-    for (const grade of GRADUATION_GRADES) {
+    for (const grade of TRANSCRIPT_GRADES) {
         const gradeCourses = courses.filter(course => course.grade_level === grade)
             .sort((first, second) => (first.course_name || '').localeCompare(second.course_name || ''));
         if (!gradeCourses.length) continue;
@@ -1379,6 +1394,7 @@ async function initGraduationPlanner(profile) {
 function canOpenPortalPage(requiredRole, profile) {
     if (!profile?.active) return false;
     if (requiredRole === 'active') return true;
+    if (requiredRole === 'family') return profile.role === 'family';
     if (requiredRole === 'staff') return isStaffPortalProfile(profile);
     if (requiredRole === 'admin') return isAdminPortalProfile(profile);
     if (requiredRole === 'gradebook') return ['admin', 'teacher'].includes(profile.role);

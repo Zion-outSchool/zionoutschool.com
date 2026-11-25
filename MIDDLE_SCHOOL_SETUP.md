@@ -1,0 +1,30 @@
+# Zion K–8 Learning Record
+
+The Family Portal links families to **K–8 Learning Record** and assigned teachers and administrators to **K–8 Learning Records**. The family version shows current coursework, the last verified result and approved next step, verified history, transcript requests, and released certified copies. Office staff use **Review queue**, **Course map**, and **Office settings**. Zion will use the existing Admin account at `admin@zionoutschool.com` for office work. The server checks the existing Admin role.
+
+## Local setup
+
+1. Set up a disposable Supabase development project or local stack with the Family Portal account, student, graduation and gradebook schemas. The relevant tables are `portal_users`, `students`, `gradebook_courses` and `gradebook_enrollments`. The migration uses the existing `current_portal_role()` function and roster links.
+2. In the development database, run [supabase_k8_math_standards.sql](supabase_k8_math_standards.sql) first, then [supabase_middle_school.sql](supabase_middle_school.sql). The first creates the 2023 Arkansas K–8 math catalog and optional Gradebook assignment alignment. The second installs the private Learning Record and seeds 42 reusable course-map entries. A disposable database that already has the earlier unpublished grades 6–8 prototype can be recreated with both migrations in this order.
+3. Serve the repository as a static site. Use your usual local Supabase configuration or point a local copy of `supabase-portal.js` at the development project URL and publishable key. Use fictional portal accounts and student records when testing.
+4. Run [tests/middle-school.test.sql](tests/middle-school.test.sql) and [tests/k8-math.test.sql](tests/k8-math.test.sql) against the disposable database. The tests run in transactions and roll their fixtures back. The K–8 fixture uses the existing class-dates migration to exercise gradebook finalization.
+
+## Workflows
+
+- Office adds the student’s K–8 enrollment year, enrolled grade, legal name, dates, and progression where applicable. Teachers can reuse a course or mixed-age unit mapping for a student on their gradebook roster and record the actual course title and instructional level.
+- Teachers submit a result by reporting period. An interim result requires an as-of date. Evidence stays inside the staff view. Office verification publishes the result and can approve its next step. A revised result returns to the queue while its last approved version stays visible to the family.
+- Once an assignment is saved in Teacher Gradebook, open **Math standards for this assignment** under **Assignment setup**. Choose a standards grade, filter by domain or search code or topic, and select the matching codes. Selections carry across grade filters so one mixed-age assignment can have several instructional levels. Open the official DESE page for the standard wording or the IXL link for practice ideas.
+- In Learning Records, use **Reusable math standards** in the course map, **Planned math standards** on a student’s course, and **Math standards addressed in this result** when recording an individual report. Families see topic summaries and optional verified codes. An alignment marks what the work addressed. Record demonstrated progress in the result or family next step, using Zion’s grading key.
+- Under a student’s course, choose **Use a finalized Gradebook result** to link the existing grade, then add any reporting notes or standards for review. Confirm the course term and school year because older Gradebook classes may have a free-text term. The imported grade comes from the Gradebook, and repeated imports of the same value leave the saved result in place. If the source grade changes, importing it again sends the revision to the office.
+- For middle school courses, flag high-school-level work to record pending credit separately from the result. Once the office has recorded an adopted credit policy and verified a final result, it can award units or record no credit. Select **Add class to high school transcript** and a graduation requirement to include awarded early credit in the existing Working Transcript. Courses already represented by the same grade, requirement, and title in the gradebook are shown once there.
+- Office selects verified results, confirms the legal name and authorized signer, and previews and certifies the PDF. The same issued bytes are retained in the archive and downloads. Linking an open family request marks it issued. Office can release the copy when issuing it or later from the archive. Releasing a copy does not alter its contents.
+- The staff page uses the pinned PDF-Lib browser build to prepare the document from the server’s current transcript preview. A changed preview must be reviewed again. The office attestation appears as a dated certification with signer, title, and verification contact.
+
+## School decisions before rollout
+
+- Confirm the grading or mastery key and exact marks Zion adopts, including any vocabulary for elementary progress reports. The grading key starts blank and is required to issue a transcript.
+- Confirm the early high-school credit policy, qualifying courses and evidence, unit amounts, GPA treatment, who can approve exceptions, and what to tell receiving schools about transfer. The policy field starts blank and credit awards remain unavailable until the office records the adopted policy. Confirm that the Administrator role matches the people Zion authorizes to verify, award and issue.
+- Confirm Arkansas History placement, core course titles and instructional sequences, reporting periods, rotation and integrated-course choices, and local standards mappings. The starter bank leaves Arkansas History grade and term open.
+- Confirm the school contact, certification wording and acceptable signers, recipient verification process, and records retention policy. The current PDF uses an office certification with a typed signer and title. Confirm whether the school also requires a handwritten signature or independent digital signing process.
+
+Production deployment is a separate approval.
